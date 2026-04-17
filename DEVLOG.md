@@ -248,6 +248,31 @@ o1 hub case verified: 8 direct labels now distributed by target Y from Y=1022 �
 
 ---
 
+## Sprint v0.15 — Detour anchor fix + V2 JSON foundation
+
+**Trigger**: user spotted "builds on" pill rendering INSIDE a Qwen-7B card (overlapping the spec line). Also asked: V2 should use a graph DB or embedded JSON instead of MDX-as-database.
+
+**Bug A — same-column edge label inside source card**:
+- For same-column / backward edges, anchor formula `(detourX + txL) / 2` gave X ≈ src.x + 18 (deep INSIDE source card) when src and tgt share a column
+- Root cause: that midpoint isn't on the actual path geometry — the path goes detour-right then down then back-left, the "midpoint of x" is meaningless
+- Fix: anchors moved to the **vertical detour segment** at X = detourX (column-OUTSIDE), Y varies along (sy, ty). Same fix mirrored for vertical orient (HORIZONTAL detour segment at Y = detourY).
+- Verified: 9 same-column 2023 edge labels now all at X=4440 (outside 2023 column at X=4200-4420), Y range 320→957 well-spread by target
+
+**V2 foundation: embedded JSON migration**:
+- Added `gray-matter` dependency (YAML frontmatter parser)
+- New script: `scripts/migrate-mdx-to-json.mjs` — reads all MDX, produces `data/graph.json`
+- New npm script: `npm run graph:export`
+- Generated `data/graph.json`: 369KB, contains all 73 nodes + 126 edges + body_md preserved
+- Schema is self-describing (version, generated_at, stats with year_range / orgs / eras / edge_types)
+- Wrote `data/README.md` documenting V2 architecture decision (JSON > graph DB at this scale)
+- V2 roadmap documented: v0.2.0 JSON-from-MDX (now), v0.2.1 Astro reads from JSON, v0.3.0 JSON primary + MDX removed
+
+**Decision**: deferred Astro page refactor to next sprint (substantial code change). Current state has both MDX and JSON in sync; future sprints flip the source of truth.
+
+**Outcome**: bug fixed, V2 data foundation in place, migration path documented.
+
+---
+
 ## Final state (end-of-day 2026-04-16)
 
 | Metric | Count |

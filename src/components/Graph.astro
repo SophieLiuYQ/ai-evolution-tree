@@ -407,13 +407,14 @@ function manhattanPath(
         d += ` L ${detourX} ${ty - sgn * r} Q ${detourX} ${ty} ${detourX - r} ${ty}`;
         d += ` L ${txL} ${ty}`;
       }
-      // Detour edges — anchors on horizontal segments (target ty preferred)
-      const anchors = [
-        { x: (detourX + txL) / 2, y: ty },
-        { x: (detourX + txL) / 2 - 18, y: ty },
-        { x: (detourX + txL) / 2 + 18, y: ty },
-        { x: (sxR + detourX) / 2, y: sy },
-      ];
+      // Detour edges (same-column / backward) — anchors on the VERTICAL detour segment.
+      // detourX is OUTSIDE the source column to the right; varying Y separates labels by target.
+      // We do NOT anchor on the target horizontal segment because for same-column edges,
+      // that segment runs BACKWARD into the source's card area (would overlap nodes).
+      const anchors = [0.5, 0.35, 0.65, 0.25, 0.75].map((t) => ({
+        x: detourX,
+        y: sy + (ty - sy) * t,
+      }));
       return { d, mid: anchors[0], anchors };
     }
   } else {
@@ -476,13 +477,12 @@ function manhattanPath(
         d += ` L ${tx - sgn * r} ${detourY} Q ${tx} ${detourY} ${tx} ${detourY - r}`;
         d += ` L ${tx} ${tyT}`;
       }
-      // Detour edges — anchors on vertical segments
-      const anchors = [
-        { x: tx, y: (detourY + tyT) / 2 },
-        { x: tx, y: (detourY + tyT) / 2 - 18 },
-        { x: tx, y: (detourY + tyT) / 2 + 18 },
-        { x: sx, y: (syB + detourY) / 2 },
-      ];
+      // Detour edges (same-row / backward) — anchors on the HORIZONTAL detour segment.
+      // detourY is OUTSIDE the source row below; varying X separates labels by target.
+      const anchors = [0.5, 0.35, 0.65, 0.25, 0.75].map((t) => ({
+        x: sx + (tx - sx) * t,
+        y: detourY,
+      }));
       return { d, mid: anchors[0], anchors };
     }
   }

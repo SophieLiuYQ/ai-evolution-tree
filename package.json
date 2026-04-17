@@ -13,7 +13,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "graph:export": "node scripts/migrate-mdx-to-json.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -22,6 +23,7 @@
     "@dagrejs/dagre": "^1.1.4",
     "@tailwindcss/vite": "^4.1.7",
     "astro": "^5.7.10",
+    "gray-matter": "^4.0.3",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "tailwindcss": "^4.1.7",
