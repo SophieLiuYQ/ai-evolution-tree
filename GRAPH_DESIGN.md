@@ -269,7 +269,8 @@ breaking the fan-out symmetry.
 
 ### Render order matters for SVG (no z-index)
 
-SVG renders in document order. Later elements draw on top. For a graph:
+SVG renders in document order. Later elements draw on top. For a graph
+that pre-renders all edges (V1/V2 architecture):
 
 ```
 1. Year band backgrounds       (bottom layer)
@@ -279,25 +280,12 @@ SVG renders in document order. Later elements draw on top. For a graph:
 4. Edge labels                 (TOP layer — above everything)
 ```
 
-If edge labels render in the same group as edge paths, OTHER edges'
-paths drawn later in the loop will appear ON TOP of earlier labels
-(visual "strikethrough" effect). Solution: render labels in a separate
-top-layer SVG group AFTER all paths AND nodes.
-
-### Cross-layer DOM coordination via data attributes
-
-Once labels are in a separate group from their paths, parent-child CSS
-selectors (`.edge:hover .edge-label`) no longer work. Use `data-edge-key`
-attributes on both path and label, with a JS Map for O(1) lookup:
-
-```typescript
-const labelByKey = new Map<string, SVGGElement>();
-allLabels.forEach((l) => labelByKey.set(l.dataset.edgeKey, l));
-
-// On hover:
-const label = labelByKey.get(edgePath.dataset.edgeKey);
-label?.classList.toggle("related", isHovered);
-```
+For V3 (dynamic edge rendering — see §Va below), this concern partially
+goes away because at most ~5-10 edges exist in the DOM at any moment.
+But the rule still applies WHEN edges are dynamically created: append
+them to the `<g class="edges">` group BEFORE nodes in document order,
+and labels to `<g class="edge-labels">` group AFTER nodes. The empty
+groups exist at build time as positioning anchors.
 
 ### Opaque label backgrounds
 
@@ -307,6 +295,108 @@ edge's line and the line bleeds through (looks like strikethrough text).
 
 The reason for the temptation: 0.93 gives a "soft" look. Resist it. The
 moment a label needs to occlude something behind it, you need 1.0.
+
+---
+
+## Va. Dynamic edge rendering (V3 architecture)
+
+### The architectural pivot (v0.20)
+
+V1 and V2 pre-rendered all edges as SVG `<path>` elements at build time
+and used CSS opacity to fade non-relevant ones on hover. With 96 edges,
+even at opacity 0.05 the visual was cluttered — overlapping paths that
+the user couldn't visually parse.
+
+**V3**: edges DON'T exist in the DOM at build time. Empty
+`<g class="edges">` and `<g class="edge-labels">` groups are placeholders.
+JavaScript reads embedded JSON edge data and dynamically creates SVG
+elements ONLY for the hovered node's ancestor lineage. On mouseleave,
+they're removed.
+
+### Default state: ZERO edges visible
+
+The graph is just nodes. No clutter. No background lines. The user sees
+a clean Civ-tech-tree of cards and is invited to hover.
+
+### Hover state: ~5-10 edges, no overlap with anything else
+
+When hovering node N, the JS renders edges only for N's ancestor lineage
+(BFS up the `incoming` adjacency map). Typical hub like Transformer:
+~10 ancestor edges drawn, all the rest of the graph stays clean.
+
+This is the load-bearing UX choice: the graph **acts as a study tool,
+not a wall map**. The user explores by hover; the visual focus is one
+lineage at a time.
+
+### Embedded JSON contract
+
+At the bottom of the figure, an inline `<script type="application/json">`
+holds the precomputed edge geometry:
+
+```json
+{
+  "edgeStyle": { "builds_on": { "color": "#2563EB", "label": "builds on" }, ... },
+  "h": [ { "v": "backpropagation", "w": "alexnet", "type": "builds_on",
+           "d": "M 564.0 91.5 C ...", "midX": 614, "midY": 97.75 }, ... ],
+  "v": [ ... ]
+}
+```
+
+Both panes' edges + the type-style map. JS picks the right pane's array
+based on `localStorage.getItem("ai-tree:orient")`.
+
+Size: ~30 KB JSON for 96 edges × 2 panes. Trivial vs the 300 KB inline
+SVG it replaces.
+
+### Dynamic SVG creation cookbook
+
+```typescript
+const NS = "http://www.w3.org/2000/svg";
+const path = document.createElementNS(NS, "path");
+path.setAttribute("d", e.d);
+path.setAttribute("stroke", style.color);
+path.setAttribute("marker-end", `url(#arrow-${orient}-${e.type})`);
+edgesGroup.appendChild(path);
+```
+
+Critical: use `createElementNS` with the SVG namespace. `createElement("path")`
+creates an HTML element that won't render inside SVG.
+
+### Marker definitions stay at build time
+
+The `<defs>` containing arrow markers (`<marker id="arrow-h-builds_on">`)
+must exist at build so dynamic paths can reference them via `marker-end`.
+These are tiny (6 markers × 2 panes = 12 markers).
+
+### When to use V3 over V1/V2
+
+Use V3 when:
+- The static edge density makes the default view cluttered
+- Users primarily explore via hover (not "scan all edges")
+- Edge count is large enough that pre-rendering hurts perception
+
+Stick with V1/V2 when:
+- Edge count is small (<30) and they don't overlap visually
+- The graph is meant to be readable without interaction (e.g., printed
+  on paper, embedded in a static report)
+- Users need to see all relationships at once for comparison
+
+### Cost / benefit summary
+
+| Concern | V1/V2 (pre-rendered) | V3 (dynamic) |
+|---|---|---|
+| Default visual clarity | poor at >50 edges | excellent at any scale |
+| HTML payload | ~300 KB inline SVG | ~150 KB (saved 50% on edge SVG) |
+| Initial render | full SVG tree | empty groups, instant |
+| Hover responsiveness | CSS class toggle | JS DOM mutation (~5ms for 10 edges) |
+| Required JS | optional (graph still readable) | mandatory |
+| Print / no-JS environments | works | broken — no edges visible |
+| Stagger / overlap analysis | global, complex | local to ~10 edges, often unnecessary |
+| Architectural complexity | simple SVG | needs JSON data layer + JS render |
+
+V3 trades static-friendliness for visual cleanliness. For a
+JS-required interactive viewer (which this is), V3 wins on every axis
+that matters.
 
 ---
 
@@ -391,7 +481,11 @@ Result: clean default view (only colored arrows), labels appear
 on-demand. Discoverability preserved via the legend at the bottom
 (showing color → type mapping).
 
-### Lineage highlighting — knowledge-tree gating (ancestors only)
+### Lineage rendering — knowledge-tree gating (ancestors only, V3)
+
+**V3 architecture changes the implementation** (see §Va) but preserves
+the ancestors-only behavior. Below describes both: what the user sees,
+and how V3 builds it.
 
 When hovering a node, highlight ONLY its **ancestors** (the prerequisite
 chain leading to this node). Descendants — knowledge that depends on
