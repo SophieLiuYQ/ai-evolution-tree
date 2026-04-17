@@ -423,13 +423,83 @@ trace its full intellectual lineage in the tree.
 
 | Channel | What it encodes | Visual treatment |
 |---|---|---|
-| Edge color | Relationship type (builds_on, scales, etc.) | Stroke color + dash pattern |
+| Edge color | Relationship type (builds_on, scales, etc.) | Stroke color (solid lines) |
 | Card stripe | Source organization (org) | 6px left stripe on card |
 | Background band | Year of release | Subtle warm→cool HSL gradient |
 
 Each channel is independent. A user can scan by org (stripe color), by
 era (background), or by relationship pattern (edge color), without these
 encodings interfering.
+
+### Color the 3 most-frequent types as a hue triangle (120° apart)
+
+**Don't pick edge colors by intuition.** Untrained color-picking
+clusters in the blue-purple-pink hue range (220°-330°), making 4-6
+"different" colors mutually indistinguishable on screen.
+
+**Two failure modes seen in this project:**
+1. v0.18: initial palette had blue (#3B82F6), violet (#8B5CF6), and
+   indigo (#6366F1) within 40° of each other.
+2. v0.19a (Tableau 10 attempt): even Tableau's tested palette put the
+   three most-common edge types in cool tones — blue (#1F77B4 207°),
+   purple (#9467BD 273°), cyan (#17BECF 184°) — all within 90° hue
+   range. User couldn't distinguish them.
+
+**Lesson**: a 6-color palette being "mathematically distinguishable"
+isn't enough if your **3 most frequent uses cluster on the same side
+of the wheel**. The eye doesn't process 6 colors equally — it processes
+the most common ones first and gets confused there.
+
+**v0.19b attempt failed** — moved scales off blue but put surpasses
+(#DC2626 crimson 0°) too close to scales (orange 22°). User caught it
+immediately. Lesson: the **top 4 most-frequent edge types** all need
+≥70° hue separation, not just the top 3.
+
+**Current palette** (v0.19c) — top 4 mutually-distant + 2 fillers:
+
+| Type | Frequency | Color | Hex | Hue | Role |
+|---|---|---|---|---|---|
+| `builds_on` | 39 | Royal blue | `#2563EB` | 220° | primary 1 |
+| `scales` | 22 | Bold orange | `#EA580C` | 22° | primary 2 (158° from blue) |
+| `competes_with` | 17 | Forest green | `#16A34A` | 140° | primary 3 (100°+ from both) |
+| `surpasses` | 13 | Magenta | `#C026D3` | 290° | primary 4 (92° from orange, 70° from blue) |
+| `fine_tunes` | 5 | Teal | `#0D9488` | 175° | filler (close to green in hue, distinguished by lightness) |
+| `distills` | few | Dark brown | `#78350F` | 25° | filler (same hue as orange, distinguished by 30% lower lightness) |
+
+Pairwise hue gaps for the top 4:
+| | blue | orange | green | magenta |
+|---|---|---|---|---|
+| blue (220°) | — | 158° | 80° | 70° |
+| orange (22°) | 158° | — | 118° | 92° |
+| green (140°) | 80° | 118° | — | 150° |
+| magenta (290°) | 70° | 92° | 150° | — |
+
+Minimum gap among the top 4 is 70° (blue/magenta) — meaningfully
+distinguishable. The 2 filler types use hues that overlap top-4 zones
+but differ in lightness by enough to read distinctly at 1.6px stroke
+width.
+
+**Generalize the rule**:
+1. Count edge type frequency.
+2. Assign top 3 to the color-wheel triangle: 0° (warm), 120° (green),
+   240° (blue). Or rotate to taste (e.g., orange/green/blue).
+3. Fill remaining types into hues that DON'T fall between the primary
+   triangle. If you must place a 4th color near a primary, separate by
+   lightness (darker brown vs orange) or saturation (crimson vs orange).
+4. Test at the actual viewing scale on actual data. The screenshot you
+   show a user is the only ground truth.
+
+**Why this matters more than it seems**: edge color is the user's
+PRIMARY way to identify what type a relationship is. If colors confuse,
+the entire typed-edge schema becomes meaningless visual noise.
+
+### Solid lines only — drop dash patterns
+
+Earlier versions used dash patterns (e.g., `competes_with` was dotted)
+as a redundant signal. With the Tableau 10 palette, color spread is
+sufficient that dash adds visual noise without identification benefit.
+**All visible edges use solid lines.** Hidden types keep dash patterns
+defensively (in case they're ever rendered for debug purposes).
 
 ### Light theme with high contrast
 
@@ -440,6 +510,13 @@ soft.
 
 Never use 50/50 colors (medium saturation, medium lightness) — they
 neither pop nor recede. Either go light (decoration) or dark (text/edges).
+
+### Keep color scheme STABLE across changes
+
+Once an edge type is associated with a color, don't reassign. Users
+build muscle memory ("blue means builds_on"). Reordering palette =
+breaks all existing user understanding. If you must change colors,
+document the migration in the change log so users know what shifted.
 
 ---
 

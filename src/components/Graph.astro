@@ -81,15 +81,23 @@ const edgeStyle: Record<
   Rel["type"],
   { color: string; dash?: string; label: string }
 > = {
-  builds_on: { color: "#3b82f6", label: "builds on" },
-  scales: { color: "#8b5cf6", label: "scales" },
-  distills: { color: "#ec4899", dash: "4,3", label: "distills" },
-  fine_tunes: { color: "#10b981", dash: "4,3", label: "fine-tunes" },
-  surpasses: { color: "#f59e0b", label: "surpasses" },
-  competes_with: { color: "#6366f1", dash: "2,3", label: "competes" },
-  applies: { color: "#14b8a6", label: "applies" },
-  replaces: { color: "#ef4444", label: "replaces" },
-  open_alt_to: { color: "#a855f7", dash: "6,3", label: "open alt" },
+  // Visible types — primary triangle for the 3 most frequent types,
+  // each at ~120° hue apart for MAX perceptual distinguishability.
+  // The 3 most frequent edge types (builds_on 39, scales 22, competes 17)
+  // are intentionally at three corners of the color wheel — blue / orange /
+  // green — because they're what the user stares at most.
+  // The remaining 3 fill in red / violet / brown, each visually distinct
+  // from the primary triangle by hue OR by lightness.
+  builds_on: { color: "#2563EB", label: "builds on" }, // royal blue 220°
+  scales: { color: "#EA580C", label: "scales" }, // bold orange 22°
+  competes_with: { color: "#16A34A", label: "competes" }, // bold green 140°
+  surpasses: { color: "#C026D3", label: "surpasses" }, // bold magenta 290° (far from orange)
+  fine_tunes: { color: "#0D9488", label: "fine-tunes" }, // teal 175°
+  distills: { color: "#78350F", label: "distills" }, // dark brown 25° (same hue as orange but 30% darker)
+  // Hidden types — preserved for data consistency but not rendered.
+  applies: { color: "#0891B2", dash: "4,3", label: "applies" },
+  replaces: { color: "#64748B", dash: "4,3", label: "replaces" },
+  open_alt_to: { color: "#DB2777", dash: "6,3", label: "open alt" },
 };
 
 // Edge types completely excluded from the graph: no path, no label, no lineage
