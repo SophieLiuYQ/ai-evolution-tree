@@ -545,6 +545,18 @@ on-demand. Discoverability preserved via the legend at the bottom
 the ancestors-only behavior. Below describes both: what the user sees,
 and how V3 builds it.
 
+**Updated invariant (V3.2)**: every rendered edge gets a label.
+Earlier V3 builds rendered labels only for edges directly INCOMING to
+the hovered node, leaving "intermediate-lineage" edges (e.g. `transformer
+→ bert` when hovering `gpt-2`) as colored-but-unlabeled. User feedback
+caught this as a violation of the §IX invariant "every drawn edge has a
+label."
+
+V3.2 fix: label every edge in the rendered ancestor lineage. With ~5-10
+edges visible at hover time, label collision is rare and acceptable;
+the cognitive cost of "what type is this colored line?" is higher than
+the cost of one extra small pill.
+
 When hovering a node, highlight ONLY its **ancestors** (the prerequisite
 chain leading to this node). Descendants — knowledge that depends on
 this node and hasn't been "unlocked" yet from the user's vantage —

@@ -1087,17 +1087,16 @@ function fmtSpec(ms: {
       const ancestors = expandAncestors(slug, orient);
 
       // Render every edge whose endpoints are both in the ancestor lineage.
-      // For edges INCOMING to the hovered node specifically, also render the
-      // typed label. Other lineage edges render unlabeled (the type is shown
-      // by color, decoded via the bottom legend).
+      // EVERY rendered edge gets its labeled pill — invariant from §VII:
+      // "1:1 edge to label, no exception." With ~5-10 edges visible, label
+      // collision is rare; per-edge labeling beats the cognitive cost of
+      // colored-but-unlabeled lines.
       for (const e of graphData[orient]) {
         if (!ancestors.has(e.v) || !ancestors.has(e.w)) continue;
         const style = graphData.edgeStyle[e.type];
         if (!style) continue;
         edgesGroup.appendChild(buildPath(e.d, style, orient, e.type));
-        if (e.w === slug) {
-          labelsGroup.appendChild(buildLabel(e.midX, e.midY, style));
-        }
+        labelsGroup.appendChild(buildLabel(e.midX, e.midY, style));
       }
 
       // Fade non-ancestor nodes
