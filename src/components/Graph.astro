@@ -75,34 +75,9 @@ const clientPayload = {
 </script>
 
 <style>
-  .ai-tree-graph .node-link {
-    cursor: pointer;
-    transition:
-      opacity 0.15s ease,
-      filter 0.15s ease;
-  }
-  /* Hover emphasis: thick border on the main card rect (first <rect>
-     direct child of .node — leaves stripe rects + score badge alone) */
-  .ai-tree-graph .node-link:hover .node > rect:first-child {
-    stroke-width: 3.5;
-  }
-  .ai-tree-graph .edge { transition: opacity 0.15s ease; }
-  .ai-tree-graph .edge path { pointer-events: stroke; }
-  .ai-tree-graph .edge-label {
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
-  .ai-tree-graph .edge-label.related { opacity: 1; }
-  .ai-tree-graph .edge.related path { stroke-width: 2.4; }
-
-  .ai-tree-graph .orient-btn[aria-selected="true"] {
-    background: var(--accent);
-    color: white;
-  }
-  .ai-tree-graph .orient-pane { height: 100%; }
-
-  /* Figure fills the available viewport (set via wrapping container) */
+  /* Figure shell — each child component owns its own CSS to keep Astro's
+     scoping intact. (A parent component's <style> doesn't reach descendant
+     component markup because the scope hashes don't match.) */
   .ai-tree-graph {
     height: 100%;
     display: flex;
@@ -117,132 +92,7 @@ const clientPayload = {
     flex-direction: column;
     min-height: 0;
   }
-
-  /* Left edge-legend panel */
-  .ai-tree-graph .edge-legend {
-    width: 184px;
-    max-height: 100%;
-  }
   @media (max-width: 720px) {
     .ai-tree-graph .graph-body { flex-direction: column; }
-    .ai-tree-graph .edge-legend {
-      width: 100%;
-      max-height: none;
-      border-right: none;
-      border-bottom: 1px solid #e2e8f0;
-    }
-  }
-
-  /* ===== Per-card action buttons (zoom + pin) — outside the card,
-     hover-revealed via the parent .node-link. ===== */
-  .ai-tree-graph .zoom-btn,
-  .ai-tree-graph .pin-btn {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.12s ease;
-  }
-  .ai-tree-graph .zoom-btn { cursor: zoom-in; }
-  .ai-tree-graph .pin-btn { cursor: pointer; }
-  .ai-tree-graph .node-link:hover .zoom-btn,
-  .ai-tree-graph .node-link:hover .pin-btn {
-    opacity: 1;
-    pointer-events: all;
-  }
-  .ai-tree-graph .zoom-btn:hover rect,
-  .ai-tree-graph .pin-btn:hover rect {
-    fill: #1e293b;
-    stroke: #1e293b;
-  }
-  .ai-tree-graph .zoom-btn:hover text,
-  .ai-tree-graph .pin-btn:hover text { fill: white; }
-  /* Pin active: stays visible + accent-colored even after mouseleave */
-  .ai-tree-graph .pin-btn.active {
-    opacity: 1 !important;
-    pointer-events: all;
-  }
-  .ai-tree-graph .pin-btn.active rect {
-    fill: var(--accent, #2563eb);
-    stroke: var(--accent, #2563eb);
-  }
-  .ai-tree-graph .pin-btn.active text { fill: white; }
-
-  /* ===== Zoom modal (top-layer ancestor view) ===== */
-  .ai-tree-graph .zoom-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ai-tree-graph .zoom-modal[hidden] { display: none; }
-  .ai-tree-graph .zoom-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-  }
-  .ai-tree-graph .zoom-panel {
-    position: relative;
-    width: min(94vw, 1500px);
-    height: min(90vh, 950px);
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.45);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .ai-tree-graph .zoom-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 18px;
-    border-bottom: 1px solid #e2e8f0;
-    background: #f8fafc;
-  }
-  .ai-tree-graph .zoom-title {
-    font-weight: 600;
-    color: #0f172a;
-    font-size: 14px;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-  }
-  .ai-tree-graph .zoom-close {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    border: 1px solid #cbd5e1;
-    background: white;
-    color: #475569;
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      background 0.12s ease,
-      border-color 0.12s ease;
-  }
-  .ai-tree-graph .zoom-close:hover {
-    background: #f1f5f9;
-    border-color: #94a3b8;
-  }
-  .ai-tree-graph .zoom-svg-wrap {
-    flex: 1;
-    min-height: 0;
-    background: #f8fafc;
-    padding: 24px;
-    overflow: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ai-tree-graph .zoom-svg {
-    /* natural pixel size — width/height are set by JS to the layout bbox.
-       NEVER scale to fit; cards must remain identical to the main graph. */
-    display: block;
-    flex-shrink: 0;
   }
 </style>

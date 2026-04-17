@@ -77,3 +77,16 @@ const { layout, orient, yearsTotal, hidden = false } = Astro.props;
     <g class="edge-labels"></g>
   </svg>
 </div>
+
+<style>
+  .orient-pane { height: 100%; }
+  .edge { transition: opacity 0.15s ease; }
+  .edge path { pointer-events: stroke; }
+  .edge-label {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .edge-label.related { opacity: 1; }
+  .edge.related path { stroke-width: 2.4; }
+</style>

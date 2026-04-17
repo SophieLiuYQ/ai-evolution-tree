@@ -28,7 +28,7 @@ const metaText = clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX);
         leaving .node-link (would hide them mid-travel). */}
     <rect class="hover-bay" x="-2" y="-2" width={p.width + 150} height={p.height + 4} fill="transparent" pointer-events="all" />
 
-    <rect width={p.width} height={p.height} rx="6" fill="white" stroke={stroke(p.org)} stroke-width="1.25" />
+    <rect class="card-border" width={p.width} height={p.height} rx="6" fill="white" stroke={stroke(p.org)} stroke-width="1.25" />
     <rect x="0" y="0" width="6" height={p.height} rx="2" fill={fill(p.org)} />
     <rect x="0" y="0" width="2" height={p.height} rx="1" fill={stroke(p.org)} />
 
@@ -44,14 +44,64 @@ const metaText = clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX);
       <text x="12" y="10.5" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill={stroke(p.org)} font-weight="700">★{d.breakthrough_score}</text>
     </g>
 
-    {/* External action buttons (hover-revealed, see GRAPH_DESIGN.md §VII) */}
+    {/* External action buttons (hover-revealed, see GRAPH_DESIGN.md §VII).
+        fill-opacity="1" + opacity="1" defensively defeat any inherited
+        opacity from the link's hover-fade JS. */}
     <g class="zoom-btn" data-zoom-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2 - 14})`} role="button" aria-label="Open lineage view">
-      <rect x="0" y="-11" width="130" height="22" rx="11" fill="white" stroke="#475569" stroke-width="1.2" />
-      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="#1e293b" letter-spacing="0.3">zoom</text>
+      <rect x="0" y="-11" width="130" height="22" rx="11" fill="white" fill-opacity="1" stroke="#475569" stroke-width="1.2" />
+      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="#1e293b" fill-opacity="1" letter-spacing="0.3">zoom</text>
     </g>
     <g class="pin-btn" data-pin-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2 + 14})`} role="button" aria-label="Pin this lineage path">
-      <rect x="0" y="-11" width="130" height="22" rx="11" fill="white" stroke="#475569" stroke-width="1.2" />
-      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="#1e293b" letter-spacing="0.2">highlight this path</text>
+      <rect x="0" y="-11" width="130" height="22" rx="11" fill="white" fill-opacity="1" stroke="#475569" stroke-width="1.2" />
+      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="#1e293b" fill-opacity="1" letter-spacing="0.2">highlight this path</text>
     </g>
   </g>
 </a>
+
+<style>
+  .node-link {
+    cursor: pointer;
+    text-decoration: none; /* kill default <a> underline that bleeds onto SVG text */
+    transition: opacity 0.15s ease, filter 0.15s ease;
+  }
+  /* Hover emphasis: thick border on the main card rect.
+     (Targeting .card-border explicitly — the invisible .hover-bay rect
+     is the first child of .node, so :first-child wouldn't work.) */
+  .node-link:hover .node > rect.card-border {
+    stroke-width: 4;
+  }
+
+  /* ===== Per-card action buttons (zoom + pin) — outside the card,
+     hover-revealed via the parent .node-link. ===== */
+  .zoom-btn,
+  .pin-btn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+  }
+  .zoom-btn { cursor: zoom-in; }
+  .pin-btn { cursor: pointer; }
+  .node-link:hover .zoom-btn,
+  .node-link:hover .pin-btn {
+    opacity: 1;
+    pointer-events: all;
+  }
+  /* Hover state: invert to dark fill */
+  .zoom-btn:hover rect,
+  .pin-btn:hover rect {
+    fill: #1e293b;
+    stroke: #1e293b;
+  }
+  .zoom-btn:hover text,
+  .pin-btn:hover text { fill: white; }
+  /* Pin active: stays visible + accent-colored even after mouseleave */
+  .pin-btn.active {
+    opacity: 1 !important;
+    pointer-events: all;
+  }
+  .pin-btn.active rect {
+    fill: var(--accent, #2563eb);
+    stroke: var(--accent, #2563eb);
+  }
+  .pin-btn.active text { fill: white; }
+</style>

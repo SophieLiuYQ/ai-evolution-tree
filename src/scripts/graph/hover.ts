@@ -38,6 +38,22 @@ export function renderHover(slug: string) {
   const { orient, edgesGroup, labelsGroup } = active;
   clearDynamicEdges();
 
+  // Re-append the hovered card to the end of its parent <g class="nodes">
+  // so its overhanging zoom + pin buttons render on TOP of the adjacent
+  // column's cards (SVG has no z-index — last drawn wins).
+  // Scope to the ACTIVE pane — both panes have a card with this slug, but
+  // only the visible one matters; matching the wrong one moves an invisible
+  // node and leaves the visible card's buttons translucent under neighbors.
+  const activePaneEl = document.querySelector<HTMLElement>(
+    `.orient-pane[data-orient="${orient}"]`,
+  );
+  const hoveredLink = activePaneEl?.querySelector<SVGAElement>(
+    `.node-link[data-slug="${CSS.escape(slug)}"]`,
+  );
+  if (hoveredLink?.parentNode) {
+    hoveredLink.parentNode.appendChild(hoveredLink);
+  }
+
   const ancestors = expandAncestors(slug, orient);
   const data = graphData();
 

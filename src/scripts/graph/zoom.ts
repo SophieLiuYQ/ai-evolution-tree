@@ -336,9 +336,11 @@ function openZoom(slug: string) {
       );
     }
     if (s === slug) {
-      const rect = clone.querySelector("rect");
+      // Target .card-border explicitly — the first <rect> is the invisible
+      // .hover-bay hit-area extension, not the visible border.
+      const rect = clone.querySelector("rect.card-border");
       if (rect) {
-        rect.setAttribute("stroke-width", "3.5");
+        rect.setAttribute("stroke-width", "4");
         rect.setAttribute("filter", "drop-shadow(0 0 6px rgba(15,23,42,0.3))");
       }
     }

@@ -15,3 +15,82 @@
     </div>
   </div>
 </div>
+
+<style>
+  .zoom-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .zoom-modal[hidden] { display: none; }
+  .zoom-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  .zoom-panel {
+    position: relative;
+    width: min(94vw, 1500px);
+    height: min(90vh, 950px);
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .zoom-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+  }
+  .zoom-title {
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 14px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  .zoom-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    color: #475569;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+  .zoom-close:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+  }
+  .zoom-svg-wrap {
+    flex: 1;
+    min-height: 0;
+    background: #f8fafc;
+    padding: 24px;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .zoom-svg {
+    /* natural pixel size — JS sets width/height to the layout bbox.
+       NEVER scale; cards must match the main graph's size. */
+    display: block;
+    flex-shrink: 0;
+  }
+</style>

@@ -16,21 +16,30 @@ const nodes = await getCollection("nodes");
 </Base>
 
 <style is:global>
-  .graph-fullbleed {
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    width: 100vw;
-    /* Fill from just below top nav to bottom of viewport. Top nav
-       is sticky and ~52px tall; main has py-8 (=2rem) above us. */
-    height: calc(100vh - 6.5rem);
-    padding: 0 1rem;
+  /* === Full-bleed graph page: kill page scroll, only the inner
+     orient-pane should scroll. Otherwise the user sees TWO vertical
+     scrollbars (page + pane). ===
+     Strategy:
+     - body/html overflow:hidden (no page scroll)
+     - footer hidden (would push body past 100vh)
+     - main: no padding, no max-width, exact viewport-minus-header height
+     - .graph-fullbleed fills main 100% (no negative-margin trick needed) */
+  body:has(.graph-fullbleed),
+  html:has(.graph-fullbleed) {
+    overflow: hidden;
+    height: 100vh;
   }
-  /* Cancel the parent <main>'s py-8 so the figure sits flush */
+  body:has(.graph-fullbleed) > footer { display: none; }
+
   main:has(> .graph-fullbleed) {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    max-width: none !important;
+    padding: 0 !important;
+    height: calc(100vh - 53px); /* sticky nav is ~53px */
+    overflow: hidden;
+  }
+  .graph-fullbleed {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem 0.75rem;
   }
 </style>
