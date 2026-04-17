@@ -1,0 +1,109 @@
+---
+import type { CollectionEntry } from "astro:content";
+import EraBadge from "./EraBadge.astro";
+import OrgBadge from "./OrgBadge.astro";
+
+interface Props {
+  nodes: CollectionEntry<"nodes">[];
+}
+const { nodes } = Astro.props;
+
+const sorted = [...nodes].sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+
+const byYear: Record<string, CollectionEntry<"nodes">[]> = {};
+for (const n of sorted) {
+  const y = n.data.date.getFullYear().toString();
+  byYear[y] = byYear[y] ?? [];
+  byYear[y].push(n);
+}
+const years = Object.keys(byYear).sort();
+
+const fmtMonth = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short" });
+---
+
+<div class="relative">
+  {
+    years.map((year) => (
+      <div class="mb-4">
+        <div class="sticky top-14 z-10 -mx-4 mb-2 bg-[var(--bg)]/95 px-4 py-1 backdrop-blur">
+          <h3 class="font-mono text-sm font-bold text-[var(--accent)]">
+            {year}
+          </h3>
+        </div>
+        <ol class="ml-2 border-l-2 border-[var(--border-strong)]">
+          {byYear[year].map((node) => {
+            const d = node.data;
+            const ms = d.model_spec;
+            return (
+              <li class="relative mb-4 ml-5">
+                <span class="absolute -left-[26px] top-3 h-3 w-3 rounded-full border-2 border-[var(--accent)] bg-white" />
+                <a
+                  href={`/node/${d.slug}/`}
+                  class="block rounded-lg border border-[var(--border)] bg-white p-4 shadow-sm transition hover:border-[var(--accent)] hover:shadow"
+                >
+                  <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                    <time
+                      datetime={d.date.toISOString()}
+                      class="font-mono text-[var(--fg-muted)]"
+                    >
+                      {fmtMonth(d.date)}
+                    </time>
+                    <OrgBadge org={d.org} />
+                    <EraBadge era={d.era} />
+                    <span class="text-[var(--fg-muted)]">
+                      ★ {d.breakthrough_score}/10
+                    </span>
+                  </div>
+                  <h4 class="mb-1.5 text-base font-semibold leading-tight">
+                    {d.title}
+                  </h4>
+                  {ms && (
+                    <div class="mb-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-[var(--fg-muted)]">
+                      {ms.parameters && <span>params {ms.parameters}</span>}
+                      {ms.context_window && (
+                        <span>
+                          ctx{" "}
+                          {ms.context_window >= 1000
+                            ? `${ms.context_window / 1000}k`
+                            : ms.context_window}
+                        </span>
+                      )}
+                      {ms.training_tokens && (
+                        <span>data {ms.training_tokens}</span>
+                      )}
+                      {ms.release_type && (
+                        <span class="text-[var(--accent-2)]">
+                          {ms.release_type.replace("_", " ")}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <p class="text-sm leading-relaxed text-[var(--fg-muted)]">
+                    {d.public_view.plain_english}
+                  </p>
+                  {d.relationships.length > 0 && (
+                    <div class="mt-2 flex flex-wrap gap-1.5 text-xs">
+                      {d.relationships.slice(0, 3).map((r) => (
+                        <span class="rounded bg-[var(--bg-sunk)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-[var(--fg-muted)]">
+                          {r.type.replace("_", " ")} → {r.to}
+                        </span>
+                      ))}
+                      {d.relationships.length > 3 && (
+                        <span class="text-[10px] text-[var(--fg-muted)]">
+                          +{d.relationships.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    ))
+  }
+</div>

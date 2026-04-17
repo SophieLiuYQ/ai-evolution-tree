@@ -1,0 +1,131 @@
+---
+slug: backpropagation
+title: "Backpropagation for Multi-Layer Networks"
+date: 1986-10-09
+era: foundations
+category: [theory, training]
+relationships:
+  - to: perceptron
+    type: builds_on
+    note: "Generalizes single-neuron weight updates to arbitrary depth via chain rule"
+authors:
+  - "Rumelhart, D. E."
+  - "Hinton, G. E."
+  - "Williams, R. J."
+org: "UC San Diego / CMU"
+breakthrough_score: 10
+status: foundational
+
+public_view:
+  plain_english: |
+    A way to train networks with multiple layers of neurons by efficiently
+    figuring out how much each individual weight — out of potentially
+    billions — contributed to a mistake, and nudging each in the right
+    direction.
+  analogy: |
+    A factory makes a defective product. Instead of shutting down and
+    investigating each station independently, backpropagation works
+    backwards from the defect, identifying exactly how much each station
+    was responsible, and sending a calibrated correction to every one
+    simultaneously.
+  applications:
+    - product: "Every deep learning system since 2012"
+      company: "Everyone"
+      year_deployed: 2012
+  investment_angle: |
+    The learning algorithm underneath ~100% of modern AI value creation.
+    The reason "more data + more compute = better model" is a viable
+    business strategy: backprop scales to arbitrary architectures. Not
+    itself patentable (the ideas date to the 1960s–1980s across multiple
+    independent discoveries), but the foundation of a > $500B market cap.
+  why_it_matters: |
+    Perceptrons could only draw straight lines. Backprop made it practical
+    to stack many layers and learn curved ones — which is to say, to learn
+    anything. It is the load-bearing piece underneath every image model,
+    every language model, and every recommendation system you use.
+
+citations:
+  - type: paper
+    key: rumelhart1986learning
+    title: "Learning representations by back-propagating errors"
+    authors: ["Rumelhart, D. E.", "Hinton, G. E.", "Williams, R. J."]
+    year: 1986
+    venue: "Nature"
+    doi: "10.1038/323533a0"
+    url: "https://www.nature.com/articles/323533a0"
+  - type: paper
+    key: werbos1974beyond
+    title: "Beyond Regression: New Tools for Prediction and Analysis in the Behavioral Sciences"
+    authors: ["Werbos, P."]
+    year: 1974
+    venue: "Harvard PhD Thesis"
+    url: "https://www.researchgate.net/publication/35657389"
+---
+
+## What it is
+
+Backpropagation is the application of the chain rule of calculus to compute the gradient of a neural network's loss with respect to every weight in the network, in a single backward pass whose cost is proportional to the forward pass.
+
+The 1986 Rumelhart-Hinton-Williams paper was not the first derivation — Werbos (1974) and Linnainmaa (1970) got there earlier — but it was the paper that made the community see the algorithm as a general-purpose, practical training procedure for multi-layer networks.
+
+## How it works
+
+For a network producing loss $L$, and any weight $w_{ij}^{(l)}$ in layer $l$, the chain rule gives:
+
+$$
+\frac{\partial L}{\partial w_{ij}^{(l)}} = \frac{\partial L}{\partial a_j^{(l)}} \cdot \frac{\partial a_j^{(l)}}{\partial z_j^{(l)}} \cdot \frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
+$$
+
+The algorithm computes these gradients layer-by-layer, right-to-left, reusing the intermediate quantities $\delta_j^{(l)} = \frac{\partial L}{\partial z_j^{(l)}}$ rather than recomputing them. This is dynamic programming over the computation graph.
+
+```python
+# Simplified two-layer backprop
+# Forward
+z1 = W1 @ x + b1
+a1 = sigmoid(z1)
+z2 = W2 @ a1 + b2
+y_hat = sigmoid(z2)
+L = 0.5 * (y - y_hat)**2
+
+# Backward
+dL_dz2 = (y_hat - y) * y_hat * (1 - y_hat)
+dL_dW2 = dL_dz2 @ a1.T
+dL_db2 = dL_dz2
+
+dL_da1 = W2.T @ dL_dz2
+dL_dz1 = dL_da1 * a1 * (1 - a1)
+dL_dW1 = dL_dz1 @ x.T
+dL_db1 = dL_dz1
+```
+
+The key efficiency insight: computing all gradients takes $O(\text{params})$ time, the same order as a forward pass. Without this, training deep networks would be computationally infeasible.
+
+## How to use it
+
+You don't implement backprop by hand. Modern frameworks (`PyTorch`, `JAX`, `TensorFlow`) implement **automatic differentiation** — a generalization where the framework builds a computation graph on the fly and runs backprop as a graph operation:
+
+```python
+import torch
+x = torch.randn(10, 3, requires_grad=True)
+y = model(x)
+loss = loss_fn(y, target)
+loss.backward()   # ← backprop for the entire network, one line
+optimizer.step()
+```
+
+## SWOT
+
+- **Strengths** — Computes exact gradients efficiently. Agnostic to architecture (CNN, RNN, transformer — all use backprop). Scales to billions of parameters without change.
+- **Weaknesses** — Requires differentiable operations. Biologically implausible (no evidence the brain does this). Vulnerable to vanishing / exploding gradients in deep networks — this is why ResNets and LayerNorm were later inventions, not cosmetic ones.
+- **Opportunities** — Still the frontier of optimization research: second-order methods, federated learning, memory-efficient variants (gradient checkpointing, ZeRO).
+- **Threats** — Evolutionary strategies, neuroevolution, forward-forward algorithms all pitch themselves as alternatives, but none have scaled beyond niche applications as of 2026.
+
+## Limitations
+
+- **Vanishing / exploding gradients** in deep networks — gradients scaled by many matrices can shrink to zero or blow up. Partially addressed by ReLU, residual connections, normalization layers.
+- **Memory cost** — requires storing all forward activations for the backward pass. A 70B-parameter training run consumes terabytes of activation memory.
+- **Not online in a useful sense** — effective training requires batches, which rules it out for some real-time adaptation scenarios.
+
+## Historical note
+
+Backprop's 1986 publication did not end the AI winter. That took AlexNet (2012) — 26 years of compounding compute, data, and architectural refinement. Hinton, a co-author here, was also the senior author on AlexNet. The field rewards patience.

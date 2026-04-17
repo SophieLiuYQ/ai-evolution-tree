@@ -1,0 +1,125 @@
+---
+slug: gemini-1
+title: "Gemini 1 — Google's Native Multimodal Frontier"
+date: 2023-12-06
+era: multimodal
+category: [nlp, multimodal, generative]
+relationships:
+  - to: palm
+    type: replaces
+    note: "Successor to PaLM 2; Google's consolidated multimodal frontier brand"
+  - to: gpt-4
+    type: competes_with
+    note: "Direct GPT-4 alternative; tiered Ultra / Pro / Nano family"
+authors:
+  - "Google DeepMind Team"
+org: "Google DeepMind"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "undisclosed (Ultra ~est 1T+; Nano 1.8B / 3.25B for on-device)"
+  architecture: "Multimodal transformer (text + image + audio + video natively)"
+  context_window: 32768
+  release_type: api
+  modalities: [text, vision, audio, video]
+  benchmarks:
+    - name: "MMLU (Ultra)"
+      score: "83.7% (or 90.0% with CoT@32 ensemble)"
+      vs_baseline: "GPT-4 86.4% standard, 87.3% CoT"
+    - name: "GSM8K (Ultra)"
+      score: "94.4%"
+      vs_baseline: "GPT-4 92.0%"
+    - name: "HumanEval (Ultra)"
+      score: "74.4%"
+      vs_baseline: "GPT-4 67.0%"
+
+public_view:
+  plain_english: |
+    Google's first model family launched under the Gemini brand,
+    designed natively for text + images + audio + video as a single
+    integrated system. Released in three sizes: Ultra (flagship),
+    Pro (balanced, on Bard), and Nano (1.8B and 3.25B, on Pixel
+    devices). Marketed as the first model to surpass GPT-4 on MMLU,
+    though under contested benchmarking conditions.
+  analogy: |
+    Google's "code red" response to ChatGPT, finally shipping ~12
+    months after the initial 2022 panic. The product equivalent of a
+    big-budget studio sequel that arrived after the indie original
+    had already defined the genre.
+  applications:
+    - product: "Bard (rebranded Gemini, then Gemini app)"
+      company: "Google"
+      year_deployed: 2023
+    - product: "Pixel 8 / 8 Pro on-device AI features (Nano)"
+      company: "Google"
+      year_deployed: 2023
+    - product: "Google Workspace (Duet AI → Gemini for Workspace)"
+      company: "Google"
+      year_deployed: 2024
+  investment_angle: |
+    Gemini 1's launch closed the symbolic gap from ChatGPT's
+    Nov-2022 surprise — Google now had a publicly comparable
+    flagship. Operationally, Gemini Pro on the free Bard interface
+    seeded a consumer-AI distribution channel inside Google's
+    existing 1B+ MAU Search and Workspace surfaces. The Gemini Nano
+    on-device variant is the underrated component: it's the first
+    flagship-lab LLM running entirely on consumer phone hardware,
+    setting the architectural template for Apple Intelligence and
+    Samsung Galaxy AI a year later.
+  why_it_matters: |
+    Gemini 1 was less a technical breakthrough than a strategic
+    reset — Google reorganized its AI efforts under DeepMind's
+    Demis Hassabis (post the May 2023 Brain + DeepMind merger) and
+    Gemini was the first product output of that consolidation.
+
+citations:
+  - type: paper
+    key: gemini2023report
+    title: "Gemini: A Family of Highly Capable Multimodal Models"
+    authors: ["Gemini Team, Google"]
+    year: 2023
+    venue: "arXiv"
+    arxiv: "2312.11805"
+  - type: release
+    key: google2023gemini
+    title: "Introducing Gemini"
+    year: 2023
+    venue: "Google Blog"
+    url: "https://blog.google/technology/ai/google-gemini-ai/"
+---
+
+## What it is
+
+A multimodal foundation model family in three sizes:
+
+| Variant | Params | Deployed |
+|---|---|---|
+| **Ultra** | undisclosed (~1T+ inferred) | Bard Advanced (Feb 2024) |
+| **Pro** | undisclosed | Bard, then Gemini app + Vertex API |
+| **Nano-1** | 1.8B | Pixel 8 device (Recorder summarization) |
+| **Nano-2** | 3.25B | Pixel 8 Pro device |
+
+Architecturally a single multimodal transformer trained on interleaved sequences of text, image, audio, and video tokens — vs. competitors' bolt-on encoder approaches at the time.
+
+## The contested launch benchmarks
+
+Google's launch announcement claimed Gemini Ultra surpassed GPT-4 on MMLU (90.0% vs GPT-4's 86.4%). Within hours, observers noted:
+
+- Google reported MMLU with a "CoT@32" ensemble (32 independent CoT samples + majority vote) vs GPT-4's standard 5-shot.
+- On apples-to-apples 5-shot, Gemini Ultra scored 83.7% — slightly *behind* GPT-4.
+- GPT-4 with CoT@32 scored ~87% (per OpenAI subsequent disclosure).
+
+The benchmarking controversy distracted from the actual story: Gemini Ultra was roughly competitive with GPT-4 across most evaluations, with a meaningful native-multimodal advantage and a clear deficit in distribution / product polish.
+
+## Gemini lineage 2023-2026
+
+| Model | Date | Headline change |
+|---|---|---|
+| Gemini 1.0 (Ultra/Pro/Nano) | 2023-12 | tiered family launch |
+| Gemini 1.5 Pro | 2024-02 | 1M-token context (10M experimental) |
+| Gemini 1.5 Flash | 2024-05 | fast/cheap variant |
+| Gemini 2.0 Flash | 2024-12 | reasoning + native image gen + agentic upgrades |
+| Gemini 2.5 Pro | 2025-03 | "thinking" mode integrated, top SWE-bench in early 2025 |
+| Gemini 3 | 2025-Q4 | next major frontier reset |
+
+The 1M-token context (Gemini 1.5 Pro, Feb 2024) was the most consequential single capability addition in the line — it enabled "video understanding" and "entire-codebase analysis" use cases that competitors couldn't match for ~12 months.

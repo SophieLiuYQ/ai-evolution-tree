@@ -1,0 +1,115 @@
+---
+slug: claude-3-5-sonnet
+title: "Claude 3.5 Sonnet — Mid-Tier Surpasses Prior Flagships"
+date: 2024-06-20
+era: alignment
+category: [nlp, multimodal, generative]
+relationships:
+  - to: claude-3
+    type: scales
+    note: "Mid-tier model surpasses Claude 3 Opus on most benchmarks at 1/5 the price"
+  - to: gpt-4o
+    type: surpasses
+    note: "Tops GPT-4o on coding (HumanEval 92.0% vs 90.2%) and graduate reasoning"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "undisclosed"
+  architecture: "undisclosed; native multimodal (text + vision)"
+  context_window: 200000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "MMLU"
+      score: "88.7%"
+      vs_baseline: "Claude 3 Opus 86.8%, GPT-4o 88.7%"
+    - name: "HumanEval"
+      score: "92.0%"
+      vs_baseline: "Claude 3 Opus 84.9%, GPT-4o 90.2%"
+    - name: "GPQA Diamond (graduate reasoning)"
+      score: "59.4%"
+      vs_baseline: "Claude 3 Opus 50.4%, GPT-4o 53.6%"
+    - name: "MATH"
+      score: "71.1%"
+      vs_baseline: "Claude 3 Opus 60.1%"
+
+public_view:
+  plain_english: |
+    A mid-tier Claude 3.5 model that, on release, beat the previous
+    flagship (Claude 3 Opus) on most benchmarks while charging 1/5
+    the price. Cemented Anthropic's reputation as the leading model
+    for code generation — the dominant Claude model in IDEs like Cursor
+    and Windsurf throughout 2024-25.
+  analogy: |
+    The mid-tier sedan that outperforms last year's flagship at half
+    the price — an industry pattern that reset everyone's expectations
+    for how often mid-tier was supposed to leap.
+  applications:
+    - product: "Cursor (default coding model)"
+      company: "Anysphere"
+      year_deployed: 2024
+    - product: "Claude.ai (default for Pro and free tier)"
+      company: "Anthropic"
+      year_deployed: 2024
+    - product: "Windsurf, Cline, Aider, GitHub Copilot Workspace"
+      company: "Various"
+      year_deployed: 2024
+    - product: "Salesforce Agentforce"
+      company: "Salesforce"
+      year_deployed: 2024
+  investment_angle: |
+    Claude 3.5 Sonnet was the model that captured the developer market
+    from OpenAI. By late 2024, Anthropic's API revenue split had shifted
+    notably toward enterprise developer tools — Cursor's $9B valuation
+    (April 2025) is a direct downstream effect. The introduction of
+    "artifacts" (interactive code/UI rendered alongside chat) defined
+    a new product UX that competitors copied within months. The 3.5
+    nomenclature itself (vs incrementing to "Claude 4") signaled
+    Anthropic's intent to ship faster cadence than version-major
+    bumps suggested.
+  why_it_matters: |
+    Claude 3.5 Sonnet established that "mid-tier > prior flagship" at
+    cheaper pricing was the new release cadence — meaning customers
+    should expect 6-month obsolescence of the model they're building
+    on. This reframed enterprise procurement: build on the model
+    abstraction (provider, not version) and assume continuous quality
+    upgrade.
+
+citations:
+  - type: release
+    key: anthropic2024claude35sonnet
+    title: "Introducing Claude 3.5 Sonnet"
+    year: 2024
+    venue: "Anthropic Blog"
+    url: "https://www.anthropic.com/news/claude-3-5-sonnet"
+---
+
+## What it is
+
+A mid-tier model in the Claude 3.5 generation. At launch (June 20, 2024), the only model in the 3.5 line; Anthropic added Claude 3.5 Haiku (October 2024) but never released a 3.5 Opus, instead jumping to Claude 3.7 Sonnet and eventually Claude 4 Opus.
+
+Quality position: matched or beat both GPT-4o and Claude 3 Opus on most reasoning, math, and coding benchmarks while priced identically to Claude 3 Sonnet ($3/$15 per 1M tokens — i.e., ⅕ the cost of Opus).
+
+## How it landed in the competitive matrix (mid-2024)
+
+| Model | Date | MMLU | HumanEval | GPQA | MATH | Price ($/1M out) |
+|---|---|---|---|---|---|---|
+| GPT-4 Turbo | 2023-11 | — | ~85% | 35.7 | — | $30 |
+| Claude 3 Opus | 2024-03 | 86.8% | 84.9% | 50.4 | 60.1 | $75 |
+| GPT-4o | 2024-05 | 88.7% | 90.2% | 53.6 | 76.6 | $15 |
+| **Claude 3.5 Sonnet** | **2024-06** | **88.7%** | **92.0%** | **59.4** | **71.1** | **$15** |
+| Llama 3.1 405B | 2024-07 | 88.6% | 89.0% | 51.1 | 73.8 | ~$5 (Together) |
+| GPT-4o (Aug update) | 2024-08 | — | — | — | — | $15 |
+| o1-preview | 2024-09 | 92.3% | 92.4% | 78.0 | 94.8 | $60 |
+| Claude 3.5 Sonnet (new) | 2024-10 | — | 93.7% | 65.0 | 78.3 | $15 |
+
+Claude 3.5 Sonnet held the "best model overall, in many users' practical experience" position from June 2024 until at least Q1 2025 — substantially longer than the typical SOTA tenure.
+
+## Artifacts — a UX shipping co-product
+
+Released alongside the model: the "artifacts" feature in claude.ai split the conversation into a chat panel (left) and a rendered output panel (right) that automatically displays generated code, UI mockups, SVG diagrams, or documents. This UX pattern was almost immediately copied by ChatGPT (Canvas, October 2024), Gemini (Canvas, late 2024), and several agentic IDEs.
+
+The product lesson: model quality alone wasn't enough to win developer mindshare; the way model output was surfaced to the user mattered just as much. Anthropic's product velocity in 2024-25 — artifacts, projects, computer use, MCP — is a key part of the Claude commercial story not captured by benchmark deltas.

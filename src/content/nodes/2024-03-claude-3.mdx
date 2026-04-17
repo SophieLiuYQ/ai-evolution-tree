@@ -1,0 +1,119 @@
+---
+slug: claude-3
+title: "Claude 3 — Opus, Sonnet, Haiku (Tiered Frontier Family)"
+date: 2024-03-04
+era: alignment
+category: [nlp, multimodal, generative]
+relationships:
+  - to: claude-1
+    type: scales
+    note: "Family of three sizes at different price/latency points; first Claude with vision"
+  - to: gpt-4
+    type: surpasses
+    note: "Opus claims SOTA on MMLU, GSM8K, HumanEval at launch — first model to dethrone GPT-4"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "undisclosed (Opus estimated >200B; Haiku <30B)"
+  architecture: "undisclosed; multimodal (text + vision)"
+  context_window: 200000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "MMLU (5-shot, Opus)"
+      score: "86.8%"
+      vs_baseline: "GPT-4 86.4%, Gemini Ultra 83.7%"
+    - name: "GSM8K math (Opus, 0-shot CoT)"
+      score: "95.0%"
+      vs_baseline: "GPT-4 92.0%"
+    - name: "HumanEval (Opus, 0-shot)"
+      score: "84.9%"
+      vs_baseline: "GPT-4 67.0%"
+    - name: "Needle-in-haystack recall (200k context)"
+      score: ">99%"
+
+public_view:
+  plain_english: |
+    Anthropic's first three-tier model family — Opus (flagship,
+    highest-quality), Sonnet (balanced), and Haiku (fast and cheap).
+    On release, Opus was the first model to publicly outscore GPT-4 on
+    most benchmarks, ending GPT-4's 12-month run as uncontested SOTA.
+    Added vision input and pushed context to 200,000 tokens.
+  analogy: |
+    Airlines priced this way decades ago — economy, business, first.
+    Anthropic brought the segmentation to LLM APIs and taught every
+    competitor the pricing structure. Every major provider now ships a
+    fast-cheap / balanced / flagship trio.
+  applications:
+    - product: "Claude.ai chat (all tiers)"
+      company: "Anthropic"
+      year_deployed: 2024
+    - product: "Amazon Bedrock"
+      company: "AWS"
+      year_deployed: 2024
+    - product: "Google Cloud Vertex AI"
+      company: "Google Cloud"
+      year_deployed: 2024
+    - product: "Cursor (IDE AI assistant)"
+      company: "Anysphere"
+      year_deployed: 2024
+  investment_angle: |
+    Claude 3 is the model that repositioned Anthropic from "serious
+    challenger" to "peer of OpenAI." The tiered pricing structure —
+    Opus at $15/$75 per 1M tokens input/output, Haiku at $0.25/$1.25 —
+    established the price/quality Pareto frontier that every LLM
+    vendor now competes on. Amazon's $4B initial and eventual
+    $13.8B total investment in Anthropic was committed pre-Claude-3
+    but justified post-launch.
+  why_it_matters: |
+    Claude 3 ended the "there's just GPT-4 and then everything else"
+    narrative that had held for a year. Post-launch, every enterprise
+    AI procurement discussion started including Claude as a first-tier
+    option. The tier-based pricing is now industry standard.
+
+citations:
+  - type: release
+    key: anthropic2024claude3
+    title: "Introducing the next generation of Claude"
+    year: 2024
+    venue: "Anthropic Blog"
+    url: "https://www.anthropic.com/news/claude-3-family"
+---
+
+## What it is
+
+A family of three multimodal models with shared architecture but different capacity / cost / latency trade-offs:
+
+| Tier | Position | Launch pricing ($ per 1M tok, input/output) | Best for |
+|---|---|---|---|
+| **Opus** | flagship | $15 / $75 | complex reasoning, long documents, agentic work |
+| **Sonnet** | balanced | $3 / $15 | most production tasks |
+| **Haiku** | fast | $0.25 / $1.25 | high-volume classification, simple chat |
+
+All three support 200k-token context and vision input (text output only).
+
+## Claude 3 Opus vs frontier peers at launch
+
+| Model | Date | Org | MMLU | GSM8K | HumanEval | Context |
+|---|---|---|---|---|---|---|
+| GPT-4 | 2023-03 | OpenAI | 86.4% | 92.0% | 67.0% | 8k/32k |
+| GPT-4 Turbo | 2023-11 | OpenAI | — | — | ~85% | 128k |
+| Gemini Ultra | 2023-12 | Google | 83.7% | 94.4% | 74.4% | 32k |
+| **Claude 3 Opus** | **2024-03** | **Anthropic** | **86.8%** | **95.0%** | **84.9%** | **200k** |
+| Claude 3 Sonnet | 2024-03 | Anthropic | 79.0% | 92.3% | 73.0% | 200k |
+| Claude 3 Haiku | 2024-03 | Anthropic | 75.2% | 88.9% | 75.9% | 200k |
+
+Opus was the first model to exceed GPT-4 on most benchmarks by non-trivial margins. The HumanEval delta (+17.9) was particularly notable — Claude became the code-generation workhorse in many developer workflows and the default model in Cursor.
+
+## The tiered-pricing innovation
+
+Before Claude 3, LLM providers mostly shipped one flagship per generation with a secondary "turbo" or "instruct" variant. Claude 3's three named tiers — each a differentiated product — forced:
+
+- **OpenAI** to clarify tiering (GPT-4o + GPT-4o-mini, May/July 2024)
+- **Google** to relabel Gemini into Ultra / Pro / Nano (Feb 2024, pre-empted)
+- **Mistral** to release Large / Medium / Small (Feb 2024, same week)
+
+The economic effect: enterprises can now route traffic across tiers by task, dropping blended cost per query by 3-10× without quality loss. This is the operational foundation of "agentic" deployments (where a single user request spawns dozens of sub-model calls).

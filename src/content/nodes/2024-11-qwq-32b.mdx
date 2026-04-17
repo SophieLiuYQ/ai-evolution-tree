@@ -1,0 +1,108 @@
+---
+slug: qwq-32b
+title: "QwQ-32B Preview — Alibaba's Open Reasoning Model"
+date: 2024-11-28
+era: reasoning
+category: [nlp, generative]
+relationships:
+  - to: qwen-2-5
+    type: fine_tunes
+    note: "RL post-training on Qwen 2.5-32B base for chain-of-thought reasoning"
+  - to: o1
+    type: open_alt_to
+    note: "First open-weight reasoning model approaching o1-preview quality on math benchmarks"
+authors:
+  - "Qwen Team, Alibaba"
+org: "Alibaba"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "32B"
+  architecture: "Qwen 2.5-32B base + RL on reasoning traces"
+  context_window: 32768
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "AIME 2024"
+      score: "50.0%"
+      vs_baseline: "o1-preview 56.7%, GPT-4o 13.4%, Claude 3.5 Sonnet 16.0%"
+    - name: "MATH-500"
+      score: "90.6%"
+      vs_baseline: "o1-preview 85.5%"
+    - name: "GPQA Diamond"
+      score: "65.2%"
+      vs_baseline: "o1-preview 73.3%"
+
+public_view:
+  plain_english: |
+    Alibaba's first open-weight reasoning model, released November
+    2024 as a "preview." Used the same RL-on-reasoning-traces recipe
+    OpenAI used for o1, but with the model weights downloadable —
+    making it the first time anyone outside the frontier US labs
+    could study how reasoning capability is trained in. Its release
+    8 weeks before DeepSeek R1 partly set the expectation that
+    "open reasoning" would arrive within months, not years.
+  analogy: |
+    The early-access preview that proved the recipe worked outside
+    OpenAI. Like Linux's early-90s kernel — not the final article,
+    but the demonstration that ended the "this can only be done
+    inside one company" framing.
+  applications:
+    - product: "Hugging Face hosted (qwen/QwQ-32B-Preview)"
+      company: "Various"
+      year_deployed: 2024
+    - product: "Math-tutoring fine-tunes"
+      company: "Various academic"
+      year_deployed: 2025
+  investment_angle: |
+    QwQ-32B's release signaled that open-weight reasoning was no
+    longer a research aspiration but a near-term commercial reality.
+    Combined with DeepSeek R1's January 2025 release, it made clear
+    that closed reasoning models (o1, o1-pro) would face open
+    competition within the same generation, not the next. This
+    structurally limits the pricing power of o-series APIs and
+    explains why OpenAI accelerated o3 disclosure timing in early
+    2025.
+  why_it_matters: |
+    QwQ proved that the o1 recipe was reproducible from public
+    research alone — no OpenAI insider knowledge required. That
+    proof, more than the model's specific capabilities, was the
+    contribution. By Q1 2025, ten different labs had released
+    reasoning models; the technique had become a shared methodology.
+
+citations:
+  - type: release
+    key: alibaba2024qwq
+    title: "QwQ: Reflect Deeply on the Boundaries of the Unknown"
+    year: 2024
+    venue: "Alibaba Qwen Blog"
+    url: "https://qwenlm.github.io/blog/qwq-32b-preview/"
+---
+
+## What it is
+
+A 32-billion-parameter reasoning model released November 28, 2024 as "QwQ-32B-Preview" by Alibaba's Qwen team. Built on the Qwen 2.5-32B base with RL post-training on reasoning traces (similar in spirit to OpenAI's o1 recipe, though Alibaba did not disclose detailed training specifics). At launch, the strongest open-weight model on math benchmarks (AIME, MATH-500) by a substantial margin.
+
+## QwQ-32B-Preview vs o1-preview vs alternatives
+
+| Model | Date | Org | Params | AIME | MATH-500 | GPQA Diamond | Open? |
+|---|---|---|---|---|---|---|---|
+| GPT-4o | 2024-05 | OpenAI | undisclosed | 13.4% | 76.6% | 53.6% | API |
+| Claude 3.5 Sonnet | 2024-06 | Anthropic | undisclosed | 16.0% | 71.1% | 59.4% | API |
+| o1-preview | 2024-09 | OpenAI | undisclosed | 56.7% | 85.5% | 73.3% | API |
+| o1 | 2024-09 | OpenAI | undisclosed | 83.3% | 94.8% | 78.0% | API |
+| **QwQ-32B-Preview** | **2024-11** | **Alibaba** | **32B** | **50.0%** | **90.6%** | **65.2%** | **open** |
+| DeepSeek R1 | 2025-01 | DeepSeek | 671B/37B | 79.8% | 97.3% | 71.5% | open |
+| QwQ-32B (final) | 2025-03 | Alibaba | 32B | 79.5% | — | — | open |
+
+QwQ-32B-Preview was the first open model to clearly exceed GPT-4o-class non-reasoning models on math, demonstrating that the reasoning RL recipe added meaningful capability that scaling alone hadn't.
+
+## What QwQ contributed methodologically
+
+While the formal training recipe was not published, the release showed:
+
+- A 32B base model could host the reasoning capability — no need for GPT-4-class compute.
+- RL on verifiable-reward problems (math, code) generalized somewhat to non-verifiable reasoning (the GPQA improvement, though smaller, was real).
+- The "extended thinking" outputs were highly verbose (often 5,000-15,000 tokens for one response) — the inference-time cost trade-off was real.
+
+These findings preview what DeepSeek R1's much more detailed training disclosure would document in January 2025.

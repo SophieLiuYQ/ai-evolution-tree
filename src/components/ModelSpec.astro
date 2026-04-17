@@ -1,0 +1,87 @@
+---
+interface Spec {
+  parameters?: string;
+  architecture?: string;
+  context_window?: number;
+  training_tokens?: string;
+  training_compute?: string;
+  release_type?: string;
+  modalities?: string[];
+  benchmarks?: { name: string; score: string; vs_baseline?: string }[];
+}
+interface Props {
+  spec: Spec;
+}
+const { spec } = Astro.props;
+
+const fmtCtx = (n?: number) => {
+  if (!n) return null;
+  if (n >= 1_000_000) return `${n / 1_000_000}M tokens`;
+  if (n >= 1_000) return `${n / 1_000}k tokens`;
+  return `${n} tokens`;
+};
+
+const rows: { label: string; value: string | null }[] = [
+  { label: "Parameters", value: spec.parameters ?? null },
+  { label: "Architecture", value: spec.architecture ?? null },
+  { label: "Context window", value: fmtCtx(spec.context_window) },
+  { label: "Training tokens", value: spec.training_tokens ?? null },
+  { label: "Training compute", value: spec.training_compute ?? null },
+  { label: "Release type", value: spec.release_type ?? null },
+  { label: "Modalities", value: spec.modalities ? spec.modalities.join(", ") : null },
+];
+const visibleRows = rows.filter((r) => r.value);
+---
+
+<section class="mb-8 rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm">
+  <h2 class="mb-4 text-sm uppercase tracking-wider text-[var(--accent)]">
+    Model spec
+  </h2>
+
+  {
+    visibleRows.length > 0 && (
+      <dl class="mb-4 grid grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+        {visibleRows.map((r) => (
+          <div class="flex items-baseline gap-2 border-b border-[var(--border)] py-1.5">
+            <dt class="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+              {r.label}
+            </dt>
+            <dd class="ml-auto text-right font-mono text-[var(--fg)]">{r.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  {
+    spec.benchmarks && spec.benchmarks.length > 0 && (
+      <div>
+        <h3 class="mb-2 text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+          Benchmarks
+        </h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-[var(--border)] text-left text-xs text-[var(--fg-muted)]">
+              <th class="py-1.5 pr-2">Benchmark</th>
+              <th class="py-1.5 pr-2">Score</th>
+              <th class="py-1.5">Baseline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {spec.benchmarks.map((b) => (
+              <tr class="border-b border-[var(--border)]/60">
+                <td class="py-1.5 pr-2">{b.name}</td>
+                <td class="py-1.5 pr-2 font-mono font-semibold text-[var(--accent)]">
+                  {b.score}
+                </td>
+                <td class="py-1.5 text-xs text-[var(--fg-muted)]">
+                  {b.vs_baseline ?? "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+</section>

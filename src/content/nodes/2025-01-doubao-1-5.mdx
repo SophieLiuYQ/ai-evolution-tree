@@ -1,0 +1,98 @@
+---
+slug: doubao-1-5
+title: "Doubao 1.5 Pro — ByteDance's Sparse MoE Flagship"
+date: 2025-01-22
+era: scale-era
+category: [nlp, multimodal, generative]
+relationships:
+  - to: deepseek-v3
+    type: competes_with
+    note: "Direct domestic competitor; sparse MoE architecture released in same window"
+  - to: gpt-4o
+    type: competes_with
+    note: "ByteDance's GPT-4o-class flagship for the Chinese market"
+authors:
+  - "ByteDance Doubao Team"
+org: "ByteDance"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed (sparse MoE; reported active params <30B)"
+  architecture: "Sparse MoE + Mixture of Depth optimizations"
+  context_window: 128000
+  release_type: api
+  modalities: [text, vision, audio]
+  benchmarks:
+    - name: "MMLU (Doubao 1.5 Pro)"
+      score: "~88% (claimed)"
+      vs_baseline: "GPT-4o 88.7%, DeepSeek V3 88.5%"
+    - name: "C-Eval (Chinese)"
+      score: "~80% (claimed)"
+    - name: "Active params / total"
+      score: "~7× sparser than dense equivalent"
+
+public_view:
+  plain_english: |
+    ByteDance's flagship API model, released January 22, 2025 — one
+    day before DeepSeek R1 stole the global news cycle. Doubao 1.5
+    Pro was the model behind ByteDance's domestic chat product
+    (Doubao app) which had ~75M MAU by end of 2024, making it the
+    most-used AI assistant in China by user count.
+  analogy: |
+    The "TikTok of Chinese AI" — distribution-first product strategy.
+    ByteDance built model capability after dominating user
+    attention, the inverse of the OpenAI / Anthropic playbook.
+  applications:
+    - product: "Doubao consumer chat (most-used AI app in China)"
+      company: "ByteDance"
+      year_deployed: 2024
+    - product: "Coze (agent platform, ByteDance)"
+      company: "ByteDance"
+      year_deployed: 2024
+    - product: "Volcengine (enterprise AI platform)"
+      company: "ByteDance"
+      year_deployed: 2024
+  investment_angle: |
+    Doubao represents ByteDance's bet that consumer-AI distribution
+    moat (TikTok / Douyin user-graph + recommendation infrastructure)
+    transfers to AI assistant market share. By Q1 2025, Doubao MAU
+    rivalled ChatGPT's China-equivalent share. ByteDance's reported
+    AI capex in 2024 (~$11B) was the largest of any Chinese tech
+    company. The strategic message: model capability is necessary
+    but not sufficient — the distribution moat is now the wider
+    competitive moat in the consumer AI market.
+  why_it_matters: |
+    Doubao is the consumer Chinese AI product the West underestimates
+    most. By distribution count, it's larger than any Western AI
+    consumer product outside ChatGPT. ByteDance's quiet success here
+    shapes the long-term competitive landscape more than the more
+    publicized DeepSeek / Qwen battles.
+
+citations:
+  - type: release
+    key: bytedance2025doubao15
+    title: "Doubao 1.5 Pro release"
+    year: 2025
+    venue: "Volcengine"
+    url: "https://www.volcengine.com/product/doubao"
+---
+
+## What it is
+
+ByteDance's flagship LLM API as of early 2025. Architecturally a sparse Mixture-of-Experts model (specific size undisclosed) trained with what ByteDance calls "Mixture of Depth" optimizations — adaptive layer skipping for inference efficiency. Multimodal across text, vision, and audio.
+
+The release timing was striking — January 22, 2025, the same week as DeepSeek R1 — and was largely overshadowed by R1's global market impact.
+
+## How Doubao 1.5 Pro fits the Chinese AI landscape (Q1 2025)
+
+| Lab | Flagship model | Date | Strategy | Distribution |
+|---|---|---|---|---|
+| Alibaba | Qwen 2.5-Max | 2025-01 | open + closed dual-track | Aliyun cloud + open ecosystem |
+| **ByteDance** | **Doubao 1.5 Pro** | **2025-01** | **closed + consumer-app-first** | **Doubao app, 75M+ MAU** |
+| DeepSeek | R1 / V3 | 2025-01 | open-only | Hugging Face + API |
+| Tencent | Hunyuan-Large | 2024-11 | open + WeChat integration | Tencent ecosystem |
+| Baidu | Ernie 4.5 | 2024-04 | closed + Baidu Search | Wenxin Yiyan |
+| Moonshot | Kimi K1.5 | 2025-01 | closed + long-context | Kimi app |
+| Zhipu | GLM-4-Plus | 2024-08 | open base + closed flagship | API marketplace |
+
+Among Chinese AI flagships, ByteDance's distribution position is the strongest — Doubao is integrated into Douyin (Chinese TikTok) and accessible to that platform's ~700M domestic MAU.

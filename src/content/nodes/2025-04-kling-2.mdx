@@ -1,0 +1,104 @@
+---
+slug: kling-2
+title: "Kling 2.0 — Kuaishou's Text-to-Video Flagship"
+date: 2025-04-15
+era: multimodal
+category: [generative]
+relationships:
+  - to: sora
+    type: competes_with
+    note: "Chinese-market answer to Sora; often ships features ahead of Western competitors"
+authors:
+  - "Kuaishou Kling Team"
+org: "Kuaishou"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "DiT-style latent video diffusion + motion consistency training"
+  release_type: product
+  modalities: [text, image, video]
+  benchmarks:
+    - name: "Output duration (Kling 2.0)"
+      score: "up to 3 minutes"
+      vs_baseline: "Sora 1.0 20s production, Veo 2 8s at 4k"
+    - name: "Motion consistency on physics tasks"
+      score: "competitive with Sora 2 / Veo 3 at launch"
+
+public_view:
+  plain_english: |
+    Kuaishou's (Chinese short-video platform, TikTok competitor)
+    text-to-video flagship. Originally Kling 1.0 launched June 2024
+    before Sora was publicly available — briefly making it the only
+    production-accessible cinema-quality text-to-video product
+    anywhere. Kling 2.0 (April 2025) extended duration to 3
+    minutes and added image-to-video plus multi-shot coherence.
+  analogy: |
+    The "Chinese Sora" that shipped before the American Sora —
+    Chinese short-video platforms moved from consumer product to
+    generative content pipeline faster than Western incumbents,
+    since their existing user base was already video-native.
+  applications:
+    - product: "Kling (consumer video generation app)"
+      company: "Kuaishou"
+      year_deployed: 2024
+    - product: "Kuaishou creator tools"
+      company: "Kuaishou"
+      year_deployed: 2024
+    - product: "Integrated in Meitu / Capcut-style editing apps"
+      company: "Various"
+      year_deployed: 2024
+  investment_angle: |
+    Kling's strategic importance: it's the first Chinese-origin
+    AI product where the global launch preceded the Western
+    competitor's launch in the same category. By Q1 2025, Kling
+    had become the most-used text-to-video product globally by
+    generated-clip count (exceeding Runway + Pika combined) —
+    largely driven by Chinese mobile users but with growing
+    Western creator adoption. Kuaishou's commercial model
+    (freemium + credits) is more consumer-friendly than
+    Sora / Veo's Pro-subscription-gated access, which broadens
+    the user base even where quality lags.
+  why_it_matters: |
+    Kling represents a structural shift: for the first time in
+    a major generative AI category, the first-mover advantage
+    went to a Chinese platform rather than a US lab. The
+    category (text-to-video) may permanently bifurcate into
+    US-flagship-quality and Chinese-platform-scale segments.
+
+citations:
+  - type: release
+    key: kuaishou2025kling2
+    title: "Kling 2.0 release"
+    year: 2025
+    venue: "Kuaishou"
+    url: "https://kling.kuaishou.com/"
+---
+
+## What it is
+
+Kuaishou's text-to-video generative model — closed product, accessed via the Kling consumer app (Chinese market and international). Architectural details are undisclosed but the model is widely believed to be a DiT (Diffusion Transformer) over spatiotemporal patches in latent space, similar to Sora and Veo.
+
+## Kling lineage
+
+| Version | Date | Key capability |
+|---|---|---|
+| Kling 1.0 | 2024-06 | 2 minutes, 1080p; first global-access video-gen product at quality |
+| Kling 1.5 | 2024-09 | higher resolution, better motion |
+| Kling 1.6 | 2024-12 | image-to-video + motion control |
+| **Kling 2.0** | **2025-04** | **3 minutes + multi-shot coherence** |
+| Kling 2.1 Master | 2025-Q3 | further quality and duration improvements |
+
+## Text-to-video competitive landscape (2024-25)
+
+| Product | 2024 share of generated video clips | 2025 trajectory |
+|---|---|---|
+| Runway Gen-2/3 | ~20% | declining share |
+| Pika | ~15% | declining |
+| Sora | ~10% (delayed launch) | growing (post-Dec 2024 release) |
+| **Kling** | **~35%** | **continuing lead on clip count** |
+| Luma Dream Machine | ~10% | growing (US specialty) |
+| Veo | ~5% | growing |
+| Hailuo (MiniMax) | ~5% | growing (China) |
+
+Kling's share by clip count substantially exceeds its share by "cinema-quality output" — i.e., many of its clips are casual-consumer rather than professional. This matches Kuaishou's broader consumer-video-platform positioning.

@@ -1,0 +1,145 @@
+---
+slug: gan
+title: "Generative Adversarial Networks"
+date: 2014-06-10
+era: architectures
+category: [generative, architecture]
+relationships:
+  - to: backpropagation
+    type: builds_on
+    note: "Two networks trained adversarially via standard backprop"
+  - to: alexnet
+    type: builds_on
+    note: "Uses CNN building blocks for the discriminator"
+authors:
+  - "Goodfellow, I. J."
+  - "Pouget-Abadie, J."
+  - "Mirza, M."
+  - "Xu, B."
+  - "et al."
+org: "Université de Montréal"
+breakthrough_score: 9
+status: active
+
+public_view:
+  plain_english: |
+    A training setup that pits two neural networks against each other: one
+    tries to generate fake images that look real, the other tries to spot
+    the fakes. Both improve through their competition until the fakes are
+    indistinguishable from real photos.
+  analogy: |
+    A counterfeiter and a bank inspector, constantly trying to outwit each
+    other. Over time, the counterfeiter's bills get better and the
+    inspector's eye gets sharper — until the bills would pass anywhere.
+  applications:
+    - product: "StyleGAN photo-realistic face generator"
+      company: "NVIDIA"
+      year_deployed: 2018
+    - product: "DeepFake video manipulation (open source proliferation)"
+      company: "Various"
+      year_deployed: 2017
+    - product: "This Person Does Not Exist"
+      company: "Various"
+      year_deployed: 2019
+  investment_angle: |
+    The first training framework that made photorealistic image synthesis
+    possible at scale. Spawned a wave of generative media companies
+    (Runway, synthetic data vendors). Partially eclipsed by diffusion
+    models post-2021 for image quality, but GAN-derived methods remain
+    dominant in domains where sampling speed matters (real-time face
+    synthesis, super-resolution).
+  why_it_matters: |
+    GANs proved that neural networks could create, not just classify.
+    Every generative AI product — from Midjourney to voice cloning to
+    synthetic training data — descends from the insight that you can train
+    a generator by training its critic in parallel.
+
+citations:
+  - type: paper
+    key: goodfellow2014gan
+    title: "Generative Adversarial Networks"
+    authors: ["Goodfellow, I. J.", "Pouget-Abadie, J.", "et al."]
+    year: 2014
+    venue: "NeurIPS"
+    arxiv: "1406.2661"
+    url: "https://arxiv.org/abs/1406.2661"
+  - type: paper
+    key: karras2019stylegan
+    title: "A Style-Based Generator Architecture for Generative Adversarial Networks"
+    authors: ["Karras, T.", "Laine, S.", "Aila, T."]
+    year: 2019
+    venue: "CVPR"
+    arxiv: "1812.04948"
+---
+
+## What it is
+
+A GAN trains two networks simultaneously:
+
+- A **generator** $G(z)$ maps random noise $z$ to a sample that should resemble the training data.
+- A **discriminator** $D(x)$ assigns a probability that $x$ is a real sample rather than a generated one.
+
+They are optimized adversarially: $D$ tries to classify correctly, $G$ tries to fool $D$. At equilibrium, $G$'s distribution matches the data distribution and $D$ cannot do better than chance.
+
+The value function:
+
+$$
+\min_G \max_D \; \mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]
+$$
+
+## How it works
+
+```python
+import torch
+import torch.nn as nn
+
+# simplified training loop
+for real_batch in dataloader:
+    # train discriminator
+    z = torch.randn(batch_size, latent_dim)
+    fake = G(z).detach()
+    d_loss = -(torch.log(D(real_batch)).mean()
+               + torch.log(1 - D(fake)).mean())
+    d_loss.backward(); d_optim.step(); d_optim.zero_grad()
+
+    # train generator
+    z = torch.randn(batch_size, latent_dim)
+    g_loss = -torch.log(D(G(z))).mean()
+    g_loss.backward(); g_optim.step(); g_optim.zero_grad()
+```
+
+The adversarial objective is unstable in practice — one reason the first 3 years after the paper are a blur of architectural and objective-function variants (DCGAN, WGAN, LSGAN, StyleGAN).
+
+## How to use it
+
+The modern practical toolkit:
+
+```python
+# Using NVIDIA's pretrained StyleGAN3
+import torch
+G = torch.hub.load('NVlabs/stylegan3', 'stylegan3-t-ffhq-1024x1024')
+z = torch.randn([1, G.z_dim])
+img = G(z, None)  # 1024x1024 photorealistic face
+```
+
+For non-image domains (tabular data synthesis, time series), check `sdv` or `ctgan` packages.
+
+## SWOT
+
+- **Strengths** — Generates sharper samples than VAEs for a given compute budget. Unconditional sampling is fast (one forward pass). Latent space is often semantically meaningful (StyleGAN's interpolation properties).
+- **Weaknesses** — Training instability is legendary — mode collapse, gradient vanishing, hyperparameter sensitivity. No explicit likelihood, so evaluation is hard.
+- **Opportunities** — Real-time synthesis (gaming, video), domains where sample speed matters more than maximum quality, adversarial data augmentation for training classifiers.
+- **Threats** — Diffusion models (2021+) surpassed GANs on photorealistic image generation. StyleGAN remains state of the art for faces specifically, but general-purpose image generation has shifted.
+
+## Limitations
+
+- **Mode collapse** — generator finds one or a few modes that fool the discriminator and stops exploring the rest of the distribution.
+- **Non-convergence** — the minimax objective has no guarantee of finding the Nash equilibrium with gradient descent.
+- **Evaluation is non-trivial** — FID and Inception Score are proxies; no clean likelihood.
+- **Conditioning is tacked on, not intrinsic** — compare to diffusion, where classifier-free guidance is very clean.
+
+## Why they remain relevant despite diffusion
+
+- **Sampling speed** — a single forward pass vs 20-50 denoising steps. Critical for real-time applications.
+- **Face domain** — StyleGAN's disentangled latent space is still unmatched for semantic editing.
+- **Adversarial loss as a component** — used inside diffusion models and other generative systems as an auxiliary objective.

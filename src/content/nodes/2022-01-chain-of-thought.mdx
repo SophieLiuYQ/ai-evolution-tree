@@ -1,0 +1,116 @@
+---
+slug: chain-of-thought
+title: "Chain-of-Thought Prompting (CoT)"
+date: 2022-01-28
+era: reasoning
+category: [nlp, training, theory]
+relationships:
+  - to: gpt-3
+    type: applies
+    note: "Discovered as an emergent capability of GPT-3-class models at >60B parameters"
+authors:
+  - "Wei, J."
+  - "Wang, X."
+  - "Schuurmans, D."
+  - "Bosma, M."
+  - "Ichter, B."
+  - "Xia, F."
+  - "Chi, E."
+  - "Le, Q."
+  - "Zhou, D."
+org: "Google"
+breakthrough_score: 8
+status: foundational
+model_spec:
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "GSM8K (PaLM 540B + CoT vs standard)"
+      score: "57% vs 18% (3.2× improvement)"
+      vs_baseline: "demonstrates emergent reasoning at scale"
+    - name: "SVAMP (PaLM + CoT)"
+      score: "~80% vs ~70% standard prompting"
+
+public_view:
+  plain_english: |
+    A prompting technique that simply asks the model to "show its
+    work" — generate intermediate reasoning steps before the final
+    answer — and produces large accuracy gains on math and reasoning
+    problems. Free, requires no model retraining, and works only on
+    sufficiently large models (~60B+ parameters).
+  analogy: |
+    The difference between asking a student "what's 27 × 49?" and
+    asking them to write out the multiplication. Same brain, same
+    knowledge — vastly better answer when given room to reason.
+  applications:
+    - product: "Default behavior in every modern chat LLM"
+      company: "All providers"
+      year_deployed: 2023
+    - product: "Foundational technique behind o1, R1, Claude reasoning"
+      company: "OpenAI, DeepSeek, Anthropic, Google"
+      year_deployed: 2024
+  investment_angle: |
+    CoT is the simplest, most-cited prompting technique in AI history
+    and the conceptual root of inference-time scaling. The o1/R1
+    "reasoning model" wave starting late 2024 — which created an
+    entire new monetization tier ($200/mo ChatGPT Pro, $100/mo Claude
+    Max) — is essentially "what if we trained the model to do CoT
+    automatically and let it think for longer." Without this 2022
+    paper, the 2024-26 reasoning-model market doesn't exist.
+  why_it_matters: |
+    CoT is the discovery that LLM capability isn't just a function of
+    parameters and data — it's also a function of how you elicit the
+    model's computation at inference time. This three-axis view
+    (params × data × inference compute) is now the standard frame for
+    LLM capability planning.
+
+citations:
+  - type: paper
+    key: wei2022cot
+    title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
+    authors: ["Wei, J.", "Wang, X.", "Schuurmans, D.", "et al."]
+    year: 2022
+    venue: "NeurIPS"
+    arxiv: "2201.11903"
+  - type: paper
+    key: kojima2022zero
+    title: "Large Language Models are Zero-Shot Reasoners"
+    authors: ["Kojima, T.", "Gu, S. S.", "Reid, M.", "Matsuo, Y.", "Iwasawa, Y."]
+    year: 2022
+    venue: "NeurIPS"
+    arxiv: "2205.11916"
+---
+
+## What it is
+
+A prompting technique: instead of asking "Q: [problem] A:", ask "Q: [problem] A: Let's think step by step." or provide few-shot examples that include reasoning chains. The model then emits its reasoning before the final answer, and the final answer is substantially more accurate on multi-step problems.
+
+```
+Standard prompt:
+  Q: Roger has 5 tennis balls. He buys 2 more cans, each with 3 balls.
+     How many balls does Roger have now?
+  A: 11.    ← often wrong
+
+Chain-of-thought prompt:
+  Q: [same]
+  A: Roger started with 5 balls. 2 cans × 3 balls = 6 new balls.
+     5 + 6 = 11 balls. The answer is 11.    ← much higher accuracy
+```
+
+## Why this matters mechanically
+
+The transformer's forward pass has bounded compute per token. Multi-step reasoning that doesn't fit in one forward pass simply can't be done in one shot. CoT works because it lets the model spread reasoning across many tokens, each of which gets its own forward pass.
+
+Implication: CoT is a way of buying *more compute per query* by emitting more tokens. This insight — which the Wei et al. paper noted but didn't dwell on — became the foundation for o1 / R1 reasoning models two and a half years later.
+
+## What CoT enables (and doesn't)
+
+- **Helps**: math, code, multi-step planning, common-sense reasoning chains, tasks where intermediate steps are checkable.
+- **Doesn't help (much)**: factual recall, simple translation, single-step classification, anything where the answer is "in the model" without computation.
+- **Backfires**: high-stakes single-token answers where the chain introduces errors, or trivial tasks where the chain adds noise.
+
+## CoT's three children
+
+1. **Self-consistency** (Wang et al., 2022) — sample multiple CoT chains, take majority vote of final answers. Free accuracy gain at the cost of N× inference compute.
+2. **Tree-of-Thought** (Yao et al., 2023) — explore CoT branches as a search tree with pruning.
+3. **Reasoning models** (o1, 2024-09; R1, 2025-01) — train the model to do internal CoT automatically, optionally invisibly. The descendants where this technique becomes a product category.

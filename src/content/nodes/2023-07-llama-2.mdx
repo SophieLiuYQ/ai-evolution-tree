@@ -1,0 +1,115 @@
+---
+slug: llama-2
+title: "Llama 2 — Open-Weight LLM with Commercial License"
+date: 2023-07-18
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: llama-1
+    type: scales
+    note: "Same architecture, ~40% more training data (1.4T → 2.0T tokens), commercial license added"
+  - to: instructgpt
+    type: applies
+    note: "Llama 2 Chat applies SFT + RLHF (PPO) to the base model"
+authors:
+  - "Touvron, H."
+  - "Martin, L."
+  - "Stone, K."
+  - "Albert, P."
+  - "et al."
+org: "Meta AI"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "7B / 13B / 70B (also 34B trained but not released)"
+  architecture: "Llama 1 + grouped-query attention (GQA, 70B only)"
+  context_window: 4096
+  training_tokens: "2.0T"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU (5-shot)"
+      score: "68.9% (70B)"
+      vs_baseline: "Llama 1 65B 63.4%, GPT-3.5 70%"
+    - name: "HumanEval"
+      score: "29.9% (70B base) / 32.3% (Llama 2 Chat 70B)"
+    - name: "TruthfulQA"
+      score: "44.9% (70B Chat)"
+
+public_view:
+  plain_english: |
+    Meta's second open-weight foundation model, released alongside a
+    commercial-use license. The 70B variant approached GPT-3.5 on most
+    benchmarks; the 7B and 13B variants made high-quality LLMs runnable
+    on consumer hardware. Triggered the explosion of open-source LLM
+    fine-tunes (Mistral, Vicuna v2, Code Llama, Llama 2 Chat clones).
+  analogy: |
+    Llama 1's research-only license was like releasing a car you could
+    look at but not drive. Llama 2's commercial license unlocked the
+    market — within six months, dozens of companies had products built
+    on Llama 2 that they could legally sell.
+  applications:
+    - product: "Hugging Face Inference API default OSS model"
+      company: "Hugging Face"
+      year_deployed: 2023
+    - product: "Anyscale, Replicate, Together AI hosting"
+      company: "Various"
+      year_deployed: 2023
+    - product: "Code Llama (Meta fine-tune)"
+      company: "Meta AI"
+      year_deployed: 2023
+    - product: "WhatsApp Meta AI assistant (later Llama 3)"
+      company: "Meta"
+      year_deployed: 2024
+  investment_angle: |
+    Llama 2's commercial license created the open-LLM startup ecosystem
+    overnight. Inference platforms (Together, Anyscale, Fireworks, Groq)
+    raised hundreds of millions on the thesis that "open weights + fast
+    serving" was a viable business. Vector databases (Pinecone, Weaviate)
+    saw a wave of "Llama + RAG" deployments. The strategic message to
+    OpenAI / Anthropic / Google: enterprise pricing has a ceiling, and
+    that ceiling is whatever it costs to self-host an open alternative.
+  why_it_matters: |
+    Llama 2 is when "open source AI" stopped being a research curiosity
+    and started being a business model. The 2024-25 commodification of
+    LLM inference pricing (per-million-tokens dropping >90% in 18
+    months) is a direct downstream effect.
+
+citations:
+  - type: paper
+    key: touvron2023llama2
+    title: "Llama 2: Open Foundation and Fine-Tuned Chat Models"
+    authors: ["Touvron, H.", "Martin, L.", "Stone, K.", "Albert, P.", "et al."]
+    year: 2023
+    venue: "arXiv"
+    arxiv: "2307.09288"
+---
+
+## What it is
+
+A family of three foundation models (7B, 13B, 70B) plus matching chat-tuned variants (Llama 2 Chat). Architecturally near-identical to Llama 1 with two notable changes:
+
+- **Grouped-Query Attention (GQA)** in the 70B model — middle ground between multi-head attention (highest quality, most memory) and multi-query attention (less memory, slight quality loss). Now standard in Llama 3, Mistral, Claude.
+- **Doubled context** to 4k tokens (vs Llama 1's 2k).
+- **+40% training tokens** — 2.0T vs Llama 1's 1.4T.
+
+The license — "Llama 2 Community License" — permits commercial use unless your service has >700M monthly active users (carve-out aimed at Google / Microsoft / Apple / OpenAI).
+
+## Llama 2 vs concurrent peers (mid-2023)
+
+| Model | Date | Params | MMLU | HumanEval | License | Context |
+|---|---|---|---|---|---|---|
+| GPT-3.5 | 2022-11 | ~175B | 70.0% | 48.1% | API | 4k |
+| GPT-4 | 2023-03 | undisclosed | 86.4% | 67.0% | API | 8k/32k |
+| Claude 2 | 2023-07-11 | undisclosed | 78.5% | 71.2% | API | 100k |
+| **Llama 2 70B** | **2023-07-18** | **70B** | **68.9%** | **29.9%** | **commercial OK** | **4k** |
+| Llama 2 70B Chat | 2023-07-18 | 70B | 63.0% | 32.3% | commercial OK | 4k |
+| Mistral 7B | 2023-09-27 | 7B | 60.1% | 30.5% | Apache 2.0 | 8k |
+
+Llama 2 70B was meaningfully behind GPT-4 and Claude 2 on quality. The strategic value was the license, not the SOTA chase.
+
+## Llama 2 Chat — open-source RLHF in production
+
+Meta published the full RLHF pipeline used for Llama 2 Chat: SFT on 27.5k high-quality demonstrations, then iterative reward modeling and rejection-sampling fine-tuning (RFT) for several rounds, then PPO. This was the first detailed open-source description of a frontier-quality RLHF training run — and it set the methodological template that Mistral, Qwen, DeepSeek, and dozens of others followed.
+
+Reward model architecture: two reward models — one for helpfulness, one for safety — trained on 1.4M human-labeled preference comparisons. The two-headed approach helped Llama 2 Chat avoid the "over-refusal" problem that plagued early RLHF deployments.

@@ -1,0 +1,107 @@
+---
+slug: bert
+title: "BERT — Bidirectional Encoder Representations from Transformers"
+date: 2018-10-11
+era: transformer
+category: [nlp, training, architecture]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Encoder-only stack from the original transformer"
+  - to: gpt-1
+    type: competes_with
+    note: "Bidirectional masked LM vs left-to-right; outperformed GPT-1 on GLUE by ~7.7 points"
+authors:
+  - "Devlin, J."
+  - "Chang, M.-W."
+  - "Lee, K."
+  - "Toutanova, K."
+org: "Google"
+breakthrough_score: 9
+status: foundational
+model_spec:
+  parameters: "110M (base) / 340M (large)"
+  architecture: "Encoder-only transformer, masked LM + next-sentence prediction"
+  context_window: 512
+  training_tokens: "~3.3B (BooksCorpus + English Wikipedia)"
+  training_compute: "~64 TPUv2 chips × 4 days (large)"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "GLUE (avg)"
+      score: "80.5 (large)"
+      vs_baseline: "GPT-1 72.8, prior task SOTA ~75"
+    - name: "SQuAD v1.1 F1"
+      score: "93.2"
+      vs_baseline: "human 91.2 — first system to surpass human"
+    - name: "MultiNLI accuracy"
+      score: "86.7"
+      vs_baseline: "GPT-1 82.1"
+
+public_view:
+  plain_english: |
+    Google's transformer-based language model that read text in both
+    directions (left and right of each word) using a "fill-in-the-blank"
+    training objective. It topped 11 NLP leaderboards on release and
+    became the default model behind Google Search ranking within a year.
+  analogy: |
+    Earlier models read sentences like a book — front to back. BERT
+    treated sentences like a crossword puzzle, looking at all the
+    surrounding context to fill in masked words.
+  applications:
+    - product: "Google Search ranking"
+      company: "Google"
+      year_deployed: 2019
+    - product: "Hugging Face Transformers (catalyst)"
+      company: "Hugging Face"
+      year_deployed: 2018
+    - product: "Bing Search"
+      company: "Microsoft"
+      year_deployed: 2019
+  investment_angle: |
+    BERT made transformer pretraining the dominant NLP paradigm and
+    triggered Hugging Face's rise as the de facto model hub (Series C
+    valuation $4.5B by 2023). It also validated Google's TPU bet.
+    Commercially, every NLP product launched between 2019–2022 in
+    enterprise search, sentiment analysis, and document understanding
+    runs on a BERT or BERT-derivative.
+  why_it_matters: |
+    BERT, not GPT, was the model that converted the broader tech
+    industry to "transformers everywhere." Its open release set the
+    norm that NLP weights would be public — a norm OpenAI later broke
+    with GPT-3 to build a business.
+
+citations:
+  - type: paper
+    key: devlin2018bert
+    title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+    authors: ["Devlin, J.", "Chang, M.-W.", "Lee, K.", "Toutanova, K."]
+    year: 2018
+    venue: "NAACL 2019"
+    arxiv: "1810.04805"
+---
+
+## What it is
+
+An encoder-only transformer pretrained with two objectives:
+1. **Masked Language Modeling (MLM)** — randomly mask 15% of input tokens, predict them from bidirectional context.
+2. **Next Sentence Prediction (NSP)** — given two sentences, predict whether B follows A. (Later work, RoBERTa, showed this objective was unnecessary.)
+
+The bidirectional context was the key insight — every token sees every other token in the input, unlike GPT-1's left-to-right.
+
+## How it compares to GPT-1
+
+| Dimension | GPT-1 (2018-06) | BERT-base (2018-10) | BERT-large (2018-10) |
+|---|---|---|---|
+| Params | 117M | 110M | 340M |
+| Direction | left-to-right | bidirectional | bidirectional |
+| Objective | LM | MLM + NSP | MLM + NSP |
+| GLUE avg | 72.8 | 78.3 | 80.5 |
+| Released weights | no | yes | yes |
+| Best for | generation | classification, QA, NER | same |
+
+BERT was strictly better at understanding tasks; GPT was better at generation. The two design choices defined NLP architecture decisions for years.
+
+## Why it shaped the field
+
+BERT's open-weights release + Hugging Face's `transformers` library (launched ~the same time) created the modern "download a pretrained model and fine-tune in 50 lines" workflow. This was as important as the model itself for industry adoption.

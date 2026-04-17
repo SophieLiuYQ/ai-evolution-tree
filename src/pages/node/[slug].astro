@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import EraBadge from "../../components/EraBadge.astro";
+import OrgBadge from "../../components/OrgBadge.astro";
+import ViewToggle from "../../components/ViewToggle.astro";
+import PublicView from "../../components/PublicView.astro";
+import CitationsBlock from "../../components/CitationsBlock.astro";
+import ModelSpec from "../../components/ModelSpec.astro";
+import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
+import MiniGraph from "../../components/MiniGraph.astro";
+
+export async function getStaticPaths() {
+  const nodes = await getCollection("nodes");
+  return nodes.map((node) => ({
+    params: { slug: node.data.slug },
+    props: { node },
+  }));
+}
+
+const { node } = Astro.props;
+const { Content } = await render(node);
+const d = node.data;
+const allNodes = await getCollection("nodes");
+const fmtMonth = d.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Base title={`${d.title} · AI Evolution Tree`} description={d.public_view.plain_english}>
+  <article>
+    <header class="mb-8 border-b border-[var(--border)] pb-6">
+      <div class="mb-3 flex flex-wrap items-center gap-2 text-sm">
+        <time datetime={d.date.toISOString()} class="font-mono text-[var(--fg-muted)]">
+          {fmtMonth}
+        </time>
+        <OrgBadge org={d.org} />
+        <EraBadge era={d.era} />
+        {
+          d.category.map((c) => (
+            <span class="rounded bg-[var(--bg-soft)] px-2 py-0.5 text-xs text-[var(--fg-muted)]">
+              {c}
+            </span>
+          ))
+        }
+        <span
+          class={`text-xs ${d.status === "foundational" ? "text-[var(--accent)]" : d.status === "active" ? "text-[var(--accent-2)]" : "text-[var(--fg-muted)]"}`}
+        >
+          {d.status}
+        </span>
+        <span class="text-xs text-[var(--fg-muted)]">
+          ★ {d.breakthrough_score}/10
+        </span>
+      </div>
+      <h1 class="mb-2 text-3xl font-bold leading-tight">{d.title}</h1>
+      <p class="text-sm text-[var(--fg-muted)]">
+        {d.authors.join(", ")}
+      </p>
+    </header>
+
+    <div class="mb-6">
+      <MiniGraph nodes={allNodes} currentSlug={d.slug} />
+    </div>
+
+    <ViewToggle />
+
+    <div data-view-section="tech" class="prose-node max-w-none">
+      {d.model_spec && <ModelSpec spec={d.model_spec} />}
+      <Content />
+    </div>
+
+    <div data-view-section="public" style="display:none">
+      <PublicView pv={d.public_view} />
+    </div>
+
+    <RelationshipsBlock current={node} all={allNodes} />
+
+    <CitationsBlock citations={d.citations} />
+  </article>
+</Base>

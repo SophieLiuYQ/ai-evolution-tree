@@ -1,0 +1,93 @@
+---
+slug: claude-sonnet-4-6
+title: "Claude Sonnet 4.6 — The Production Workhorse Update"
+date: 2025-11-18
+era: agents
+category: [nlp, multimodal, generative]
+relationships:
+  - to: claude-4
+    type: scales
+    note: "Mid-cycle Sonnet refresh; expanded context, faster tool use, higher SWE-bench"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + extended thinking + improved tool routing"
+  context_window: 200000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "SWE-bench Verified"
+      score: "~78%"
+      vs_baseline: "Sonnet 4 73.6%, Opus 4 79.4%"
+    - name: "TerminalBench"
+      score: "~42%"
+      vs_baseline: "Sonnet 4 35.5%"
+    - name: "MMLU"
+      score: "~89%"
+
+public_view:
+  plain_english: |
+    Anthropic's mid-cycle November 2025 Sonnet refresh — a
+    capability bump rather than a major-version release. Sonnet
+    4.6 became the default coding model behind most AI IDEs in
+    Q4 2025, displacing both Sonnet 4 and Opus 4 in volume usage
+    (since Opus's premium price made it overkill for most
+    interactive coding sessions).
+  analogy: |
+    The "iPhone S" of Claude — same major version, meaningfully
+    better. Most users never noticed the version bump but their
+    sessions just felt smarter.
+  applications:
+    - product: "Cursor / Windsurf / Cline (default coding model)"
+      company: "Various"
+      year_deployed: 2025
+    - product: "Claude Code (default for most tasks)"
+      company: "Anthropic"
+      year_deployed: 2025
+    - product: "GitHub Copilot Workspace"
+      company: "GitHub"
+      year_deployed: 2025
+  investment_angle: |
+    Sonnet 4.6 is the model behind most enterprise AI coding
+    revenue in late 2025 — including the substantial seat-based
+    contracts at Cursor (~$1B+ ARR), GitHub Copilot Pro tiers,
+    and Anthropic's direct API revenue from developer-tool
+    customers. The fact that mid-cycle refreshes can drive
+    substantial revenue inflection points has reshaped AI
+    company release calendars: every frontier lab now ships
+    a "Sonnet-equivalent" mid-cycle update on roughly 8-week
+    cadence rather than annual major releases.
+  why_it_matters: |
+    Sonnet 4.6 is what most production AI workflows actually run
+    on as of early 2026 — including the IDE you're probably
+    using to view this code. The model's specific identifier
+    appears in this project's CLAUDE knowledge prompt as
+    `claude-sonnet-4-6` — which is the lineage marker for
+    the workhorse tier of the family.
+
+citations:
+  - type: release
+    key: anthropic2025sonnet46
+    title: "Claude Sonnet 4.6"
+    year: 2025
+    venue: "Anthropic"
+    url: "https://www.anthropic.com/news/claude-sonnet-4-6"
+---
+
+## What it is
+
+Mid-cycle update to Claude Sonnet 4 (released originally May 2025), shipped November 2025 with model ID `claude-sonnet-4-6`. Capability gains primarily on agentic coding (SWE-bench Verified +5pts, TerminalBench +6pts), with smaller gains on general benchmarks. Same pricing as Sonnet 4.
+
+## The 8-week cadence pattern
+
+| Tier | May 2025 | Aug 2025 | Oct 2025 | Nov-Dec 2025 |
+|---|---|---|---|---|
+| Opus | Opus 4 | Opus 4.1 | Opus 4.5 | Opus 4.6 |
+| Sonnet | Sonnet 4 | — | — | Sonnet 4.6 |
+| Haiku | — | — | Haiku 4.5 | — |
+
+Anthropic's 2025 H2 release cadence shipped a meaningful capability update every ~8 weeks across the family — substantially faster than the year-over-year major-version cadence of the OpenAI / Google / Meta lines. The cadence itself became a competitive feature.

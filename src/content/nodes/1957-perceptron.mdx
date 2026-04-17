@@ -1,0 +1,118 @@
+---
+slug: perceptron
+title: "The Perceptron"
+date: 1958-11-01
+era: foundations
+category: [theory, architecture]
+relationships: []
+authors:
+  - "Rosenblatt, F."
+org: "Cornell Aeronautical Laboratory"
+breakthrough_score: 10
+status: foundational
+
+public_view:
+  plain_english: |
+    The first machine that learned to recognize patterns from examples
+    rather than from explicit rules. A simple device that adjusted internal
+    weights when it made a mistake, gradually getting better at separating
+    one kind of input from another.
+  analogy: |
+    Imagine a coin sorter that doesn't know the difference between dimes and
+    pennies, but every time you tell it "wrong," it slightly retunes the gap
+    in its slot. After enough corrections it sorts them perfectly.
+  applications:
+    - product: "Mark I Perceptron (image classification hardware)"
+      company: "US Office of Naval Research"
+      year_deployed: 1960
+  investment_angle: |
+    Not directly investable in 1958, but the conceptual lineage running
+    through every neural-network-driven business since 2012 — image
+    recognition, speech, search, recommendation, generative AI — starts
+    here. The first successful "learn from data, not rules" system.
+  why_it_matters: |
+    This is the seed. Every layer of every modern neural network is, at
+    its core, a many-times-multiplied perceptron. Understanding its
+    capabilities and its 1969 collapse is necessary context for why deep
+    learning had to wait 50 years.
+
+citations:
+  - type: paper
+    key: rosenblatt1958perceptron
+    title: "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain"
+    authors: ["Rosenblatt, F."]
+    year: 1958
+    venue: "Psychological Review"
+    doi: "10.1037/h0042519"
+    url: "https://psycnet.apa.org/record/1959-09865-001"
+  - type: book
+    key: minsky1969perceptrons
+    title: "Perceptrons: An Introduction to Computational Geometry"
+    authors: ["Minsky, M.", "Papert, S."]
+    year: 1969
+    venue: "MIT Press"
+---
+
+## What it is
+
+A perceptron is a single artificial neuron: it takes a vector of inputs $x$, multiplies each by a learned weight $w$, sums them, adds a bias $b$, and emits 1 if the sum exceeds a threshold and 0 otherwise.
+
+Crucially, it ships with a **learning rule**. Given a labeled example $(x, y)$ where the perceptron predicted $\hat{y}$, weights are updated by:
+
+$$
+w \leftarrow w + \eta (y - \hat{y}) x
+$$
+
+That single line — adjust the weights in the direction of the error — is the conceptual ancestor of every gradient-based learning algorithm that followed.
+
+## How it works
+
+```python
+import numpy as np
+
+class Perceptron:
+    def __init__(self, n_features, lr=0.1):
+        self.w = np.zeros(n_features)
+        self.b = 0.0
+        self.lr = lr
+
+    def predict(self, x):
+        return 1 if (x @ self.w + self.b) > 0 else 0
+
+    def update(self, x, y):
+        y_hat = self.predict(x)
+        error = y - y_hat
+        self.w += self.lr * error * x
+        self.b += self.lr * error
+```
+
+That's the whole algorithm. Run `update` over a labeled dataset enough times and — *if the data is linearly separable* — the perceptron convergence theorem guarantees it finds a separating hyperplane in finite steps.
+
+## How to use it
+
+Nobody trains raw perceptrons in 2026 — but the same code works in `scikit-learn`:
+
+```python
+from sklearn.linear_model import Perceptron
+clf = Perceptron(eta0=0.1, max_iter=1000)
+clf.fit(X_train, y_train)
+```
+
+The intellectual descendants — logistic regression, SVMs, every neuron in a deep network — are all "perceptron plus a different activation, a different loss, or a different update rule."
+
+## SWOT
+
+- **Strengths** — Provably convergent for linearly separable data. Online learning (one example at a time, no batch needed). Trivially implementable in hardware (Rosenblatt built one).
+- **Weaknesses** — Cannot represent XOR or any non-linearly-separable function. A single perceptron is a linear classifier and nothing more.
+- **Opportunities** — Stack them in layers and the limit dissolves (multi-layer perceptron, 1986). Replace the step activation with a smooth one and gradients flow (backprop, 1986).
+- **Threats** — The 1969 Minsky/Papert critique correctly identified the XOR limitation and was widely (mis-)read as a critique of all neural approaches. Funding for connectionist research collapsed for ~15 years.
+
+## Limitations
+
+- **Linear separability required.** XOR, parity, and most real classification problems are not linearly separable in raw feature space.
+- **Binary output only.** No probabilities, no multi-class out of the box.
+- **No representation learning.** The perceptron classifies given features; it doesn't discover features. This is the limitation deep learning eventually addressed.
+
+## The "AI Winter" connection
+
+The 1969 publication of *Perceptrons* by Minsky and Papert proved several limitations rigorously. Although the book did not claim multi-layer networks shared these limits, the field largely interpreted it that way. Combined with the failure of contemporary symbolic AI to deliver on grand promises, this contributed to the first AI funding collapse. Backpropagation (1986, see the next node) is the technical answer; the cultural rehabilitation took until 2012.

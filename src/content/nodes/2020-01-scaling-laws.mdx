@@ -1,0 +1,100 @@
+---
+slug: scaling-laws
+title: "Scaling Laws for Neural Language Models (Kaplan et al.)"
+date: 2020-01-23
+era: scale-era
+category: [theory, training]
+relationships:
+  - to: gpt-2
+    type: builds_on
+    note: "Empirical analysis of decoder-only transformer scaling, generalizing GPT-1/GPT-2 trends"
+authors:
+  - "Kaplan, J."
+  - "McCandlish, S."
+  - "Henighan, T."
+  - "Brown, T."
+  - "Chess, B."
+  - "et al."
+org: "OpenAI"
+breakthrough_score: 9
+status: superseded
+model_spec:
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "Predicted compute-optimal frontier"
+      score: "L(N,D,C) power-law fits across 7 OOM"
+      vs_baseline: "first quantitative scaling forecast for LMs"
+
+public_view:
+  plain_english: |
+    A paper that turned "more data + more compute = better model" from
+    a hopeful intuition into a quantitative formula. It let researchers
+    forecast — before training — how much capability a given training
+    budget would buy. This made it possible for executives to underwrite
+    billion-dollar training runs.
+  analogy: |
+    Like Moore's Law for chips, but for intelligence — give us this
+    much compute and this much data, here is the loss we'll achieve.
+    Predictable enough to budget against.
+  applications:
+    - product: "GPT-3 training run sizing"
+      company: "OpenAI"
+      year_deployed: 2020
+    - product: "Anthropic, DeepMind, Meta training plans"
+      company: "Various frontier labs"
+      year_deployed: 2021
+  investment_angle: |
+    The paper that converted AI capex from speculation into engineering.
+    Once you can predict capability from spend, you can build a financial
+    case for $100M-$10B model training runs — which is what every
+    frontier lab proceeded to do. The Microsoft–OpenAI $10B deal, the
+    $13B Anthropic Amazon deal, the trillion-dollar Nvidia run — all
+    underwritten by scaling-law-style forecasts.
+  why_it_matters: |
+    Without legible scaling forecasts, the 2020s AI capex cycle would
+    have been an order of magnitude smaller. Investment committees do
+    not write nine-figure checks against vibes — they write them
+    against curves.
+
+citations:
+  - type: paper
+    key: kaplan2020scaling
+    title: "Scaling Laws for Neural Language Models"
+    authors: ["Kaplan, J.", "McCandlish, S.", "Henighan, T.", "et al."]
+    year: 2020
+    venue: "arXiv"
+    arxiv: "2001.08361"
+  - type: paper
+    key: hoffmann2022chinchilla
+    title: "Training Compute-Optimal Large Language Models (Chinchilla)"
+    authors: ["Hoffmann, J.", "Borgeaud, S.", "Mensch, A.", "et al."]
+    year: 2022
+    venue: "NeurIPS"
+    arxiv: "2203.15556"
+---
+
+## What it is
+
+Empirical fits showing that loss $L$ scales as a power law in three quantities: number of parameters $N$, dataset size $D$, and compute $C$:
+
+$$
+L(N) = (N_c / N)^{\alpha_N} \quad L(D) = (D_c / D)^{\alpha_D} \quad L(C) = (C_c / C)^{\alpha_C}
+$$
+
+Across seven orders of magnitude. The paper argued that, for compute-optimal training, model size should grow much faster than dataset size — a recommendation that turned out to be **wrong** when re-examined by Chinchilla two years later.
+
+## What it got right vs wrong
+
+| Claim | Status |
+|---|---|
+| Loss is a smooth power law in N, D, C | ✓ holds, replicated across labs |
+| Compute-optimal split: scale model fast, data slow | ✗ Chinchilla showed the opposite |
+| Architecture details are second-order | ✓ for transformer family |
+| Predictable extrapolation works | ✓ within the regimes studied |
+
+Even with the wrong scaling exponent, the *framing* — that capability-from-compute is a quantitative engineering problem — is the paper's load-bearing contribution.
+
+## Practical impact
+
+GPT-3 (May 2020), Gopher (Dec 2021), and PaLM (April 2022) were all sized using Kaplan-style fits. The under-training they implied (relative to Chinchilla's later corrected fits) is part of why Llama 2 (Jul 2023) — sized correctly — punched above its parameter count.

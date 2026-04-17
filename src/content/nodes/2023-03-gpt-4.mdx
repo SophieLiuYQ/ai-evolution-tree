@@ -1,0 +1,141 @@
+---
+slug: gpt-4
+title: "GPT-4 — OpenAI's First Multimodal Frontier Model"
+date: 2023-03-14
+era: alignment
+category: [nlp, multimodal, generative]
+relationships:
+  - to: chatgpt
+    type: scales
+    note: "Successor to GPT-3.5; ~10× capability jump on reasoning benchmarks"
+  - to: clip
+    type: builds_on
+    note: "Multimodal vision inputs (GPT-4V released later); architecture kinship undisclosed"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 9
+status: superseded
+model_spec:
+  parameters: "undisclosed (widely inferred: ~1.8T MoE, ~8 experts × 220B)"
+  architecture: "undisclosed; widely reported as mixture-of-experts"
+  context_window: 8192
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "MMLU (5-shot)"
+      score: "86.4%"
+      vs_baseline: "GPT-3.5 ~70%, PaLM 69.3%"
+    - name: "Uniform Bar Exam"
+      score: "90th percentile"
+      vs_baseline: "GPT-3.5 10th percentile"
+    - name: "USMLE"
+      score: "~87%"
+      vs_baseline: "passing threshold 60%"
+    - name: "HumanEval"
+      score: "67.0%"
+      vs_baseline: "GPT-3.5 48.1%, Codex 28.8%"
+    - name: "GRE Quantitative"
+      score: "80th percentile"
+
+public_view:
+  plain_english: |
+    OpenAI's successor to GPT-3.5, launched as an API-gated upgrade to
+    ChatGPT Plus subscribers. Demonstrated a step-change in reasoning
+    benchmarks — bar exam, medical licensing, GRE, Olympiad math — and
+    added image input capability (text output only). OpenAI declined to
+    disclose model size or architecture, citing competitive and safety
+    reasons.
+  analogy: |
+    GPT-3.5 was a bright undergraduate. GPT-4 was the same student
+    after graduating medical school, passing the bar, and getting an
+    MBA — across the board, not just in one specialty.
+  applications:
+    - product: "ChatGPT Plus (premium tier)"
+      company: "OpenAI"
+      year_deployed: 2023
+    - product: "Microsoft Copilot (Office, Windows, Bing, GitHub)"
+      company: "Microsoft"
+      year_deployed: 2023
+    - product: "Duolingo Max"
+      company: "Duolingo"
+      year_deployed: 2023
+    - product: "Morgan Stanley wealth-advisor knowledge assistant"
+      company: "Morgan Stanley"
+      year_deployed: 2023
+    - product: "Khan Academy Khanmigo tutor"
+      company: "Khan Academy"
+      year_deployed: 2023
+  investment_angle: |
+    GPT-4 is the inflection point where LLMs crossed the "good enough
+    to build a business on" threshold for knowledge-work applications.
+    Microsoft's $13B cumulative investment in OpenAI is underwritten
+    largely by GPT-4-era API demand; Nvidia's 2023-24 revenue tripling
+    is traceable to GPT-4-class training and inference workloads. The
+    consumer-grade $20/mo subscription pricing established the anchor
+    that every subsequent LLM product (Claude Pro, Gemini Advanced,
+    Perplexity Pro) now clusters around — suggesting market convergence
+    on a ~$240/yr ARPU ceiling for consumer AI until a genuinely new
+    capability tier emerges.
+  why_it_matters: |
+    GPT-4 is what people actually mean when they say "AI" in a business
+    conversation in 2024-25. The reasoning, bar-exam, code-generation,
+    and image-understanding demos from GPT-4's launch are the reference
+    point that every subsequent model is implicitly benchmarked against
+    in casual discourse.
+
+citations:
+  - type: paper
+    key: openai2023gpt4
+    title: "GPT-4 Technical Report"
+    authors: ["OpenAI"]
+    year: 2023
+    venue: "arXiv"
+    arxiv: "2303.08774"
+  - type: release
+    key: openai2023gpt4blog
+    title: "GPT-4"
+    year: 2023
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/gpt-4/"
+---
+
+## What it is
+
+A large-scale multimodal transformer (text + image input, text output) released via API and ChatGPT Plus on March 14, 2023. OpenAI published a "technical report" containing no technical details — no parameter count, no architecture specifics, no training data description, no training compute. The report argued safety and competitive concerns justified the opacity.
+
+Independent leaks (Semianalysis, June 2023) suggested GPT-4 is a mixture-of-experts model with ~1.8T total parameters and ~8 expert subnetworks of ~220B each, with ~280B active parameters per forward pass. These numbers are unconfirmed but widely repeated.
+
+## Benchmark step-change vs GPT-3.5
+
+| Benchmark | GPT-3.5 | GPT-4 | Delta |
+|---|---|---|---|
+| MMLU (5-shot) | 70.0% | 86.4% | +16.4 |
+| Uniform Bar Exam | 10th %ile | 90th %ile | 80 percentile |
+| USMLE | ~50% | ~87% | +37 |
+| HumanEval (Python) | 48.1% | 67.0% | +18.9 |
+| GRE Verbal | 63rd %ile | 99th %ile | 36 percentile |
+| AP Calculus BC | 43% | 51% | +8 |
+| AMC 12 Math | 30th %ile | 84th %ile | 54 percentile |
+
+These are the largest single-release benchmark jumps in the modern LLM era. No subsequent model has matched the magnitude.
+
+## How it compared to competitors in 2023
+
+| Model | Date | Org | MMLU | HumanEval | Context | Released as |
+|---|---|---|---|---|---|---|
+| **GPT-4** | **2023-03-14** | **OpenAI** | **86.4%** | **67.0%** | **8k / 32k** | **API, $20/mo chat** |
+| Claude 1 | 2023-03-14 | Anthropic | ~75% | ~35% | 9k → 100k | API |
+| Bard | 2023-03-21 | Google | — | — | — | free chat |
+| PaLM 2 | 2023-05-10 | Google | 78.3% | 37.6% | 8k | Bard + API |
+| Llama 2 70B | 2023-07-18 | Meta | 68.9% | 29.9% | 4k | open weights |
+| Claude 2 | 2023-07-11 | Anthropic | 78.5% | 71.2% | 100k | API |
+| GPT-4 Turbo | 2023-11-06 | OpenAI | — | — | 128k | API |
+
+GPT-4 remained the de facto frontier model until late 2023 / early 2024, when Claude 2.1, Gemini Ultra, and eventually GPT-4-Turbo and GPT-4o shifted the landscape.
+
+## The opacity norm
+
+GPT-4's non-disclosure of size/architecture established a new norm: frontier model providers publish capabilities, not specifications. Every subsequent OpenAI release (GPT-4 Turbo, GPT-4o, o1, GPT-5) has continued this pattern. Anthropic's Claude releases and Google's Gemini releases have largely followed. Only Meta (Llama) and a few Chinese labs (DeepSeek, Qwen) have continued the older "publish weights + specs" tradition.
+
+The normative shift matters: it has made independent third-party evaluation, scaling-law estimation, and regulatory oversight structurally harder.

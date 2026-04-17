@@ -1,0 +1,110 @@
+---
+slug: alphaproof
+title: "AlphaProof — Math Olympiad Reasoning"
+date: 2024-07-25
+era: reasoning
+category: [theory, generative]
+relationships:
+  - to: alphago
+    type: builds_on
+    note: "RL + search lineage; substitutes formal proof state for Go board state"
+  - to: chain-of-thought
+    type: applies
+    note: "Long-form reasoning + verifiable rewards (Lean theorem prover compiles ✓ / ✗)"
+authors:
+  - "DeepMind AlphaProof Team"
+org: "DeepMind"
+breakthrough_score: 8
+status: foundational
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Gemini-based base model + RL fine-tuning + Lean 4 proof verification"
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "International Mathematical Olympiad 2024"
+      score: "Solved 4/6 problems → 28/42 points (silver medal threshold)"
+      vs_baseline: "first AI system at IMO medal-level performance"
+    - name: "Days of self-RL training per problem"
+      score: "1-3 days at solve time"
+
+public_view:
+  plain_english: |
+    DeepMind's mathematical reasoning system that, in July 2024,
+    achieved silver-medal-level performance on the International
+    Mathematical Olympiad — solving 4 of 6 problems used in the
+    actual 2024 IMO competition. AlphaProof works by translating
+    natural-language problems into the Lean 4 theorem prover, then
+    using reinforcement learning to search for proofs that the
+    prover verifies. The verifiable-reward signal is what makes
+    the RL tractable.
+  analogy: |
+    The "AlphaGo for math proofs" — same DeepMind playbook of
+    "neural network proposes, formal system verifies, RL trains."
+    The IMO milestone played the same cultural role for math as
+    AlphaGo's Lee Sedol match did for Go.
+  applications:
+    - product: "Research demo (not productized)"
+      company: "DeepMind"
+      year_deployed: 2024
+    - product: "Influence on Gemini reasoning training"
+      company: "Google DeepMind"
+      year_deployed: 2024
+    - product: "Lean community engagement (mathlib expansion)"
+      company: "Lean ecosystem"
+      year_deployed: 2024
+  investment_angle: |
+    AlphaProof is not directly monetized but its methodology
+    transferred into Gemini 2.5 Pro's "thinking mode" and into
+    the broader frontier-lab consensus that "verifiable rewards
+    + RL" is the right recipe for reasoning capability. DeepSeek
+    R1 (Jan 2025) used essentially the same insight on math /
+    code domains. The IMO result also triggered a wave of
+    "automated theorem proving" startup interest — a niche that
+    had been moribund since the 1990s.
+  why_it_matters: |
+    AlphaProof is the proof-of-concept that AI can reach
+    expert-human performance on rigorous mathematical reasoning
+    given the right scaffolding (formal verification). The
+    implications for mathematical research, formal verification
+    of software, and "AI as scientific collaborator" are still
+    being explored.
+
+citations:
+  - type: release
+    key: deepmind2024alphaproof
+    title: "AI achieves silver-medal standard solving International Mathematical Olympiad problems"
+    year: 2024
+    venue: "Google DeepMind Blog"
+    url: "https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/"
+---
+
+## What it is
+
+A combined system from Google DeepMind for solving IMO-level mathematical problems. Two components:
+
+1. **AlphaProof** — handles algebra and number theory problems via formal proof in Lean 4
+2. **AlphaGeometry 2** — handles geometry problems via a different (geometry-specialized) formal system
+
+For AlphaProof: a Gemini-derived language model translates natural-language problems into Lean 4 statements, then iteratively proposes proof attempts. Lean 4's type checker provides ground-truth verification: a proof either compiles or doesn't. RL training optimizes the LM against this verifiable reward.
+
+The reasoning traces are extensive — solving a single IMO problem can take 1-3 days of compute (parallel search + RL fine-tuning per problem). This is "extreme inference-time compute" — much more than even o1-pro consumes per query.
+
+## IMO 2024 results
+
+| Problem | Type | AlphaProof / AlphaGeometry result | Time |
+|---|---|---|---|
+| 1 | Algebra | ✓ correct proof | minutes |
+| 2 | Algebra | ✓ correct proof | minutes |
+| 3 | Combinatorics | ✗ unsolved | exceeded budget |
+| 4 | Geometry (AlphaGeometry 2) | ✓ correct proof | seconds |
+| 5 | Combinatorics | ✗ unsolved | exceeded budget |
+| 6 | Algebra | ✓ correct proof (the hardest problem of the year) | days |
+
+Total: 28/42 points — silver medal threshold (top ~150 of ~600 participating students). Gold medal threshold (top ~50) was 29 points, which AlphaProof missed by 1 point.
+
+Notably: problem 6 was solved by AlphaProof but only ~5 of 600 human students did so. Problem 3 (combinatorics) defeated AlphaProof; combinatorics is typically the hardest area for formal-proof systems because the combinatorial search space is large.
+
+## Lineage and influence
+
+AlphaProof's technique — neural network proposes, formal system verifies, RL on the verified-correct examples — is essentially the same recipe DeepSeek R1 used 6 months later for general math/code reasoning (with code-execution / answer-checking as the verifier instead of Lean). The methodology transferred from "specialized formal-math system" to "general reasoning model" within roughly a year — one of the faster technique-transfer rates in the modern LLM era.

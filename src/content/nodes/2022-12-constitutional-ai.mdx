@@ -1,0 +1,103 @@
+---
+slug: constitutional-ai
+title: "Constitutional AI — Harmlessness from AI Feedback"
+date: 2022-12-15
+era: alignment
+category: [nlp, safety, training]
+relationships:
+  - to: instructgpt
+    type: builds_on
+    note: "Replaces human-rater preferences with AI critique against a written 'constitution'"
+authors:
+  - "Bai, Y."
+  - "Kadavath, S."
+  - "Kundu, S."
+  - "Askell, A."
+  - "et al."
+org: "Anthropic"
+breakthrough_score: 8
+status: foundational
+model_spec:
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "Helpful + Harmless trade-off"
+      score: "Pareto improvement vs RLHF baseline"
+      vs_baseline: "less harmful at no cost to helpfulness"
+
+public_view:
+  plain_english: |
+    Anthropic's alternative to RLHF: instead of using human raters to
+    rank responses, the model critiques and revises its own outputs
+    according to a written list of principles (a "constitution"). This
+    reduces the need for expensive human labeling and makes the
+    alignment process more transparent — anyone can read the
+    constitution.
+  analogy: |
+    RLHF is hiring thousands of editors to rate every draft. Constitutional
+    AI is giving the writer a clear style guide and trusting them to
+    self-edit. Both produce cleaner output; the constitution is cheaper
+    to scale and easier to audit.
+  applications:
+    - product: "Claude (all versions, 2023+)"
+      company: "Anthropic"
+      year_deployed: 2023
+    - product: "Influenced Llama 3, Gemini, OpenAI safety stacks"
+      company: "Various"
+      year_deployed: 2024
+  investment_angle: |
+    Constitutional AI is Anthropic's core technical differentiator and
+    a key piece of its $13.8B Amazon deal narrative. The "alignment
+    research lab" positioning — distinct from "model lab" — was bought
+    on the strength of this paper and the deployment of its principles
+    in Claude. Also influenced regulatory framing: the EU AI Act and US
+    executive orders on AI both incorporate language about "stated
+    principles" and "auditable safety processes" that maps onto the
+    constitutional approach.
+  why_it_matters: |
+    Whether you trust Anthropic's safety story or not, this paper
+    reshaped the alignment vocabulary. Every frontier lab now publishes
+    some version of "model principles," "spec," or "policy" that traces
+    back to the constitutional framing introduced here.
+
+citations:
+  - type: paper
+    key: bai2022constitutional
+    title: "Constitutional AI: Harmlessness from AI Feedback"
+    authors: ["Bai, Y.", "Kadavath, S.", "Kundu, S.", "Askell, A.", "et al."]
+    year: 2022
+    venue: "arXiv"
+    arxiv: "2212.08073"
+---
+
+## What it is
+
+A two-stage post-training pipeline:
+
+1. **SL-CAI** (Supervised Learning from CAI) — model generates responses to harmful prompts, then critiques and revises its own response using a constitutional principle ("Was the previous response harmful? Revise to be less harmful while remaining helpful."). Train SFT on the revised responses.
+
+2. **RL-CAI** (RL from AI Feedback) — instead of human preference rankings, an AI evaluator scores response pairs against the constitution. Train a preference model on these AI rankings, then PPO against it. (This is the "RLAIF" generalization of RLHF.)
+
+The "constitution" is a list of natural-language principles — e.g., "Choose the response that is more ethical and less harmful," "Choose the response that a wise, ethical, polite, and friendly person would more likely say."
+
+## How it differs from InstructGPT/RLHF
+
+| Dimension | InstructGPT (2022-01) | Constitutional AI (2022-12) |
+|---|---|---|
+| Preference source | human raters | model critique against text rules |
+| Cost per data point | $0.20–$2 | ~free (compute only) |
+| Auditability | preference data | preference data + constitution |
+| Bottleneck | annotator hiring | reward-model + policy quality |
+| Scalability | linear in $$$ | linear in compute |
+| Adopter | OpenAI | Anthropic |
+
+Both are now used together at all major labs — RLHF for some objectives, RLAIF / CAI for others.
+
+## What's in Anthropic's actual constitution
+
+Public-facing principles (excerpts):
+- "Please choose the response that is most supportive and encouraging of life, liberty, and personal security."
+- "Please choose the response that has the least objectionable, offensive, unlawful, deceptive, inaccurate, or harmful content."
+- "Please choose the response that's least intended to build a relationship with the user."
+
+The full constitution has been iteratively refined and is partially public. The opacity is itself a critique vector: "auditable" only goes so far if the operative version evolves with each model release.

@@ -1,0 +1,120 @@
+---
+slug: qwen-1
+title: "Qwen-7B / Qwen-14B — Alibaba's First Major Open Model"
+date: 2023-08-03
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: llama-2
+    type: builds_on
+    note: "Decoder-only transformer broadly in Llama style; trained on heavily Chinese-filtered web"
+  - to: chatglm
+    type: competes_with
+    note: "Direct domestic competitor in the Chinese open-LLM market"
+authors:
+  - "Qwen Team, Alibaba"
+org: "Alibaba"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "7B / 14B (later: 72B)"
+  architecture: "Decoder-only transformer with RoPE, SwiGLU, RMSNorm"
+  context_window: 8192
+  training_tokens: "2.4T (heavily filtered Chinese + English + code)"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "C-Eval (Chinese)"
+      score: "63.5% (Qwen-14B)"
+      vs_baseline: "Llama 2 13B 32.5%, ChatGLM2 51.7%"
+    - name: "MMLU (English)"
+      score: "66.3% (Qwen-14B)"
+      vs_baseline: "Llama 2 13B 54.8%"
+
+public_view:
+  plain_english: |
+    Alibaba's first publicly-released open-weight foundation model
+    family — Qwen-7B and Qwen-14B — released under a permissive
+    commercial license. Outperformed Llama 2 on both Chinese (by a wide
+    margin) and English benchmarks at comparable size. Established
+    Alibaba as a credible open-LLM player and seeded the Qwen brand
+    that would dominate Chinese open-source LLMs through 2026.
+  analogy: |
+    Where ChatGLM was the "Chinese MIT lab proof of concept,"
+    Qwen was the "Chinese Big Tech production model" — same role
+    Llama 2 played for Meta, with the same kind of commercial-license
+    bet on ecosystem traction.
+  applications:
+    - product: "Tongyi Qianwen (Alibaba consumer chat product)"
+      company: "Alibaba"
+      year_deployed: 2023
+    - product: "Aliyun Bailian (enterprise model marketplace)"
+      company: "Alibaba Cloud"
+      year_deployed: 2023
+    - product: "Hundreds of community fine-tunes on Hugging Face"
+      company: "Various"
+      year_deployed: 2023
+  investment_angle: |
+    Qwen was Alibaba's strategic answer to Baidu's Ernie and ByteDance's
+    Doubao — proving Alibaba Cloud had the technical depth to compete
+    in domestic AI. The open-source release had two ROI angles:
+    (1) drive Aliyun GPU consumption from external users serving Qwen,
+    (2) build a distribution moat in the Chinese developer ecosystem
+    that closed Western models couldn't easily contest. By 2025, Qwen
+    series was the most-downloaded model family on Hugging Face by
+    Chinese-language requests, and Aliyun's AI revenue had grown 3-4×
+    YoY largely on Qwen-related workloads.
+  why_it_matters: |
+    Qwen normalized the expectation that Chinese hyperscalers would
+    publish frontier-comparable models openly — a pattern continued by
+    DeepSeek, ByteDance Doubao (partial), and Tencent Hunyuan. The
+    pattern is structurally different from US hyperscalers (where Meta
+    is the only major open-weight publisher).
+
+citations:
+  - type: paper
+    key: bai2023qwen
+    title: "Qwen Technical Report"
+    authors: ["Bai, J.", "Bai, S.", "Chu, Y.", "et al."]
+    year: 2023
+    venue: "arXiv"
+    arxiv: "2309.16609"
+  - type: release
+    key: alibaba2023qwen
+    title: "Qwen-7B Open Source Release"
+    year: 2023
+    venue: "Alibaba"
+    url: "https://github.com/QwenLM/Qwen"
+---
+
+## What it is
+
+A foundation model family from Alibaba's DAMO Academy / Tongyi Lab, released open-weight in two sizes (7B and 14B) on August 3, 2023, with a 72B variant added in November 2023. Architecturally Llama-2-style with Alibaba-specific tokenizer optimizations for Chinese (vocab ~152k including Chinese characters and common BPE merges).
+
+## Qwen vs concurrent open models (Q3 2023)
+
+| Model | Date | Params | C-Eval | MMLU | License |
+|---|---|---|---|---|---|
+| Llama 2 13B | 2023-07 | 13B | 32.5% | 54.8% | commercial OK |
+| Llama 2 70B | 2023-07 | 70B | 50.1% | 68.9% | commercial OK |
+| Mistral 7B | 2023-09 | 7B | 47.4% | 60.1% | Apache 2.0 |
+| ChatGLM2-6B | 2023-06 | 6B | 51.7% | 47.9% | research |
+| **Qwen-7B** | **2023-08** | **7B** | **59.6%** | **58.2%** | **commercial OK** |
+| **Qwen-14B** | **2023-08** | **14B** | **63.5%** | **66.3%** | **commercial OK** |
+| Yi-34B | 2023-11 | 34B | 81.4% | 76.3% | commercial OK |
+
+Qwen-14B was the strongest open Chinese-capable model in summer 2023; Yi-34B briefly took the lead in November but Qwen 1.5 (Feb 2024) and Qwen 2.5 (Sep 2024) reclaimed the position.
+
+## The Qwen lineage (Aug 2023 → 2026)
+
+| Generation | Date | Notable changes |
+|---|---|---|
+| Qwen 1.0 | 2023-08 | first release, 7B/14B/72B |
+| Qwen 1.5 | 2024-02 | sizes 0.5B-72B, including 110B; Apache 2.0 license |
+| Qwen 2 | 2024-06 | mixture-of-experts variant (Qwen2-MoE), 128k context |
+| Qwen 2.5 | 2024-09 | strong open SOTA across Western and Chinese benchmarks |
+| QwQ-32B (preview) | 2024-11 | reasoning model with extended-thinking |
+| Qwen 2.5-VL | 2025-01 | multimodal vision flagship |
+| Qwen 3 | 2025-Q2 | major refresh, MoE-first family |
+
+By 2025, Qwen models account for an outsized share of model downloads on Hugging Face from non-US users.

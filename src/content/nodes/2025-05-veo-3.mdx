@@ -1,0 +1,102 @@
+---
+slug: veo-3
+title: "Veo 3 — Google's Native-Audio Video Model"
+date: 2025-05-20
+era: multimodal
+category: [generative]
+relationships:
+  - to: sora
+    type: competes_with
+    note: "Google's flagship text-to-video; native synchronized audio at launch"
+authors:
+  - "Google DeepMind Veo Team"
+org: "Google DeepMind"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Latent diffusion DiT + native joint audio-video generation"
+  release_type: api
+  modalities: [text, audio, video]
+  benchmarks:
+    - name: "Output resolution"
+      score: "1080p (4k available, premium tier)"
+      vs_baseline: "Veo 2 4k, Sora 2 1080p"
+    - name: "Native audio (speech + ambient)"
+      score: "synchronized with visuals at generation time"
+      vs_baseline: "first major-lab joint audio-video gen"
+
+public_view:
+  plain_english: |
+    Google's third-generation text-to-video model, released May
+    2025 and integrated into Gemini and Google Vertex AI by
+    summer. Headline capability: native synchronized audio
+    generation (speech, music, sound effects) at the same time
+    as the video — beating Sora 2 (which added native audio
+    in September 2025) to that capability by 4 months.
+  analogy: |
+    Google's "we still have native multimodal" reminder. After
+    being slow to ship reasoning (Gemini 2.5 Pro), Google
+    moved fast on video — leveraging YouTube's 800M+ hours of
+    training video and DeepMind's accumulated diffusion
+    research.
+  applications:
+    - product: "Gemini consumer app video generation"
+      company: "Google"
+      year_deployed: 2025
+    - product: "Vertex AI Veo API"
+      company: "Google Cloud"
+      year_deployed: 2025
+    - product: "Flow (Google's filmmaker tool)"
+      company: "Google Labs"
+      year_deployed: 2025
+  investment_angle: |
+    Veo 3 is the strongest "Google's vertical integration matters"
+    proof point in 2025. YouTube + DeepMind + TPU together let
+    Google ship a text-to-video model with audio that no
+    individual capability would have achieved alone. Whether
+    Google can convert this into market leadership in the
+    advertising / content-production segment depends partly on
+    Veo's productization (Flow targeting professional filmmakers
+    is the deliberate move) and partly on broader trust /
+    distribution dynamics.
+  why_it_matters: |
+    Veo 3 demonstrated that Google's model labs could ship at
+    the frontier of a major modality on Google's calendar, not
+    in response to OpenAI. The shipping capability matters more
+    than the specific Veo 3 release for the longer-term
+    competitive positioning.
+
+citations:
+  - type: release
+    key: google2025veo3
+    title: "Veo 3"
+    year: 2025
+    venue: "Google DeepMind"
+    url: "https://deepmind.google/technologies/veo/"
+---
+
+## What it is
+
+Google DeepMind's third-generation text-to-video model. Architecturally a Diffusion Transformer (DiT) variant with joint audio-video generation — the model produces audio tokens and video latent tokens in coordinated diffusion passes, ensuring synchronization at generation time rather than post-cascading speech-to-video alignment.
+
+## Veo lineage
+
+| Version | Date | Capability |
+|---|---|---|
+| Veo 1 | 2024-05 | 60s 1080p, demo only |
+| Veo 2 | 2024-12 | 8s 4k, API-accessible |
+| **Veo 3** | **2025-05** | **native audio + improved physics + production access** |
+| Veo 3.1 / 4 | 2025-Q4+ | continued iteration |
+
+## Veo 3 vs Sora 2 — feature parity timeline
+
+| Feature | Veo 3 (May 2025) | Sora 2 (Sep 2025) |
+|---|---|---|
+| Native audio | ✓ (first) | ✓ (4 months later) |
+| Output duration | 8s baseline / longer experimental | 20s |
+| Resolution | 4k available (premium) | 1080p baseline |
+| Physics quality | strong | strong (slightly better in some cases) |
+| Distribution | API + Gemini app | Sora consumer app + ChatGPT |
+
+The competitive dynamic in late 2025 saw Sora and Veo trading capability leads — neither dominating across all dimensions. Real adoption split by use case: professional filmmaking → Veo (via Flow); casual consumer → Sora (via standalone app); Chinese market → Kling.

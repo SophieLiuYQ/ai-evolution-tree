@@ -1,0 +1,110 @@
+---
+slug: gpt-4o
+title: "GPT-4o — Natively Multimodal OpenAI Frontier"
+date: 2024-05-13
+era: multimodal
+category: [nlp, multimodal, generative]
+relationships:
+  - to: gpt-4
+    type: builds_on
+    note: "Same frontier tier, trained end-to-end on text + vision + audio tokens"
+  - to: clip
+    type: surpasses
+    note: "Multimodal without a bolt-on vision encoder — one model, one tokenizer across modalities"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Single end-to-end model (text + audio + vision)"
+  context_window: 128000
+  release_type: api
+  modalities: [text, vision, audio]
+  benchmarks:
+    - name: "MMLU"
+      score: "88.7%"
+      vs_baseline: "GPT-4 86.4%, Claude 3 Opus 86.8%"
+    - name: "HumanEval"
+      score: "90.2%"
+      vs_baseline: "GPT-4 67.0%, Claude 3 Opus 84.9%"
+    - name: "Audio latency (speech-to-speech)"
+      score: "~320ms"
+      vs_baseline: "prior cascaded pipelines ~2700ms"
+
+public_view:
+  plain_english: |
+    OpenAI's successor to GPT-4, with a single unified model handling
+    text, audio, and images natively — instead of separate models
+    stitched together. The "omni" of the name refers to this
+    multimodal integration. Launched with a real-time voice mode
+    designed to mimic natural conversation, complete with interruption
+    handling and emotional tone. Made flagship-tier capability free
+    to consumer ChatGPT users for the first time.
+  analogy: |
+    Earlier multimodal AI was a translator relay — text goes to a text
+    model, audio to a speech model, image to a vision model, and a
+    coordinator passes messages. GPT-4o collapses all three into one
+    native speaker.
+  applications:
+    - product: "Free tier ChatGPT (GPT-4o rolled out to all users)"
+      company: "OpenAI"
+      year_deployed: 2024
+    - product: "ChatGPT voice mode (Apple Intelligence integration)"
+      company: "OpenAI + Apple"
+      year_deployed: 2024
+    - product: "Microsoft Copilot updates"
+      company: "Microsoft"
+      year_deployed: 2024
+  investment_angle: |
+    GPT-4o made flagship LLM access free — a strategic move against
+    Gemini (free on google.com) and Claude (free tier with daily caps).
+    The free tier drove ChatGPT to ~200M WAU by late 2024 and
+    reinforced OpenAI's consumer moat. Voice mode seeded the "AI as
+    ambient interface" category that Apple Intelligence (also built
+    partly on GPT-4o) then distributed to ~1.5B iOS devices. The
+    GPT-4o → GPT-4o mini split in July 2024 established the new
+    tier-pricing floor: flagship capability at Haiku-tier prices
+    ($0.15 per 1M input tokens).
+  why_it_matters: |
+    GPT-4o ended the era when "using the best AI" meant paying $20/mo.
+    Once frontier capability became free with an email address, the
+    user population expanded by an order of magnitude — reshaping
+    regulatory scrutiny, labor-market debate, and education policy
+    everywhere.
+
+citations:
+  - type: release
+    key: openai2024gpt4o
+    title: "Hello GPT-4o"
+    year: 2024
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/hello-gpt-4o/"
+---
+
+## What it is
+
+A frontier-tier model released May 13, 2024, trained end-to-end on a tokenizer that handles text, audio, and image inputs in the same representation space. Unlike GPT-4 (which used separate speech-to-text and text-to-speech models cascaded around a text LLM), GPT-4o's audio path is native — audio tokens in, audio tokens out.
+
+The 320ms median speech-to-speech latency was the practical headline: for the first time, real-time voice conversation with an LLM felt like a phone call, not like a speech recognizer talking to a chatbot.
+
+## Key spec deltas vs GPT-4 and peers
+
+| Model | Date | Text MMLU | HumanEval | Audio | Vision | Context |
+|---|---|---|---|---|---|---|
+| GPT-4 | 2023-03 | 86.4% | 67.0% | cascaded | GPT-4V (bolt-on) | 8k/32k |
+| GPT-4 Turbo | 2023-11 | — | ~85% | cascaded | native | 128k |
+| Claude 3 Opus | 2024-03 | 86.8% | 84.9% | text-only | native | 200k |
+| Gemini 1.5 Pro | 2024-02 | 83.7% | 71.9% | native | native | 1M |
+| **GPT-4o** | **2024-05** | **88.7%** | **90.2%** | **native (~320ms)** | **native** | **128k** |
+| GPT-4o mini | 2024-07 | 82.0% | 87.2% | native | native | 128k |
+| Claude 3.5 Sonnet | 2024-06 | 88.7% | 92.0% | text-only | native | 200k |
+
+GPT-4o was the frontier for ~3 weeks until Claude 3.5 Sonnet (2024-06-20) matched or exceeded it on most text and code benchmarks. The voice and free-tier distribution were the durable competitive moves; the benchmark lead was transient.
+
+## The GPT-4o mini pricing reset
+
+July 18, 2024: OpenAI launched GPT-4o mini at $0.15 / $0.60 per million input/output tokens — ~60% cheaper than Claude Haiku and cheaper than Llama 3 70B hosted at most inference platforms. Performance: MMLU 82.0%, HumanEval 87.2% — i.e., GPT-4 quality from 15 months earlier at 1/200th the price.
+
+This was the single largest LLM price cut of 2024 and forced the entire tier to reprice within weeks (Claude Haiku → $0.25/$1.25, Gemini Flash → $0.075/$0.30). The floor of LLM inference pricing is now limited by inference compute cost, not by margin.

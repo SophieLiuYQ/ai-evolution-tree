@@ -1,0 +1,86 @@
+---
+slug: example-slug
+title: "Human-readable title (Original Paper Title)"
+date: 2024-01-01
+era: frontier
+category: [nlp, architecture]
+relationships:
+  - to: some-parent-slug
+    type: builds_on
+    note: "One-line description of how this work depends on the parent"
+authors:
+  - "Lastname, F."
+org: "Lab Name"
+breakthrough_score: 5
+status: active
+model_spec:
+  parameters: "10B"
+  architecture: "decoder-only transformer with X mechanism"
+  context_window: 8192
+  training_tokens: "2T"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU"
+      score: "70.5%"
+      vs_baseline: "prior model 65.0%"
+
+public_view:
+  plain_english: |
+    Two to three sentences explaining the technique to someone who has
+    never read an ML paper. No jargon. No equations.
+  analogy: |
+    One concrete analogy, ideally to something physical or social.
+  applications:
+    - product: "Product Name"
+      company: "Company"
+      year_deployed: 2024
+  investment_angle: |
+    What category of business this enables. Moat shape (data, compute,
+    distribution). Historical analogue if useful.
+  why_it_matters: |
+    Why a non-technical reader should care.
+
+citations:
+  - type: paper
+    key: lastname2024example
+    title: "Original Paper Title"
+    authors: ["Lastname, F.", "Other, A."]
+    year: 2024
+    venue: "Conference"
+    arxiv: "2401.00000"
+    url: "https://arxiv.org/abs/2401.00000"
+---
+
+## What it is
+
+One to two paragraphs. The novel mechanism, in your own words.
+
+## How it works
+
+The key idea, with the minimum equation or pseudocode that conveys it.
+
+```python
+# Minimal illustrative implementation
+def example():
+    pass
+```
+
+## How to use it
+
+What library? What's the API? Smallest useful example.
+
+## SWOT
+
+- **Strengths** — what this does that prior work couldn't
+- **Weaknesses** — known failure modes, compute cost, data requirements
+- **Opportunities** — what it enables that hasn't been fully exploited
+- **Threats** — what later work has eroded its position
+
+## Limitations
+
+The honest list of what this can't do.
+
+## Citations
+
+Reference the entries in the `citations:` frontmatter array.

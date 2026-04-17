@@ -1,0 +1,72 @@
+---
+// Client-side toggle between Tech and Public views.
+// Persists choice to localStorage; respects per-page render.
+---
+
+<div
+  class="mb-6 inline-flex rounded-lg border border-[var(--border-strong)] bg-white p-1 shadow-sm"
+  role="tablist"
+  aria-label="View mode"
+>
+  <button
+    type="button"
+    data-view="tech"
+    class="view-btn rounded-md px-4 py-1.5 text-sm font-medium text-[var(--fg-muted)]"
+    aria-selected="true"
+    role="tab"
+  >
+    🛠 Tech
+  </button>
+  <button
+    type="button"
+    data-view="public"
+    class="view-btn rounded-md px-4 py-1.5 text-sm font-medium text-[var(--fg-muted)]"
+    aria-selected="false"
+    role="tab"
+  >
+    💼 Public
+  </button>
+</div>
+
+<style>
+  .view-btn[aria-selected="true"] {
+    background: var(--accent);
+    color: white;
+  }
+</style>
+
+<script>
+  const setView = (view: "tech" | "public") => {
+    document.querySelectorAll<HTMLElement>("[data-view-section]").forEach((el) => {
+      el.style.display = el.dataset.viewSection === view ? "" : "none";
+    });
+    document.querySelectorAll<HTMLButtonElement>(".view-btn").forEach((btn) => {
+      btn.setAttribute(
+        "aria-selected",
+        btn.dataset.view === view ? "true" : "false",
+      );
+    });
+    try {
+      localStorage.setItem("ai-tree:view", view);
+    } catch {
+      /* private mode etc */
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    let initial: "tech" | "public" = "tech";
+    try {
+      const saved = localStorage.getItem("ai-tree:view");
+      if (saved === "public" || saved === "tech") initial = saved;
+    } catch {
+      /* noop */
+    }
+    setView(initial);
+    document.querySelectorAll<HTMLButtonElement>(".view-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const v = btn.dataset.view as "tech" | "public";
+        setView(v);
+      });
+    });
+  });
+</script>

@@ -1,0 +1,146 @@
+---
+slug: alexnet
+title: "AlexNet — ImageNet Classification with Deep CNNs"
+date: 2012-09-30
+era: deep-learning-revival
+category: [cv, architecture, training]
+relationships:
+  - to: backpropagation
+    type: builds_on
+    note: "Trained end-to-end via backprop on GPUs; first to scale the recipe to 60M params"
+authors:
+  - "Krizhevsky, A."
+  - "Sutskever, I."
+  - "Hinton, G. E."
+org: "University of Toronto"
+breakthrough_score: 10
+status: foundational
+model_spec:
+  parameters: "60M"
+  architecture: "8-layer CNN (5 conv + 3 FC), ReLU, dropout"
+  training_compute: "~6 days on 2× GTX 580 (3 GB VRAM each)"
+  release_type: paper
+  modalities: [vision]
+  benchmarks:
+    - name: "ImageNet ILSVRC-2012 top-5 error"
+      score: "15.3%"
+      vs_baseline: "runner-up 26.2%, prior SOTA ~25%"
+
+public_view:
+  plain_english: |
+    A deep neural network that, in 2012, smashed the world record on a
+    standard image classification challenge by such a wide margin that
+    nearly every computer vision researcher abandoned their previous
+    approach within a year. It used a graphics card (GPU) for training,
+    proving that the right hardware could make previously impractical
+    techniques suddenly practical.
+  analogy: |
+    Imagine a chess tournament where every player has spent decades
+    refining careful, hand-crafted strategies. A young player shows up
+    using a brand-new tactic and a brand-new tool — and beats the world
+    champion by 20 wins. The next year, half the field has switched to
+    the same tactic.
+  applications:
+    - product: "Google Photos auto-tagging"
+      company: "Google"
+      year_deployed: 2015
+    - product: "Facebook face recognition"
+      company: "Meta"
+      year_deployed: 2014
+    - product: "Tesla Autopilot vision stack (early)"
+      company: "Tesla"
+      year_deployed: 2016
+  investment_angle: |
+    The single event that triggered the modern AI investment cycle.
+    NVIDIA's stock chart from 2012 onward is the most readable financial
+    artifact: AlexNet established that GPUs were the substrate of AI, and
+    NVIDIA's near-monopoly on training-grade GPUs translated into a
+    market cap that crossed $3 trillion by 2024. Computer vision startups
+    (Mobileye, Cruise, Waymo, Clarifai) all trace ancestry here.
+  why_it_matters: |
+    Before AlexNet, "neural networks" was a fringe specialty. After
+    AlexNet, "deep learning" was the field. The 12 years from this paper
+    to ChatGPT are essentially one continuous compounding curve, and this
+    is its inflection point.
+
+citations:
+  - type: paper
+    key: krizhevsky2012imagenet
+    title: "ImageNet Classification with Deep Convolutional Neural Networks"
+    authors: ["Krizhevsky, A.", "Sutskever, I.", "Hinton, G. E."]
+    year: 2012
+    venue: "NeurIPS"
+    url: "https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html"
+  - type: dataset
+    key: deng2009imagenet
+    title: "ImageNet: A Large-Scale Hierarchical Image Database"
+    authors: ["Deng, J.", "Dong, W.", "Socher, R.", "et al."]
+    year: 2009
+    venue: "CVPR"
+    doi: "10.1109/CVPR.2009.5206848"
+---
+
+## What it is
+
+AlexNet is an 8-layer convolutional neural network (5 conv + 3 fully-connected) that won the 2012 ImageNet Large Scale Visual Recognition Challenge with a top-5 error rate of 15.3% — the runner-up scored 26.2%. The 11-percentage-point margin was unprecedented and forced the field to take deep learning seriously.
+
+The technical paper introduced **no single new idea** — convolutions (Fukushima 1980), backprop (1986), ReLU (Nair & Hinton 2010), dropout (Hinton et al. 2012), GPU training (multiple precursors) all predated it. AlexNet's contribution was **engineering**: it combined them at a scale that, given the available data (ImageNet) and hardware (two GTX 580s), produced a result no prior system could match.
+
+## How it works
+
+Architectural ingredients:
+
+| Layer | Output | Notes |
+|---|---|---|
+| Conv1 | 96 × 55 × 55 | 11 × 11 stride 4, ReLU |
+| Pool1 | 96 × 27 × 27 | max pool 3 × 3 stride 2 |
+| Conv2 | 256 × 27 × 27 | 5 × 5, grouped across two GPUs |
+| Pool2 | 256 × 13 × 13 | |
+| Conv3-5 | 384 / 384 / 256 × 13 × 13 | 3 × 3 |
+| FC6-7 | 4096 each | with dropout(0.5) |
+| FC8 | 1000 | softmax |
+
+Crucial techniques:
+- **ReLU activations** instead of sigmoid/tanh — gradients flow, training converges much faster.
+- **Dropout** in fully-connected layers — randomly zero 50% of activations during training; combats overfitting.
+- **Data augmentation** — random crops + horizontal flips multiply effective dataset size.
+- **Local response normalization** (since deprecated; BatchNorm replaced it).
+- **Two-GPU model parallelism** — the model didn't fit in one GTX 580's 3 GB of VRAM, so layers were split across two GPUs.
+
+## How to use it (today)
+
+You don't train AlexNet from scratch in 2026 — you'd use a ResNet, ConvNeXt, or Vision Transformer. But it's still the first thing taught in any CV course:
+
+```python
+import torch
+from torchvision.models import alexnet, AlexNet_Weights
+
+model = alexnet(weights=AlexNet_Weights.IMAGENET1K_V1)
+model.eval()
+
+# inference on a 224x224 RGB image tensor
+with torch.no_grad():
+    logits = model(image_batch)
+```
+
+## SWOT
+
+- **Strengths** — Demonstrated that depth + GPU compute + sufficient data is the recipe. Established CNNs as the default vision architecture for the next ~10 years. Made dropout and ReLU mainstream.
+- **Weaknesses** — Tiny by 2026 standards (60M parameters). The architecture is no longer competitive — ResNet (2015), EfficientNet (2019), ViT (2020) all surpass it.
+- **Opportunities** — As a teaching tool: every student should still implement and train it. Forces understanding of conv arithmetic, GPU memory, and overfitting.
+- **Threats** — Vision transformers have largely displaced CNNs in research and increasingly in production.
+
+## Limitations
+
+- **Required hand-tuned hyperparameters** — learning rate schedule, weight decay, momentum, augmentation choices. The "no free lunch" of pre-2015 deep learning.
+- **No transfer learning yet codified** — the "pretrain on ImageNet, fine-tune on X" recipe became conventional only after AlexNet showed the features were generally useful.
+- **Architectural quirks** like grouped convolutions across GPUs were hardware-imposed, not principled.
+
+## What it changed
+
+Within 24 months of AlexNet:
+- ImageNet leaderboards stopped accepting non-deep-learning entries (everyone switched).
+- Google acquired DNNresearch (Hinton's lab) for ~$44M — perhaps the highest-ROI talent acquisition of the decade.
+- NVIDIA's roadmap pivoted hard toward ML — leading directly to CUDA library development (cuDNN, 2014), Tensor Cores (2017), and the data center GPU as the dominant product line.
+
+This single paper is a fair candidate for "highest dollars-per-page in scientific literature."

@@ -1,0 +1,146 @@
+---
+slug: deepseek-v3
+title: "DeepSeek V3 — 671B Open MoE at $5.5M Training Cost"
+date: 2024-12-26
+era: scale-era
+category: [nlp, generative, architecture]
+relationships:
+  - to: deepseek-v2
+    type: scales
+    note: "2.8× more total params (236B → 671B), 1.8× more active (21B → 37B), 1.8× more training data (8T → 14.8T)"
+  - to: gpt-4o
+    type: open_alt_to
+    note: "Open-weight model approaching GPT-4o on most benchmarks; reported training cost 1-2 OOM lower"
+authors:
+  - "DeepSeek-AI Team"
+org: "DeepSeek"
+breakthrough_score: 9
+status: active
+model_spec:
+  parameters: "671B total / 37B active"
+  architecture: "MoE (256 routed + 1 shared expert, top-8) + MLA + FP8 mixed-precision training + auxiliary-loss-free load balancing"
+  context_window: 131072
+  training_tokens: "14.8T"
+  training_compute: "2.788M H800 GPU-hours · reported $5.576M USD"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU"
+      score: "88.5%"
+      vs_baseline: "GPT-4o 88.7%, Claude 3.5 Sonnet 88.7%, Llama 3.1 405B 88.6%"
+    - name: "HumanEval"
+      score: "82.6%"
+      vs_baseline: "GPT-4o 90.2%, Claude 3.5 Sonnet 92.0%"
+    - name: "MATH-500"
+      score: "90.2%"
+      vs_baseline: "GPT-4o 76.6%, Claude 3.5 Sonnet 78.3%"
+    - name: "GPQA Diamond"
+      score: "59.1%"
+      vs_baseline: "GPT-4o 53.6%, Claude 3.5 Sonnet 65.0%"
+    - name: "API cost / 1M output (off-peak)"
+      score: "$1.10 ($0.27 with caching)"
+      vs_baseline: "Claude 3.5 Sonnet $15"
+
+public_view:
+  plain_english: |
+    DeepSeek's December 2024 frontier release: a 671-billion-parameter
+    Mixture-of-Experts model approaching GPT-4o quality, with weights
+    open and a published training cost of $5.5M — one to two orders
+    of magnitude below US frontier estimates. Quietly released on
+    December 26, 2024, it would become the foundation for R1 four
+    weeks later and the source of the January 2025 Nvidia stock shock.
+  analogy: |
+    Where Llama 3 brought open weights to GPT-4 territory at $20B+
+    of capex, DeepSeek V3 brought open weights to GPT-4o territory
+    at a publicly-reported price an undergraduate research budget
+    could (in principle) have funded. Whether the $5.5M number holds
+    up to scrutiny matters less than the fact that nobody could
+    refute it conclusively.
+  analogy_lite: |
+    The first open frontier-class model trained for less than the
+    cost of a Manhattan condo.
+  applications:
+    - product: "DeepSeek API (platform.deepseek.com)"
+      company: "DeepSeek"
+      year_deployed: 2024
+    - product: "DeepSeek consumer chat (chat.deepseek.com)"
+      company: "DeepSeek"
+      year_deployed: 2024
+    - product: "Hosted at every major inference platform within 2 weeks"
+      company: "Together, Fireworks, Groq, Hyperbolic, Novita, etc."
+      year_deployed: 2025
+    - product: "Foundation for DeepSeek R1 (Jan 2025)"
+      company: "DeepSeek"
+      year_deployed: 2025
+  investment_angle: |
+    DeepSeek V3 set up the R1 release that crashed Nvidia's stock by
+    $600B on January 27, 2025. The investment-thesis attack: if a
+    Chinese lab can reach GPT-4o quality for $5.5M of training
+    compute, the assumption that frontier capability requires
+    $1B+ training runs (and therefore Nvidia GPU sales of similar
+    magnitude) breaks down. Subsequent independent estimates of
+    DeepSeek's actual fully-loaded compute spend ranged $50M-$1.6B
+    (including research, ablations, infrastructure). The fact that
+    no one could conclusively refute the $5.5M number — and that
+    even the higher estimates were 10-20× below US frontier
+    spend — was the structural attack on the AI capex thesis.
+  why_it_matters: |
+    DeepSeek V3, not R1, is the model that actually changed the
+    economics. R1 added the reasoning headlines, but V3 was where
+    the cost shock originated. Every subsequent debate about US
+    export controls, AI capex sustainability, and Chinese AI
+    capability has V3 as a central data point.
+
+citations:
+  - type: paper
+    key: deepseek2024v3
+    title: "DeepSeek-V3 Technical Report"
+    authors: ["DeepSeek-AI"]
+    year: 2024
+    venue: "arXiv"
+    arxiv: "2412.19437"
+---
+
+## What it is
+
+A 671-billion-parameter Mixture-of-Experts decoder-only transformer with 37B active parameters per forward pass, released open-weight on December 26, 2024 with a detailed technical report. Three architectural innovations beyond DeepSeek V2:
+
+1. **Auxiliary-loss-free load balancing** — replaces the standard MoE auxiliary loss (which can degrade quality) with a bias-term-based routing scheme. Empirically reduces routing instability without quality cost.
+
+2. **Multi-Token Prediction (MTP)** — predict the next 2 tokens during training as an auxiliary objective, enabling speculative decoding at inference for ~85% acceptance rates and ~1.8× decoding speedup.
+
+3. **FP8 mixed-precision training** — first frontier-scale open release trained natively in FP8 (with critical-path FP32 fallback). Cut memory bandwidth requirements significantly, contributing to the headline cost number.
+
+## Training cost claim
+
+Per DeepSeek's technical report, full training cost decomposed as:
+
+| Stage | GPU-hours (H800) | Cost @ $2/hr |
+|---|---|---|
+| Pre-training | 2.664M | $5.328M |
+| Context extension | 0.119M | $0.238M |
+| Post-training | 0.005M | $0.010M |
+| **Total** | **2.788M** | **$5.576M** |
+
+This excludes "the costs associated with prior research and ablation experiments on architectures, algorithms, or data" — a substantial caveat. Independent estimates of the fully-loaded cost (including research compute, infrastructure amortization, salaries) ranged $50M-$1.6B. The reported number is the marginal compute cost of the final training run only.
+
+## DeepSeek V3 vs frontier peers (Q4 2024 / Q1 2025)
+
+| Model | Date | Org | Active params | MMLU | HumanEval | MATH-500 | GPQA | API $ / 1M out |
+|---|---|---|---|---|---|---|---|---|
+| GPT-4o (Aug update) | 2024-08 | OpenAI | undisclosed | 88.7% | 90.2% | 76.6% | 53.6% | $15 |
+| Claude 3.5 Sonnet (new) | 2024-10 | Anthropic | undisclosed | 88.7% | 93.7% | 78.3% | 65.0% | $15 |
+| Llama 3.1 405B | 2024-07 | Meta | 405B | 88.6% | 89.0% | 73.8% | 51.1% | ~$5 (Together) |
+| Qwen 2.5 72B | 2024-09 | Alibaba | 72B | 85.3% | 86.6% | 83.1% | 49.0% | ~$0.90 |
+| **DeepSeek V3** | **2024-12** | **DeepSeek** | **37B** | **88.5%** | **82.6%** | **90.2%** | **59.1%** | **$1.10 / $0.27 cached** |
+| o1 | 2024-09 | OpenAI | undisclosed | 92.3% | 92.4% | 94.8% | 78.0% | $60 |
+
+V3 hit GPT-4o-class on MMLU, exceeded GPT-4o on math, was somewhat behind on coding. The pricing — $1.10 per million output tokens, with caching pushing it to $0.27 — was 14-55× below GPT-4o's API.
+
+## What V3 led to
+
+- **DeepSeek R1** (2025-01-20): RL post-training on V3 for reasoning capability; the version that triggered the global AI policy and market response.
+- **DeepSeek V3.5 / V4** (2025): incremental refinements following the same playbook.
+- **Industry follow-on**: every major open-weight lab (Qwen, Mistral, Llama 4) shifted toward MoE-default architectures in 2025; auxiliary-loss-free routing became standard.
+
+V3 is the architectural ancestor of essentially all serious open-weight 2025 frontier work.

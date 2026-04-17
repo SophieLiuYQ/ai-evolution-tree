@@ -1,0 +1,110 @@
+---
+slug: suno-v3
+title: "Suno v3 — Text-to-Music at Consumer Quality"
+date: 2024-03-21
+era: multimodal
+category: [generative]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Audio-token autoregressive transformer (specifics undisclosed)"
+  - to: stable-diffusion
+    type: applies
+    note: "Generalizes the 'open / consumer-friendly text-to-X' product pattern from images to music"
+authors:
+  - "Suno AI Team"
+org: "Suno"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Audio token transformer (likely encodec-style discrete audio tokens + LM)"
+  release_type: product
+  modalities: [text, audio]
+  benchmarks:
+    - name: "Output duration"
+      score: "2 minutes (v3); extended in v3.5+"
+      vs_baseline: "v2 30 seconds; v1 hummable clips only"
+    - name: "Lyric quality + vocal coherence"
+      score: "first version where most outputs sound 'like a real song'"
+
+public_view:
+  plain_english: |
+    A Boston-based startup's text-to-music generator that, in
+    its v3 release (March 2024), crossed the threshold of
+    "this sounds like a real song." Type a description ("a
+    melancholy 90s grunge ballad about taxes") and get a 2-minute
+    track with vocals, instruments, mixing, and mastering. Within
+    months it became the dominant consumer AI music product.
+  analogy: |
+    Where DALL·E 2 / Stable Diffusion were the "type a prompt
+    and get an image" moment for visual creation in 2022,
+    Suno v3 was that moment for music in 2024. Same UX
+    pattern, new modality.
+  applications:
+    - product: "Suno consumer app (suno.com / mobile)"
+      company: "Suno"
+      year_deployed: 2024
+    - product: "Microsoft Copilot music generation feature"
+      company: "Microsoft (partnership)"
+      year_deployed: 2023
+    - product: "Various music-meme TikTok content"
+      company: "Creators worldwide"
+      year_deployed: 2024
+  investment_angle: |
+    Suno raised $125M Series B in May 2024 at ~$500M valuation
+    on the strength of the v3 release. By early 2025, monthly
+    paying subscribers had reportedly crossed 500k at $10/mo
+    tier — making it one of the most successful consumer-AI
+    standalone products outside of chat. Sparked the inevitable
+    legal dispute: in June 2024, RIAA-affiliated labels (Sony,
+    Universal, Warner) filed copyright lawsuits against Suno
+    and Udio for training on copyrighted music. The lawsuits
+    are a defining test case for the limits of "fair use" in
+    AI training data — and could substantially reshape the
+    economics of generative AI music depending on outcome.
+  why_it_matters: |
+    Suno is the proof point that AI consumer products can
+    reach standalone-business scale outside of chat /
+    productivity. The pattern (low-friction creative tool +
+    monthly subscription + viral social distribution) is being
+    copied across other modalities now (video, 3D, voice,
+    longform writing).
+
+citations:
+  - type: release
+    key: suno2024v3
+    title: "Suno v3 release"
+    year: 2024
+    venue: "Suno Blog"
+    url: "https://suno.com/blog/v3"
+---
+
+## What it is
+
+A text-to-music generator producing complete songs (vocals + instruments + production) from text prompts. v3 (March 2024) was the first version producing "passable as real" outputs at 2-minute length. Subsequent releases (v3.5 in June 2024, v4 in late 2024) extended duration and quality.
+
+Architectural details are not public. Likely components (inferred from related research like MusicLM, MusicGen):
+- **Audio tokenization** — neural codec (similar to EnCodec or SoundStream) compressing audio to discrete tokens at ~50 Hz
+- **Conditioning** — text embedding (CLIP-style or T5) conditions the music generation
+- **Autoregressive transformer** — generates audio tokens conditioned on text + prior tokens
+- **Detokenization** — neural codec decoder reconstructs waveform
+
+## Suno vs concurrent text-to-music systems
+
+| System | Year | Org | Quality | Open? | Length |
+|---|---|---|---|---|---|
+| MuseNet | 2019 | OpenAI | MIDI / instrumental only | research | up to 4 min |
+| Jukebox | 2020 | OpenAI | early raw-audio attempt | research | minutes |
+| MusicLM | 2023-01 | Google | research preview | demos | 30 sec |
+| MusicGen | 2023-06 | Meta | open weights | open | 30 sec |
+| Stable Audio | 2023-09 | Stability | open + API | partial | 90 sec |
+| **Suno v3** | **2024-03** | **Suno** | **consumer quality** | **product** | **2 min** |
+| Udio v1 | 2024-04 | Udio | competitive | product | 2 min |
+| Suno v4 | 2024-11 | Suno | improved | product | 4+ min |
+
+Suno's product velocity through 2024 outpaced research labs significantly. Whether this advantage holds depends on the copyright lawsuits and on whether Big Tech labs (OpenAI, Google, Meta) eventually ship competitive consumer products.
+
+## The copyright case
+
+In June 2024, RIAA-affiliated labels (Sony Music, Universal Music Group, Warner Music) filed lawsuits against Suno and Udio in US federal court alleging willful copyright infringement during training. Suno's response (filed August 2024) acknowledged training on copyrighted music but argued fair-use defense. The case is procedurally pending as of 2026 and is one of the most-watched AI copyright cases globally — the outcome affects training-data strategies across the entire generative AI industry.

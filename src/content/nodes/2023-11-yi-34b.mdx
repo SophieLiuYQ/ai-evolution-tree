@@ -1,0 +1,116 @@
+---
+slug: yi-34b
+title: "Yi-34B — 01.AI's Frontier Open Bilingual Model"
+date: 2023-11-05
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: llama-2
+    type: builds_on
+    note: "Architecturally close to Llama 2 (later confirmed); contested attribution at launch"
+  - to: qwen-1
+    type: surpasses
+    note: "Briefly took the open-Chinese-model SOTA on C-Eval / MMLU before Qwen 1.5 reclaimed"
+authors:
+  - "01.AI Team (Kai-Fu Lee)"
+org: "01.AI"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "6B / 34B (later 9B)"
+  architecture: "Decoder-only transformer (Llama 2 architecture, Yi-trained tokenizer + 3T-token data)"
+  context_window: 4096
+  training_tokens: "3T (multilingual, Chinese-heavy)"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU (5-shot, 34B)"
+      score: "76.3%"
+      vs_baseline: "Llama 2 70B 68.9%, Qwen-14B 66.3%"
+    - name: "C-Eval (Chinese, 34B)"
+      score: "81.4%"
+      vs_baseline: "Qwen-14B 63.5%, Llama 2 70B 50.1%"
+    - name: "GSM8K (34B)"
+      score: "67.9%"
+
+public_view:
+  plain_english: |
+    01.AI's first major open-weight model, released November 2023.
+    Founded by Kai-Fu Lee (former Microsoft / Google China president,
+    venture capitalist, well-known author of "AI Superpowers"), 01.AI's
+    Yi-34B briefly held the top spot on Hugging Face's Open LLM
+    Leaderboard — the first non-Western model to do so. Quality at
+    34B parameters approached Llama 2's 70B variant.
+  analogy: |
+    The Chinese AI ecosystem's "celebrity startup" — same playbook as
+    Anthropic in the US (founder is a known industry figure, raises
+    on his name as much as the technology, fast follow-on funding).
+  applications:
+    - product: "01.AI Wanzhi consumer chat"
+      company: "01.AI"
+      year_deployed: 2023
+    - product: "Yi-34B fine-tunes (community)"
+      company: "Various"
+      year_deployed: 2023
+    - product: "Yi Lightning (closed flagship)"
+      company: "01.AI"
+      year_deployed: 2024
+  investment_angle: |
+    01.AI raised >$1B at $1B+ valuation by 2024 on Kai-Fu Lee's brand
+    and Yi-34B's benchmark dominance. The launch period also sparked
+    a controversy: Yi-34B's architecture was nearly identical to
+    Llama 2's, and the original Hugging Face release used Llama 2's
+    config files with only the tensor names changed. 01.AI clarified
+    they had retrained from scratch on different data; the
+    architecture similarity was intentional (open standard) but the
+    config-file copy-paste was a procedural slip. The episode
+    illustrated the broader question — to what extent are "Chinese
+    foundation models" derivative of Llama? — that animated
+    discussion through 2024.
+  why_it_matters: |
+    Yi-34B's brief leaderboard SOTA was the moment the Hugging Face
+    Open LLM community accepted that Chinese labs could ship at the
+    open-frontier. The architectural-attribution controversy
+    surfaced the harder question of how much credit Western
+    open-source releases (Llama, Mistral) deserve in the Chinese
+    open-LLM story.
+
+citations:
+  - type: paper
+    key: ai01yi
+    title: "Yi: Open Foundation Models by 01.AI"
+    authors: ["01.AI Team"]
+    year: 2024
+    venue: "arXiv"
+    arxiv: "2403.04652"
+  - type: release
+    key: ai012023yi
+    title: "Yi-34B Release"
+    year: 2023
+    venue: "01.AI"
+    url: "https://huggingface.co/01-ai/Yi-34B"
+---
+
+## What it is
+
+A 34-billion-parameter open-weight foundation model with a 6B sibling, released on November 5, 2023. Architecturally a decoder-only transformer that closely mirrors Llama 2 (RoPE, RMSNorm, SwiGLU, GQA), trained on 3T tokens of bilingual (Chinese + English) data with a custom tokenizer optimized for Chinese.
+
+## Yi-34B vs concurrent open releases (Q4 2023)
+
+| Model | Date | Params | MMLU | C-Eval | License |
+|---|---|---|---|---|---|
+| Llama 2 13B | 2023-07 | 13B | 54.8% | 32.5% | commercial OK |
+| Llama 2 70B | 2023-07 | 70B | 68.9% | 50.1% | commercial OK |
+| Qwen-14B | 2023-08 | 14B | 66.3% | 63.5% | commercial OK |
+| Mistral 7B | 2023-09 | 7B | 60.1% | 47.4% | Apache 2.0 |
+| **Yi-34B** | **2023-11** | **34B** | **76.3%** | **81.4%** | **commercial OK** |
+| Qwen-72B | 2023-11 | 72B | 77.4% | 84.1% | commercial OK |
+| Mixtral 8x7B | 2023-12 | 47B (13B active) | 70.6% | — | Apache 2.0 |
+
+Yi-34B's MMLU edged Llama 2 70B with half the parameters — the result that drove its Hugging Face leaderboard position. Within a month, Qwen-72B (released by Alibaba in late November 2023) overtook it on Chinese benchmarks; Mixtral overtook it on English benchmarks via MoE efficiency.
+
+## The architecture-attribution controversy
+
+Within 48 hours of Yi-34B's Hugging Face release, an open-source contributor (Eric Hartford) noted that Yi-34B's `config.json` was nearly identical to Llama 2's — including tensor naming conventions like `gate_proj` / `up_proj` / `down_proj`. 01.AI's response: the architecture was deliberately Llama-compatible (to leverage existing tooling), but the weights were trained from scratch on 01.AI's own data pipeline.
+
+The community largely accepted this explanation but the episode established a norm: Chinese open-LLM releases now publish detailed pretraining methodology to preempt similar attribution debates (Qwen 1.5+, DeepSeek V2/V3, GLM-4 all include extensive pretraining data and recipe disclosure).

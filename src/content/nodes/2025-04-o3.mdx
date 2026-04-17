@@ -1,0 +1,119 @@
+---
+slug: o3
+title: "OpenAI o3 — Frontier Reasoning at Scale"
+date: 2025-04-16
+era: reasoning
+category: [nlp, reasoning, agents]
+relationships:
+  - to: o1
+    type: scales
+    note: "Successor to o1; native tool use during reasoning; ~3-10× more inference compute per query"
+  - to: deepseek-r1
+    type: surpasses
+    note: "Reclaims SOTA on math + science reasoning benchmarks after R1's 3-month interregnum"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 9
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + RL on reasoning + native tool use during thinking"
+  context_window: 200000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "AIME 2024"
+      score: "96.7%"
+      vs_baseline: "o1 83.3%, R1 79.8%, Gemini 2.5 Pro 92.0%"
+    - name: "GPQA Diamond"
+      score: "87.7%"
+      vs_baseline: "o1 78.0%, Claude 3.7 84.8%"
+    - name: "Codeforces percentile"
+      score: "~99.9th"
+      vs_baseline: "o1 89th — beating most human competitive programmers"
+    - name: "ARC-AGI v1 (semi-private)"
+      score: "75.7%"
+      vs_baseline: "o1 25%; first model to substantially clear ARC threshold"
+    - name: "Humanity's Last Exam"
+      score: "20.3%"
+      vs_baseline: "Gemini 2.5 Pro 18.8%"
+
+public_view:
+  plain_english: |
+    OpenAI's full o3 release in April 2025, after a December 2024
+    teaser. Step-change on math, code, and frontier reasoning
+    benchmarks; the first model to convincingly beat the ARC-AGI
+    visual-reasoning challenge (long held up as a "true general
+    intelligence" benchmark). Native tool use during reasoning —
+    the model decides mid-thought to run code, search the web,
+    or call external APIs.
+  analogy: |
+    Where o1 was "the model thinks before it answers," o3 is "the
+    model thinks, executes code, reads the web, double-checks
+    itself, and then answers." Inference cost per query rose
+    proportionally — flagship o3-pro queries can run $1-10 each.
+  applications:
+    - product: "ChatGPT (Plus, Pro, Enterprise tiers)"
+      company: "OpenAI"
+      year_deployed: 2025
+    - product: "Microsoft Copilot Researcher / Analyst agents"
+      company: "Microsoft"
+      year_deployed: 2025
+    - product: "Cursor / Windsurf advanced coding modes"
+      company: "Various"
+      year_deployed: 2025
+  investment_angle: |
+    o3's release answered the strategic question DeepSeek R1 had
+    posed: can closed labs maintain meaningful capability leadership
+    over open competitors? On benchmark capability, yes — o3 is
+    measurably ahead of R1 / Gemini 2.5 Pro / Claude 3.7 on the
+    hardest reasoning evaluations as of release. On cost-adjusted
+    capability, the answer is more contested — a $50 o3 query and
+    a $0.50 R1 query will both solve most non-frontier tasks.
+    OpenAI's revenue trajectory in 2025 ($10B+ ARR by mid-year,
+    ~$15B by end of year) was driven heavily by o3-tier
+    consumption — particularly the $200/mo ChatGPT Pro tier
+    (which had crossed 5M paying subscribers by Q3 2025).
+  why_it_matters: |
+    o3 set the high-water mark for frontier capability in 2025 and
+    became the reference benchmark for "what's the best AI can
+    do?" debates in policy, education, and labor-market analysis.
+    The ARC-AGI result specifically reignited the AGI-timeline
+    discussion across AI safety circles.
+
+citations:
+  - type: release
+    key: openai2025o3
+    title: "Introducing OpenAI o3 and o4-mini"
+    year: 2025
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/introducing-o3-and-o4-mini/"
+---
+
+## What it is
+
+OpenAI's o-series flagship released April 16, 2025 (o3 + smaller sibling o4-mini). The architectural / training contributions are not publicly detailed, but the externally-observed capabilities show two key advances over o1:
+
+1. **Native tool use during reasoning** — the model can autonomously decide to run code, search, or call other tools mid-thought, with results fed back into the reasoning trace. This is "agentic reasoning" baked into the base model, not bolted on at the application layer.
+
+2. **Visual reasoning** — o3 can reason over images as part of the thought process, including ARC-AGI-style abstract grid puzzles where it must induce rules from few examples.
+
+## o3 vs reasoning peers (Q2 2025)
+
+| Model | Date | AIME | GPQA | ARC-AGI | HLE | API $ / 1M out |
+|---|---|---|---|---|---|---|
+| o1 | 2024-09 | 83.3% | 78.0% | 25% | — | $60 |
+| DeepSeek R1 | 2025-01 | 79.8% | 71.5% | 15% | 8.5% | $2.19 |
+| Gemini 2.5 Pro | 2025-03 | 92.0% | 84.0% | — | 18.8% | $5-21 |
+| Claude 3.7 Sonnet | 2025-02 | 80.0% | 84.8% | — | 8.9% | $15 |
+| **o3** | **2025-04** | **96.7%** | **87.7%** | **75.7%** | **20.3%** | **~$60** |
+| Claude 4 Opus | 2025-05 | — | 83.3% | — | — | $75 |
+
+The ARC-AGI gap (o3's 75.7% vs nearest peer ~25%) was the single most discussed result in AI of the first half of 2025. The benchmark's creator (François Chollet) revised his framing of what ARC-AGI measured in light of the result.
+
+## Inference economics
+
+o3 querying the high-compute "high effort" mode reportedly costs OpenAI $20-2000 per task (per the ARC-AGI benchmark write-up). The consumer-tier o3 in ChatGPT Pro uses much shorter reasoning traces (~$1-5 per query economic equivalent), with throughput limits.
+
+This established a new pricing architecture: API tiers stratified by both model AND inference-compute budget per query, not just model alone.

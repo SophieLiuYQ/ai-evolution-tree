@@ -1,0 +1,86 @@
+---
+slug: gpt-1
+title: "GPT-1 — Generative Pre-Training"
+date: 2018-06-11
+era: transformer
+category: [nlp, generative, training]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Decoder-only stack from the original transformer; 12 layers"
+authors:
+  - "Radford, A."
+  - "Narasimhan, K."
+  - "Salimans, T."
+  - "Sutskever, I."
+org: "OpenAI"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "117M"
+  architecture: "Decoder-only transformer, 12 layers, 768 hidden, 12 heads"
+  context_window: 512
+  training_tokens: "~1B (BookCorpus)"
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "GLUE (avg, fine-tuned)"
+      score: "72.8"
+      vs_baseline: "prior task-specific SOTA average ~70.0"
+
+public_view:
+  plain_english: |
+    OpenAI's first GPT — a transformer trained to predict the next word
+    on a large book dataset, then fine-tuned on specific tasks. It
+    demonstrated that "pre-train once, fine-tune cheaply" worked for
+    language, mirroring what AlexNet did for vision in 2012.
+  analogy: |
+    Like sending a student through general undergrad before any specialty —
+    after a broad education, they can be retrained quickly into a doctor,
+    lawyer, or coder.
+  applications:
+    - product: "Internal OpenAI research baseline"
+      company: "OpenAI"
+      year_deployed: 2018
+  investment_angle: |
+    The methodological proof point for "pre-train at scale, fine-tune
+    cheaply" — the recipe that justified spending tens of millions on
+    one model run instead of thousands of small runs. Set up the GPT-2
+    funding case and, downstream, the entire LLM capital cycle.
+  why_it_matters: |
+    Without GPT-1, nobody would have funded GPT-2; without GPT-2's
+    "too dangerous to release" controversy, GPT-3's investor narrative
+    would have been weaker. This is the unglamorous root of OpenAI's
+    LLM lineage.
+
+citations:
+  - type: paper
+    key: radford2018gpt1
+    title: "Improving Language Understanding by Generative Pre-Training"
+    authors: ["Radford, A.", "Narasimhan, K.", "Salimans, T.", "Sutskever, I."]
+    year: 2018
+    venue: "OpenAI tech report"
+    url: "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf"
+---
+
+## What it is
+
+A 12-layer decoder-only transformer (117M parameters) pretrained on BookCorpus with the standard left-to-right next-token objective, then fine-tuned per-task. The first paper to clearly demonstrate that the pretrain → fine-tune recipe worked at meaningful scale for language.
+
+## How it compares
+
+| Model | Year | Params | Approach | GLUE |
+|---|---|---|---|---|
+| ELMo | 2018-02 | 94M | LSTM + bidirectional pretraining + feature extraction | ~71 |
+| **GPT-1** | **2018-06** | **117M** | **Transformer + LM pretraining + fine-tune** | **72.8** |
+| BERT-base | 2018-10 | 110M | Transformer + masked LM (bidirectional) | 78.3 |
+| BERT-large | 2018-10 | 340M | Same, deeper | 80.5 |
+
+GPT-1 was the proof of concept; BERT was the much louder follow-up four months later. OpenAI doubled down on the decoder-only direction — that bet paid off five years later.
+
+## SWOT
+
+- **Strengths** — First to operationalize transformer pretraining + fine-tuning. Established the GPT family architecture that didn't change for the next 7 years.
+- **Weaknesses** — Smaller and less performant than concurrent BERT. Requires task-specific fine-tuning (no zero-shot).
+- **Opportunities** — Set up GPT-2 (10× scale) and the eventual scaling-laws thesis.
+- **Threats** — BERT's bidirectional masked LM dominated NLP benchmarks 2018-2020; GPT-1's relevance is mostly historical.

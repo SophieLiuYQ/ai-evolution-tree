@@ -1,0 +1,129 @@
+---
+slug: claude-4
+title: "Claude 4 — Opus & Sonnet (Agentic Frontier Family)"
+date: 2025-05-22
+era: agents
+category: [nlp, multimodal, generative]
+relationships:
+  - to: claude-3-7-sonnet
+    type: scales
+    note: "Successor; major SWE-bench Verified gains; sustained agentic operation up to 7+ hours"
+  - to: o1
+    type: surpasses
+    note: "Outperforms o3 on real-world coding/agentic benchmarks while costing less"
+  - to: mcp
+    type: applies
+    note: "Native MCP support enables agentic tool use across thousands of community-published servers"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 9
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + extended-thinking + tool-use RL"
+  context_window: 200000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "SWE-bench Verified (Opus 4)"
+      score: "79.4%"
+      vs_baseline: "Claude 3.7 Sonnet 70.3%, o3 71.7%"
+    - name: "TerminalBench (Opus 4)"
+      score: "43.2%"
+      vs_baseline: "Claude 3.7 Sonnet 27.6%, o3 30.2%"
+    - name: "GPQA Diamond"
+      score: "83.3% (Opus)"
+    - name: "Sustained autonomous coding"
+      score: "~7 hours uninterrupted"
+      vs_baseline: "prior generation: 30-60 min before drift"
+
+public_view:
+  plain_english: |
+    Anthropic's first model family explicitly designed for sustained
+    autonomous work — running for hours on multi-step tasks without
+    human intervention. Opus 4 became the dominant model behind
+    "AI software engineer" products in 2025, while Sonnet 4 stayed
+    the workhorse mid-tier. Both shipped with native tool use, file
+    editing, and computer-use improvements.
+  analogy: |
+    Earlier models were assistants — they helped you do work. Claude
+    4 was an associate — you'd give it a task in the morning and
+    review its commits in the afternoon. The unit of work shifted
+    from "one prompt response" to "one autonomous session."
+  applications:
+    - product: "Claude Code (default model)"
+      company: "Anthropic"
+      year_deployed: 2025
+    - product: "Cursor, Windsurf, Cline, Aider"
+      company: "Various"
+      year_deployed: 2025
+    - product: "Devin, Replit Agent"
+      company: "Cognition / Replit"
+      year_deployed: 2025
+    - product: "Vercel v0 (UI generation)"
+      company: "Vercel"
+      year_deployed: 2025
+  investment_angle: |
+    Claude 4 marks the transition from "AI as autocomplete" to "AI as
+    junior engineer." The economic implication: a single Claude Code
+    session at $5-20 cost output that previously required a junior
+    engineering hour (~$80 fully-loaded). This 4-16× compression at
+    the unit-of-work level is what's reshaping engineering team
+    structure at AI-native startups (Cursor reportedly hit $500M ARR
+    with under 100 employees by mid-2025). Anthropic's ARR reportedly
+    crossed $4B annualized by Q3 2025, with developer-tools API
+    revenue >50% of the total. The "AI labor substitution" macro
+    thesis gets its first hard datapoints from this model generation.
+  why_it_matters: |
+    Claude 4 is the model that made "have AI write code, autonomously,
+    and you review the PR" a normal workflow at frontier engineering
+    teams. The labor-market implications — entry-level engineering
+    hiring contraction visible in Q3 2025 BLS data — are downstream
+    of this and similar releases.
+
+citations:
+  - type: release
+    key: anthropic2025claude4
+    title: "Introducing Claude 4"
+    year: 2025
+    venue: "Anthropic Blog"
+    url: "https://www.anthropic.com/news/claude-4"
+---
+
+## What it is
+
+A two-tier flagship family — Claude Opus 4 (most capable) and Claude Sonnet 4 (balanced). Both ship with extended-thinking mode (per-request toggle, inherited from Claude 3.7), native tool use, and a substantially upgraded "computer use" capability for direct screen / mouse / keyboard control.
+
+The headline capability: sustained autonomous operation. Anthropic publicly demonstrated Opus 4 running uninterrupted on a software-engineering task for ~7 hours, producing a working merged-PR at the end. Prior generations drifted into incoherence after 30-60 minutes of agentic work.
+
+## How Claude 4 compares to mid-2025 frontier
+
+| Model | Date | Org | SWE-bench Verified | TerminalBench | GPQA | MMLU |
+|---|---|---|---|---|---|---|
+| Claude 3.7 Sonnet | 2025-02 | Anthropic | 70.3% | 27.6% | 84.8% | — |
+| GPT-4.5 | 2025-02 | OpenAI | — | — | 71.4% | — |
+| o3 | 2025-04 | OpenAI | 71.7% | 30.2% | 87.7% | — |
+| Gemini 2.5 Pro | 2025-03 | Google | 63.8% | 25.3% | 84.0% | — |
+| **Claude Sonnet 4** | **2025-05** | **Anthropic** | **73.6%** | **35.5%** | **75.4%** | — |
+| **Claude Opus 4** | **2025-05** | **Anthropic** | **79.4%** | **43.2%** | **83.3%** | — |
+| Llama 4 Maverick | 2025-04 | Meta | — | — | — | — |
+| DeepSeek V3 / R1.5 | 2025-Q2 | DeepSeek | — | — | — | — |
+
+Opus 4's SWE-bench Verified score (79.4%) was the largest single-release jump on that benchmark since the Claude 3.5 → 3.7 transition. TerminalBench (which evaluates terminal-use capability — the closest proxy for "can it operate a developer environment") more than doubled from 3.7 Sonnet.
+
+## The agentic delta
+
+Real-world agentic capability isn't fully captured by static benchmarks. Anecdotal but consistent reports from production users in mid-2025:
+
+- Claude Code sessions complete 60-80% of well-scoped engineering tasks end-to-end with Opus 4, vs 30-50% with 3.7 Sonnet.
+- Mean time-to-drift (when the agent loses the thread) extended from ~45 min to ~3 hours.
+- Cost per completed task dropped despite Opus 4 being priced higher than Sonnet 3.7 — fewer retries, shorter total context.
+
+These deltas are why Cursor, Windsurf, and Devin all defaulted to Opus 4 within weeks of release.
+
+## Successor: Opus 4.6, Opus 4.7
+
+Anthropic shipped Opus 4.5 (October 2025), 4.6 (December 2025), and 4.7 (early 2026) on a roughly 8-week cadence — each a substantial capability and reliability update without re-incrementing the major version. The 4.6 release added the 1M-token context window variant currently powering many long-document and large-codebase workflows (and likely the model writing this very file).
+
+By early 2026 the Opus 4.x line is the de facto default for any agentic-AI workflow that requires sustained reasoning, tool use, and multi-hour autonomy.

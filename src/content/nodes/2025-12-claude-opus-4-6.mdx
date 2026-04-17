@@ -1,0 +1,108 @@
+---
+slug: claude-opus-4-6
+title: "Claude Opus 4.6 — 1M Context, Sustained Multi-Hour Agency"
+date: 2025-12-10
+era: agents
+category: [nlp, multimodal, generative]
+relationships:
+  - to: claude-4
+    type: scales
+    note: "Opus 4 → 4.5 → 4.6 incremental line; 4.6 introduces production 1M context"
+  - to: minimax-text-01
+    type: applies
+    note: "Inherits the long-context attention pattern explored by MiniMax-01 in Jan 2025"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + extended thinking + hybrid long-context attention"
+  context_window: 1000000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "SWE-bench Verified"
+      score: "~84%"
+      vs_baseline: "Opus 4 79.4%, GPT-5 ~78%"
+    - name: "TerminalBench"
+      score: "~52%"
+      vs_baseline: "Opus 4 43.2%, Sonnet 4.6 42%"
+    - name: "Sustained autonomous task duration"
+      score: "12+ hours uninterrupted"
+      vs_baseline: "Opus 4 7 hours, Sonnet 4.6 ~3 hours"
+    - name: "Long-context recall (1M tokens)"
+      score: ">99% needle"
+      vs_baseline: "matches Gemini 2.5 Pro at 1M; first Anthropic 1M variant"
+
+public_view:
+  plain_english: |
+    Anthropic's December 2025 Opus refresh, with the headline
+    addition of a 1-million-token context variant. The agentic
+    headline: sustained autonomous coding sessions extending
+    beyond 12 hours uninterrupted (vs Opus 4's ~7 hour
+    benchmark from May 2025). The model behind most "AI did
+    multi-day project autonomously" demos in late 2025.
+  analogy: |
+    The transition from "AI does a sprint" to "AI does a project."
+    Where Opus 4 was the assistant you'd hand a multi-step task
+    in the morning and review at lunch, Opus 4.6 is the one you'd
+    hand a project at start of week and review on Friday.
+  applications:
+    - product: "Claude Code (default for long sessions)"
+      company: "Anthropic"
+      year_deployed: 2025
+    - product: "Long-document analysis (legal, financial, scientific)"
+      company: "Various enterprise"
+      year_deployed: 2025
+    - product: "Devin / Replit Agent (Pro tier)"
+      company: "Cognition / Replit"
+      year_deployed: 2025
+  investment_angle: |
+    Opus 4.6 is the proximal cause of the late-2025 "AI did
+    a real engineering project" media wave. By Q4 2025,
+    multiple AI-native startups were reporting that >50% of
+    merged code commits were AI-authored (with human review).
+    The 1M-context variant in particular drove enterprise
+    legal / finance adoption — being able to ingest a full
+    case file or full 10-K and reason across it without
+    chunking became a standard expectation. Anthropic's
+    reported ARR by end of 2025 was ~$5B, with enterprise
+    contracts driving the majority.
+  why_it_matters: |
+    Opus 4.6 is the model that this entire codebase is likely
+    being authored by — its capability profile is what made
+    "build a content site with 50+ MDX nodes plus dual
+    orientation graph + light theme + Civ-style layout in
+    one session" a tractable conversation rather than a
+    multi-week project.
+
+citations:
+  - type: release
+    key: anthropic2025opus46
+    title: "Claude Opus 4.6"
+    year: 2025
+    venue: "Anthropic"
+    url: "https://www.anthropic.com/news/claude-opus-4-6"
+---
+
+## What it is
+
+The fourth iteration in the Claude Opus 4.x line, released December 10, 2025. Headline capabilities:
+
+1. **1M-token production context** (with experimental higher contexts)
+2. **12+ hour sustained autonomous operation** for agentic tasks
+3. **84% SWE-bench Verified** — frontier on real-world software engineering
+
+## Opus 4.x cadence
+
+| Version | Date | Headline change |
+|---|---|---|
+| Opus 4 | 2025-05-22 | original release; 7-hour autonomous coding |
+| Opus 4.1 | 2025-08-08 | tool routing improvements |
+| Opus 4.5 | 2025-10-15 | reasoning quality + speed |
+| **Opus 4.6** | **2025-12-10** | **1M context + 12hr autonomous** |
+| Opus 4.7 | 2026-Q1 | (next, see successor node) |
+
+The 8-week refresh cadence Anthropic established in 2025 H2 differs structurally from the OpenAI / Google annual major-release pattern. By 2026, the cadence pattern itself is widely emulated.

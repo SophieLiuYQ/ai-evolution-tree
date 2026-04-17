@@ -1,0 +1,132 @@
+---
+slug: alphago
+title: "AlphaGo Defeats Lee Sedol — Deep RL at the Game Frontier"
+date: 2016-03-15
+era: deep-learning-revival
+category: [rl, theory]
+relationships:
+  - to: backpropagation
+    type: builds_on
+    note: "Policy + value networks are deep CNNs trained by backprop"
+  - to: alexnet
+    type: builds_on
+    note: "Convolutional pattern recognition for board state evaluation"
+authors:
+  - "Silver, D."
+  - "Huang, A."
+  - "Maddison, C. J."
+  - "Guez, A."
+  - "et al."
+org: "DeepMind"
+breakthrough_score: 9
+status: foundational
+model_spec:
+  parameters: "Policy net + value net, ~30M each"
+  architecture: "CNN policy network + CNN value network + Monte Carlo Tree Search (MCTS)"
+  training_compute: "Trained on 30M expert moves + millions of self-play games"
+  release_type: paper
+  modalities: [game]
+  benchmarks:
+    - name: "Match vs Lee Sedol (9-dan, Go world champion)"
+      score: "AlphaGo 4 - 1 Lee Sedol (March 2016)"
+      vs_baseline: "prior AI Go programs played at ~5-dan amateur level"
+    - name: "AlphaGo Zero (2017) — self-play only"
+      score: "Defeats AlphaGo 100-0 in 40 days"
+      vs_baseline: "no human game data needed"
+
+public_view:
+  plain_english: |
+    DeepMind's Go-playing AI that, in March 2016, defeated 18-time
+    world champion Lee Sedol 4 games to 1. Go had been considered
+    decades away from AI mastery — its branching factor (250+
+    legal moves per turn vs chess's ~35) had stymied decades of
+    classical AI approaches. AlphaGo combined deep neural networks
+    with Monte Carlo Tree Search to leap past those limits in two
+    years of focused work.
+  analogy: |
+    The "Deep Blue defeats Kasparov" moment of the modern AI era.
+    A 1997 milestone for chess; a 2016 milestone for Go; both
+    convinced the broader public (and corporate boards) that AI
+    was no longer a research curiosity but a force.
+  applications:
+    - product: "Inspired the entire deep-RL research wave 2016-2020"
+      company: "DeepMind, OpenAI, others"
+      year_deployed: 2016
+    - product: "AlphaFold (same lab, similar compute substrate)"
+      company: "DeepMind"
+      year_deployed: 2018
+    - product: "MuZero, AlphaStar, AlphaCode (DeepMind lineage)"
+      company: "DeepMind"
+      year_deployed: 2019
+  investment_angle: |
+    AlphaGo's match was watched by ~280M viewers globally — the
+    largest public-attention event in AI history before ChatGPT.
+    For the Chinese AI industry specifically, Lee Sedol's defeat
+    (and AlphaGo's 2017 Master defeat of Ke Jie, the Chinese
+    champion) was the catalyst event for the multi-trillion-yuan
+    "AI superpower" national strategy announcement (July 2017
+    State Council plan). Modern Chinese AI investment — Baidu,
+    Alibaba, ByteDance, the AI tigers — is downstream of the
+    political response to this match. DeepMind's own valuation
+    trajectory (acquired by Google for $400-650M in 2014; valued
+    in tens of billions by mid-2020s) is also marked by the
+    AlphaGo era.
+  why_it_matters: |
+    AlphaGo was the first AI system whose capability was undeniable
+    to non-technical audiences worldwide. The cultural moment
+    accelerated AI awareness, funding, and policy attention by
+    perhaps 5 years. Without AlphaGo, the GPT-3 / ChatGPT receptions
+    would have happened against a much less prepared public.
+
+citations:
+  - type: paper
+    key: silver2016alphago
+    title: "Mastering the game of Go with deep neural networks and tree search"
+    authors: ["Silver, D.", "Huang, A.", "Maddison, C. J.", "et al."]
+    year: 2016
+    venue: "Nature"
+    doi: "10.1038/nature16961"
+  - type: paper
+    key: silver2017alphagozero
+    title: "Mastering the game of Go without human knowledge (AlphaGo Zero)"
+    authors: ["Silver, D.", "Schrittwieser, J.", "Simonyan, K.", "et al."]
+    year: 2017
+    venue: "Nature"
+    doi: "10.1038/nature24270"
+---
+
+## What it is
+
+AlphaGo combines:
+
+1. **Policy network** — a deep CNN trained on 30M expert human Go moves to predict the next move
+2. **Value network** — a deep CNN trained to evaluate "how good is this board position for the player to move?"
+3. **Monte Carlo Tree Search (MCTS)** — at play time, simulate thousands of plausible games (guided by the policy network) and use the value network to evaluate the resulting positions
+
+The combination beats either component alone. The networks prune the search space (focusing computation on promising moves) and evaluate leaf positions; the search compensates for individual network errors by integrating many evaluations.
+
+## The match
+
+| Date | Game | Winner |
+|---|---|---|
+| 2016-03-09 | Game 1 | AlphaGo (Lee Sedol resigned at move 186) |
+| 2016-03-10 | Game 2 | AlphaGo (move 37 — "alien move," widely studied) |
+| 2016-03-12 | Game 3 | AlphaGo |
+| 2016-03-13 | Game 4 | Lee Sedol (move 78 — "wedge of God") |
+| 2016-03-15 | Game 5 | AlphaGo |
+
+Lee Sedol won the only game any human has ever won against a top AlphaGo variant. After the match, he announced retirement from professional Go in 2019, citing the perceived futility of competing against AI.
+
+## Successors and what they showed
+
+| System | Year | Key change |
+|---|---|---|
+| AlphaGo Master | 2017-01 | improved version, beat top human players 60-0 in online matches |
+| AlphaGo Zero | 2017-10 | learned from self-play only (no human game data); surpassed all prior AlphaGo versions in 40 days |
+| AlphaZero | 2017-12 | generalized to chess, Shogi, Go; mastered all three from scratch in ~24 hours |
+| MuZero | 2019-11 | learned the rules of the game while playing |
+| AlphaFold | 2018, 2020 | applied the architectural lessons to protein structure prediction |
+| AlphaStar | 2019 | StarCraft II grandmaster level |
+| AlphaCode | 2022 | competitive programming median performance |
+
+The AlphaGo lineage is the most successful applied-AI research arc of the 2010s — and a major part of why DeepMind's status (and Demis Hassabis specifically) is what it is in 2026.

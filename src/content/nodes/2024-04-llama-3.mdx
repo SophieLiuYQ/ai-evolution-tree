@@ -1,0 +1,129 @@
+---
+slug: llama-3
+title: "Llama 3 — Meta's Frontier-Comparable Open Model"
+date: 2024-04-18
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: llama-2
+    type: scales
+    note: "Same architecture family + 7.5× more training tokens (2T → 15T)"
+  - to: gpt-4
+    type: open_alt_to
+    note: "70B variant approaches GPT-4 on key benchmarks; first open-weight model to do so"
+authors:
+  - "Meta AI Team"
+org: "Meta AI"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "8B / 70B (later: 405B in Llama 3.1)"
+  architecture: "Llama 2 + grouped-query attention (all sizes), 128k vocab"
+  context_window: 8192
+  training_tokens: "15T (>5× Chinchilla-optimal — deliberate over-training for inference efficiency)"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU (5-shot, 70B)"
+      score: "82.0%"
+      vs_baseline: "Llama 2 70B 68.9%, Claude 3 Sonnet 79.0%"
+    - name: "HumanEval (70B)"
+      score: "81.7%"
+      vs_baseline: "Llama 2 70B 29.9%, GPT-4 67.0%"
+    - name: "GSM8K (70B)"
+      score: "93.0%"
+      vs_baseline: "Llama 2 70B 56.8%"
+
+public_view:
+  plain_english: |
+    Meta's third-generation open-weight model, trained on 15 trillion
+    tokens — over 7× more than Llama 2. The 70B variant matched or
+    approached GPT-4 and Claude 3 Sonnet on most benchmarks while
+    being downloadable for free with a permissive license. Followed
+    in July 2024 by Llama 3.1 with a 405B version that explicitly
+    targeted GPT-4 / Claude 3.5 parity.
+  analogy: |
+    The first open-weight model that could plausibly replace a closed
+    frontier API in production use cases — like the moment Linux
+    became viable for serious enterprise workloads, but for AI.
+  applications:
+    - product: "WhatsApp / Instagram / Facebook Meta AI assistant"
+      company: "Meta"
+      year_deployed: 2024
+    - product: "Together AI, Anyscale, Fireworks hosted endpoints"
+      company: "Various"
+      year_deployed: 2024
+    - product: "Groq ultra-fast inference"
+      company: "Groq"
+      year_deployed: 2024
+  investment_angle: |
+    Llama 3 is the strongest evidence to date that the closed-vs-open
+    gap is closing, not widening. Meta spent $20B+ in 2024 capex to
+    ship a model it gave away — a strategy that only makes sense if
+    open weights are a defensive moat against OpenAI/Microsoft and
+    Google (denying them pricing power) and an offensive distribution
+    play (Meta AI is now embedded in WhatsApp / Instagram with 3B+ MAU).
+    Drove inference-pricing collapse: Llama 3 70B served at <$1 per
+    1M output tokens by mid-2024, vs Claude Opus at $75. The "open
+    pulls down closed prices" thesis became operating reality.
+  why_it_matters: |
+    Llama 3's release cadence and quality made open weights the
+    structural baseline for LLM economics. Any closed model now has
+    to justify its premium against a free open alternative within
+    one to two quarters of release. This pricing pressure is the
+    single biggest factor reshaping the LLM business in 2024-26.
+
+citations:
+  - type: release
+    key: meta2024llama3
+    title: "Introducing Meta Llama 3"
+    year: 2024
+    venue: "Meta AI Blog"
+    url: "https://ai.meta.com/blog/meta-llama-3/"
+  - type: paper
+    key: meta2024llama3paper
+    title: "The Llama 3 Herd of Models"
+    authors: ["Meta AI"]
+    year: 2024
+    venue: "arXiv"
+    arxiv: "2407.21783"
+---
+
+## What it is
+
+Two foundation models (8B and 70B) at launch, with a 405B variant added in Llama 3.1 (2024-07-23). All variants share architecture: a Llama 2-style decoder-only transformer with GQA, RoPE, RMSNorm, SwiGLU, but with a much larger vocabulary (128k tokens vs 32k in Llama 2) and longer training (15T tokens vs 2T).
+
+The deliberate over-training (15T tokens for an 8B model is ~1875 tok/param vs Chinchilla's ~20 tok/param) is the most consequential design decision: it sacrifices training-time efficiency for inference-time efficiency. Modern serving economics make this worthwhile.
+
+## Llama 3 vs concurrent peers (Q2 2024)
+
+| Model | Date | Org | Params | MMLU | HumanEval | GSM8K | License | Cost / 1M out |
+|---|---|---|---|---|---|---|---|---|
+| GPT-4 Turbo | 2023-11 | OpenAI | undisclosed | ~86% | ~85% | — | API | $30 |
+| Claude 3 Opus | 2024-03 | Anthropic | undisclosed | 86.8% | 84.9% | 95.0% | API | $75 |
+| Gemini 1.5 Pro | 2024-02 | Google | undisclosed | 83.7% | 71.9% | 91.7% | API | $21 |
+| **Llama 3 70B** | **2024-04** | **Meta** | **70B** | **82.0%** | **81.7%** | **93.0%** | **open** | **~$0.90 (Together)** |
+| Llama 3.1 405B | 2024-07 | Meta | 405B | 88.6% | 89.0% | 96.8% | open | ~$5 (Together) |
+| Claude 3.5 Sonnet | 2024-06 | Anthropic | undisclosed | 88.7% | 92.0% | 96.4% | API | $15 |
+
+The 405B variant approaches Claude 3.5 Sonnet quality at one-third the price (when self-hosted via Together / Fireworks). For high-volume workloads this is the operative comparison.
+
+## What 15T tokens of training data looks like
+
+Meta's data card disclosure:
+- **>5% non-English** (vs &lt;2% for prior open models)
+- **>4% code** in pretraining (Code Llama-style)
+- ~50% deduplicated CommonCrawl
+- Quality filtering using Llama 2 itself as a classifier
+
+The data composition + scale is the technical moat. Meta does not disclose the specific quality filters, which are widely considered the highest-leverage piece.
+
+## Llama 3.1 405B — the open frontier
+
+Released July 23, 2024 with Meta's "Open Source AI Is the Path Forward" manifesto from Mark Zuckerberg. Specs:
+- 405B params, 16k context (extended from 8k)
+- Trained on H100 GPUs, ~16k of them, ~30M GPU-hours total
+- First open-weight model whose training compute exceeded GPT-4's estimated training compute
+- Cost to host: ~$5/1M output tokens at Together AI launch pricing
+
+405B is the line in the sand: open weights at GPT-4-class scale, free to download, free to commercial-use (subject to the >700M MAU carve-out).

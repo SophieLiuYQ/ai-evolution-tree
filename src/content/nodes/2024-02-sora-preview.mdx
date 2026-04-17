@@ -1,0 +1,115 @@
+---
+slug: sora
+title: "Sora — OpenAI's Text-to-Video"
+date: 2024-02-15
+era: multimodal
+category: [generative]
+relationships:
+  - to: stable-diffusion
+    type: builds_on
+    note: "Diffusion-based generative paradigm; extends to spatiotemporal video tokens"
+  - to: transformer
+    type: applies
+    note: "DiT (Diffusion Transformer) — replaces U-Net with transformer over patches"
+authors:
+  - "OpenAI Sora Team"
+org: "OpenAI"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "undisclosed"
+  architecture: "DiT (Diffusion Transformer) on spatiotemporal patches; latent video diffusion"
+  release_type: demo
+  modalities: [text, video]
+  benchmarks:
+    - name: "Output duration"
+      score: "60 seconds (preview)"
+      vs_baseline: "Runway Gen-2 16s, Pika 4s, prior demos sub-10s"
+    - name: "Output resolution"
+      score: "1920x1080 cinematic"
+      vs_baseline: "step change vs prior consumer text-to-video"
+
+public_view:
+  plain_english: |
+    OpenAI's text-to-video model, demonstrated as research previews
+    in February 2024. The viral demo videos — a fashion-shoot in
+    Tokyo, a snow leopard in mountains, vintage California
+    drone footage — convinced the public that AI-generated video
+    was crossing into "could be mistaken for real footage" territory.
+    Held back from public release until December 2024 (Sora 1.0)
+    and meaningfully iterated as Sora 2 in late 2025.
+  analogy: |
+    Sora's February 2024 release played the same role for video
+    that GPT-3's June 2020 release played for text: a step-change
+    capability demo from a private research lab that compressed
+    the broader industry's video-AI roadmap by 12-18 months.
+  applications:
+    - product: "Sora consumer access (sora.com)"
+      company: "OpenAI"
+      year_deployed: 2024
+    - product: "Embedded in ChatGPT Plus / Pro"
+      company: "OpenAI"
+      year_deployed: 2024
+    - product: "Various film and ad-agency creative pipelines (limited access)"
+      company: "Various"
+      year_deployed: 2024
+  investment_angle: |
+    Sora's February 2024 demo was the catalyst for the
+    text-to-video startup investment wave: Runway, Pika, Genmo,
+    HeyGen, and Chinese players (Kling from Kuaishou, Hailuo
+    from MiniMax) all raised significant rounds in the
+    following 6 months on the thesis that "video is the next
+    image generation." The Hollywood / advertising / education
+    industries also began serious AI-video evaluation. By 2025,
+    text-to-video had crossed into limited production use in
+    advertising (insurance ads, retail demonstrations, social
+    content) — though still a tiny fraction of total video
+    production. The full industry transformation, if it
+    happens, is a 2026-2030 story.
+  why_it_matters: |
+    Sora is the inflection point where video joined image, text,
+    audio, and code as a domain where AI-generated content was
+    no longer obviously distinguishable from human-produced
+    content. The implications for advertising, film, content
+    moderation, and disinformation are still being absorbed.
+
+citations:
+  - type: release
+    key: openai2024sora
+    title: "Video generation models as world simulators"
+    year: 2024
+    venue: "OpenAI Research"
+    url: "https://openai.com/index/video-generation-models-as-world-simulators/"
+---
+
+## What it is
+
+OpenAI's text-to-video generative model, first demonstrated February 15, 2024 with a set of research-preview videos. Architecturally a Diffusion Transformer (DiT) operating on spatiotemporal latent patches: the input video is encoded into latent space (similar to Stable Diffusion's VAE), divided into spacetime patches, and a transformer denoises the patch sequence conditioned on text.
+
+The OpenAI write-up framed Sora as a "world simulator" — the suggestion that scaling video diffusion learned implicit physics (objects persisting through occlusion, fluid dynamics, lighting consistency) was a key narrative choice.
+
+## How Sora compares to text-to-video peers
+
+| System | Date | Org | Max length | Resolution | Released |
+|---|---|---|---|---|---|
+| Make-A-Video | 2022-09 | Meta | 5s | 768x768 | research |
+| Imagen Video | 2022-10 | Google | 5s | 1280x768 | research |
+| Phenaki | 2022-09 | Google | 2 min (low quality) | 128x128 | research |
+| Pika 1.0 | 2023-12 | Pika | 4s | 1280x720 | product |
+| Runway Gen-2 | 2023-06 | Runway | 16s | 1280x768 | product |
+| **Sora preview** | **2024-02** | **OpenAI** | **60s** | **1920x1080** | **demo only** |
+| Kling 1.0 | 2024-06 | Kuaishou | 2 min | 1080p | product (China-first) |
+| Hailuo (MiniMax) | 2024-08 | MiniMax | 6s | 720p | product |
+| Veo | 2024-05 | Google | 60s+ | 1080p | demo |
+| Sora 1.0 | 2024-12 | OpenAI | 20s (in product) | up to 1080p | product |
+| Veo 2 | 2024-12 | Google | 8s (4k) | 4k | API |
+| **Sora 2** | **2025-09** | **OpenAI** | **dramatic quality jump** | — | product |
+| Veo 3 | 2025-Q3 | Google | improved physics | — | product |
+
+Sora's 60-second 1080p preview was the quality / duration ceiling-breaker. Subsequent product releases (Sora 1.0 Dec 2024, Sora 2 Sep 2025) gradually closed the gap between demo capability and shipping product capability.
+
+## The "world simulator" framing
+
+OpenAI's research write-up emphasized emergent capabilities — Sora apparently learned 3D consistency, object permanence, basic physics — and framed video diffusion as an early step toward a "general world model." This framing had implications for the broader narrative around scaling laws: maybe scaling video pretraining also produces useful world-knowledge representations, not just video output.
+
+The framing was also commercially important: it positioned Sora not just as "OpenAI also has a video generator" but as "OpenAI has a foundational world-modeling capability that happens to ship today as video." The research-preview-then-9-months-of-iteration release pattern was unusual; most labs ship product upon demo.

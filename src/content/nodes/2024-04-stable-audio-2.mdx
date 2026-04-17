@@ -1,0 +1,90 @@
+---
+slug: stable-audio-2
+title: "Stable Audio 2.0 — Open Latent-Diffusion Audio"
+date: 2024-04-03
+era: multimodal
+category: [generative]
+relationships:
+  - to: stable-diffusion
+    type: applies
+    note: "Latent diffusion paradigm extended from images to audio waveforms"
+authors:
+  - "Stability AI Audio Team"
+org: "Stability AI"
+breakthrough_score: 6
+status: superseded
+model_spec:
+  parameters: "~1.1B"
+  architecture: "Latent diffusion on EnCodec audio tokens + DiT (Diffusion Transformer) backbone"
+  release_type: open_weights
+  modalities: [text, audio]
+  benchmarks:
+    - name: "Output duration"
+      score: "3 minutes"
+      vs_baseline: "Stable Audio 1.0 90s; MusicGen 30s; Suno v3 (closed) 2 min"
+    - name: "Output sample rate"
+      score: "44.1 kHz stereo"
+      vs_baseline: "production-quality audio output"
+
+public_view:
+  plain_english: |
+    Stability AI's open text-to-audio generator, releasing 3-minute
+    44.1kHz stereo tracks from text prompts. Less viral than Suno
+    (which had launched v3 two weeks earlier as a polished consumer
+    product), but the only open-weight option in the category — a
+    role analogous to what Stable Diffusion played in image
+    generation while DALL-E was closed.
+  analogy: |
+    The "Stable Diffusion of audio" — same Stability AI playbook
+    of "release open weights as the open-source counterweight to
+    closed competitors." Less polished consumer experience, more
+    foundational ecosystem value.
+  applications:
+    - product: "Stable Audio (consumer)"
+      company: "Stability AI"
+      year_deployed: 2024
+    - product: "Game-audio + UGC platforms (community fine-tunes)"
+      company: "Various"
+      year_deployed: 2024
+    - product: "Open audio research baseline"
+      company: "Academic"
+      year_deployed: 2024
+  investment_angle: |
+    Stable Audio 2 was Stability AI's attempt to repeat its
+    image-generation playbook in audio. The execution
+    underperformed: by 2024 Stability AI was in financial
+    distress (founder Emad Mostaque had departed in March 2024;
+    funding crises continued through 2024-25). The open-weight
+    audio category is now smaller commercially than Suno / Udio's
+    closed business, illustrating that open weights aren't
+    automatically the dominant strategy in every modality.
+  why_it_matters: |
+    Stable Audio 2 is the open baseline that makes the closed
+    audio-AI category contestable. Without it, Suno / Udio /
+    ElevenLabs would have unchallenged pricing power.
+
+citations:
+  - type: release
+    key: stability2024sa2
+    title: "Stable Audio 2.0"
+    year: 2024
+    venue: "Stability AI"
+    url: "https://stability.ai/news/stable-audio-2-0"
+---
+
+## What it is
+
+A latent diffusion model for audio generation. The audio is encoded into discrete tokens via EnCodec (Meta's neural audio codec), and a Diffusion Transformer (DiT) denoises the token sequence conditioned on text. Released open-weight under a non-commercial license, with a paid commercial license available from Stability AI.
+
+## Stable Audio 2 vs concurrent text-to-audio (April 2024)
+
+| Model | Date | Org | Open? | Length | Quality |
+|---|---|---|---|---|---|
+| Jukebox | 2020 | OpenAI | research | minutes | early-era |
+| MusicLM | 2023-01 | Google | demos | 30s | research preview |
+| MusicGen | 2023-06 | Meta | open | 30s | open baseline |
+| Stable Audio 1.0 | 2023-09 | Stability | open | 90s | open improvement |
+| Suno v3 | 2024-03 | Suno | product | 2 min | consumer breakthrough |
+| **Stable Audio 2.0** | **2024-04** | **Stability AI** | **open** | **3 min** | **best open at release** |
+| Udio v1 | 2024-04 | Udio | product | 2 min | competitive consumer |
+| Suno v4 | 2024-11 | Suno | product | 4+ min | continued lead |

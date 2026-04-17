@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Tree from "../components/Tree.astro";
+
+const nodes = await getCollection("nodes");
+---
+
+<Base title="Timeline · AI Evolution Tree">
+  <section class="mb-8">
+    <h1 class="mb-2 text-3xl font-bold tracking-tight">
+      📅 Timeline view
+    </h1>
+    <p class="max-w-3xl text-base leading-relaxed text-[var(--fg-muted)]">
+      Same nodes as the
+      <a href="/">graph</a>, listed strictly chronologically. Useful when you
+      want to scan what happened in a specific year without following lineage
+      edges.
+    </p>
+    <p class="mt-4 text-sm text-[var(--fg-muted)]">
+      Older ↑ &nbsp; · &nbsp; Newer ↓
+    </p>
+  </section>
+
+  <Tree nodes={nodes} />
+</Base>

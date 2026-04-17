@@ -1,0 +1,122 @@
+---
+slug: mixtral-8x7b
+title: "Mixtral 8x7B — Open Sparse Mixture-of-Experts"
+date: 2023-12-11
+era: scale-era
+category: [nlp, generative, architecture]
+relationships:
+  - to: llama-2
+    type: builds_on
+    note: "Inherits Mistral 7B base architecture; adds MoE feed-forward layers"
+authors:
+  - "Jiang, A. Q."
+  - "Sablayrolles, A."
+  - "Roux, A."
+  - "Mensch, A."
+  - "et al."
+org: "Mistral AI"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "46.7B total / 12.9B active per forward pass"
+  architecture: "8 experts × 7B; top-2 routing per token; MoE in FFN layers only"
+  context_window: 32768
+  training_tokens: "undisclosed"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU"
+      score: "70.6%"
+      vs_baseline: "Llama 2 70B 68.9%, GPT-3.5 70.0%"
+    - name: "HumanEval"
+      score: "40.2%"
+      vs_baseline: "Llama 2 70B 29.9%"
+    - name: "GSM8K (math)"
+      score: "60.4%"
+      vs_baseline: "Llama 2 70B 56.8%"
+
+public_view:
+  plain_english: |
+    A French startup's open-weight model that activates only 13B of its
+    47B parameters for any given input — a design that delivers the
+    quality of a 70B model at the inference cost of a 13B one. Released
+    via a magnet link with no documentation, it became the first
+    open-weight Mixture-of-Experts model competitive with proprietary
+    competitors.
+  analogy: |
+    Instead of one expert who studied everything and remembers it all,
+    you have eight specialists at the door of every question — and the
+    router decides which two are best suited to answer this particular
+    question. Same total knowledge, much faster answers.
+  applications:
+    - product: "Le Chat (Mistral's consumer interface)"
+      company: "Mistral AI"
+      year_deployed: 2024
+    - product: "Hosted inference at Together, Anyscale, Fireworks"
+      company: "Various"
+      year_deployed: 2023
+  investment_angle: |
+    Mistral AI raised $415M at a $2B valuation within 6 months of
+    incorporation — making the case that European AI labs could
+    compete on open weights despite trailing OpenAI/Anthropic on
+    capital. By 2024 the company had reached $6B valuation and
+    productized Mixtral as Mistral Large API. Mixtral validated MoE as
+    the dominant frontier architecture (GPT-4, DeepSeek-V3, Claude all
+    believed to be MoE) and accelerated the inference-platform business
+    case: serving MoE models well requires specialized infrastructure,
+    creating moats for inference vendors.
+  why_it_matters: |
+    Mixtral's release proved that sparse architectures could ship in
+    open weights at frontier-comparable quality. Every subsequent MoE
+    open release (DeepSeek V2/V3, Qwen-MoE, Snowflake Arctic) traces
+    its strategy to this launch. Marked the transition of open-source
+    LLM development from "Llama clones" to architectural diversity.
+
+citations:
+  - type: paper
+    key: jiang2023mixtral
+    title: "Mixtral of Experts"
+    authors: ["Jiang, A. Q.", "Sablayrolles, A.", "Roux, A.", "Mensch, A.", "et al."]
+    year: 2023
+    venue: "arXiv"
+    arxiv: "2401.04088"
+  - type: release
+    key: mistral2023mixtral
+    title: "Mixtral of Experts (release)"
+    year: 2023
+    venue: "Mistral AI"
+    url: "https://mistral.ai/news/mixtral-of-experts/"
+---
+
+## What it is
+
+A sparse Mixture-of-Experts (MoE) transformer where each feed-forward layer contains 8 separate "expert" subnetworks; for each token, a learned router picks the top 2 experts to route through. Total parameters: 46.7B. Active parameters per token: 12.9B.
+
+```
+Input token → Attention → Router → [Expert 1, Expert 2, ..., Expert 8]
+                              │
+                              ↓ (top 2 selected)
+                         Expert 3 + Expert 7
+                              ↓
+                         Weighted sum → Output token
+```
+
+The MoE is in the feed-forward layers only; attention layers are dense (shared across experts).
+
+## How Mixtral compares to peers
+
+| Model | Date | Params (active) | Context | MMLU | HumanEval | GSM8K |
+|---|---|---|---|---|---|---|
+| Llama 2 70B | 2023-07 | 70B (70B) | 4k | 68.9% | 29.9% | 56.8% |
+| Mistral 7B | 2023-09 | 7B (7B) | 8k | 60.1% | 30.5% | 52.1% |
+| Claude 2.1 | 2023-11 | undisclosed | 200k | — | — | — |
+| GPT-4 Turbo | 2023-11 | undisclosed | 128k | ~86% | ~85% | — |
+| **Mixtral 8x7B** | **2023-12** | **47B (13B)** | **32k** | **70.6%** | **40.2%** | **60.4%** |
+| Mixtral 8x7B Instruct | 2023-12 | 47B (13B) | 32k | — | — | — |
+| Mixtral 8x22B | 2024-04 | 141B (39B) | 64k | 77.8% | 45.1% | 76.5% |
+
+Mixtral's headline result: matches or beats Llama 2 70B on text quality at ~⅙ the inference compute. The architectural lesson — sparse models give better quality-per-FLOP than dense ones at scale — is the basis of every frontier model believed to be MoE today (GPT-4, GPT-4o, Claude 3+, Gemini, DeepSeek-V3).
+
+## The release stunt
+
+Mixtral was released on December 8, 2023 via a magnet link tweeted by Mistral CEO Arthur Mensch with no announcement, no documentation, and no model card. The community reverse-engineered the architecture within hours. Mistral published a formal blog post three days later. The deliberate "release first, document later" approach contrasted sharply with OpenAI's safety-card cadence and earned Mistral a reputation for "ship like the open-source community ships."

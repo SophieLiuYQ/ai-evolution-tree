@@ -1,0 +1,131 @@
+---
+slug: o1
+title: "OpenAI o1 — Inference-Time Reasoning"
+date: 2024-09-12
+era: reasoning
+category: [nlp, generative, training]
+relationships:
+  - to: gpt-4o
+    type: builds_on
+    note: "Successor frontier; trades inference latency for reasoning capability"
+  - to: chain-of-thought
+    type: applies
+    note: "Internalizes CoT into training; generates long hidden reasoning traces before answering"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 9
+status: superseded
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + RL on reasoning traces (specifics undisclosed)"
+  context_window: 128000
+  release_type: api
+  modalities: [text]
+  benchmarks:
+    - name: "AIME 2024 (math olympiad)"
+      score: "83.3%"
+      vs_baseline: "GPT-4o 13.4% — 6× improvement"
+    - name: "Codeforces (competitive programming, percentile)"
+      score: "89th"
+      vs_baseline: "GPT-4o 11th"
+    - name: "GPQA Diamond (PhD-level science)"
+      score: "78.0%"
+      vs_baseline: "GPT-4o 53.6%; PhD experts ~70%"
+    - name: "MATH"
+      score: "94.8%"
+      vs_baseline: "GPT-4o 76.6%"
+
+public_view:
+  plain_english: |
+    OpenAI's first model trained explicitly to "think before it answers"
+    — generating a long chain of internal reasoning before producing
+    its final response. On math olympiad and competitive-programming
+    problems, it crossed thresholds (top human percentiles) that prior
+    models couldn't approach. Trade-off: each query takes 10-60
+    seconds and costs 5-50× more than GPT-4o.
+  analogy: |
+    Earlier models answered like contestants on a quiz show — fast,
+    confident, sometimes wrong. o1 answered more like a graduate
+    student writing a problem set — slower, with visible scratch
+    work, and substantially more accurate on hard problems.
+  applications:
+    - product: "ChatGPT Plus / Pro (o1-preview, then o1)"
+      company: "OpenAI"
+      year_deployed: 2024
+    - product: "Codeforces / IOI-style coding evaluation references"
+      company: "Various"
+      year_deployed: 2024
+    - product: "Scientific research assistants"
+      company: "Various academic"
+      year_deployed: 2024
+  investment_angle: |
+    o1 opened a new scaling axis — inference-time compute — that doesn't
+    require larger pretraining runs. Implications: (1) future capability
+    gains are partly decoupled from $1B+ training spend, shifting
+    competitive ground from "who can afford the next model" to "who
+    builds the best reasoning RL pipeline"; (2) inference-time scaling
+    favors compute-constrained labs (Anthropic, DeepMind) and
+    challenges hyperscaler advantages (OpenAI/Microsoft); (3) the
+    economics of "spend more compute for higher-quality answers"
+    creates new monetization tiers (ChatGPT Pro at $200/mo). Triggered
+    rapid follow-on releases of reasoning models from every frontier
+    lab through 2025.
+  why_it_matters: |
+    o1 ended the "scaling laws determine everything" era. After o1,
+    capability could be bought at inference time, not just training
+    time. This is the most important technical pivot in the LLM
+    landscape since GPT-3.
+
+citations:
+  - type: release
+    key: openai2024o1
+    title: "Introducing OpenAI o1"
+    year: 2024
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/introducing-openai-o1-preview/"
+  - type: paper
+    key: wei2022cot
+    title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
+    authors: ["Wei, J.", "Wang, X.", "Schuurmans, D.", "et al."]
+    year: 2022
+    venue: "NeurIPS"
+    arxiv: "2201.11903"
+---
+
+## What it is
+
+A frontier model trained to internalize chain-of-thought reasoning. Architecturally a decoder-only transformer (specifics undisclosed), but post-trained with reinforcement learning on long-form reasoning traces. At inference, the model generates a hidden reasoning trace (often 1,000-10,000 tokens) before emitting a final answer; users see only the answer plus a short summary of the reasoning.
+
+OpenAI declined to publish the reward signal, the RL algorithm, or the dataset of reasoning traces. The most-cited speculation: process supervision (PRM-style reward modeling, per the "Let's Verify Step by Step" paper from OpenAI in 2023), combined with verifiable-reward domains (math, code) where ground truth is checkable.
+
+## Capability step-change in math and code
+
+| Benchmark | GPT-4o | o1-preview | o1 | Human reference |
+|---|---|---|---|---|
+| AIME 2024 | 13.4% | 56.7% | 83.3% | top 500 in US ~75% |
+| Codeforces | 11th %ile | 62nd %ile | 89th %ile | — |
+| GPQA Diamond | 53.6% | 73.3% | 78.0% | PhD expert ~70% |
+| MATH | 76.6% | 85.5% | 94.8% | — |
+| LiveCodeBench | 38.2% | 76.5% | 89.0% | — |
+| MMLU | 88.7% | 90.8% | 92.3% | — |
+
+The "uniform" gains on text-only benchmarks (MMLU) are modest. The differential gains on verifiable-reward benchmarks (math, code, science) are extreme. This pattern — reasoning models help where there's a checkable answer, much less where there isn't — has held across all subsequent reasoning-model releases.
+
+## Successor reasoning models (the wave o1 triggered)
+
+| Model | Date | Org | AIME | GPQA | Notes |
+|---|---|---|---|---|---|
+| **o1** | **2024-09** | **OpenAI** | **83.3%** | **78.0%** | first |
+| o1-pro | 2024-12 | OpenAI | 86% | 79% | even longer thinking |
+| o3 | 2025-01 (preview) | OpenAI | 96.7% | 87.7% | full release April 2025 |
+| Claude 3.7 Sonnet | 2025-02 | Anthropic | 80.0% | 84.8% | extended-thinking mode |
+| DeepSeek R1 | 2025-01 | DeepSeek | 79.8% | 71.5% | open-weight |
+| Gemini 2.0 Flash Thinking | 2025-01 | Google | 73.3% | 74.2% | low-latency reasoning |
+| Qwen QwQ-32B | 2024-11 | Alibaba | 50.0% | 65.2% | open-weight reasoning |
+
+DeepSeek R1's January 2025 release — open-weight reasoning model approaching o1 quality — was the strategic shock of the year, briefly knocking ~$600B off Nvidia's market cap as investors questioned closed-model moats.
+
+## The hidden reasoning trace controversy
+
+OpenAI showed users only a "summary" of the reasoning trace, not the trace itself. Stated rationale: prevent competitive scraping for distillation training. Researcher critique: the hidden trace makes safety audits, jailbreak research, and capability benchmarking structurally harder. As of mid-2025, no frontier reasoning lab has reverted to fully visible reasoning traces.

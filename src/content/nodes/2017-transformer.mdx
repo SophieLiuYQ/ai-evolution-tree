@@ -1,0 +1,173 @@
+---
+slug: transformer
+title: "Attention Is All You Need (Transformer)"
+date: 2017-06-12
+era: transformer
+category: [nlp, architecture]
+relationships:
+  - to: backpropagation
+    type: builds_on
+    note: "Standard differentiable architecture trained by gradient descent"
+authors:
+  - "Vaswani, A."
+  - "Shazeer, N."
+  - "Parmar, N."
+  - "Uszkoreit, J."
+  - "et al."
+org: "Google Brain"
+breakthrough_score: 10
+status: foundational
+model_spec:
+  parameters: "65M (base) / 213M (big)"
+  architecture: "Encoder-decoder, multi-head self-attention, sinusoidal positional encoding"
+  context_window: 512
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "WMT'14 EN-DE BLEU"
+      score: "28.4 (big)"
+      vs_baseline: "prior SOTA ConvS2S 26.4"
+    - name: "WMT'14 EN-FR BLEU"
+      score: "41.8 (big)"
+      vs_baseline: "prior SOTA 41.2 — at fraction of training cost"
+
+public_view:
+  plain_english: |
+    A neural network architecture that processes all words in a sentence
+    in parallel — instead of one at a time — using an "attention" mechanism
+    that lets each word directly consider every other word. This both
+    sped up training (massively) and improved quality.
+  analogy: |
+    Earlier language models read a sentence like a conveyor belt — one
+    word at a time, only able to remember the last few. A transformer
+    lays the whole sentence on a table and lets every word look at every
+    other word at once, weighing which ones matter most.
+  applications:
+    - product: "Google Translate (neural rewrite)"
+      company: "Google"
+      year_deployed: 2018
+    - product: "BERT (search ranking)"
+      company: "Google"
+      year_deployed: 2019
+    - product: "GPT-3 / ChatGPT / Claude / Gemini / every modern LLM"
+      company: "Various"
+      year_deployed: 2020
+  investment_angle: |
+    The single architectural decision underpinning the entire 2020s LLM
+    investment cycle. Every model now valued at a combined > $500B in
+    public-market and private-market capitalization runs on a transformer
+    variant. Moat shape: compute + data scale, with secondary moats in
+    distribution and post-training. Historical analogue: introduction of
+    the internal combustion engine — the enabling technology, not the
+    end product.
+  market_size_usd: 200000000000
+  why_it_matters: |
+    If you are investing in, competing with, regulating, or being
+    professionally affected by any generative AI company in 2026, this
+    2017 paper is the technical root of what you are dealing with. Every
+    debate about "AI safety," "AI value," or "AI moats" implicitly
+    assumes a transformer.
+
+citations:
+  - type: paper
+    key: vaswani2017attention
+    title: "Attention Is All You Need"
+    authors: ["Vaswani, A.", "Shazeer, N.", "Parmar, N.", "Uszkoreit, J.", "et al."]
+    year: 2017
+    venue: "NeurIPS"
+    arxiv: "1706.03762"
+    doi: "10.48550/arXiv.1706.03762"
+    url: "https://arxiv.org/abs/1706.03762"
+  - type: paper
+    key: bahdanau2014attention
+    title: "Neural Machine Translation by Jointly Learning to Align and Translate"
+    authors: ["Bahdanau, D.", "Cho, K.", "Bengio, Y."]
+    year: 2014
+    venue: "ICLR 2015"
+    arxiv: "1409.0473"
+---
+
+## What it is
+
+A transformer is a sequence-processing neural network whose core operation is **scaled dot-product attention**:
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{Q K^\top}{\sqrt{d_k}}\right) V
+$$
+
+Each token in the input is projected into three vectors — a query $Q$, a key $K$, and a value $V$. The output for each token is a weighted average of *all* tokens' values, weighted by the dot-product similarity between this token's query and every token's key.
+
+The architecture stacks attention layers + feed-forward layers + residual connections + layer normalization. Crucially, computation across positions is **parallel** — there is no recurrent dependency between positions, which means a transformer can process a sequence of length $n$ in $O(\log n)$ depth on parallel hardware, vs. $O(n)$ for an RNN.
+
+## How it works
+
+Minimal self-attention in PyTorch:
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SelfAttention(nn.Module):
+    def __init__(self, d_model, n_heads):
+        super().__init__()
+        assert d_model % n_heads == 0
+        self.d_head = d_model // n_heads
+        self.n_heads = n_heads
+        self.qkv = nn.Linear(d_model, 3 * d_model)
+        self.out = nn.Linear(d_model, d_model)
+
+    def forward(self, x):  # x: (batch, seq, d_model)
+        B, T, C = x.shape
+        qkv = self.qkv(x).reshape(B, T, 3, self.n_heads, self.d_head)
+        q, k, v = qkv.permute(2, 0, 3, 1, 4)   # (3, B, H, T, D)
+        attn = (q @ k.transpose(-2, -1)) / (self.d_head ** 0.5)
+        attn = F.softmax(attn, dim=-1)
+        out = (attn @ v).transpose(1, 2).reshape(B, T, C)
+        return self.out(out)
+```
+
+Position information — absent from the bare attention operation — is injected via **positional encodings** added to the token embeddings (sinusoidal in the original paper; rotary positional embeddings (RoPE) in modern implementations).
+
+## How to use it
+
+You almost never train a transformer from scratch:
+
+```python
+from transformers import AutoModel, AutoTokenizer
+
+tok = AutoTokenizer.from_pretrained("bert-base-uncased")
+model = AutoModel.from_pretrained("bert-base-uncased")
+
+inputs = tok("Transformers process tokens in parallel.", return_tensors="pt")
+outputs = model(**inputs)
+embeddings = outputs.last_hidden_state   # (1, seq_len, 768)
+```
+
+For generation:
+
+```python
+from transformers import pipeline
+gen = pipeline("text-generation", model="gpt2")
+print(gen("In a hole in the ground", max_new_tokens=30)[0]["generated_text"])
+```
+
+## SWOT
+
+- **Strengths** — Parallelizable training (vs RNNs); long-range dependencies in $O(1)$ depth; uniform architecture across modalities (vision, audio, code, multimodal); scales gracefully with parameters and data (this turned out to be the big one).
+- **Weaknesses** — Self-attention is $O(n^2)$ in sequence length — a hard bottleneck for long contexts. Quadratic memory cost is the reason Claude / GPT-4 context windows are an engineering achievement, not a default.
+- **Opportunities** — Sparse attention, linear attention, state-space hybrids (Mamba) are active research directions to address the $O(n^2)$ cost. Mixture-of-experts and grouped-query attention have already been productionized.
+- **Threats** — State-space models (Mamba, RWKV) and hybrid architectures challenge the "attention is all you need" framing for very long sequences. As of 2026, transformers remain dominant, but it would be unwise to assume permanence.
+
+## Limitations
+
+- **Quadratic complexity in sequence length** — limits practical context to ~10⁵–10⁶ tokens before memory and compute become prohibitive.
+- **No inherent inductive bias for locality or hierarchy** — transformers must learn what convolutions and tree-structured RNNs get for free. Solved by scale + data, but inefficient.
+- **Position handling is bolted on** — multiple competing schemes (sinusoidal, learned, RoPE, ALiBi), each with different long-context properties.
+- **Sample-inefficient relative to convolutional or recurrent priors** for small data regimes.
+
+## Why this paper matters disproportionately
+
+The transformer was designed for machine translation. The authors did not predict GPT-3, Stable Diffusion, AlphaFold, or the current scale of LLM deployment. The architecture turned out to be the right substrate for **scaling laws** (next era), and the combination of "uniform architecture" + "scales predictably with compute" is what made the 2020s AI investment thesis coherent.
+
+A reasonable claim: nearly all economic value created by AI between 2018 and 2026 traces directly to the design choices in this 8-page paper.

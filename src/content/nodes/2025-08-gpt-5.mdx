@@ -1,0 +1,107 @@
+---
+slug: gpt-5
+title: "GPT-5 — OpenAI's Unified Successor"
+date: 2025-08-07
+era: frontier
+category: [nlp, multimodal, generative, reasoning]
+relationships:
+  - to: gpt-4o
+    type: scales
+    note: "Successor to the GPT-4o line; merges chat + reasoning routing into one model surface"
+  - to: o3
+    type: replaces
+    note: "Folds o-series reasoning into the GPT main line; o-series API access remains for legacy"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 9
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Unified routing model — switches internally between fast and reasoning modes"
+  context_window: 400000
+  release_type: api
+  modalities: [text, vision, audio]
+  benchmarks:
+    - name: "AIME 2025"
+      score: "~99% (with reasoning)"
+      vs_baseline: "o3 ~95% on AIME 2025, Gemini 2.5 Pro ~93%"
+    - name: "SWE-bench Verified"
+      score: "~75-80%"
+      vs_baseline: "Claude 4 Opus 79.4%"
+    - name: "Humanity's Last Exam"
+      score: "~25% with reasoning"
+
+public_view:
+  plain_english: |
+    OpenAI's August 2025 successor — the model that finally consolidated
+    OpenAI's confusing product matrix (GPT-4o, GPT-4o-mini, o1, o1-pro,
+    o3, o3-mini, o4-mini) into a single "GPT-5" surface with internal
+    routing between fast and reasoning modes. The technical
+    contribution beyond benchmarks: the routing layer that decides,
+    per-query, whether deep reasoning is needed.
+  analogy: |
+    Apple's "we just made it work" approach to product complexity.
+    Where Anthropic's hybrid Claude 3.7 toggled reasoning per-request
+    by user choice, GPT-5 decided automatically. Friction went down;
+    user-facing simplicity went up.
+  applications:
+    - product: "ChatGPT (default tier)"
+      company: "OpenAI"
+      year_deployed: 2025
+    - product: "Microsoft Copilot (across surfaces)"
+      company: "Microsoft"
+      year_deployed: 2025
+    - product: "Apple Intelligence (deeper integration)"
+      company: "Apple + OpenAI"
+      year_deployed: 2025
+  investment_angle: |
+    GPT-5's launch coincided with OpenAI's revenue crossing
+    ~$15B annualized — by far the largest AI-product company
+    by revenue at the time. The product consolidation was as
+    important commercially as the capability gain: having to
+    explain "use GPT-4o for X, o1 for Y, o3 for Z" was
+    procurement-hostile. GPT-5 simplified the buy decision
+    and reportedly drove a noticeable bump in enterprise
+    seat growth in Q3-Q4 2025. The 400k context expansion
+    was the third-most-cited feature, after unified routing
+    and reasoning quality.
+  why_it_matters: |
+    GPT-5 is the model behind most major-news AI deployments
+    in late 2025 — from new browser AI features to enterprise
+    agentic workflows to consumer chat. Whether it represents
+    a "step change" or "incremental" depends on the dimension
+    you measure; the product story was the bigger contribution.
+
+citations:
+  - type: release
+    key: openai2025gpt5
+    title: "Introducing GPT-5"
+    year: 2025
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/introducing-gpt-5/"
+---
+
+## What it is
+
+OpenAI's August 7, 2025 unified frontier release. The model architecturally consists of multiple specialized subnetworks (fast / reasoning / multimodal pathways) with a learned router that selects the appropriate compute path per query. Users see one "GPT-5" — the routing is invisible.
+
+This is the productization answer to the post-o1 confusion that had developed in the OpenAI lineup, where users had to know the right model for each task type.
+
+## GPT-5 vs late-2025 frontier
+
+| Model | Date | Org | Reasoning | Context | Approach |
+|---|---|---|---|---|---|
+| Claude 4 Opus | 2025-05 | Anthropic | hybrid (toggle) | 200k | per-request thinking flag |
+| Gemini 2.5 Pro | 2025-03 | Google | integrated | 1M | always-on thinking budget |
+| **GPT-5** | **2025-08** | **OpenAI** | **routed** | **400k** | **automatic routing** |
+| Llama 4 Maverick | 2025-04 | Meta | none | 1M | non-reasoning open |
+| DeepSeek R2 | 2025-Q3 | DeepSeek | dedicated | 128k | open reasoning |
+
+Each frontier lab landed on a slightly different productization choice for "fast vs reasoning":
+- **OpenAI**: route automatically (one model surface)
+- **Anthropic**: per-request flag (developer chooses)
+- **Google**: integrated thinking budget (always reasons, budget controls effort)
+- **DeepSeek**: separate models (V3 vs R-series)
+
+The market hasn't converged — different developers prefer different tradeoffs.

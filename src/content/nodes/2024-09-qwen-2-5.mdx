@@ -1,0 +1,132 @@
+---
+slug: qwen-2-5
+title: "Qwen 2.5 — Open Frontier-Comparable from Alibaba"
+date: 2024-09-19
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: qwen-1
+    type: scales
+    note: "5 generations on; 18T-token training; sizes 0.5B → 72B; Apache 2.0"
+  - to: llama-3
+    type: surpasses
+    note: "Qwen 2.5 72B exceeds Llama 3 70B on most benchmarks at similar size"
+authors:
+  - "Qwen Team, Alibaba"
+org: "Alibaba"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "0.5B / 1.5B / 3B / 7B / 14B / 32B / 72B (dense); also Qwen2.5-Coder, Qwen2.5-Math variants"
+  architecture: "Decoder-only transformer + GQA + RoPE + SwiGLU"
+  context_window: 131072
+  training_tokens: "18T"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU (5-shot, 72B)"
+      score: "85.3%"
+      vs_baseline: "Llama 3.1 70B 83.1%, Llama 3 70B 82.0%"
+    - name: "HumanEval (72B)"
+      score: "86.6%"
+      vs_baseline: "Llama 3.1 70B 80.5%"
+    - name: "GSM8K (72B)"
+      score: "95.8%"
+      vs_baseline: "Llama 3.1 70B 95.1%"
+    - name: "MATH (72B)"
+      score: "83.1%"
+      vs_baseline: "Llama 3.1 70B 68.0%"
+
+public_view:
+  plain_english: |
+    Alibaba's Qwen 2.5 generation, released September 2024, was the
+    first Chinese open-weight model family to exceed Llama 3.1 on
+    most benchmarks at comparable size. The release covered seven
+    sizes (0.5B → 72B) plus specialized variants for code (Coder)
+    and math, all under Apache 2.0. By late 2024, Qwen 2.5 had
+    overtaken Llama as the most-downloaded model family on Hugging
+    Face globally.
+  analogy: |
+    The "Toyota strategy" of Chinese open LLMs — every market segment,
+    every quality tier, broad license, aggressive shipping cadence.
+    Where Llama is a sedan family, Qwen 2.5 is sedan + SUV + truck
+    + pickup + scooter, all priced lower.
+  applications:
+    - product: "Tongyi Qianwen consumer chat"
+      company: "Alibaba"
+      year_deployed: 2024
+    - product: "Qwen-Coder default in many AI IDEs"
+      company: "Various"
+      year_deployed: 2024
+    - product: "Aliyun Bailian enterprise marketplace"
+      company: "Alibaba Cloud"
+      year_deployed: 2024
+    - product: "Most-downloaded model family on Hugging Face by Q4 2024"
+      company: "Open-source ecosystem"
+      year_deployed: 2024
+  investment_angle: |
+    Qwen 2.5 was the pivot point where Chinese open-weight models
+    stopped being "good for the price" and became "best-in-class at
+    any price for the size." Combined with DeepSeek V2's pricing
+    revolution earlier in 2024, the Chinese open ecosystem effectively
+    set the global ceiling for what closed-model providers could
+    charge for non-frontier tasks. By end of 2024, Aliyun's reported
+    AI revenue was growing 3-4× YoY, much of it Qwen-driven inference.
+    The strategic pattern: don't try to beat OpenAI / Anthropic at
+    the absolute frontier; instead, dominate every tier just below
+    with open weights and aggressive cloud distribution.
+  why_it_matters: |
+    Qwen 2.5 made it impossible for any serious enterprise procurement
+    decision in 2025 to skip the open-Chinese-model option. Even US
+    enterprises with concerns about Chinese-origin models routinely
+    benchmark against Qwen 2.5 / 3 to negotiate better pricing from
+    OpenAI / Anthropic. The market structural effect is large.
+
+citations:
+  - type: paper
+    key: alibaba2024qwen25
+    title: "Qwen2.5 Technical Report"
+    authors: ["Qwen Team"]
+    year: 2024
+    venue: "arXiv"
+    arxiv: "2412.15115"
+  - type: release
+    key: alibaba2024qwen25release
+    title: "Qwen 2.5 Open Source Release"
+    year: 2024
+    venue: "Alibaba"
+    url: "https://qwenlm.github.io/blog/qwen2.5/"
+---
+
+## What it is
+
+A multi-size open-weight foundation model family released September 19, 2024 with sizes 0.5B / 1.5B / 3B / 7B / 14B / 32B / 72B. All variants under Apache 2.0 license, trained on 18T tokens (the largest publicly-disclosed pretraining dataset for an open model at the time). Architectural inheritance from Qwen 2 with refinements; the headline gain came from data-quality work and the much larger token count.
+
+## Specialized variants in the Qwen 2.5 family
+
+| Variant | Sizes | Specialization |
+|---|---|---|
+| Qwen 2.5 (base) | 0.5B-72B | general purpose |
+| Qwen 2.5-Instruct | 0.5B-72B | chat / instruction following |
+| Qwen 2.5-Coder | 0.5B-32B | code generation; Coder-32B competitive with GPT-4o-mini on coding |
+| Qwen 2.5-Math | 1.5B / 7B / 72B | math reasoning |
+| Qwen 2.5-VL | 3B / 7B / 72B | multimodal vision |
+
+The Coder and Math variants exemplify a productization pattern Western labs have largely avoided — domain-specific specialized model variants instead of one general flagship.
+
+## Qwen 2.5-72B vs concurrent open peers (Q4 2024)
+
+| Model | Date | Org | Params | MMLU | HumanEval | GSM8K | MATH |
+|---|---|---|---|---|---|---|---|
+| Llama 3 70B | 2024-04 | Meta | 70B | 82.0% | 81.7% | 93.0% | 68.0% |
+| Llama 3.1 70B | 2024-07 | Meta | 70B | 83.1% | 80.5% | 95.1% | 68.0% |
+| Llama 3.1 405B | 2024-07 | Meta | 405B | 88.6% | 89.0% | 96.8% | 73.8% |
+| **Qwen 2.5 72B** | **2024-09** | **Alibaba** | **72B** | **85.3%** | **86.6%** | **95.8%** | **83.1%** |
+| Mistral Large 2 | 2024-07 | Mistral | 123B | 84.0% | 92.0% | 93.0% | 75.0% |
+| DeepSeek V2.5 | 2024-09 | DeepSeek | 236B/21B | 80.4% | 89.0% | 89.3% | 74.7% |
+
+Qwen 2.5-72B is the strongest dense open model at its size by a substantial margin in math and coding. The MATH benchmark in particular (+15 over Llama 3.1) was driven by Qwen 2.5-Math's training-data investment.
+
+## The "AI tigers" funding context
+
+By Qwen 2.5's release, Alibaba had positioned itself differently from China's "AI tiger" startups (Zhipu, Moonshot, Baichuan, MiniMax). Where the tigers raised hundreds of millions for narrow flagship products, Alibaba treated AI as infrastructure investment — open Qwen as ecosystem fuel, monetized through cloud (Aliyun GPU rental, model API, fine-tuning services) rather than direct model sales. This positioning turned out to be more sustainable as the AI tigers struggled with monetization in 2025.

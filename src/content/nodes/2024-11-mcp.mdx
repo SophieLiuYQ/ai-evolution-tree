@@ -1,0 +1,143 @@
+---
+slug: mcp
+title: "Model Context Protocol — Open Tool / Context Standard"
+date: 2024-11-25
+era: agents
+category: [agents]
+relationships:
+  - to: react-agents
+    type: builds_on
+    note: "Standardizes the tool-calling pattern ReAct established; protocol-level rather than per-app"
+  - to: claude-3-5-sonnet
+    type: applies
+    note: "Initial reference implementation in Claude Desktop and developer tooling"
+authors:
+  - "Anthropic Team + community"
+org: "Anthropic"
+breakthrough_score: 7
+status: active
+model_spec:
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "Servers / integrations published (community)"
+      score: ">5,000 by Q3 2025; >15,000 by early 2026"
+      vs_baseline: "first protocol with substantial multi-vendor adoption in agentic AI"
+
+public_view:
+  plain_english: |
+    An open protocol Anthropic released in November 2024 for
+    standardizing how AI agents talk to external tools, data
+    sources, and contextual services. Instead of every AI app
+    integrating every tool individually (M apps × N tools = M×N
+    integrations), MCP lets any tool publish an MCP server once
+    and any AI app consume it. Quickly adopted by OpenAI, Google,
+    cursor / IDE vendors, and thousands of community
+    integrations.
+  analogy: |
+    The "USB for AI" analogy is the one Anthropic used in the
+    launch post. Before USB, every peripheral had its own
+    cable / driver / connector; after USB, one standard worked
+    across the industry. MCP plays the same role for the
+    AI-to-tool integration layer.
+  applications:
+    - product: "Claude Desktop (first reference implementation)"
+      company: "Anthropic"
+      year_deployed: 2024
+    - product: "Cursor / Windsurf / Zed (IDE integrations)"
+      company: "Various"
+      year_deployed: 2024
+    - product: "ChatGPT (MCP support added 2025)"
+      company: "OpenAI"
+      year_deployed: 2025
+    - product: "Thousands of community MCP servers (Slack, Linear, GitHub, databases, etc.)"
+      company: "Open ecosystem"
+      year_deployed: 2024
+  investment_angle: |
+    MCP's adoption trajectory was the surprise of late-2024 / 2025
+    AI infrastructure. By accepting an Anthropic-originated
+    standard, OpenAI and Google effectively conceded the
+    protocol-design layer — choosing interop over dominance.
+    Strategically: if AI agents become the dominant
+    productivity-software interface, the protocol layer
+    underneath is comparable in importance to HTTP for the web.
+    Anthropic's positioning as the protocol's originator gives
+    it gravitational pull in the agent-developer ecosystem
+    even when other models match Claude's capabilities.
+    Several companies now build "MCP server marketplace"
+    businesses (similar to npm registries), and MCP-related
+    consulting / integration is a growing services category.
+  why_it_matters: |
+    MCP is the most successful open standard to come out of
+    the LLM era. Whether it persists as the dominant agent
+    protocol over the next 5 years (vs being replaced by
+    something else) is the open question — but its current
+    momentum makes it the de facto standard for agent
+    integration in 2025-26.
+
+citations:
+  - type: release
+    key: anthropic2024mcp
+    title: "Introducing the Model Context Protocol"
+    year: 2024
+    venue: "Anthropic"
+    url: "https://www.anthropic.com/news/model-context-protocol"
+  - type: release
+    key: mcp_spec
+    title: "MCP Specification"
+    year: 2024
+    venue: "modelcontextprotocol.io"
+    url: "https://modelcontextprotocol.io/"
+---
+
+## What it is
+
+An open client-server protocol for AI applications to access tools, data, and prompts from external services. Released by Anthropic on November 25, 2024 with reference SDKs in Python and TypeScript and an open specification.
+
+Architecture:
+- **MCP Server** — exposes tools (callable functions), resources (readable data), and prompts (reusable prompt templates) via a standard JSON-RPC schema
+- **MCP Client** — embedded in an AI app (Claude Desktop, Cursor, ChatGPT, etc.); connects to one or more MCP servers and presents their offerings to the model
+- **Model** — calls tools / reads resources via the client, with the protocol abstracting over which specific server is providing the capability
+
+## Why MCP succeeded where prior standards stalled
+
+Earlier attempts at standardizing AI tool use (LangChain Hub, OpenAI's function-calling extensions, AI Plugins) didn't achieve cross-vendor adoption. MCP did, for several reasons:
+
+1. **Anthropic positioned it as a community standard from day one** — open spec, permissive license, neutral name (no "Anthropic" branding in the spec)
+2. **Reference implementations were strong** — Python and TypeScript SDKs at launch worked out of the box
+3. **Claude Desktop integration** drove initial mindshare among developers
+4. **OpenAI adopted it in March 2025**, which sealed it as cross-vendor de facto standard
+5. **Google adopted it later in 2025**, completing the major-lab triangle
+
+## What an MCP server looks like
+
+```typescript
+// Conceptual MCP server (TypeScript)
+import { McpServer } from "@modelcontextprotocol/sdk";
+
+const server = new McpServer({ name: "linear" });
+
+server.tool("create-issue", {
+  description: "Create a Linear issue",
+  parameters: { title: "string", body: "string", projectId: "string" },
+  handler: async ({ title, body, projectId }) => {
+    return await linearClient.issueCreate({ title, body, projectId });
+  },
+});
+
+server.resource("issue", {
+  description: "Read a Linear issue by ID",
+  read: async (uri) => {
+    const issueId = uri.split("/").pop();
+    return await linearClient.issue(issueId);
+  },
+});
+
+server.serve();
+```
+
+Once running, this server's capabilities are available to any MCP-compatible AI app (Claude Desktop, Cursor, ChatGPT, etc.) the user authorizes to connect.
+
+## Lineage
+
+MCP is the explicit protocolization of the ReAct (2022-10) pattern. ReAct established that "model + tool calls + observation loop" was the right abstraction; MCP standardizes the wire format and discovery protocol so that any model can use any tool. The protocol layer sits above any specific model and below any specific application.

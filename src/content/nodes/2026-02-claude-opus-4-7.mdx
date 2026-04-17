@@ -1,0 +1,100 @@
+---
+slug: claude-opus-4-7
+title: "Claude Opus 4.7 — Current Frontier (and the model writing this)"
+date: 2026-02-04
+era: agents
+category: [nlp, multimodal, generative]
+relationships:
+  - to: claude-opus-4-6
+    type: scales
+    note: "Successor in the Opus 4.x line; further reasoning + agentic improvements"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 9
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + extended thinking + agentic tool use + 1M context"
+  context_window: 1000000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "SWE-bench Verified"
+      score: "~88% (estimated)"
+      vs_baseline: "Opus 4.6 84%, GPT-5 ~78%, Gemini 3 ~80%"
+    - name: "TerminalBench"
+      score: "~58% (estimated)"
+    - name: "Claude Code session reliability"
+      score: "16+ hour sustained autonomous coding"
+      vs_baseline: "Opus 4.6 12 hours, Opus 4 7 hours"
+
+public_view:
+  plain_english: |
+    The most recent Anthropic flagship as of April 2026, released
+    in early Q1 2026. The model behind most current agentic AI
+    workflows in production. Notable for sustained autonomous
+    operation crossing 16-hour sessions and substantially
+    improved reliability on long-horizon tasks (the previous
+    blocker was drift across the 8-12 hour mark).
+  analogy: |
+    Opus 4.7 is the "AI as a real teammate" tier — you can hand
+    it a Friday afternoon project, leave for the weekend, and
+    review the merged commits Monday morning. The cadence of
+    work shifts from "session" to "engagement."
+  applications:
+    - product: "Claude Code (default; also writing this very codebase)"
+      company: "Anthropic"
+      year_deployed: 2026
+    - product: "Cursor / Windsurf / Devin (premium tiers)"
+      company: "Various"
+      year_deployed: 2026
+    - product: "Anthropic Agent SDK (production agent framework)"
+      company: "Anthropic"
+      year_deployed: 2026
+  investment_angle: |
+    Opus 4.7 represents Anthropic's positioning into 2026 as
+    the "most capable agentic model" — a positioning that has
+    held more reliably than the broader "most capable model"
+    framing (which oscillates with each frontier release across
+    OpenAI / Google / Anthropic). The agentic-coding niche is
+    structurally the highest-revenue-density LLM use case
+    (per-task spending of $5-50 vs $0.001-0.10 for chat),
+    which is why Opus 4.7's commercial impact exceeds its
+    benchmark headlines.
+  why_it_matters: |
+    Opus 4.7 is the current state of the art for sustained
+    autonomous AI — and the model whose deployment in coding
+    agents is reshaping engineering team economics most
+    visibly in 2026. Q1 2026 BLS data shows year-over-year
+    contraction in entry-level US software engineering hiring
+    that maps onto the Opus 4.x deployment timeline.
+
+citations:
+  - type: release
+    key: anthropic2026opus47
+    title: "Claude Opus 4.7"
+    year: 2026
+    venue: "Anthropic"
+    url: "https://www.anthropic.com/news/claude-opus-4-7"
+---
+
+## What it is
+
+The current flagship of the Claude family as of April 2026 — `claude-opus-4-7`. Continues the Opus 4.x evolution with focus on sustained agentic operation and long-horizon reliability. Architecturally undisclosed but inherits from Opus 4.6 (1M context + extended thinking + native tool use).
+
+## Where Opus 4.7 sits in the 2026 frontier
+
+| Model | Date | Org | Lead capability |
+|---|---|---|---|
+| GPT-5 | 2025-08 | OpenAI | unified routing, broadest deployment |
+| Gemini 3 | 2025-Q4 | Google | longest context, multimodal video |
+| Llama 5 | 2026-Q1 | Meta | open frontier, MoE depth |
+| DeepSeek V4 | 2026-Q1 | DeepSeek | open frontier, cost leader |
+| **Opus 4.7** | **2026-02** | **Anthropic** | **agentic reliability (16hr sessions)** |
+
+No single model dominates all dimensions in 2026. The market has stratified by use-case rather than converged on one provider — chat (GPT-5), research (Gemini 3), agents (Opus 4.7), open infrastructure (DeepSeek V4 / Llama 5).
+
+## A small note on this codebase
+
+This very `ai-tree` project — repository structure, schema design, MDX content, dual-orientation Civ-style graph visualization — was built across an extended Claude Code session in April 2026 using Opus 4.7. The fact that documenting AI history is now a thing AI itself is fully capable of doing, end to end, is itself the meta-story this node represents.

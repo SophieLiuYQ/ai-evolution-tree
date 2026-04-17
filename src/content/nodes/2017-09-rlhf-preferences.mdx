@@ -1,0 +1,106 @@
+---
+slug: rlhf-preferences
+title: "Deep RL from Human Preferences (Foundational RLHF)"
+date: 2017-06-12
+era: alignment
+category: [theory, rl, training]
+relationships:
+  - to: backpropagation
+    type: builds_on
+    note: "Standard policy-gradient RL trained via backprop on a learned reward model"
+authors:
+  - "Christiano, P."
+  - "Leike, J."
+  - "Brown, T."
+  - "Martic, M."
+  - "Legg, S."
+  - "Amodei, D."
+org: "OpenAI"
+breakthrough_score: 8
+status: foundational
+model_spec:
+  release_type: paper
+  modalities: [text, rl]
+  benchmarks:
+    - name: "Atari games (from preferences only)"
+      score: "matched/exceeded human-trajectory baselines"
+      vs_baseline: "no hand-coded reward function needed"
+
+public_view:
+  plain_english: |
+    A 2017 paper showing that you could train a reinforcement learning
+    agent using only humans ranking which of two behaviors looked
+    better — no need to hand-design a reward function. The technique
+    sat largely unused in language modeling until 2022, when InstructGPT
+    applied it at scale and it became the dominant alignment recipe
+    for every modern chatbot.
+  analogy: |
+    Instead of writing a detailed rubric for "good output," just hand
+    a teacher pairs of essays and ask "which is better?" — and let the
+    machine figure out a reward function from the pattern of choices.
+  applications:
+    - product: "InstructGPT (2022)"
+      company: "OpenAI"
+      year_deployed: 2022
+    - product: "ChatGPT, Claude, Gemini, Llama Chat (RLHF lineage)"
+      company: "All major labs"
+      year_deployed: 2022
+  investment_angle: |
+    The methodological seed of the entire alignment-as-product market.
+    Every dollar spent on human-preference data labeling (Scale AI's
+    $60M → $700M revenue trajectory; Surge AI; Toloka) traces to this
+    paper. Without preference learning being demonstrably effective,
+    the "post-training" stage of LLM development — now estimated at
+    20-40% of total model R&D spend — would have looked very different.
+  why_it_matters: |
+    The bridge between "you can train AI via reward signals" (classical
+    RL, 1990s-2010s) and "you can train AI via human judgment" (LLM
+    alignment, 2022+). Without this paper, ChatGPT's launch is
+    architecturally impossible.
+
+citations:
+  - type: paper
+    key: christiano2017rlhf
+    title: "Deep Reinforcement Learning from Human Preferences"
+    authors: ["Christiano, P.", "Leike, J.", "Brown, T.", "Martic, M.", "Legg, S.", "Amodei, D."]
+    year: 2017
+    venue: "NeurIPS"
+    arxiv: "1706.03741"
+---
+
+## What it is
+
+A reinforcement learning training pipeline that bypasses hand-designed reward functions:
+
+1. Collect pairs of agent behaviors (trajectories).
+2. Ask human annotators which trajectory is better.
+3. Train a neural reward model to predict the human's preference.
+4. Use the reward model as the reward signal for policy gradient RL.
+
+The 2017 paper demonstrated this on Atari games and MuJoCo simulated robotics — the agent could learn to backflip, play Pong, etc., without any hand-coded reward.
+
+## Why it sat dormant for 5 years
+
+The 2017-2021 period saw the technique applied to a few research domains (summarization with RLHF, 2020) but did not break out. Two changes triggered the 2022 explosion:
+
+1. **Capable base models**: GPT-3 was good enough that the RLHF policy had something worth aligning. RLHF on a weak model produces marginally less-bad weak output.
+2. **Scaling annotation**: OpenAI invested in industrial-scale preference annotation pipelines (later: Scale AI, Surge). The 1.4M preference comparisons in InstructGPT would have been logistically infeasible in 2017.
+
+## What InstructGPT inherited and what it added
+
+| Component | Christiano 2017 | InstructGPT 2022 |
+|---|---|---|
+| Reward model from preferences | ✓ | ✓ |
+| PPO RL fine-tuning | ✓ | ✓ |
+| KL penalty against initial policy | ✗ | ✓ |
+| SFT warm-start from demonstrations | ✗ | ✓ |
+| Iterative re-annotation | ✗ | ✓ |
+| Industrial-scale preference data | ✗ | ✓ |
+
+The conceptual framework was Christiano's; the productization was InstructGPT's. Both papers belong in the lineage.
+
+## Subsequent variants
+
+- **DPO** (Direct Preference Optimization, 2023-05) — same data, no explicit reward model, simpler training. Now the dominant variant in open-source LLM post-training.
+- **RLAIF / Constitutional AI** (2022-12) — replace human preferences with AI critique against written principles.
+- **Process supervision** (PRM, "Let's Verify Step by Step", 2023-05) — reward each reasoning step, not just the final answer. Foundational to o1 / R1 reasoning models.

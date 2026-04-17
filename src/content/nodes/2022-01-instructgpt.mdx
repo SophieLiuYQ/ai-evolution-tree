@@ -1,0 +1,101 @@
+---
+slug: instructgpt
+title: "InstructGPT — Training LMs to Follow Instructions with Human Feedback"
+date: 2022-01-27
+era: alignment
+category: [nlp, safety, training]
+relationships:
+  - to: gpt-3
+    type: fine_tunes
+    note: "RLHF on top of GPT-3 base; smaller 1.3B InstructGPT preferred over 175B GPT-3"
+  - to: rlhf-preferences
+    type: applies
+    note: "First production-scale application of Christiano et al. 2017 RLHF"
+authors:
+  - "Ouyang, L."
+  - "Wu, J."
+  - "Jiang, X."
+  - "Almeida, D."
+  - "Wainwright, C."
+  - "et al."
+org: "OpenAI"
+breakthrough_score: 9
+status: foundational
+model_spec:
+  parameters: "1.3B / 6B / 175B (RLHF on GPT-3 family)"
+  architecture: "GPT-3 + supervised fine-tuning + reward model + PPO RL fine-tuning"
+  context_window: 2048
+  release_type: api
+  modalities: [text]
+  benchmarks:
+    - name: "Human-rater preference vs GPT-3 175B"
+      score: "1.3B InstructGPT preferred 85% of the time"
+      vs_baseline: "smaller, more aligned model > larger, raw model"
+    - name: "TruthfulQA truthful%"
+      score: "+10 to +25 pts vs base"
+
+public_view:
+  plain_english: |
+    The training recipe — supervised fine-tuning followed by reinforcement
+    learning from human feedback — that turned GPT-3 from a raw text
+    completer into a model that actually follows instructions. Human
+    raters preferred the 1.3B InstructGPT model over the 175B raw GPT-3
+    model, suggesting that alignment can matter more than scale for
+    user-facing tasks.
+  analogy: |
+    Take a brilliant generalist who blurts out everything they know in
+    every direction, and put them through a year of customer-service
+    training. Same brain, vastly more useful.
+  applications:
+    - product: "ChatGPT (productized 10 months later)"
+      company: "OpenAI"
+      year_deployed: 2022
+    - product: "Default OpenAI API behavior post-2022"
+      company: "OpenAI"
+      year_deployed: 2022
+  investment_angle: |
+    The most operationally important post-training paper of the LLM era.
+    Established RLHF as the default alignment recipe, which every major
+    model company (Anthropic, Google, Meta, Mistral) then adopted in
+    some form. Created a new technical specialty (data annotation +
+    preference modeling) and the labor market for it (Scale AI's revenue
+    growth from ~$60M to ~$700M between 2021-2024).
+  why_it_matters: |
+    InstructGPT, not GPT-3, is what people interact with when they use a
+    "language model" today. The recipe in this paper is why the chat
+    box on chat.openai.com is helpful instead of a chaotic autocomplete.
+
+citations:
+  - type: paper
+    key: ouyang2022instructgpt
+    title: "Training Language Models to Follow Instructions with Human Feedback"
+    authors: ["Ouyang, L.", "Wu, J.", "Jiang, X.", "et al."]
+    year: 2022
+    venue: "NeurIPS"
+    arxiv: "2203.02155"
+---
+
+## What it is
+
+A three-step post-training pipeline applied to GPT-3:
+
+1. **SFT** (Supervised Fine-Tuning) — train on human-written demonstrations of the desired output for a sample of API prompts.
+2. **RM** (Reward Model training) — collect human rankings between pairs of model outputs; train a 6B reward model to predict which output a human prefers.
+3. **PPO** (Proximal Policy Optimization) — RL fine-tune the SFT model to maximize the reward model's score, with a KL penalty against the SFT model to prevent reward hacking.
+
+## The "1.3B beats 175B" headline
+
+The most-cited result: human raters preferred outputs from the 1.3B InstructGPT model over the 175B GPT-3 base 85% of the time on the API prompt distribution. Two implications:
+
+1. Alignment ≠ scale. Smaller, well-aligned models can dominate larger raw models on user-facing tasks.
+2. RLHF is not free — it modestly hurts some benchmark scores while massively improving practical helpfulness. This trade was worth making.
+
+## What this paper birthed
+
+| Successor | Date | Inheritance |
+|---|---|---|
+| ChatGPT | 2022-11 | Same recipe + chat UI |
+| Anthropic Constitutional AI | 2022-12 | RLAIF variant — replaces human raters with AI critique |
+| Direct Preference Optimization (DPO) | 2023-05 | Skips the explicit reward model; same data, simpler training |
+| Llama 2 Chat | 2023-07 | Open-source replication of the recipe |
+| RLHF "as a service" companies | 2022-23 | Scale AI, Surge AI, Toloka — annotation as moat |

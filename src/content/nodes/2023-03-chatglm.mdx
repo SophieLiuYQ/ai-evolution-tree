@@ -1,0 +1,106 @@
+---
+slug: chatglm
+title: "ChatGLM-6B — Tsinghua's Bilingual Open Chat Model"
+date: 2023-03-14
+era: alignment
+category: [nlp, generative]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Decoder-only with GLM-style autoregressive blank-filling pretraining"
+  - to: instructgpt
+    type: applies
+    note: "SFT + RLHF on Chinese-heavy data; first major open Chinese chat model"
+authors:
+  - "Tsinghua KEG Team"
+org: "Tsinghua / Zhipu"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "6B (later 130B closed; GLM-4 series follows)"
+  architecture: "GLM (Generalized Language Model) — autoregressive blank infilling"
+  context_window: 2048
+  training_tokens: "~1T (Chinese-English bilingual)"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "C-Eval (Chinese language)"
+      score: "first open model to publish strong Chinese benchmark scores"
+      vs_baseline: "Llama 1 effectively 0% on Chinese subtasks"
+    - name: "MMLU (English)"
+      score: "~40% (6B variant)"
+
+public_view:
+  plain_english: |
+    A 6-billion-parameter open-weight chat model from Tsinghua University,
+    released the same week as GPT-4. The first major open model
+    specifically tuned for Chinese — its release on Hugging Face within
+    days drew >1M downloads and seeded the Chinese open-source LLM
+    ecosystem (later joined by Qwen, Yi, DeepSeek, Baichuan).
+  analogy: |
+    The "Chinese Llama 1" — same role of catalyzing a national
+    open-source ecosystem, with the same kind of week-one viral spread.
+    Released before Llama 1 itself in some respects.
+  applications:
+    - product: "ChatGLM-6B / ChatGLM2-6B / ChatGLM3-6B (community)"
+      company: "Tsinghua / Zhipu"
+      year_deployed: 2023
+    - product: "Zhipu AI commercial product (later GLM-4)"
+      company: "Zhipu AI"
+      year_deployed: 2024
+  investment_angle: |
+    ChatGLM seeded Zhipu AI, which by 2024 had raised >$2B at >$3B
+    valuation as one of China's "AI tigers" (the four startups Beijing
+    backed: Zhipu, Baichuan, Moonshot, MiniMax). The release also
+    established the operating template Chinese AI labs would follow:
+    open-weight base model for ecosystem traction + closed flagship
+    API for revenue. By 2026, every major Chinese AI lab uses some
+    variant of this dual-track strategy.
+  why_it_matters: |
+    ChatGLM is the moment Chinese AI labs stopped just translating Western
+    models and started shipping models tuned natively for Chinese language
+    and culture. The current Chinese AI ecosystem — Qwen, DeepSeek, Yi,
+    Kimi — exists because ChatGLM proved a market existed.
+
+citations:
+  - type: paper
+    key: zeng2022glm
+    title: "GLM-130B: An Open Bilingual Pre-trained Model"
+    authors: ["Zeng, A.", "Liu, X.", "Du, Z.", "et al."]
+    year: 2022
+    venue: "ICLR 2023"
+    arxiv: "2210.02414"
+  - type: release
+    key: thudm2023chatglm
+    title: "ChatGLM-6B Release"
+    year: 2023
+    venue: "Hugging Face / GitHub"
+    url: "https://github.com/THUDM/ChatGLM-6B"
+---
+
+## What it is
+
+A 6.2B-parameter chat-tuned model released on Hugging Face on March 14, 2023 — the same day as GPT-4 and Claude 1. Architecturally a GLM (Generalized Language Model), which uses an autoregressive blank-filling pretraining objective rather than pure left-to-right LM. Post-trained with SFT + RLHF on a Chinese-English bilingual corpus.
+
+The 6B size was the operative move — small enough to run on a single 24GB consumer GPU, which is what drove the >1M-download viral spread in week one.
+
+## How ChatGLM compared to peers (March 2023)
+
+| Model | Date | Org | Params | Chinese | License |
+|---|---|---|---|---|---|
+| GPT-4 | 2023-03-14 | OpenAI | undisclosed | strong | API only |
+| Claude 1 | 2023-03-14 | Anthropic | undisclosed | weaker | API only |
+| **ChatGLM-6B** | **2023-03-14** | **Tsinghua** | **6.2B** | **native** | **research-only** |
+| Llama 1 | 2023-02-24 | Meta | 7B-65B | weak | research-only |
+| Bard | 2023-03-21 | Google | undisclosed | weak | free chat |
+
+ChatGLM was the only open release in this group with native Chinese capability. The strategic positioning — bilingual + small + open — defined the Chinese open-LLM playbook.
+
+## Lineage to GLM-4
+
+The ChatGLM line evolved into:
+- **ChatGLM2-6B** (Jun 2023) — 32k context, 12% better quality
+- **ChatGLM3-6B** (Oct 2023) — function calling, code interpreter
+- **GLM-4** (Jan 2024) — closed flagship, multimodal, claims GPT-4-class on Chinese
+- **GLM-4-9B** (Jun 2024) — open mid-tier
+- **GLM-4-Plus** (2025) — ongoing

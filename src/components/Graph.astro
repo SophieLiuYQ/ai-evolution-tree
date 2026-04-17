@@ -1,0 +1,1124 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  nodes: CollectionEntry<"nodes">[];
+}
+const { nodes } = Astro.props;
+
+type Rel = CollectionEntry<"nodes">["data"]["relationships"][number];
+
+// ===== Org colors (light theme)
+const orgFill: Record<string, string> = {
+  "OpenAI": "#d1fae5",
+  "Anthropic": "#fed7aa",
+  "Google": "#dbeafe",
+  "Google DeepMind": "#dbeafe",
+  "DeepMind": "#dbeafe",
+  "Google Brain": "#dbeafe",
+  "Meta AI": "#cffafe",
+  "Microsoft": "#ccfbf1",
+  "Mistral AI": "#fee2e2",
+  "Stability AI": "#e7e5e4",
+  "EleutherAI": "#ede9fe",
+  "xAI": "#e5e7eb",
+  "Alibaba": "#fef3c7",
+  "DeepSeek": "#fae8ff",
+  "Tsinghua / Zhipu": "#ffe4e6",
+  "01.AI": "#ffe4e6",
+  "Baidu": "#dbeafe",
+  "Tencent": "#e0f2fe",
+  "Moonshot AI": "#e0e7ff",
+  "MiniMax": "#ede9fe",
+  "ByteDance": "#ffedd5",
+  "Stepfun": "#d1fae5",
+  "Suno": "#fce7f3",
+  "Runway": "#ede9fe",
+  "Black Forest Labs": "#e4e4e7",
+  "Databricks": "#ffedd5",
+  "Perplexity": "#cffafe",
+  "Kuaishou": "#fef3c7",
+  "Nvidia": "#dcfce7",
+  "Apple": "#f1f5f9",
+};
+const orgStroke: Record<string, string> = {
+  "OpenAI": "#047857",
+  "Anthropic": "#c2410c",
+  "Google": "#1d4ed8",
+  "Google DeepMind": "#1d4ed8",
+  "DeepMind": "#1d4ed8",
+  "Google Brain": "#1d4ed8",
+  "Meta AI": "#0e7490",
+  "Microsoft": "#0f766e",
+  "Mistral AI": "#b91c1c",
+  "Stability AI": "#57534e",
+  "EleutherAI": "#6d28d9",
+  "xAI": "#374151",
+  "Alibaba": "#a16207",
+  "DeepSeek": "#a21caf",
+  "Tsinghua / Zhipu": "#be123c",
+  "01.AI": "#be123c",
+  "Baidu": "#1d4ed8",
+  "Tencent": "#0369a1",
+  "Moonshot AI": "#4338ca",
+  "MiniMax": "#6d28d9",
+  "ByteDance": "#c2410c",
+  "Stepfun": "#047857",
+  "Suno": "#be185d",
+  "Runway": "#6d28d9",
+  "Black Forest Labs": "#3f3f46",
+  "Databricks": "#c2410c",
+  "Perplexity": "#0e7490",
+  "Kuaishou": "#a16207",
+  "Nvidia": "#15803d",
+  "Apple": "#334155",
+};
+const fill = (org: string) => orgFill[org] ?? "#f3f4f6";
+const stroke = (org: string) => orgStroke[org] ?? "#6b7280";
+
+// ===== Edge styles
+const edgeStyle: Record<
+  Rel["type"],
+  { color: string; dash?: string; label: string }
+> = {
+  builds_on: { color: "#3b82f6", label: "builds on" },
+  scales: { color: "#8b5cf6", label: "scales" },
+  distills: { color: "#ec4899", dash: "4,3", label: "distills" },
+  fine_tunes: { color: "#10b981", dash: "4,3", label: "fine-tunes" },
+  surpasses: { color: "#f59e0b", label: "surpasses" },
+  competes_with: { color: "#6366f1", dash: "2,3", label: "competes" },
+  applies: { color: "#14b8a6", label: "applies" },
+  replaces: { color: "#ef4444", label: "replaces" },
+  open_alt_to: { color: "#a855f7", dash: "6,3", label: "open alt" },
+};
+
+// ===== Year colors (warm → cool gradient)
+function bandColor(idx: number, total: number): string {
+  const t = total <= 1 ? 0 : idx / (total - 1);
+  const hue = 45 + t * 190;
+  return `hsl(${hue}, 50%, 96.5%)`;
+}
+function bandHeader(idx: number, total: number): string {
+  const t = total <= 1 ? 0 : idx / (total - 1);
+  const hue = 45 + t * 190;
+  return `hsl(${hue}, 55%, 50%)`;
+}
+
+// ===== Layout constants (fixed font sizes — never zoomed)
+const NODE_W = 220;
+const NODE_H = 64;
+
+// Horizontal layout (LR) — generous gaps so Manhattan edges don't pass through nodes
+const H_COL_GAP = 100; // was 40 — wider corridor between year columns for edge routing
+const H_COL_W = NODE_W + H_COL_GAP;
+const H_NODE_V_GAP = 44; // was 16 — vertical breathing between nodes in same column
+const H_TOP_PAD = 72; // year header height
+const H_BOT_PAD = 32;
+const H_SIDE_PAD = 24;
+
+// Vertical layout (TB)
+const V_ROW_GAP = 80; // was 28 — gap between year rows for top-down edge routing
+const V_NODE_H_GAP = 44; // was 18 — horizontal gap inside a year row
+const V_TOP_PAD = 32;
+const V_BOT_PAD = 32;
+const V_LEFT_PAD = 120; // year label gutter
+const V_RIGHT_PAD = 40;
+const V_ROW_PAD_TOP = 28;
+const V_ROW_PAD_BOTTOM = 28;
+// Force max width for vertical (so it scrolls vertically primarily)
+const V_MAX_INNER_WIDTH = 1400; // viewport-friendly default; widened to fit larger gaps
+
+// ===== Group nodes by year (shared across orientations)
+const byYear = new Map<number, CollectionEntry<"nodes">[]>();
+for (const n of nodes) {
+  const y = n.data.date.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(n);
+}
+const years = Array.from(byYear.keys()).sort((a, b) => a - b);
+
+// ===== Layout types
+type Placed = {
+  slug: string;
+  x: number; // center
+  y: number; // center
+  width: number;
+  height: number;
+  org: string;
+  node: CollectionEntry<"nodes">;
+};
+type Edge = {
+  v: string;
+  w: string;
+  type: Rel["type"];
+  d: string;
+  midX: number;
+  midY: number;
+  anchors: { x: number; y: number }[];
+  label: string;
+};
+type Layout = {
+  W: number;
+  H: number;
+  placedNodes: Placed[];
+  edges: Edge[];
+  // year band visual descriptors (rectangles + headers)
+  bands: {
+    year: number;
+    idx: number;
+    rect: { x: number; y: number; width: number; height: number };
+    header: { x: number; y: number; width: number; height: number };
+    headerAlign: "center" | "left";
+    nodeCount: number;
+  }[];
+};
+
+// ===== Compute layout for a given orientation
+function computeLayout(orient: "h" | "v"): Layout {
+  // Within each year, sort STRICTLY by date ascending so the column / row is
+  // always chronological — earliest at top/left, latest at bottom/right.
+  // We do NOT use dagre's optimization here: chronology beats edge-crossing
+  // minimization for this kind of timeline view (predictable Dec-at-bottom).
+  for (const y of years) {
+    byYear
+      .get(y)!
+      .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+  }
+
+  const placedNodes: Placed[] = [];
+  const bands: Layout["bands"] = [];
+
+  if (orient === "h") {
+    // ===== HORIZONTAL: years are columns
+    const colHeights: number[] = [];
+    for (const year of years) {
+      const yearNodes = byYear.get(year)!;
+      const colIdx = years.indexOf(year);
+      const xCenter = H_SIDE_PAD + colIdx * H_COL_W + NODE_W / 2;
+      let yCursor = H_TOP_PAD;
+      for (const n of yearNodes) {
+        placedNodes.push({
+          slug: n.data.slug,
+          x: xCenter,
+          y: yCursor + NODE_H / 2,
+          width: NODE_W,
+          height: NODE_H,
+          org: n.data.org,
+          node: n,
+        });
+        yCursor += NODE_H + H_NODE_V_GAP;
+      }
+      colHeights.push(yCursor + H_BOT_PAD);
+    }
+    const totalHeight = Math.max(...colHeights, H_TOP_PAD + 200);
+    const totalWidth = H_SIDE_PAD * 2 + years.length * H_COL_W - H_COL_GAP;
+
+    for (const year of years) {
+      const colIdx = years.indexOf(year);
+      const xLeft = H_SIDE_PAD + colIdx * H_COL_W;
+      bands.push({
+        year,
+        idx: colIdx,
+        rect: { x: xLeft, y: 0, width: NODE_W, height: totalHeight },
+        header: { x: xLeft, y: 8, width: NODE_W, height: 42 },
+        headerAlign: "center",
+        nodeCount: byYear.get(year)!.length,
+      });
+    }
+
+    return finalize(placedNodes, bands, totalWidth, totalHeight, orient);
+  } else {
+    // ===== VERTICAL: years are rows
+    const rowWidth = V_MAX_INNER_WIDTH - V_LEFT_PAD - V_RIGHT_PAD;
+    const nodesPerSubRow = Math.max(
+      1,
+      Math.floor((rowWidth + V_NODE_H_GAP) / (NODE_W + V_NODE_H_GAP)),
+    );
+
+    let yCursor = V_TOP_PAD;
+    for (const year of years) {
+      const yearNodes = byYear.get(year)!;
+      const subRowCount = Math.max(1, Math.ceil(yearNodes.length / nodesPerSubRow));
+      const rowInnerHeight =
+        subRowCount * NODE_H + (subRowCount - 1) * V_NODE_H_GAP;
+      const rowHeight =
+        V_ROW_PAD_TOP + rowInnerHeight + V_ROW_PAD_BOTTOM;
+
+      const idx = years.indexOf(year);
+
+      bands.push({
+        year,
+        idx,
+        rect: {
+          x: 0,
+          y: yCursor,
+          width: V_MAX_INNER_WIDTH,
+          height: rowHeight,
+        },
+        header: {
+          x: 0,
+          y: yCursor,
+          width: V_LEFT_PAD - 16,
+          height: rowHeight,
+        },
+        headerAlign: "left",
+        nodeCount: yearNodes.length,
+      });
+
+      // Place each node
+      for (let i = 0; i < yearNodes.length; i++) {
+        const n = yearNodes[i];
+        const subRow = Math.floor(i / nodesPerSubRow);
+        const colInRow = i % nodesPerSubRow;
+        // Center the subrow within rowWidth
+        const nodesInThisSubRow = Math.min(
+          nodesPerSubRow,
+          yearNodes.length - subRow * nodesPerSubRow,
+        );
+        const subRowTotalWidth =
+          nodesInThisSubRow * NODE_W +
+          (nodesInThisSubRow - 1) * V_NODE_H_GAP;
+        const subRowStartX =
+          V_LEFT_PAD + (rowWidth - subRowTotalWidth) / 2;
+
+        const x =
+          subRowStartX + colInRow * (NODE_W + V_NODE_H_GAP) + NODE_W / 2;
+        const y =
+          yCursor +
+          V_ROW_PAD_TOP +
+          subRow * (NODE_H + V_NODE_H_GAP) +
+          NODE_H / 2;
+
+        placedNodes.push({
+          slug: n.data.slug,
+          x,
+          y,
+          width: NODE_W,
+          height: NODE_H,
+          org: n.data.org,
+          node: n,
+        });
+      }
+
+      yCursor += rowHeight + V_ROW_GAP;
+    }
+
+    const totalHeight = yCursor - V_ROW_GAP + V_BOT_PAD;
+    const totalWidth = V_MAX_INNER_WIDTH;
+
+    // Adjust band rects to match final width
+    for (const b of bands) {
+      b.rect.width = totalWidth;
+    }
+
+    return finalize(placedNodes, bands, totalWidth, totalHeight, orient);
+  }
+}
+
+// Cubic Bézier point at parameter t (0..1)
+function bezierAt(
+  x1: number, y1: number,
+  x2: number, y2: number,
+  x3: number, y3: number,
+  x4: number, y4: number,
+  t: number,
+): { x: number; y: number } {
+  const u = 1 - t;
+  return {
+    x: u * u * u * x1 + 3 * u * u * t * x2 + 3 * u * t * t * x3 + t * t * t * x4,
+    y: u * u * u * y1 + 3 * u * u * t * y2 + 3 * u * t * t * y3 + t * t * t * y4,
+  };
+}
+
+// Threshold: nodes within this distance are "adjacent" → use direct S-curve
+const H_ADJACENT = H_COL_W + 60; // one column gap + slack
+const V_ADJACENT = NODE_H + V_ROW_GAP * 1.2; // one row gap + slack
+
+// ===== Edge routing — Manhattan with rounded corners + adjacent-direct S-curve
+// Returns { d, mid, anchors[] } where anchors are candidate label positions ALONG the path
+function manhattanPath(
+  src: Placed,
+  tgt: Placed,
+  orient: "h" | "v",
+): {
+  d: string;
+  mid: { x: number; y: number };
+  anchors: { x: number; y: number }[];
+} {
+  const r = 6;
+  if (orient === "h") {
+    const sxR = src.x + src.width / 2;
+    const sy = src.y;
+    const txL = tgt.x - tgt.width / 2;
+    const ty = tgt.y;
+    const dx = txL - sxR;
+
+    // ===== Adjacent forward: direct S-curve, NO splitX detour
+    if (dx > 4 && dx < H_ADJACENT) {
+      const c1x = sxR + dx * 0.55;
+      const c2x = txL - dx * 0.55;
+      const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
+      // Anchors along the curve: t = 0.5 default; 0.4 / 0.6 fallbacks
+      const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+        bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
+      );
+      return { d, mid: anchors[0], anchors };
+    }
+
+    if (sxR < txL - 4) {
+      // ===== Non-adjacent forward — Manhattan with vertical segment
+      const splitX = sxR + Math.min((txL - sxR) * 0.55, 30);
+      const dy = ty - sy;
+      const sgn = dy >= 0 ? 1 : -1;
+      let d = `M ${sxR} ${sy}`;
+      if (Math.abs(dy) < r * 2) {
+        d += ` L ${splitX} ${sy} L ${splitX} ${ty} L ${txL} ${ty}`;
+      } else {
+        d += ` L ${splitX - r} ${sy} Q ${splitX} ${sy} ${splitX} ${sy + sgn * r}`;
+        d += ` L ${splitX} ${ty - sgn * r} Q ${splitX} ${ty} ${splitX + r} ${ty}`;
+        d += ` L ${txL} ${ty}`;
+      }
+      // ===== Anchors on HORIZONTAL segments (flow-aligned for horizontal view)
+      // Preferred: target horizontal segment (Y = ty, long X range from splitX → txL)
+      // Different targets have different ty → labels naturally separate vertically
+      const seg3Len = txL - splitX;
+      const seg1Len = splitX - sxR;
+      const anchors = [
+        { x: splitX + seg3Len * 0.5, y: ty }, // mid Segment 3
+        { x: splitX + seg3Len * 0.35, y: ty },
+        { x: splitX + seg3Len * 0.65, y: ty },
+        { x: splitX + seg3Len * 0.25, y: ty },
+        { x: splitX + seg3Len * 0.75, y: ty },
+        // Fallback: source horizontal segment (Y = sy)
+        { x: sxR + seg1Len * 0.5, y: sy },
+      ];
+      return { d, mid: anchors[0], anchors };
+    } else {
+      // ===== Same column / backward — detour right
+      const arc = 36;
+      const detourX = sxR + arc;
+      const dy = ty - sy;
+      const sgn = dy >= 0 ? 1 : -1;
+      let d = `M ${sxR} ${sy}`;
+      if (Math.abs(dy) < r * 2) {
+        d += ` L ${detourX} ${sy} L ${detourX} ${ty} L ${txL} ${ty}`;
+      } else {
+        d += ` L ${detourX - r} ${sy} Q ${detourX} ${sy} ${detourX} ${sy + sgn * r}`;
+        d += ` L ${detourX} ${ty - sgn * r} Q ${detourX} ${ty} ${detourX - r} ${ty}`;
+        d += ` L ${txL} ${ty}`;
+      }
+      // Detour edges — anchors on horizontal segments (target ty preferred)
+      const anchors = [
+        { x: (detourX + txL) / 2, y: ty },
+        { x: (detourX + txL) / 2 - 18, y: ty },
+        { x: (detourX + txL) / 2 + 18, y: ty },
+        { x: (sxR + detourX) / 2, y: sy },
+      ];
+      return { d, mid: anchors[0], anchors };
+    }
+  } else {
+    // ===== Vertical orient: src bottom → target top
+    const sx = src.x;
+    const syB = src.y + src.height / 2;
+    const tx = tgt.x;
+    const tyT = tgt.y - tgt.height / 2;
+    const dy = tyT - syB;
+
+    // Adjacent rows (one row gap): direct S-curve down
+    if (dy > 4 && dy < V_ADJACENT) {
+      const c1y = syB + dy * 0.55;
+      const c2y = tyT - dy * 0.55;
+      const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
+      const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+        bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
+      );
+      return { d, mid: anchors[0], anchors };
+    }
+
+    if (syB < tyT - 4) {
+      const splitY = syB + Math.min((tyT - syB) * 0.55, 30);
+      const dx = tx - sx;
+      const sgn = dx >= 0 ? 1 : -1;
+      let d = `M ${sx} ${syB}`;
+      if (Math.abs(dx) < r * 2) {
+        d += ` L ${sx} ${splitY} L ${tx} ${splitY} L ${tx} ${tyT}`;
+      } else {
+        d += ` L ${sx} ${splitY - r} Q ${sx} ${splitY} ${sx + sgn * r} ${splitY}`;
+        d += ` L ${tx - sgn * r} ${splitY} Q ${tx} ${splitY} ${tx} ${splitY + r}`;
+        d += ` L ${tx} ${tyT}`;
+      }
+      // ===== Anchors on VERTICAL segments (flow-aligned for vertical view)
+      // Preferred: target vertical entry (X = tx, long Y range from splitY → tyT)
+      // Different targets have different tx → labels naturally separate horizontally
+      const seg3Len = tyT - splitY;
+      const seg1Len = splitY - syB;
+      const anchors = [
+        { x: tx, y: splitY + seg3Len * 0.5 }, // mid Segment 3
+        { x: tx, y: splitY + seg3Len * 0.35 },
+        { x: tx, y: splitY + seg3Len * 0.65 },
+        { x: tx, y: splitY + seg3Len * 0.25 },
+        { x: tx, y: splitY + seg3Len * 0.75 },
+        // Fallback: source vertical exit
+        { x: sx, y: syB + seg1Len * 0.5 },
+      ];
+      return { d, mid: anchors[0], anchors };
+    } else {
+      // Same row / backward — detour below
+      const arc = 36;
+      const detourY = syB + arc;
+      const dx = tx - sx;
+      const sgn = dx >= 0 ? 1 : -1;
+      let d = `M ${sx} ${syB}`;
+      if (Math.abs(dx) < r * 2) {
+        d += ` L ${sx} ${detourY} L ${tx} ${detourY} L ${tx} ${tyT}`;
+      } else {
+        d += ` L ${sx} ${detourY - r} Q ${sx} ${detourY} ${sx + sgn * r} ${detourY}`;
+        d += ` L ${tx - sgn * r} ${detourY} Q ${tx} ${detourY} ${tx} ${detourY - r}`;
+        d += ` L ${tx} ${tyT}`;
+      }
+      // Detour edges — anchors on vertical segments
+      const anchors = [
+        { x: tx, y: (detourY + tyT) / 2 },
+        { x: tx, y: (detourY + tyT) / 2 - 18 },
+        { x: tx, y: (detourY + tyT) / 2 + 18 },
+        { x: sx, y: (syB + detourY) / 2 },
+      ];
+      return { d, mid: anchors[0], anchors };
+    }
+  }
+}
+
+// Label dimensions (kept here so collision-avoidance uses the same numbers as render)
+const LABEL_W = 78;
+const LABEL_H = 18;
+
+// Pick a label position that doesn't collide with already-placed labels.
+// Tries each anchor in order (anchors are along the edge's geometry, so the
+// label always remains visually attached to the edge it labels).
+function avoidLabelOverlaps(edges: Edge[]): void {
+  const placed: Array<{ x: number; y: number }> = [];
+  const X_PAD = LABEL_W * 0.55;
+  const Y_PAD = LABEL_H + 3;
+
+  const collides = (cx: number, cy: number) =>
+    placed.some(
+      (p) => Math.abs(p.x - cx) < X_PAD && Math.abs(p.y - cy) < Y_PAD,
+    );
+
+  for (const e of edges) {
+    let chosen = e.anchors[0];
+    for (const candidate of e.anchors) {
+      if (!collides(candidate.x, candidate.y)) {
+        chosen = candidate;
+        break;
+      }
+    }
+    e.midX = chosen.x;
+    e.midY = chosen.y;
+    placed.push({ x: e.midX, y: e.midY });
+  }
+}
+
+function finalize(
+  placedNodes: Placed[],
+  bands: Layout["bands"],
+  W: number,
+  H: number,
+  orient: "h" | "v",
+): Layout {
+  const placedById = new Map(placedNodes.map((p) => [p.slug, p]));
+  const edges: Edge[] = [];
+  for (const n of nodes) {
+    const tgt = placedById.get(n.data.slug);
+    if (!tgt) continue;
+    for (const r of n.data.relationships) {
+      const src = placedById.get(r.to);
+      if (!src) continue;
+      const { d, mid, anchors } = manhattanPath(src, tgt, orient);
+      edges.push({
+        v: r.to,
+        w: n.data.slug,
+        type: r.type,
+        d,
+        midX: mid.x,
+        midY: mid.y,
+        anchors,
+        label: edgeStyle[r.type]?.label ?? r.type,
+      });
+    }
+  }
+  // Pick label positions from each edge's anchor candidates to avoid overlap
+  avoidLabelOverlaps(edges);
+  return { W, H, placedNodes, edges, bands };
+}
+
+// Compute both layouts at build time
+const horizontal = computeLayout("h");
+const vertical = computeLayout("v");
+
+const fmtMonth = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "short" });
+
+// ===== Card text helpers — keep text inside the 220px card width
+const TITLE_MAX = 22; // chars at 13px sans-serif bold
+const SPEC_MAX = 24; // chars at 11px monospace
+const META_MAX = 26; // chars at 11px monospace bold (the "Jun · OrgName" line)
+
+function clip(s: string, max: number): string {
+  return s.length > max ? s.slice(0, max - 1) + "…" : s;
+}
+
+// Strip verbose parenthetical variants ("(base)", "(big)") so the most
+// representative number fits without overflowing
+function simplifyParams(p: string): string {
+  return p
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+\/\s+/g, " / ")
+    .trim();
+}
+
+function fmtCtx(c: number): string {
+  // Always round to integer — never show "32.768k", show "33k"
+  if (c >= 1_000_000) return `${Math.round(c / 1_000_000)}M ctx`;
+  if (c >= 1000) return `${Math.round(c / 1000)}k ctx`;
+  return `${c} ctx`;
+}
+
+function fmtSpec(ms: {
+  parameters?: string;
+  context_window?: number;
+} | undefined): string | null {
+  if (!ms) return null;
+  let s = ms.parameters ? simplifyParams(ms.parameters) : "";
+  if (ms.context_window) {
+    const ctx = fmtCtx(ms.context_window);
+    s = s ? `${s} · ${ctx}` : ctx;
+  }
+  return s ? clip(s, SPEC_MAX) : null;
+}
+---
+
+<figure class="ai-tree-graph rounded-xl border border-slate-200 bg-white shadow-sm">
+  <header class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3">
+    <div class="flex items-center gap-3">
+      <div
+        class="orient-toggle inline-flex rounded-lg border border-slate-300 bg-white p-1 shadow-sm"
+        role="tablist"
+        aria-label="Orientation"
+      >
+        <button
+          type="button"
+          data-orient="h"
+          class="orient-btn rounded-md px-3 py-1 text-sm font-medium text-slate-600"
+          aria-selected="true"
+        >
+          ▶ Horizontal
+        </button>
+        <button
+          type="button"
+          data-orient="v"
+          class="orient-btn rounded-md px-3 py-1 text-sm font-medium text-slate-600"
+          aria-selected="false"
+        >
+          ▼ Vertical
+        </button>
+      </div>
+      <span class="text-xs text-slate-500">
+        {nodes.length} nodes · {horizontal.edges.length} edges · {years.length} years
+      </span>
+    </div>
+    <div class="text-xs text-slate-500">
+      Scroll to navigate · hover for lineage
+    </div>
+  </header>
+
+  {/* HORIZONTAL */}
+  <div
+    class="orient-pane h-[min(82vh,920px)] w-full overflow-auto bg-slate-50"
+    data-orient="h"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={`0 0 ${horizontal.W} ${horizontal.H}`}
+      width={horizontal.W}
+      height={horizontal.H}
+      class="block"
+    >
+      <defs>
+        {
+          Object.entries(edgeStyle).map(([type, style]) => (
+            <marker
+              id={`arrow-h-${type}`}
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path d="M 0 0 L 10 5 L 0 10 z" fill={style.color} />
+            </marker>
+          ))
+        }
+      </defs>
+
+      {/* year columns */}
+      <g class="bands">
+        {
+          horizontal.bands.map((b) => (
+            <g class="year-band" data-year={b.year}>
+              <rect
+                x={b.rect.x}
+                y={b.rect.y}
+                width={b.rect.width}
+                height={b.rect.height}
+                fill={bandColor(b.idx, years.length)}
+                rx="6"
+              />
+              <rect
+                x={b.header.x}
+                y={b.header.y}
+                width={b.header.width}
+                height={b.header.height}
+                rx="6"
+                fill="white"
+                stroke={bandHeader(b.idx, years.length)}
+                stroke-width="1.25"
+              />
+              <text
+                x={b.header.x + b.header.width / 2}
+                y={b.header.y + 24}
+                text-anchor="middle"
+                font-size="20"
+                font-family="ui-monospace, monospace"
+                font-weight="700"
+                fill={bandHeader(b.idx, years.length)}
+              >
+                {b.year}
+              </text>
+              <text
+                x={b.header.x + b.header.width / 2}
+                y={b.header.y + 38}
+                text-anchor="middle"
+                font-size="9.5"
+                font-family="ui-sans-serif, system-ui"
+                fill="#64748b"
+              >
+                {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
+              </text>
+            </g>
+          ))
+        }
+      </g>
+
+      {/* edge paths only — labels rendered in a separate top layer (after nodes) */}
+      <g class="edges">
+        {
+          horizontal.edges.map((e, i) => {
+            const style = edgeStyle[e.type];
+            return (
+              <g class="edge" data-from={e.v} data-to={e.w} data-edge-key={`h-${i}`}>
+                <path
+                  d={e.d}
+                  fill="none"
+                  stroke={style.color}
+                  stroke-width="1.6"
+                  stroke-dasharray={style.dash ?? "none"}
+                  opacity="0.55"
+                  marker-end={`url(#arrow-h-${e.type})`}
+                />
+              </g>
+            );
+          })
+        }
+      </g>
+
+      {/* nodes */}
+      <g class="nodes">
+        {
+          horizontal.placedNodes.map((p) => {
+            const d = p.node.data;
+            const x = p.x - p.width / 2;
+            const y = p.y - p.height / 2;
+            const titleClipped = clip(d.title, TITLE_MAX);
+            const specText = fmtSpec(d.model_spec);
+            return (
+              <a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug}>
+                <g class="node" transform={`translate(${x}, ${y})`}>
+                  <rect width={p.width} height={p.height} rx="6" fill="white" stroke={stroke(p.org)} stroke-width="1.25" />
+                  <rect x="0" y="0" width="6" height={p.height} rx="2" fill={fill(p.org)} />
+                  <rect x="0" y="0" width="2" height={p.height} rx="1" fill={stroke(p.org)} />
+                  <text x="14" y="18" font-size="11" font-family="ui-monospace, monospace" fill={stroke(p.org)} font-weight="700">{clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX)}</text>
+                  <text x="14" y="36" font-size="13" font-family="ui-sans-serif, system-ui" fill="#1e293b" font-weight="600">{titleClipped}</text>
+                  {specText && (
+                    <text x="14" y="53" font-size="11" font-family="ui-monospace, monospace" fill="#64748b">{specText}</text>
+                  )}
+                  <g transform={`translate(${p.width - 30}, 8)`}>
+                    <rect width="24" height="14" rx="3" fill={fill(p.org)} stroke={stroke(p.org)} stroke-width="0.75" />
+                    <text x="12" y="10.5" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill={stroke(p.org)} font-weight="700">★{d.breakthrough_score}</text>
+                  </g>
+                </g>
+              </a>
+            );
+          })
+        }
+      </g>
+
+      {/* edge labels — top layer, drawn after nodes so nothing crosses through them */}
+      <g class="edge-labels">
+        {
+          horizontal.edges.map((e, i) => {
+            const style = edgeStyle[e.type];
+            return (
+              <g
+                class="edge-label"
+                data-edge-key={`h-${i}`}
+                data-from={e.v}
+                data-to={e.w}
+                transform={`translate(${e.midX}, ${e.midY})`}
+              >
+                <rect x={-LABEL_W/2} y={-LABEL_H/2} width={LABEL_W} height={LABEL_H} rx="9" fill="white" stroke={style.color} stroke-width="1" />
+                <text x="0" y="3.5" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill={style.color} font-weight="700">{style.label}</text>
+              </g>
+            );
+          })
+        }
+      </g>
+    </svg>
+  </div>
+
+  {/* VERTICAL */}
+  <div
+    class="orient-pane h-[min(85vh,1100px)] w-full overflow-auto bg-slate-50"
+    data-orient="v"
+    style="display:none"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={`0 0 ${vertical.W} ${vertical.H}`}
+      width={vertical.W}
+      height={vertical.H}
+      class="block"
+    >
+      <defs>
+        {
+          Object.entries(edgeStyle).map(([type, style]) => (
+            <marker
+              id={`arrow-v-${type}`}
+              viewBox="0 0 10 10"
+              refX="9"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path d="M 0 0 L 10 5 L 0 10 z" fill={style.color} />
+            </marker>
+          ))
+        }
+      </defs>
+
+      {/* year rows */}
+      <g class="bands">
+        {
+          vertical.bands.map((b) => (
+            <g class="year-band" data-year={b.year}>
+              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, years.length)} />
+              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, years.length)} stroke-width="1.25" />
+              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" font-size="22" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, years.length)}>{b.year}</text>
+              <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" font-size="10" font-family="ui-sans-serif, system-ui" fill="#64748b">{b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}</text>
+            </g>
+          ))
+        }
+      </g>
+
+      {/* edge paths only — labels in separate top layer (after nodes) */}
+      <g class="edges">
+        {
+          vertical.edges.map((e, i) => {
+            const style = edgeStyle[e.type];
+            return (
+              <g class="edge" data-from={e.v} data-to={e.w} data-edge-key={`v-${i}`}>
+                <path d={e.d} fill="none" stroke={style.color} stroke-width="1.6" stroke-dasharray={style.dash ?? "none"} opacity="0.55" marker-end={`url(#arrow-v-${e.type})`} />
+              </g>
+            );
+          })
+        }
+      </g>
+
+      {/* nodes */}
+      <g class="nodes">
+        {
+          vertical.placedNodes.map((p) => {
+            const d = p.node.data;
+            const x = p.x - p.width / 2;
+            const y = p.y - p.height / 2;
+            const titleClipped = clip(d.title, TITLE_MAX);
+            const specText = fmtSpec(d.model_spec);
+            return (
+              <a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug}>
+                <g class="node" transform={`translate(${x}, ${y})`}>
+                  <rect width={p.width} height={p.height} rx="6" fill="white" stroke={stroke(p.org)} stroke-width="1.25" />
+                  <rect x="0" y="0" width="6" height={p.height} rx="2" fill={fill(p.org)} />
+                  <rect x="0" y="0" width="2" height={p.height} rx="1" fill={stroke(p.org)} />
+                  <text x="14" y="18" font-size="11" font-family="ui-monospace, monospace" fill={stroke(p.org)} font-weight="700">{clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX)}</text>
+                  <text x="14" y="36" font-size="13" font-family="ui-sans-serif, system-ui" fill="#1e293b" font-weight="600">{titleClipped}</text>
+                  {specText && (
+                    <text x="14" y="53" font-size="11" font-family="ui-monospace, monospace" fill="#64748b">{specText}</text>
+                  )}
+                  <g transform={`translate(${p.width - 30}, 8)`}>
+                    <rect width="24" height="14" rx="3" fill={fill(p.org)} stroke={stroke(p.org)} stroke-width="0.75" />
+                    <text x="12" y="10.5" text-anchor="middle" font-size="10" font-family="ui-monospace, monospace" fill={stroke(p.org)} font-weight="700">★{d.breakthrough_score}</text>
+                  </g>
+                </g>
+              </a>
+            );
+          })
+        }
+      </g>
+
+      {/* edge labels — top layer for the vertical pane */}
+      <g class="edge-labels">
+        {
+          vertical.edges.map((e, i) => {
+            const style = edgeStyle[e.type];
+            return (
+              <g
+                class="edge-label"
+                data-edge-key={`v-${i}`}
+                data-from={e.v}
+                data-to={e.w}
+                transform={`translate(${e.midX}, ${e.midY})`}
+              >
+                <rect x={-LABEL_W/2} y={-LABEL_H/2} width={LABEL_W} height={LABEL_H} rx="9" fill="white" stroke={style.color} stroke-width="1" />
+                <text x="0" y="3.5" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill={style.color} font-weight="700">{style.label}</text>
+              </g>
+            );
+          })
+        }
+      </g>
+    </svg>
+  </div>
+
+  <figcaption class="border-t border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-600">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+      <span class="font-semibold">Edges:</span>
+      {
+        Object.entries(edgeStyle).map(([t, s]) => (
+          <span class="flex items-center gap-1.5">
+            <svg width="22" height="6" viewBox="0 0 22 6">
+              <line x1="0" x2="22" y1="3" y2="3" stroke={s.color} stroke-width="1.5" stroke-dasharray={s.dash ?? "none"} />
+            </svg>
+            {s.label}
+          </span>
+        ))
+      }
+    </div>
+  </figcaption>
+</figure>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const STORAGE_KEY = "ai-tree:orient";
+
+    const setOrient = (o: "h" | "v", scrollEnd = true) => {
+      document
+        .querySelectorAll<HTMLElement>(".orient-pane")
+        .forEach((p) => {
+          p.style.display = p.dataset.orient === o ? "" : "none";
+        });
+      document
+        .querySelectorAll<HTMLButtonElement>(".orient-btn")
+        .forEach((b) => {
+          b.setAttribute(
+            "aria-selected",
+            b.dataset.orient === o ? "true" : "false",
+          );
+        });
+      try {
+        localStorage.setItem(STORAGE_KEY, o);
+      } catch {}
+
+      if (scrollEnd) {
+        const pane = document.querySelector<HTMLElement>(
+          `.orient-pane[data-orient="${o}"]`,
+        );
+        if (!pane) return;
+        // For horizontal: scroll all the way right (latest year)
+        // For vertical: scroll all the way down (latest year)
+        if (o === "h") {
+          pane.scrollLeft = pane.scrollWidth;
+        } else {
+          pane.scrollTop = pane.scrollHeight;
+        }
+      }
+    };
+
+    let initial: "h" | "v" = "h";
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "h" || saved === "v") initial = saved;
+    } catch {}
+    setOrient(initial, true);
+
+    document
+      .querySelectorAll<HTMLButtonElement>(".orient-btn")
+      .forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const o = btn.dataset.orient as "h" | "v";
+          setOrient(o, true);
+        });
+      });
+
+    // ===== Lineage highlighting (works in both orientations)
+    const allNodeLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(".node-link"),
+    );
+    const allEdges = Array.from(
+      document.querySelectorAll<SVGGElement>(".edge"),
+    );
+    const allLabels = Array.from(
+      document.querySelectorAll<SVGGElement>(".edge-label"),
+    );
+
+    // Map data-edge-key → label element for fast hover coordination
+    const labelByKey = new Map<string, SVGGElement>();
+    allLabels.forEach((l) => {
+      const k = l.getAttribute("data-edge-key");
+      if (k) labelByKey.set(k, l);
+    });
+
+    // Build adjacency once
+    const incoming: Record<string, string[]> = {};
+    const outgoing: Record<string, string[]> = {};
+    allEdges.forEach((e) => {
+      const f = e.getAttribute("data-from")!;
+      const t = e.getAttribute("data-to")!;
+      (outgoing[f] ??= []).push(t);
+      (incoming[t] ??= []).push(f);
+    });
+    for (const k in outgoing) outgoing[k] = [...new Set(outgoing[k])];
+    for (const k in incoming) incoming[k] = [...new Set(incoming[k])];
+
+    const expand = (start: string, dir: "up" | "down") => {
+      const seen = new Set<string>([start]);
+      const q = [start];
+      while (q.length) {
+        const cur = q.shift()!;
+        const next = (dir === "up" ? incoming : outgoing)[cur] ?? [];
+        for (const n of next) {
+          if (!seen.has(n)) {
+            seen.add(n);
+            q.push(n);
+          }
+        }
+      }
+      return seen;
+    };
+
+    const clearLabels = () => {
+      allLabels.forEach((l) => l.classList.remove("related"));
+    };
+
+    const setHighlight = (slug: string | null) => {
+      if (!slug) {
+        allNodeLinks.forEach((n) => {
+          n.style.opacity = "1";
+          n.style.filter = "";
+        });
+        allEdges.forEach((e) => {
+          e.style.opacity = "1";
+          e.classList.remove("related");
+        });
+        clearLabels();
+        return;
+      }
+      const ancestors = expand(slug, "up");
+      const descendants = expand(slug, "down");
+      const keep = new Set([...ancestors, ...descendants]);
+      allNodeLinks.forEach((n) => {
+        const s = n.getAttribute("data-slug")!;
+        n.style.opacity = keep.has(s) ? "1" : "0.18";
+        n.style.filter =
+          s === slug ? "drop-shadow(0 0 6px rgba(15,23,42,0.25))" : "";
+      });
+      allEdges.forEach((e) => {
+        const f = e.getAttribute("data-from")!;
+        const t = e.getAttribute("data-to")!;
+        const inLineage = keep.has(f) && keep.has(t);
+        e.style.opacity = inLineage ? "1" : "0.05";
+        const isDirect = f === slug || t === slug;
+        e.classList.toggle("related", isDirect);
+        // Toggle the matching label in the top-layer
+        const key = e.getAttribute("data-edge-key");
+        if (key) {
+          const label = labelByKey.get(key);
+          label?.classList.toggle("related", isDirect);
+        }
+      });
+    };
+
+    allNodeLinks.forEach((n) => {
+      const slug = n.getAttribute("data-slug")!;
+      n.addEventListener("mouseenter", () => setHighlight(slug));
+      n.addEventListener("mouseleave", () => setHighlight(null));
+    });
+
+    // Edge-direct hover: show only that one edge's label
+    allEdges.forEach((e) => {
+      const key = e.getAttribute("data-edge-key");
+      if (!key) return;
+      const label = labelByKey.get(key);
+      if (!label) return;
+      e.addEventListener("mouseenter", () => label.classList.add("related"));
+      e.addEventListener("mouseleave", () => {
+        // Only clear if no node is currently being hovered
+        // (node-hover would re-add .related via setHighlight)
+        if (!document.querySelector(".node-link:hover")) {
+          label.classList.remove("related");
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .ai-tree-graph .node-link {
+    cursor: pointer;
+    transition:
+      opacity 0.15s ease,
+      filter 0.15s ease;
+  }
+  .ai-tree-graph .node-link:hover rect {
+    stroke-width: 2.4;
+  }
+  .ai-tree-graph .edge {
+    transition: opacity 0.15s ease;
+  }
+  /* Path catches hover events */
+  .ai-tree-graph .edge path {
+    pointer-events: stroke;
+  }
+  /* Labels live in a separate top layer (rendered after nodes) so nothing
+     overlays them visually. JS adds .related when their corresponding edge
+     or a connected node is hovered. */
+  .ai-tree-graph .edge-label {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .ai-tree-graph .edge-label.related {
+    opacity: 1;
+  }
+  /* Connected-edge emphasis on node hover */
+  .ai-tree-graph .edge.related path {
+    stroke-width: 2.4;
+  }
+  .ai-tree-graph .orient-btn[aria-selected="true"] {
+    background: var(--accent);
+    color: white;
+  }
+  .ai-tree-graph .orient-pane {
+    /* native scroll, no zoom */
+  }
+</style>

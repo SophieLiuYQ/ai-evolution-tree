@@ -1,0 +1,105 @@
+---
+slug: command-r-plus
+title: "Cohere Command R+ — RAG-Optimized Open Frontier"
+date: 2024-04-04
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Decoder-only transformer with explicit retrieval-augmented generation training"
+authors:
+  - "Cohere Team"
+org: "Cohere"
+breakthrough_score: 6
+status: superseded
+model_spec:
+  parameters: "104B"
+  architecture: "Decoder-only transformer + native tool use + multilingual + RAG-optimized post-training"
+  context_window: 128000
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "RAG benchmark (HotpotQA, NQ)"
+      score: "best open-weight RAG quality at release"
+      vs_baseline: "outperforms Llama 2 70B by ~15pts on multi-hop QA"
+    - name: "Multilingual"
+      score: "10 languages with strong fluency"
+    - name: "Tool use accuracy"
+      score: "first open model with strong native tool use"
+
+public_view:
+  plain_english: |
+    Cohere's flagship open-weight model, released April 2024.
+    Differentiated by being explicitly trained for retrieval-
+    augmented generation (RAG) workflows — given retrieved
+    documents in context, it integrates them more accurately and
+    cites them more reliably than generic LLMs. The default model
+    behind much enterprise RAG infrastructure in 2024-25.
+  analogy: |
+    The "specialist B2B player" of the open-LLM market — where
+    Llama is the consumer-AI ecosystem star, Command R+ is the
+    enterprise-RAG workhorse. Less viral, more profitable per
+    deployment.
+  applications:
+    - product: "Cohere API (Coral)"
+      company: "Cohere"
+      year_deployed: 2024
+    - product: "Embedded in Notion AI / Box AI / Oracle / others (enterprise)"
+      company: "Various enterprise"
+      year_deployed: 2024
+    - product: "Hosted on Oracle Cloud Infrastructure (deep partnership)"
+      company: "Oracle"
+      year_deployed: 2024
+  investment_angle: |
+    Cohere's positioning as the "enterprise-trusted alternative to
+    OpenAI/Anthropic" was bought partly with Command R+'s release.
+    The company raised $500M Series D at $5.5B valuation in July
+    2024 partly on this positioning. Strategic moat: enterprise
+    relationships (Oracle, Salesforce, Notion) + multilingual
+    coverage that Western-focused competitors deprioritize +
+    explicit on-prem deployment options that the OpenAI / Anthropic
+    APIs don't offer. By 2025-26 the company's revenue trajectory
+    (reportedly $300M+ ARR) was solid but smaller than the
+    flagship-lab tier — illustrating the tradeoff between
+    differentiated B2B positioning and consumer-attention scale.
+  why_it_matters: |
+    Command R+ is the proof that "specialized for enterprise"
+    can be a viable LLM-business positioning distinct from
+    "race to the frontier." The continued existence of Cohere
+    as a meaningful enterprise vendor (vs being absorbed by
+    a hyperscaler) validates the segment.
+
+citations:
+  - type: release
+    key: cohere2024crp
+    title: "Introducing Command R+"
+    year: 2024
+    venue: "Cohere"
+    url: "https://cohere.com/blog/command-r-plus-microsoft-azure"
+---
+
+## What it is
+
+A 104B-parameter decoder-only transformer released open-weight (CC-BY-NC-4.0) on April 4, 2024. Architecturally not novel — Cohere's contributions were in the post-training pipeline:
+
+1. **RAG-optimized fine-tuning** — heavy emphasis on producing accurate citations and integrating retrieved context faithfully
+2. **Native tool use** — first-class support for function calling with structured argument schemas
+3. **Multilingual coverage** — 10 languages with strong fluency (English, French, Spanish, Italian, German, Portuguese, Japanese, Korean, Arabic, Chinese)
+4. **Explicit on-prem deployability** — model card includes detailed compute requirements for self-hosting
+
+## Command R+ vs concurrent peers (Q2 2024)
+
+| Model | Date | Params | RAG quality | Tool use | License |
+|---|---|---|---|---|---|
+| GPT-4 Turbo | 2023-11 | undisclosed | strong | strong | API |
+| Claude 3 Opus | 2024-03 | undisclosed | strong | added later | API |
+| **Command R+** | **2024-04** | **104B** | **best open** | **native** | **open (CC-BY-NC)** |
+| Llama 3 70B | 2024-04 | 70B | RAG via prompt | needs scaffolding | open commercial |
+| Mixtral 8x22B | 2024-04 | 141B | OK | needs scaffolding | Apache 2.0 |
+
+Command R+'s niche — best-in-class open RAG + tool use — was the differentiator. Generic-quality benchmarks (MMLU, HumanEval) were strong but not leading.
+
+## The Cohere strategic position
+
+Cohere is the only major LLM lab founded by Google Brain alumni (Aidan Gomez, an author of "Attention Is All You Need") that explicitly chose enterprise B2B positioning over consumer-AI. The company has stayed relatively small (~300 employees by 2025) and avoided consumer-product launches, focusing exclusively on the B2B funnel. By 2026, this positioning has produced a stable but smaller business than the flagship labs — which Cohere's leadership has framed as deliberate.

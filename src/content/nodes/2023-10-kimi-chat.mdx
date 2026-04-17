@@ -1,0 +1,108 @@
+---
+slug: kimi-chat
+title: "Kimi Chat — Moonshot AI's Long-Context Bet"
+date: 2023-10-09
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: claude-1
+    type: competes_with
+    note: "Long-context LLM positioning; 200k tokens at launch (later 2M)"
+authors:
+  - "Moonshot AI Team"
+org: "Moonshot AI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "undisclosed; long-context attention optimizations"
+  context_window: 200000
+  release_type: api
+  modalities: [text]
+  benchmarks:
+    - name: "Needle-in-haystack (200k context)"
+      score: ">99% recall claimed"
+      vs_baseline: "competitive with Claude 2.1 / GPT-4 Turbo at launch"
+
+public_view:
+  plain_english: |
+    A Beijing startup founded in March 2023 by ex-Tsinghua / ex-Google
+    researchers; their consumer chat product Kimi launched in October
+    2023 with a 200k-token context window — the longest in the Chinese
+    market at the time. The product's "upload an entire book / annual
+    report and ask anything" framing made it the consumer breakout among
+    Chinese AI assistants in 2024. Expanded to 2M tokens in March 2024.
+  analogy: |
+    Moonshot's bet was that "long context" — the ability to ingest a
+    whole book, annual report, or codebase in one prompt — would be
+    the killer Chinese-market feature. By focusing on this single
+    capability, Kimi captured the high-end professional / student
+    market while ByteDance's Doubao and Baidu's Ernie battled for
+    mass consumer.
+  applications:
+    - product: "Kimi consumer chat (kimi.com / app)"
+      company: "Moonshot AI"
+      year_deployed: 2023
+    - product: "Kimi Browser Plugin (web summarization)"
+      company: "Moonshot AI"
+      year_deployed: 2024
+    - product: "Kimi-K (enterprise long-doc reasoning)"
+      company: "Moonshot AI"
+      year_deployed: 2024
+  investment_angle: |
+    Moonshot AI raised >$1B at >$3B valuation by 2024 — making it one
+    of China's "AI tigers" alongside Zhipu, Baichuan, MiniMax. Kimi
+    became the most-discussed consumer AI product in Chinese tech press
+    in early 2024 (Q1-Q2 saw daily ARPU surge by ~10× as the product
+    went viral on Chinese student-and-professional communities).
+    The 2M-token release in March 2024 forced Western competitors to
+    accelerate long-context roadmaps (Gemini 1.5 Pro had launched
+    1M context just 1 month earlier; the timing was widely read as
+    coordinated industry repositioning around long-context as the
+    defensible feature).
+  why_it_matters: |
+    Kimi made "long context" a marketing dimension that Chinese
+    consumers shopped on — analogous to how "fast charging" became
+    a smartphone marketing dimension in China before it was elsewhere.
+    Long-context as a productization choice (not just a benchmark
+    number) became the operating playbook.
+
+citations:
+  - type: release
+    key: moonshot2023kimi
+    title: "Moonshot AI launches Kimi Chat"
+    year: 2023
+    venue: "Moonshot AI"
+    url: "https://kimi.moonshot.cn/"
+---
+
+## What it is
+
+A consumer chat product (and underlying model) launched October 9, 2023 by Moonshot AI, a Beijing startup founded in March 2023. The differentiating feature: 200,000-token context window at launch, the longest of any Chinese-market LLM and competitive with Anthropic's Claude 2.1 (introduced ~5 weeks later in November 2023).
+
+In March 2024, Moonshot announced expansion to 2 million tokens — the longest publicly-available context window in any LLM at that time, exceeding Gemini 1.5 Pro's 1M (announced one month earlier).
+
+## How long-context positioning differentiated Kimi
+
+| Model | Date | Context | Market |
+|---|---|---|---|
+| GPT-4 | 2023-03 | 8k / 32k | global |
+| Claude 1 | 2023-03 | 9k / 100k | global |
+| Claude 2 | 2023-07 | 100k | global |
+| Llama 2 | 2023-07 | 4k | global open |
+| **Kimi** | **2023-10** | **200k → 2M (Mar 2024)** | **Chinese** |
+| Claude 2.1 | 2023-11 | 200k | global |
+| GPT-4 Turbo | 2023-11 | 128k | global |
+| Gemini 1.5 Pro | 2024-02 | 1M (10M experimental) | global |
+
+For most of late 2023, Kimi had the longest context window in the Chinese market by a 50× margin over the next-best Chinese competitor. This was the marketing wedge.
+
+## Use cases that drove adoption
+
+Reports from Chinese-language tech press identify three killer use cases that drove Kimi's 2024 viral spread:
+
+1. **Stock analyst Q&A on full annual reports** — upload 200-page A-share filings, ask "what are the management risks flagged"; Kimi could reason across the entire document rather than retrieving snippets.
+2. **Student literature review** — upload 5-10 academic PDFs, ask for a synthesis with citations; competitive with the Western-market Claude 2.1 use case but in Chinese.
+3. **Codebase ingestion** — upload an entire small repo (~20 files); useful for coding workflows where developers preferred long-context over RAG-based approaches.
+
+The 2M-token expansion in March 2024 took these use cases to "ingest entire books / mid-sized codebases" scale.

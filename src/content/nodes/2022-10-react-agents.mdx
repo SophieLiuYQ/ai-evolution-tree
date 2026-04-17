@@ -1,0 +1,120 @@
+---
+slug: react-agents
+title: "ReAct — Reasoning + Acting in Language Models"
+date: 2022-10-06
+era: agents
+category: [nlp, agents, theory]
+relationships:
+  - to: chain-of-thought
+    type: builds_on
+    note: "Interleaves CoT reasoning with tool-calling actions in a single trajectory"
+authors:
+  - "Yao, S."
+  - "Zhao, J."
+  - "Yu, D."
+  - "Du, N."
+  - "Shafran, I."
+  - "Narasimhan, K."
+  - "Cao, Y."
+org: "Google"
+breakthrough_score: 7
+status: foundational
+model_spec:
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "HotpotQA (multi-hop QA)"
+      score: "+18% vs CoT alone"
+      vs_baseline: "first prompting framework to combine reasoning + retrieval"
+
+public_view:
+  plain_english: |
+    A simple prompting framework that interleaves "thought" steps
+    with "action" steps (like calling a search engine or calculator)
+    in a single chain. Made it possible to build "agentic" LLM
+    workflows — give the model tools, let it decide which to use,
+    when, and based on what reasoning. Conceptual root of every
+    modern agent framework.
+  analogy: |
+    Earlier LLMs were closed-book exam takers. ReAct turned them into
+    open-book exam takers — same brain, but with the option to
+    look something up, do a calculation, or run code, mid-thought.
+  applications:
+    - product: "LangChain agent abstraction"
+      company: "LangChain"
+      year_deployed: 2023
+    - product: "OpenAI function calling / tool use"
+      company: "OpenAI"
+      year_deployed: 2023
+    - product: "Anthropic tool use API"
+      company: "Anthropic"
+      year_deployed: 2024
+    - product: "AutoGPT, BabyAGI, Devin"
+      company: "Various"
+      year_deployed: 2023
+  investment_angle: |
+    ReAct is the conceptual root of the entire agentic-AI investment
+    wave 2023-26. Every dollar invested in agent frameworks
+    (LangChain $200M+ raised, CrewAI, AutoGen) and agent products
+    (Devin $4B valuation, Cursor $9B, Replit Agent) traces methodologically
+    to this paper. The "tool-using LLM" architecture — model + system
+    prompt + tool schema + execution loop — is now standard plumbing
+    in every LLM API (OpenAI Responses, Anthropic Tool Use, Gemini
+    Function Calling).
+  why_it_matters: |
+    The conceptual jump from "LLM as text generator" to "LLM as
+    decision-maker that uses tools" started here. Without this
+    framing, the 2024-26 transition from chatbots to agents
+    happens later or differently.
+
+citations:
+  - type: paper
+    key: yao2022react
+    title: "ReAct: Synergizing Reasoning and Acting in Language Models"
+    authors: ["Yao, S.", "Zhao, J.", "Yu, D.", "Du, N.", "Shafran, I.", "Narasimhan, K.", "Cao, Y."]
+    year: 2022
+    venue: "ICLR 2023"
+    arxiv: "2210.03629"
+---
+
+## What it is
+
+A prompting framework where the model emits an interleaved sequence of:
+
+```
+Thought: I need to find when X happened.
+Action: search("X event date")
+Observation: X happened in 1987.
+Thought: Now I should figure out who was president then.
+Action: search("US president 1987")
+Observation: Ronald Reagan.
+Thought: ...
+Action: finish("Ronald Reagan")
+```
+
+The model decides at each step whether to think more or take an action; an external runtime executes the action and feeds the observation back. This is the "agent loop" — reasoning, acting, observing, repeat.
+
+## What ReAct combined that wasn't combined before
+
+| Capability | Pre-ReAct | ReAct |
+|---|---|---|
+| LM reasoning | CoT (Wei 2022) | ✓ inherited |
+| LM tool use | restricted to fine-tuned single-tool pipelines | ✓ general |
+| Reasoning + tool use in one trajectory | ✗ | ✓ |
+| Trace-based debugging | ✗ | ✓ (each thought visible) |
+
+The contribution wasn't any single technical innovation — it was the integration into a single coherent trajectory that the model itself orchestrated.
+
+## What ReAct birthed
+
+| Successor | Date | Inheritance |
+|---|---|---|
+| LangChain agents | 2023-Q1 | productized the ReAct loop as a Python framework |
+| OpenAI function calling | 2023-06 | API-native tool schema (formalizes the action format) |
+| AutoGPT / BabyAGI | 2023-04 | autonomous multi-step ReAct with goal decomposition |
+| ToolFormer (Meta) | 2023-02 | trains the model to insert API calls during pretraining |
+| Anthropic tool use | 2024-04 | first-class tool-use API with structured streaming |
+| MCP (Model Context Protocol) | 2024-11 | open protocol for tool / context server integration |
+| Devin / Cursor / Claude Code | 2024-25 | productized agentic IDE / dev workflows |
+
+Every modern agentic system inherits the core ReAct loop, even when not explicitly cited.

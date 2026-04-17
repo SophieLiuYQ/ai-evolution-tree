@@ -1,0 +1,176 @@
+---
+slug: gpt-3
+title: "GPT-3 — Language Models are Few-Shot Learners"
+date: 2020-05-28
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Decoder-only transformer, no architectural change vs GPT-2"
+  - to: gpt-2
+    type: scales
+    note: "117× more parameters (1.5B → 175B); demonstrates few-shot in-context learning emerges"
+  - to: scaling-laws
+    type: applies
+    note: "Empirical validation of Kaplan et al. compute-optimal scaling"
+authors:
+  - "Brown, T. B."
+  - "Mann, B."
+  - "Ryder, N."
+  - "Subbiah, M."
+  - "et al."
+org: "OpenAI"
+breakthrough_score: 10
+status: foundational
+model_spec:
+  parameters: "175B"
+  architecture: "Decoder-only transformer, 96 layers, 12288 hidden, sparse + dense attention"
+  context_window: 2048
+  training_tokens: "~300B (filtered Common Crawl + WebText2 + Books + Wikipedia)"
+  training_compute: "~3.14e23 FLOP, ~$5M (2020 USD) on V100s"
+  release_type: api
+  modalities: [text]
+  benchmarks:
+    - name: "LAMBADA (zero-shot)"
+      score: "76.2%"
+      vs_baseline: "prior SOTA 68.0%"
+    - name: "TriviaQA (one-shot)"
+      score: "68.0%"
+      vs_baseline: "GPT-2 ~30%"
+    - name: "Arithmetic 2-digit add"
+      score: "100%"
+      vs_baseline: "GPT-2 effectively 0%"
+
+public_view:
+  plain_english: |
+    A language model that became dramatically more capable than its
+    predecessors simply by being roughly 100 times larger and trained on
+    roughly 100 times more text. It demonstrated that you could often get
+    a model to do a new task by just describing the task in plain English
+    and showing a few examples — no retraining required.
+  analogy: |
+    Earlier language models were like specialists you had to send back to
+    school for every new task. GPT-3 was like a brilliant generalist who
+    could read a one-page job description and do the work passably well
+    on the first try.
+  applications:
+    - product: "GitHub Copilot"
+      company: "GitHub / OpenAI"
+      year_deployed: 2021
+    - product: "Jasper / Copy.ai (marketing copy)"
+      company: "Various"
+      year_deployed: 2021
+    - product: "OpenAI API platform"
+      company: "OpenAI"
+      year_deployed: 2020
+    - product: "ChatGPT (built on GPT-3.5)"
+      company: "OpenAI"
+      year_deployed: 2022
+  investment_angle: |
+    The empirical result that triggered the LLM gold rush. By demonstrating
+    that capability scales predictably with parameters + data + compute,
+    GPT-3 made the case to investors and corporate boards that pouring
+    capital into model training had a reliable expected return. OpenAI
+    raised at $14B post-money in 2021 partly on the strength of this
+    paper. The "model-as-platform" business model (API access priced per
+    token) starts here.
+  market_size_usd: 50000000000
+  why_it_matters: |
+    GPT-3 is the moment "large language model" became a coherent product
+    category. Every API-priced LLM business — OpenAI, Anthropic, Cohere,
+    Mistral, the API arms of Google and Meta — uses GPT-3's pricing model
+    (per-token), interface model (text-in, text-out), and capability
+    framing (few-shot prompting). Without this paper, the 2022–2026 AI
+    investment cycle does not happen on the same timeline.
+
+citations:
+  - type: paper
+    key: brown2020gpt3
+    title: "Language Models are Few-Shot Learners"
+    authors: ["Brown, T. B.", "Mann, B.", "Ryder, N.", "et al."]
+    year: 2020
+    venue: "NeurIPS"
+    arxiv: "2005.14165"
+    url: "https://arxiv.org/abs/2005.14165"
+  - type: paper
+    key: kaplan2020scaling
+    title: "Scaling Laws for Neural Language Models"
+    authors: ["Kaplan, J.", "McCandlish, S.", "Henighan, T.", "et al."]
+    year: 2020
+    venue: "arXiv"
+    arxiv: "2001.08361"
+---
+
+## What it is
+
+GPT-3 is a 175-billion-parameter autoregressive transformer language model trained on ~300B tokens of internet text. Architecturally it is mostly identical to GPT-2 (a decoder-only transformer with sparse attention variants); the contribution is **scale** plus the empirical demonstration of **in-context learning**.
+
+In-context learning: rather than fine-tuning the model on a new task, you describe the task in the prompt and provide a few examples ("few-shot"). The model then completes the pattern. This worked surprisingly well across translation, question-answering, arithmetic, code generation, and dozens of other tasks the model was never explicitly trained on.
+
+## How it works
+
+The training objective is unchanged from GPT-1/GPT-2 — next-token prediction:
+
+$$
+\mathcal{L} = -\sum_{t} \log p_\theta(x_t \mid x_{<t})
+$$
+
+The breakthrough is that scaling this objective monotonically improves performance on a broad range of downstream tasks, *and* unlocks qualitatively new behaviors (in-context learning, basic arithmetic, code synthesis) at threshold sizes.
+
+Few-shot prompting in practice:
+
+```
+Translate English to French:
+
+sea otter => loutre de mer
+plush giraffe => girafe en peluche
+cheese =>
+```
+
+GPT-3 completes with `fromage`. No fine-tuning was performed for translation; the capability was elicited by the prompt.
+
+## How to use it
+
+GPT-3 itself is no longer a current model (OpenAI deprecated the original `davinci` line). The interface — and the techniques — survive in every modern LLM API:
+
+```python
+import openai
+client = openai.OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a Python tutor."},
+        {"role": "user", "content": "Explain decorators with one example."},
+    ],
+)
+print(response.choices[0].message.content)
+```
+
+The `chat.completions` interface is post-GPT-3 (introduced with ChatGPT/GPT-3.5), but the underlying mechanics — token-by-token autoregressive sampling from a transformer — are unchanged.
+
+## SWOT
+
+- **Strengths** — General-purpose: a single model handles dozens of tasks via prompting. Few-shot reduces or eliminates per-task data collection. API-as-product economics — the model is the SaaS.
+- **Weaknesses** — Hallucinates confidently. Limited reliability for tasks requiring exact recall or multi-step reasoning. Expensive: ~$5M to train (2020 dollars), millions per month to serve at scale.
+- **Opportunities** — Tool use (function calling), retrieval augmentation (RAG), and inference-time reasoning (chain-of-thought, o1-style) all extend GPT-3-class models without retraining.
+- **Threats** — Open-weight competitors (Llama 3, Mistral) erode pricing power. Specialized small models (1B–10B) outperform generalist 175B models on narrow tasks.
+
+## Limitations (still mostly unsolved as of 2026)
+
+- **Hallucination** — fluent text that asserts false facts.
+- **No persistent memory** across sessions without external scaffolding.
+- **Limited multi-step reasoning** — partially addressed by chain-of-thought (next era) and inference-time compute (o1 / o3).
+- **Compute cost** — inference at scale dominates the unit economics of every LLM product.
+- **Training data provenance** — copyright and licensing remain legally unresolved.
+
+## Why GPT-3 created an industry
+
+Three things happened together:
+
+1. **Capability surprise** — the model was much better at much more than its predecessors. The few-shot demos went viral.
+2. **API distribution** — OpenAI made the model available as a paid API rather than open-sourcing it. This created a business.
+3. **Scaling laws made capital allocation legible** — Kaplan et al. (2020) gave investors a quantitative framework: $X compute + $Y data + $Z parameters → $W loss. Once you can forecast capability from spend, you can underwrite billion-dollar training runs.
+
+The combination — a viable product, a viable business model, and an investable scaling thesis — is what GPT-3 contributed beyond any single technical idea.

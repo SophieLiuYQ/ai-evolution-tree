@@ -1,0 +1,58 @@
+---
+interface Props {
+  org: string;
+}
+const { org } = Astro.props;
+
+const orgColors: Record<string, string> = {
+  "OpenAI": "bg-emerald-50 text-emerald-800 border-emerald-300",
+  "Anthropic": "bg-orange-50 text-orange-800 border-orange-300",
+  "Google": "bg-blue-50 text-blue-800 border-blue-300",
+  "Google DeepMind": "bg-blue-50 text-blue-800 border-blue-300",
+  "DeepMind": "bg-blue-50 text-blue-800 border-blue-300",
+  "Google Brain": "bg-blue-50 text-blue-800 border-blue-300",
+  "Meta AI": "bg-cyan-50 text-cyan-800 border-cyan-300",
+  "Microsoft": "bg-teal-50 text-teal-800 border-teal-300",
+  "Mistral AI": "bg-red-50 text-red-800 border-red-300",
+  "Stability AI": "bg-stone-100 text-stone-700 border-stone-300",
+  "EleutherAI": "bg-purple-50 text-purple-800 border-purple-300",
+  "Cohere": "bg-pink-50 text-pink-800 border-pink-300",
+  "xAI": "bg-zinc-100 text-zinc-800 border-zinc-300",
+  "Alibaba": "bg-yellow-50 text-yellow-800 border-yellow-300",
+  "DeepSeek": "bg-fuchsia-50 text-fuchsia-800 border-fuchsia-300",
+  "Tsinghua / Zhipu": "bg-rose-50 text-rose-800 border-rose-300",
+  "01.AI": "bg-rose-50 text-rose-800 border-rose-300",
+  "Baidu": "bg-blue-50 text-blue-800 border-blue-300",
+  "Tencent": "bg-sky-50 text-sky-800 border-sky-300",
+  "Moonshot AI": "bg-indigo-50 text-indigo-800 border-indigo-300",
+  "MiniMax": "bg-violet-50 text-violet-800 border-violet-300",
+  "ByteDance": "bg-orange-50 text-orange-800 border-orange-300",
+  "Stepfun": "bg-emerald-50 text-emerald-800 border-emerald-300",
+  "Suno": "bg-pink-50 text-pink-800 border-pink-300",
+  "Runway": "bg-violet-50 text-violet-800 border-violet-300",
+  "Black Forest Labs": "bg-zinc-100 text-zinc-800 border-zinc-300",
+  "Databricks": "bg-orange-50 text-orange-800 border-orange-300",
+  "Perplexity": "bg-cyan-50 text-cyan-800 border-cyan-300",
+  "Kuaishou": "bg-yellow-50 text-yellow-800 border-yellow-300",
+  "Hugging Face": "bg-amber-50 text-amber-800 border-amber-300",
+  "BigScience": "bg-amber-50 text-amber-800 border-amber-300",
+  "Allen AI": "bg-indigo-50 text-indigo-800 border-indigo-300",
+  "Salesforce": "bg-sky-50 text-sky-800 border-sky-300",
+  "Nvidia": "bg-green-50 text-green-800 border-green-300",
+  "Apple": "bg-slate-100 text-slate-800 border-slate-300",
+  "IBM": "bg-blue-50 text-blue-800 border-blue-300",
+  "Academic / Independent": "bg-stone-100 text-stone-700 border-stone-300",
+  "US Office of Naval Research": "bg-stone-100 text-stone-700 border-stone-300",
+  "UC San Diego / CMU": "bg-stone-100 text-stone-700 border-stone-300",
+  "University of Toronto": "bg-stone-100 text-stone-700 border-stone-300",
+  "Université de Montréal": "bg-stone-100 text-stone-700 border-stone-300",
+  "Cornell Aeronautical Laboratory": "bg-stone-100 text-stone-700 border-stone-300",
+};
+const cls = orgColors[org] ?? "bg-slate-100 text-slate-700 border-slate-300";
+---
+
+<span
+  class={`inline-block rounded border px-2 py-0.5 text-xs font-semibold ${cls}`}
+>
+  {org}
+</span>

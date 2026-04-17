@@ -1,0 +1,116 @@
+---
+slug: deepseek-v2
+title: "DeepSeek-V2 — Open MoE with Multi-Head Latent Attention"
+date: 2024-05-06
+era: scale-era
+category: [nlp, generative, architecture]
+relationships:
+  - to: mixtral-8x7b
+    type: builds_on
+    note: "MoE feed-forward layers with finer-grained routing (160 experts, top-6)"
+  - to: llama-3
+    type: competes_with
+    note: "Open-weight frontier competitor at similar or lower inference cost"
+authors:
+  - "DeepSeek-AI Team"
+org: "DeepSeek"
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: "236B total / 21B active"
+  architecture: "MoE + Multi-Head Latent Attention (MLA) — KV cache compression via low-rank joint projection"
+  context_window: 128000
+  training_tokens: "8.1T"
+  training_compute: "~1.55M H800 GPU-hours (reported $6M)"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU"
+      score: "78.5%"
+      vs_baseline: "Llama 3 70B 82.0%, Mixtral 8x22B 77.8%"
+    - name: "HumanEval"
+      score: "81.1%"
+      vs_baseline: "Llama 3 70B 81.7%"
+    - name: "API cost / 1M output"
+      score: "$0.28"
+      vs_baseline: "GPT-4 Turbo $30 (107× cheaper), Claude Sonnet $15 (54× cheaper)"
+
+public_view:
+  plain_english: |
+    A Chinese AI lab's 236B-parameter Mixture-of-Experts model,
+    released open-weight with a new attention architecture (MLA) that
+    dramatically reduced inference memory. Its API was priced at
+    $0.28 per million output tokens — two orders of magnitude cheaper
+    than GPT-4 Turbo. The pricing itself was the news: DeepSeek had
+    broken the perceived floor of frontier-quality LLM inference
+    pricing.
+  analogy: |
+    Where Llama made open-weight LLMs practical, DeepSeek V2 made
+    open-weight frontier-quality LLMs *cheap* — priced at levels that
+    made every closed-model API vendor recalibrate their margins.
+  applications:
+    - product: "DeepSeek API (platform.deepseek.com)"
+      company: "DeepSeek"
+      year_deployed: 2024
+    - product: "DeepSeek Coder (coding-specialized variant)"
+      company: "DeepSeek"
+      year_deployed: 2024
+    - product: "Hosted at Together, Fireworks, SiliconFlow"
+      company: "Various"
+      year_deployed: 2024
+  investment_angle: |
+    DeepSeek V2's API pricing kicked off the Chinese LLM price war of
+    summer 2024 — Alibaba, Baidu, Tencent, ByteDance all cut prices
+    by 90%+ in the subsequent 60 days. More structurally, V2 proved
+    that "efficient MoE + aggressive inference optimization" could be
+    the moat, not just parameter count. The Multi-Head Latent
+    Attention innovation alone reduced KV cache by ~93% vs dense
+    attention, enabling the low pricing. Set up R1's January 2025
+    market-shaking release on the same architectural foundation.
+  why_it_matters: |
+    DeepSeek V2 is the proximal cause of the global LLM inference
+    price collapse in 2024-25. Every frontier lab now has to explain
+    why they charge what they do — when a Chinese open model runs at
+    $0.28/1M tokens and meets 90% of enterprise quality needs.
+
+citations:
+  - type: paper
+    key: deepseek2024v2
+    title: "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model"
+    authors: ["DeepSeek-AI"]
+    year: 2024
+    venue: "arXiv"
+    arxiv: "2405.04434"
+---
+
+## What it is
+
+A 236B-parameter Mixture-of-Experts decoder-only transformer with 21B active parameters per forward pass, released open-weight on May 6, 2024. Introduced two novel architectural components:
+
+1. **Multi-Head Latent Attention (MLA)** — instead of caching full K and V matrices per head, project them through a low-rank joint bottleneck before caching, then expand at attention time. Reduces KV cache memory by ~93% with negligible quality loss. This is the feature that enables the pricing.
+
+2. **DeepSeekMoE** — finer-grained expert routing (160 routed experts + 2 shared experts, top-6 routing) vs Mixtral's 8-expert top-2. Research claim: fine-grained experts specialize more effectively, enabling better performance per active parameter.
+
+## DeepSeek V2 vs 2024 mid-year peers
+
+| Model | Date | Org | Active params | MMLU | HumanEval | API $ / 1M out |
+|---|---|---|---|---|---|---|
+| GPT-4 Turbo | 2023-11 | OpenAI | undisclosed | 86.0% | ~85% | $30 |
+| Claude 3 Opus | 2024-03 | Anthropic | undisclosed | 86.8% | 84.9% | $75 |
+| Llama 3 70B | 2024-04 | Meta | 70B | 82.0% | 81.7% | ~$0.90 (Together) |
+| GPT-4o | 2024-05 | OpenAI | undisclosed | 88.7% | 90.2% | $15 |
+| **DeepSeek V2** | **2024-05** | **DeepSeek** | **21B** | **78.5%** | **81.1%** | **$0.28** |
+| Qwen 2 72B | 2024-06 | Alibaba | 72B | 77.4% | 86.0% | ~$0.90 |
+
+The economic frame: DeepSeek V2 delivered Llama-3-70B-class quality at ~⅓ the active-parameter inference cost (21B vs 70B), priced at ~⅓ of Together's Llama 3 hosting. End-to-end, ~9× cheaper than hosted Llama; ~100× cheaper than GPT-4 Turbo.
+
+## What came next in the DeepSeek line
+
+| Model | Date | Change |
+|---|---|---|
+| DeepSeek V2.5 | 2024-09 | improved coding + reasoning, 236B/21B |
+| **DeepSeek V3** | **2024-12-26** | **671B/37B MoE, auxiliary-loss-free routing, $5.5M training cost** |
+| DeepSeek R1 | 2025-01 | RL-only reasoning on V3 base |
+| DeepSeek R1.5 | 2025-Q2 | refresh, tool-use integration |
+
+V2 was the architectural foundation; V3 was the scale-up; R1 was the reasoning payoff. Each built directly on the prior generation's innovations.

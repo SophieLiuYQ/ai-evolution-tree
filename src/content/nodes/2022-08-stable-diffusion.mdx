@@ -1,0 +1,143 @@
+---
+slug: stable-diffusion
+title: "Stable Diffusion — Open-Weight Latent Diffusion for Images"
+date: 2022-08-22
+era: multimodal
+category: [generative, cv]
+relationships:
+  - to: clip
+    type: builds_on
+    note: "Uses CLIP text encoder to condition the U-Net denoiser"
+  - to: gan
+    type: replaces
+    note: "Diffusion surpasses GANs on photorealistic generation; open weights replace StyleGAN for general-purpose use"
+authors:
+  - "Rombach, R."
+  - "Blattmann, A."
+  - "Lorenz, D."
+  - "Esser, P."
+  - "Ommer, B."
+org: "Stability AI"
+breakthrough_score: 9
+status: foundational
+model_spec:
+  parameters: "~890M (U-Net) + ~123M (text encoder) + ~83M (VAE)"
+  architecture: "Latent diffusion (denoise in 64×64 latent space, not 512×512 pixels) + CLIP conditioning"
+  training_tokens: "LAION-5B subset (~2.3B image-text pairs)"
+  training_compute: "~150k A100-hours"
+  release_type: open_weights
+  modalities: [text, image]
+  benchmarks:
+    - name: "FID on COCO (zero-shot)"
+      score: "12.63"
+      vs_baseline: "DALL·E 2 10.39 (closed); Imagen 7.27 (closed)"
+    - name: "Inference VRAM"
+      score: "<8 GB"
+      vs_baseline: "first open model runnable on consumer GPU"
+
+public_view:
+  plain_english: |
+    An image generator released with open weights and a permissive
+    license that, within weeks, ran on consumer graphics cards in
+    apartments around the world. It was the first generative AI model
+    with quality comparable to closed competitors (DALL·E 2, Midjourney)
+    that anyone could download, modify, and commercialize without
+    permission.
+  analogy: |
+    The moment Linux became good enough to challenge Windows — but
+    compressed into three weeks. Within a month of release the community
+    had built dozens of variants, UIs, and fine-tuned models; within a
+    year an entire open creative-AI ecosystem had formed.
+  applications:
+    - product: "Midjourney (architecturally related)"
+      company: "Midjourney"
+      year_deployed: 2022
+    - product: "Automatic1111 WebUI (community)"
+      company: "Open source"
+      year_deployed: 2022
+    - product: "Photoshop Generative Fill (Firefly, related architecture)"
+      company: "Adobe"
+      year_deployed: 2023
+    - product: "Runway, Leonardo, Civitai"
+      company: "Various"
+      year_deployed: 2023
+  investment_angle: |
+    Stable Diffusion created an entire open-source creative-AI economy
+    (Civitai hosts >50k fine-tunes). Stability AI's own commercial
+    trajectory was rocky (founder ouster, funding crises through 2024),
+    but the ecosystem around SD now generates billions in derivative
+    product revenue. The fundamental economics lesson: open-weight base
+    models can build large downstream markets even when the releasing
+    company struggles to monetize. Related investment theses: Adobe's
+    pivot to Firefly (~$3B new revenue 2023-24), the copyright lawsuits
+    (Getty v Stability) that shape the synthetic-media legal landscape,
+    and the data-moat thesis now driving all frontier labs.
+  why_it_matters: |
+    Stable Diffusion is the image-gen equivalent of what Llama became
+    for text generation a year later. It proved that open-weight models
+    could ship at frontier quality — a precedent that now shapes every
+    conversation about LLM regulation, China competitiveness, and the
+    viability of closed-model moats.
+
+citations:
+  - type: paper
+    key: rombach2022latent
+    title: "High-Resolution Image Synthesis with Latent Diffusion Models"
+    authors: ["Rombach, R.", "Blattmann, A.", "Lorenz, D.", "Esser, P.", "Ommer, B."]
+    year: 2022
+    venue: "CVPR"
+    arxiv: "2112.10752"
+  - type: release
+    key: stability2022sd
+    title: "Stable Diffusion Public Release"
+    year: 2022
+    venue: "Stability AI"
+    url: "https://stability.ai/news/stable-diffusion-public-release"
+  - type: paper
+    key: ho2020ddpm
+    title: "Denoising Diffusion Probabilistic Models"
+    authors: ["Ho, J.", "Jain, A.", "Abbeel, P."]
+    year: 2020
+    venue: "NeurIPS"
+    arxiv: "2006.11239"
+---
+
+## What it is
+
+A latent diffusion model: instead of denoising in pixel space (512×512×3 = 786k dimensions), it denoises in a compressed latent space (64×64×4 = 16k dimensions) encoded/decoded by a VAE. This ~50× dimensionality reduction is what makes inference feasible on consumer hardware.
+
+Architecture:
+```
+text → CLIP text encoder → conditioning embeddings
+                                     │
+noise (latent) → U-Net denoiser ← cross-attention ← conditioning
+                     │
+                     ↓
+              (T steps of denoising)
+                     │
+                     ↓
+              VAE decoder → 512×512 image
+```
+
+## How it compares to concurrent image generators
+
+| Model | Date | Org | Approach | Weights | Quality (FID COCO) |
+|---|---|---|---|---|---|
+| DALL·E 1 | 2021-01 | OpenAI | discrete VAE + autoregressive transformer | closed | — |
+| GLIDE | 2021-12 | OpenAI | pixel-space diffusion | partial | 12.24 |
+| DALL·E 2 | 2022-04 | OpenAI | CLIP + diffusion prior + upsampler | closed | 10.39 |
+| Imagen | 2022-05 | Google | T5-XXL + cascaded pixel diffusion | closed | 7.27 |
+| Midjourney v3 | 2022-07 | Midjourney | diffusion (details undisclosed) | closed | — |
+| **Stable Diffusion 1.4** | **2022-08** | **Stability AI** | **latent diffusion + CLIP** | **open** | **12.63** |
+| Stable Diffusion XL | 2023-07 | Stability AI | 2.6B params, better text encoder | open | ~8 |
+| FLUX.1 | 2024-08 | Black Forest Labs | 12B rectified flow transformer | open (dev) | ~6 |
+
+SD 1.4's quality was behind the closed competitors at launch — but the open weights + consumer-GPU tractability mattered more than the quality gap. By SDXL (2023-07) the gap had closed.
+
+## What changed after release
+
+- **Civitai** launched within 2 months — today hosts >100k community fine-tunes
+- **Midjourney v4** quality leap (late 2022) was partly a response
+- **ControlNet** (Feb 2023) added structured conditioning (pose, depth, edge maps) that closed models lacked
+- **LoRA fine-tuning** popularized by SD — now standard across all generative AI
+- **Getty Images v Stability AI** (2023) — still-unresolved copyright case that will shape generative AI law

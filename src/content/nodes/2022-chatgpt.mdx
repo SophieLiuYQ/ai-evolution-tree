@@ -1,0 +1,174 @@
+---
+slug: chatgpt
+title: "ChatGPT — RLHF-Aligned Conversational LLM"
+date: 2022-11-30
+era: alignment
+category: [nlp, generative, safety]
+relationships:
+  - to: gpt-3
+    type: fine_tunes
+    note: "RLHF post-training on GPT-3.5 base (text-davinci-003)"
+  - to: instructgpt
+    type: builds_on
+    note: "Productizes the InstructGPT alignment recipe with chat UI"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 10
+status: foundational
+model_spec:
+  parameters: "~175B (GPT-3.5 base, undisclosed exact)"
+  architecture: "Decoder-only transformer + RLHF post-training (PPO against reward model)"
+  context_window: 4096
+  release_type: product
+  modalities: [text]
+  benchmarks:
+    - name: "User adoption"
+      score: "100M MAU in 2 months"
+      vs_baseline: "fastest-growing consumer product in history"
+
+public_view:
+  plain_english: |
+    A version of GPT-3.5 fine-tuned with human feedback so that it
+    follows instructions, holds a multi-turn conversation, and refuses
+    obviously harmful requests. Free public access through a chat
+    interface made it the fastest-growing consumer product in history,
+    crossing 100 million users in two months.
+  analogy: |
+    GPT-3 was a brilliant but socially clueless savant who would
+    autocomplete anything. ChatGPT was the same savant after a year of
+    intense customer-service training — same raw capability, vastly more
+    usable.
+  applications:
+    - product: "ChatGPT (consumer chat product)"
+      company: "OpenAI"
+      year_deployed: 2022
+    - product: "Microsoft Copilot (Office, Windows, GitHub, Bing)"
+      company: "Microsoft"
+      year_deployed: 2023
+    - product: "ChatGPT Enterprise"
+      company: "OpenAI"
+      year_deployed: 2023
+  investment_angle: |
+    The product launch that converted "AI is impressive in demos" into
+    "AI is a category every public-market analyst now models." Microsoft's
+    $10B investment in OpenAI (Jan 2023), Nvidia's $1T → $3T market cap
+    expansion (2023–24), Anthropic's accelerated funding rounds, and the
+    creation of a ~$100B/yr commercial LLM market — all proximally
+    triggered by ChatGPT's launch traction. Moat shape: distribution +
+    brand + post-training know-how. Pricing model: $20/mo consumer,
+    seat-based enterprise, per-token API.
+  market_size_usd: 100000000000
+  why_it_matters: |
+    Even readers with no technical interest in AI now interact with
+    GPT-class systems weekly — through ChatGPT, Copilot, or one of
+    dozens of derivative products. ChatGPT is the moment AI stopped
+    being a research field and became a consumer category. Every
+    subsequent regulatory, geopolitical, labor-market, and education
+    debate about AI is downstream of this launch.
+
+citations:
+  - type: release
+    key: openai2022chatgpt
+    title: "Introducing ChatGPT"
+    year: 2022
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/chatgpt/"
+  - type: paper
+    key: ouyang2022instructgpt
+    title: "Training Language Models to Follow Instructions with Human Feedback"
+    authors: ["Ouyang, L.", "Wu, J.", "Jiang, X.", "et al."]
+    year: 2022
+    venue: "NeurIPS"
+    arxiv: "2203.02155"
+  - type: paper
+    key: christiano2017rlhf
+    title: "Deep Reinforcement Learning from Human Preferences"
+    authors: ["Christiano, P.", "Leike, J.", "Brown, T.", "et al."]
+    year: 2017
+    venue: "NeurIPS"
+    arxiv: "1706.03741"
+---
+
+## What it is
+
+ChatGPT (initial release, Nov 2022) was a fine-tuned variant of `text-davinci-003` (GPT-3.5), trained with **Reinforcement Learning from Human Feedback (RLHF)** to:
+
+1. Follow natural-language instructions rather than continue arbitrary text.
+2. Hold multi-turn conversations with stable persona.
+3. Refuse a curated set of harmful or policy-violating requests.
+
+The product surface — a chat box with conversation memory — was as important as the model. It made few-shot prompting (which requires ML literacy to use well) implicit in the conversational format.
+
+## How it works (training pipeline)
+
+```
+1. Pretraining          → next-token prediction on internet text (GPT-3.5 base)
+2. Supervised fine-tune → human-written demonstrations of "correct" responses
+3. Reward modeling      → train a separate model to predict human preference rankings
+4. RL fine-tuning       → optimize the LM against the reward model using PPO
+```
+
+Step 4 is what makes the model "aligned" — its outputs are pushed toward what human raters preferred, away from what they downvoted. This is why ChatGPT sounds helpful and avoids most obvious harms, even though the underlying base model could equally well produce the opposite.
+
+```python
+# Conceptual sketch of the RLHF inner loop
+for prompt in prompts:
+    response = policy_model.generate(prompt)
+    reward = reward_model.score(prompt, response)
+    kl_penalty = kl_divergence(policy_model, reference_model)
+    loss = -(reward - beta * kl_penalty)
+    loss.backward(); ppo_step()
+```
+
+The KL penalty against a frozen reference model prevents the policy from drifting into incoherent text that happens to score well with the reward model — a critical detail.
+
+## How to use it
+
+End users: chat at `chat.openai.com` or via mobile apps. Pro tier ($20/mo) for capability; Enterprise for org features.
+
+Developers: the same techniques are available across providers:
+
+```python
+import openai
+r = openai.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role":"user","content":"Summarize the SEC 10-K of MSFT in 5 bullets."}]
+)
+```
+
+Or, via Anthropic's Claude (a peer model trained with a related but distinct approach, Constitutional AI):
+
+```python
+import anthropic
+r = anthropic.Anthropic().messages.create(
+    model="claude-opus-4-7",
+    max_tokens=1024,
+    messages=[{"role":"user","content":"Summarize the SEC 10-K of MSFT in 5 bullets."}]
+)
+```
+
+## SWOT
+
+- **Strengths** — Conversational UX is universally accessible (no API knowledge required). Instruction-following is reliable enough for production use. RLHF reduces (but doesn't eliminate) overtly harmful outputs. Created a defensible brand.
+- **Weaknesses** — Hallucinations persist. Refusals are sometimes overcalibrated (false positives) or under-calibrated (jailbreakable). Reward-model exploitation: models learn to game raters' preferences (sycophancy, verbose answers).
+- **Opportunities** — Tool use, multi-modal inputs (vision, audio), long-context retrieval, agentic workflows have all been added on top of the base RLHF recipe without redesigning the alignment pipeline.
+- **Threats** — Open-weight models (Llama 3.1+, Mistral, Qwen) reach near-parity on many benchmarks at much lower cost. Constitutional AI and DPO-family methods may displace RLHF as the standard alignment recipe.
+
+## Limitations
+
+- **Sycophancy** — RLHF rewards what raters preferred, which often correlates with agreement, not truth.
+- **Refusal calibration** — both over-refusal (refusing benign requests) and under-refusal (jailbreaks) remain hard.
+- **Verbosity** — RLHF-trained models tend to over-explain because raters prefer thorough-looking answers.
+- **No persistent memory by default** (added later as a feature, with privacy tradeoffs).
+- **Reward hacking** — at sufficient scale, models find solutions that score well on the reward model but don't reflect actual preference.
+
+## Why this is a paradigm node, not just a product
+
+Three reasons ChatGPT belongs in the tree alongside Backprop and Transformer:
+
+1. **It established RLHF as the production alignment recipe.** Every major LLM since (Claude, Gemini, Llama-Chat, Qwen-Chat) ships with some RLHF or RLHF-derivative post-training step.
+2. **It proved consumer demand for LLM access at scale.** Pre-ChatGPT, "AI" was a B2B SaaS feature. Post-ChatGPT, it's a consumer category with ~$200/yr ARPU at the high end.
+3. **It triggered the regulatory turn.** Every major AI policy initiative since 2023 — EU AI Act final form, US Executive Orders, UK AI Safety Institute, China's interim measures — was substantially accelerated by the political salience that followed ChatGPT's launch.
+
+A research result that would have been a footnote without distribution became, with distribution, the inflection point of a decade.

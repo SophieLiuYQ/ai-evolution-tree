@@ -1,0 +1,114 @@
+---
+slug: grok-4
+title: "Grok 4 — xAI's Reasoning Frontier"
+date: 2025-08-12
+era: reasoning
+category: [nlp, generative, reasoning]
+relationships:
+  - to: grok-3
+    type: scales
+    note: "Successor; Heavy variant runs multi-agent reasoning ensemble for hardest queries"
+  - to: o3
+    type: competes_with
+    note: "Reasoning-tier rival on AIME / GPQA / HLE benchmarks"
+authors:
+  - "xAI Team"
+org: "xAI"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Decoder-only transformer + extended-thinking + Grok 4 Heavy multi-agent ensemble"
+  context_window: 256000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "Humanity's Last Exam (Heavy)"
+      score: "44.4%"
+      vs_baseline: "o3 ~25%, Gemini 2.5 Pro 21.6%, Claude 4 Opus 12%"
+    - name: "ARC-AGI v2"
+      score: "~16% (Heavy)"
+      vs_baseline: "previous Grok 3 ~7%, o3 ~5%"
+    - name: "AIME 2025"
+      score: "~95%"
+
+public_view:
+  plain_english: |
+    xAI's August 2025 reasoning flagship — Grok 4 and Grok 4 Heavy.
+    The "Heavy" variant runs multiple reasoning agents in
+    parallel and synthesizes their outputs, achieving a step
+    change on the hardest benchmarks (Humanity's Last Exam,
+    ARC-AGI v2). Released ~6 months after Grok 3, demonstrating
+    xAI's continued ability to ship at frontier cadence post-
+    Colossus-cluster build-out.
+  analogy: |
+    The "if one model is good, several models reasoning together
+    is better" thesis at the product level. Heavy is xAI's
+    answer to OpenAI's o3-pro and Anthropic's
+    extended-thinking-with-tool-use stacks.
+  applications:
+    - product: "X Premium / Premium+ Grok 4 access"
+      company: "xAI"
+      year_deployed: 2025
+    - product: "Grok consumer app + xAI API"
+      company: "xAI"
+      year_deployed: 2025
+    - product: "Grok-4 Heavy ($300/mo SuperGrok tier)"
+      company: "xAI"
+      year_deployed: 2025
+  investment_angle: |
+    Grok 4 Heavy's HLE score (44.4% vs nearest peer ~25%)
+    forced industry recalibration on "what counts as the
+    frontier." xAI's $200B valuation discussion in mid-2025
+    was partly underwritten by Grok 4's benchmark performance
+    showing the lab could compete on capability, not just on
+    Elon-distribution. The $300/mo SuperGrok tier (multi-agent
+    Heavy access) priced at the same level as ChatGPT Pro,
+    signaling xAI's intent to compete on consumer reasoning
+    spend, not just X-platform integration.
+  why_it_matters: |
+    Grok 4 Heavy sits at the absolute frontier of reasoning
+    benchmarks in late 2025 / early 2026 — the model that
+    "what's the hardest thing AI can do today?" debates
+    cite for the upper bound. Whether the multi-agent
+    inference architecture is durable or gets matched by
+    single-model successors (Opus 4.7, GPT-5.5) is the
+    open competitive question.
+
+citations:
+  - type: release
+    key: xai2025grok4
+    title: "Grok 4"
+    year: 2025
+    venue: "xAI"
+    url: "https://x.ai/news/grok-4"
+---
+
+## What it is
+
+xAI's August 2025 frontier release. Two variants:
+
+- **Grok 4** — single-model flagship in the standard reasoning-with-extended-thinking pattern
+- **Grok 4 Heavy** — multi-agent inference: spawns multiple Grok 4 instances reasoning in parallel, synthesizes their outputs into a final answer
+
+Heavy's substantial benchmark lead on the hardest evaluations (Humanity's Last Exam, ARC-AGI v2) comes from this multi-agent inference rather than a different base model.
+
+## Grok 4 Heavy vs frontier reasoning peers (Q3 2025)
+
+| Model | Date | HLE | ARC-AGI v2 | AIME 2025 |
+|---|---|---|---|---|
+| Claude 4 Opus | 2025-05 | 12% | — | — |
+| Gemini 2.5 Pro | 2025-03 | 21.6% | — | ~93% |
+| o3 | 2025-04 | 20.3% | ~5% | ~95% |
+| GPT-5 | 2025-08 | ~25% | ~10% | ~99% |
+| **Grok 4 Heavy** | **2025-08** | **44.4%** | **~16%** | **~95%** |
+
+Grok 4 Heavy's HLE score was the largest single-release benchmark step in 2025, comparable in magnitude to o1's late-2024 reasoning step.
+
+## The multi-agent inference architecture
+
+Grok 4 Heavy spawns multiple parallel reasoning instances ("agents"), each working on the same problem from a different angle. The instances can share intermediate findings during reasoning. A final synthesis step combines outputs.
+
+Compute cost: ~5-20× a single Grok 4 query. The Heavy tier is priced accordingly ($300/mo consumer subscription, premium API tier).
+
+The architecture echoes earlier "self-consistency" work (Wang et al., 2022) that sampled multiple CoT chains and majority-voted — but goes further by allowing inter-agent communication during reasoning, not just at the answer-synthesis stage.

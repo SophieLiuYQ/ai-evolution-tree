@@ -1,0 +1,113 @@
+---
+slug: gemini-2-5-pro
+title: "Gemini 2.5 Pro — Google's Native Reasoning Frontier"
+date: 2025-03-25
+era: reasoning
+category: [nlp, multimodal, reasoning]
+relationships:
+  - to: gemini-1
+    type: scales
+    note: "Successor across the Gemini line; native reasoning + 2M context"
+  - to: o1
+    type: competes_with
+    note: "Google's reasoning answer to OpenAI's o-series; thinking mode integrated"
+authors:
+  - "Google DeepMind Team"
+org: "Google DeepMind"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Multimodal MoE + integrated thinking mode"
+  context_window: 1000000
+  release_type: api
+  modalities: [text, vision, audio, video]
+  benchmarks:
+    - name: "AIME 2024"
+      score: "92.0%"
+      vs_baseline: "o1 83.3%, DeepSeek R1 79.8%, Claude 3.7 80.0%"
+    - name: "GPQA Diamond"
+      score: "84.0%"
+      vs_baseline: "o1 78.0%, Claude 3.7 84.8%"
+    - name: "SWE-bench Verified"
+      score: "63.8%"
+      vs_baseline: "Claude 3.7 70.3%, o3-mini 49.3%"
+    - name: "Humanity's Last Exam"
+      score: "18.8%"
+      vs_baseline: "first model to score above 18% on this benchmark"
+
+public_view:
+  plain_english: |
+    Google DeepMind's first model to integrate reasoning natively into
+    its main product line — earlier reasoning attempts (Gemini 2.0
+    Flash Thinking, December 2024) were experimental side products.
+    Gemini 2.5 Pro became the default Gemini for paying users in
+    March 2025 and held a meaningful lead on math reasoning
+    benchmarks (AIME, Humanity's Last Exam) for ~2 months.
+  analogy: |
+    Google catching up — and briefly leading — on reasoning, after
+    spending most of 2024 in second or third place. The "Gemini was
+    always 6 months behind" pattern broke here.
+  applications:
+    - product: "Gemini app (consumer)"
+      company: "Google"
+      year_deployed: 2025
+    - product: "Google AI Studio + Vertex AI"
+      company: "Google Cloud"
+      year_deployed: 2025
+    - product: "NotebookLM (long-context research assistant)"
+      company: "Google"
+      year_deployed: 2024
+    - product: "Google Workspace (Gemini integration)"
+      company: "Google"
+      year_deployed: 2025
+  investment_angle: |
+    Gemini 2.5 Pro restored Google's competitive credibility after a
+    rough 2023-24. The 1M-token context (with 2M experimental)
+    paired with NotebookLM created the strongest "research
+    assistant" UX in the market — the use case where Google's
+    distribution moat (Workspace, Drive, Gmail) compounds. Google's
+    AI revenue line item in Cloud reportedly tripled YoY in 2025
+    largely on Gemini-driven workloads.
+  why_it_matters: |
+    Gemini 2.5 Pro proved Google could ship at the frontier on
+    Google's calendar — not just react to OpenAI. The combination
+    with TPU v6 / v7 manufacturing capacity gave Google unique
+    cost-structure advantages that became visible in 2025-26 pricing.
+
+citations:
+  - type: release
+    key: google2025gemini25
+    title: "Gemini 2.5: Our most intelligent AI model"
+    year: 2025
+    venue: "Google Blog"
+    url: "https://blog.google/technology/google-deepmind/gemini-model-thinking-updates-march-2025/"
+---
+
+## What it is
+
+Google DeepMind's flagship multimodal LLM as of late Q1 2025. The headline capability: native reasoning ("thinking mode") integrated directly into the main API, not separated into a distinct o-series-style product line. 1M-token context window in production, 2M experimental.
+
+## Gemini 2.5 Pro vs frontier peers (Q2 2025)
+
+| Model | Date | Org | AIME | GPQA | SWE-bench V | Context |
+|---|---|---|---|---|---|---|
+| o1 | 2024-09 | OpenAI | 83.3% | 78.0% | — | 128k |
+| Claude 3.7 Sonnet | 2025-02 | Anthropic | 80.0% | 84.8% | 70.3% | 200k |
+| **Gemini 2.5 Pro** | **2025-03** | **Google DeepMind** | **92.0%** | **84.0%** | **63.8%** | **1M** |
+| o3 | 2025-04 | OpenAI | 96.7% | 87.7% | 71.7% | 200k |
+| Claude 4 Opus | 2025-05 | Anthropic | — | 83.3% | 79.4% | 200k |
+
+Gemini 2.5 Pro briefly held the AIME lead (March-April 2025) before o3's full release reclaimed it. The 1M-context advantage combined with NotebookLM's research-assistant productization was the durable value.
+
+## Lineage in the Gemini line
+
+| Gen | Date | Headline |
+|---|---|---|
+| Gemini 1.0 | 2023-12 | tiered family launch |
+| Gemini 1.5 Pro | 2024-02 | 1M-token context |
+| Gemini 2.0 Flash | 2024-12 | reasoning + agentic upgrades |
+| **Gemini 2.5 Pro** | **2025-03** | **native thinking integration** |
+| Gemini 3 | 2025-Q4 | next major reset (rumored) |
+
+The shift from "we have reasoning as an experimental feature" to "reasoning is a parameter on the main model" was the productization move that mattered, not the benchmark numbers.

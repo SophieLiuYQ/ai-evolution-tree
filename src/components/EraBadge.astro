@@ -1,0 +1,27 @@
+---
+interface Props {
+  era: string;
+}
+const { era } = Astro.props;
+
+const eraColors: Record<string, string> = {
+  foundations: "bg-amber-50 text-amber-800 border-amber-300",
+  "classical-ml": "bg-stone-100 text-stone-700 border-stone-300",
+  "deep-learning-revival": "bg-sky-50 text-sky-800 border-sky-300",
+  architectures: "bg-indigo-50 text-indigo-800 border-indigo-300",
+  transformer: "bg-violet-50 text-violet-800 border-violet-300",
+  "scale-era": "bg-fuchsia-50 text-fuchsia-800 border-fuchsia-300",
+  alignment: "bg-emerald-50 text-emerald-800 border-emerald-300",
+  multimodal: "bg-rose-50 text-rose-800 border-rose-300",
+  reasoning: "bg-teal-50 text-teal-800 border-teal-300",
+  agents: "bg-orange-50 text-orange-800 border-orange-300",
+  frontier: "bg-red-50 text-red-800 border-red-300",
+};
+const cls = eraColors[era] ?? "bg-slate-100 text-slate-700 border-slate-300";
+---
+
+<span
+  class={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-medium ${cls}`}
+>
+  {era}
+</span>

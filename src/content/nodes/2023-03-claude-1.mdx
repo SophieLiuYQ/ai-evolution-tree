@@ -1,0 +1,102 @@
+---
+slug: claude-1
+title: "Claude 1 — Anthropic's First Public Model"
+date: 2023-03-14
+era: alignment
+category: [nlp, generative]
+relationships:
+  - to: constitutional-ai
+    type: applies
+    note: "First production deployment of Constitutional AI training"
+  - to: chatgpt
+    type: competes_with
+    note: "Direct alternative; longer context (100k tokens vs 4k)"
+authors:
+  - "Anthropic Team"
+org: "Anthropic"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "undisclosed (~50–100B inferred)"
+  architecture: "Decoder-only transformer + Constitutional AI post-training"
+  context_window: 9000
+  release_type: api
+  modalities: [text]
+  benchmarks:
+    - name: "Bar exam"
+      score: "~50th percentile"
+    - name: "MMLU"
+      score: "~75% (Claude-1.3, mid-2023)"
+
+public_view:
+  plain_english: |
+    Anthropic's first publicly available chatbot, launched four months
+    after ChatGPT and three weeks after GPT-4. Same conversational
+    interface, but with longer context and a different alignment recipe
+    (Constitutional AI) that produced a more cautious, more verbose
+    persona.
+  analogy: |
+    Claude 1 was the first time a serious "second source" appeared in
+    the LLM API market. Like having a second long-distance carrier in
+    the 1980s — quality differences mattered less than the existence of
+    a credible alternative for enterprise procurement.
+  applications:
+    - product: "Notion AI"
+      company: "Notion"
+      year_deployed: 2023
+    - product: "Quora Poe"
+      company: "Quora"
+      year_deployed: 2023
+    - product: "DuckDuckGo Instant Answers"
+      company: "DuckDuckGo"
+      year_deployed: 2023
+  investment_angle: |
+    Claude 1's launch validated the thesis that two API-tier LLM
+    competitors could coexist — a prerequisite for the $13.8B Amazon
+    investment that closed in late 2023, the $4B Google investment, and
+    the broader "second source for OpenAI" strategy that became standard
+    enterprise procurement language. Without Claude, OpenAI would have
+    had monopoly pricing power.
+  why_it_matters: |
+    Claude 1 made the LLM API market a market — i.e., something with
+    competing vendors, comparison-shopping, and migration paths. Every
+    enterprise AI procurement decision since 2023 implicitly assumes the
+    existence of at least one credible alternative to the dominant
+    vendor. That assumption starts here.
+
+citations:
+  - type: release
+    key: anthropic2023claude1
+    title: "Introducing Claude"
+    year: 2023
+    venue: "Anthropic Blog"
+    url: "https://www.anthropic.com/news/introducing-claude"
+---
+
+## What it is
+
+A chat-tuned LLM productized as an API and consumer chat interface (claude.ai). Architecturally undisclosed in detail, but believed to be a decoder-only transformer in the 50-100B parameter range, post-trained with Anthropic's Constitutional AI recipe.
+
+The notable spec: a context window of ~9,000 tokens at launch, expanded to 100,000 tokens with Claude 1.3 in May 2023 — at the time, ~25× larger than GPT-4's 8,000-token default and 12× larger than the GPT-4 32k variant.
+
+## How it compared to peers in March 2023
+
+| Model | Date | Org | Context | RLHF / Alignment | Status |
+|---|---|---|---|---|---|
+| ChatGPT (GPT-3.5) | 2022-11 | OpenAI | 4k | RLHF | live, free + paid |
+| GPT-4 | 2023-03-14 | OpenAI | 8k / 32k | RLHF | API |
+| **Claude 1** | **2023-03-14** | **Anthropic** | **9k → 100k (May)** | **Constitutional AI** | **API** |
+| Bard | 2023-03-21 | Google | undisclosed | undisclosed | live |
+
+Claude 1 launched on the same day as GPT-4 — a coincidence widely read as deliberate. The strategic goal was to establish that there was a meaningful "second" within the news cycle of the dominant launch.
+
+## The 100k context window
+
+Claude 1.3's 100k-token context (announced May 2023) was the single feature that drove enterprise adoption. Use cases: summarize entire books, analyze full SEC filings, ingest large codebases. GPT-4 didn't match it until GPT-4-Turbo in November 2023 (128k).
+
+The technical underpinning was likely some combination of:
+- ALiBi or similar attention-bias positional schemes
+- Sparse attention patterns
+- Memory-efficient attention implementations (FlashAttention, by then standard)
+
+Anthropic did not publish architectural details, which is itself a tell about how the lab had shifted from "research lab" to "model lab" by mid-2023.

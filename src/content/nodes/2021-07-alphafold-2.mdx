@@ -1,0 +1,127 @@
+---
+slug: alphafold-2
+title: "AlphaFold 2 — Protein Structure Prediction Solved"
+date: 2021-07-15
+era: multimodal
+category: [theory]
+relationships:
+  - to: transformer
+    type: builds_on
+    note: "Evoformer block applies attention to multiple sequence alignments — a transformer variant"
+  - to: alphago
+    type: builds_on
+    note: "Same DeepMind lineage; AlphaGo's research culture and infrastructure enabled AlphaFold's scale"
+authors:
+  - "Jumper, J."
+  - "Evans, R."
+  - "Pritzel, A."
+  - "Green, T."
+  - "et al."
+org: "DeepMind"
+breakthrough_score: 10
+status: foundational
+model_spec:
+  parameters: "~93M"
+  architecture: "Evoformer (transformer-style attention on MSA + pair representations) + structure module + iterative refinement"
+  training_compute: "~16 TPUv3 cores × ~weeks; ~170k experimentally-determined structures"
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "CASP14 median GDT score"
+      score: "92.4 (across all targets)"
+      vs_baseline: "next-best entry ~62; experimental accuracy threshold ~90"
+    - name: "Structures publicly released (post-launch)"
+      score: "200M+ predicted protein structures (AlphaFold DB)"
+      vs_baseline: "experimentally-determined structures: ~200k as of 2021"
+
+public_view:
+  plain_english: |
+    DeepMind's protein structure prediction system that, in late 2020,
+    solved a 50-year-old grand challenge in biology: given a protein's
+    amino acid sequence, predict its 3D folded shape. The 2021 paper
+    + open-source release made these predictions free for any
+    researcher worldwide. Within 3 years, the AlphaFold Database
+    contained predicted structures for nearly all 200 million known
+    proteins.
+  analogy: |
+    Imagine being given a string of beads and having to predict the
+    shape of the origami it would fold into — a problem that had
+    taken biologists weeks-to-years per protein with X-ray
+    crystallography. AlphaFold did it in seconds, at human-experimental
+    accuracy, for any protein.
+  applications:
+    - product: "AlphaFold Protein Structure Database"
+      company: "DeepMind / EMBL-EBI"
+      year_deployed: 2021
+    - product: "Drug discovery pipelines (AbCellera, Recursion, Insilico)"
+      company: "Various biotech"
+      year_deployed: 2022
+    - product: "Isomorphic Labs (DeepMind biotech spinout)"
+      company: "Isomorphic Labs"
+      year_deployed: 2021
+    - product: "Academic research worldwide"
+      company: "All biology researchers"
+      year_deployed: 2021
+  investment_angle: |
+    AlphaFold is the canonical example of "AI as scientific
+    instrument" — comparable in impact to the electron microscope
+    or DNA sequencing. The downstream economic impact is hard to
+    quantify but vast: faster drug discovery (every major pharma
+    now uses AlphaFold predictions in early-stage research),
+    cheaper academic biology, new biotech company formation
+    (~$5B+ in AI-biotech funding 2021-2024 with explicit AlphaFold
+    foundations). DeepMind's biotech spinout Isomorphic Labs
+    raised >$600M by 2024 on the AlphaFold platform. Demis
+    Hassabis (DeepMind CEO) and John Jumper (AlphaFold lead)
+    shared the 2024 Nobel Prize in Chemistry for the work.
+  why_it_matters: |
+    AlphaFold proved that AI could not just match but transform
+    a foundational scientific discipline. The Nobel Prize award
+    in 2024 made the recognition official: this is a Nobel-class
+    contribution to science, not just to AI.
+
+citations:
+  - type: paper
+    key: jumper2021alphafold2
+    title: "Highly accurate protein structure prediction with AlphaFold"
+    authors: ["Jumper, J.", "Evans, R.", "Pritzel, A.", "et al."]
+    year: 2021
+    venue: "Nature"
+    doi: "10.1038/s41586-021-03819-2"
+  - type: release
+    key: deepmind2021alphafolddb
+    title: "AlphaFold Protein Structure Database"
+    year: 2021
+    venue: "DeepMind / EMBL-EBI"
+    url: "https://alphafold.ebi.ac.uk/"
+---
+
+## What it is
+
+A neural-network system that takes an amino acid sequence as input and produces predicted 3D atomic coordinates for the folded protein. Architecturally:
+
+1. **Multiple Sequence Alignment (MSA) input** — homologous sequences from related species, providing evolutionary signal about which residues co-vary
+2. **Evoformer** — 48 transformer-style blocks that update both an MSA representation and a pair representation (between-residue features)
+3. **Structure module** — produces atomic coordinates from the learned features, with iterative refinement
+4. **End-to-end training** — backpropagation through the entire pipeline from sequence to structure
+
+## CASP14 — the moment biology accepted AI
+
+The Critical Assessment of Structure Prediction (CASP) is a biennial blind benchmark where computational methods predict structures of proteins whose true structures are known but unpublished. In 2020 (CASP14), AlphaFold 2 scored a median GDT (Global Distance Test) of 92.4 — comparable to experimental methods. The next-best entry scored ~62. The structural biology community publicly accepted the problem as "essentially solved."
+
+| CASP year | AlphaFold | Next-best | Notes |
+|---|---|---|---|
+| 2018 (CASP13) | AlphaFold 1: 58 | 52 | early signal |
+| 2020 (CASP14) | AlphaFold 2: 92.4 | 62 | step change; problem declared solved |
+| 2022 (CASP15) | AlphaFold 2 still leading | various near | refinements |
+| 2024 | (AlphaFold 3 era) | various | broader scope: ligand binding |
+
+## The AlphaFold Database
+
+After publishing the model weights and code, DeepMind partnered with EMBL-EBI to compute structures for the entire UniProt database. By 2024, ~200M predicted structures were public — vs the ~200k experimentally-determined structures accumulated over 60 years of structural biology.
+
+This database alone is now cited in tens of thousands of biology papers per year. The comparison to "before" is not "slower experimental methods" — most of these proteins simply had no known structure at all before AlphaFold. AI didn't speed up an existing process; it created a new dataset that didn't previously exist.
+
+## AlphaFold 3 (2024)
+
+Extends to predicting structures of proteins + DNA + RNA + ligands together — i.e., complexes relevant for drug binding. Released as Isomorphic Labs' AlphaFold Server (closed access) rather than open-source, which generated significant scientific community discussion about precedents for openness in AI-biology collaborations.

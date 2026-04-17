@@ -1,0 +1,107 @@
+---
+slug: palm
+title: "PaLM — Pathways Language Model (540B)"
+date: 2022-04-04
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: gpt-3
+    type: scales
+    note: "3× more parameters (175B → 540B), trained on 780B tokens"
+  - to: scaling-laws
+    type: applies
+    note: "Sized to Kaplan et al. — under-trained by Chinchilla standards"
+authors:
+  - "Chowdhery, A."
+  - "Narang, S."
+  - "Devlin, J."
+  - "Bosma, M."
+  - "et al."
+org: "Google"
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: "540B"
+  architecture: "Decoder-only transformer, multi-query attention, SwiGLU"
+  context_window: 2048
+  training_tokens: "780B (multilingual web + GitHub)"
+  training_compute: "~6144 TPU v4 chips"
+  release_type: paper
+  modalities: [text]
+  benchmarks:
+    - name: "BIG-bench Hard (5-shot)"
+      score: "65.7"
+      vs_baseline: "GPT-3 175B 52.0"
+    - name: "MMLU (5-shot)"
+      score: "69.3%"
+      vs_baseline: "GPT-3 ~44%"
+    - name: "HumanEval (Python coding)"
+      score: "26.2%"
+      vs_baseline: "Codex 28.8%"
+
+public_view:
+  plain_english: |
+    Google's 540-billion-parameter language model, three times larger
+    than GPT-3 and trained on Google's TPU v4 supercomputer. It set
+    state-of-the-art on dozens of benchmarks but was never released as
+    a product, becoming the largest AI model ever to live and die
+    entirely as a research artifact.
+  analogy: |
+    A concept car at an auto show — built to prove what was possible,
+    never sold. Google had the technical capability before OpenAI's
+    consumer launch but missed the product moment by 7 months.
+  applications:
+    - product: "Med-PaLM (medical Q&A)"
+      company: "Google"
+      year_deployed: 2023
+    - product: "PaLM API (deprecated 2024 in favor of Gemini)"
+      company: "Google"
+      year_deployed: 2023
+  investment_angle: |
+    PaLM is Exhibit A in the case that "having the technology" and
+    "having the product" are different problems. Google demonstrably
+    had a more capable model than ChatGPT seven months before ChatGPT
+    launched — and lost the consumer narrative anyway. That gap led
+    directly to Google declaring "code red" in December 2022 and the
+    aggressive Gemini launch the following year. Microsoft + Anthropic
+    market caps appreciated by hundreds of billions during the gap.
+  why_it_matters: |
+    PaLM is the cautionary tale every Big Tech AI strategy now studies.
+    Capability without distribution is not a competitive moat. The
+    industry's current obsession with shipping cadence over technical
+    novelty traces directly to this miss.
+
+citations:
+  - type: paper
+    key: chowdhery2022palm
+    title: "PaLM: Scaling Language Modeling with Pathways"
+    authors: ["Chowdhery, A.", "Narang, S.", "Devlin, J.", "et al."]
+    year: 2022
+    venue: "JMLR"
+    arxiv: "2204.02311"
+---
+
+## What it is
+
+A 540B-parameter decoder-only transformer trained on Google's Pathways infrastructure across 6144 TPU v4 chips — the largest single-model training run publicly disclosed at the time. Architecturally introduced multi-query attention (later universally adopted) and SwiGLU activations.
+
+## How it compares to peers in 2022
+
+| Model | Date | Org | Params | Train tokens | MMLU | Released? |
+|---|---|---|---|---|---|---|
+| GPT-3 | 2020-05 | OpenAI | 175B | 300B | ~44% | API |
+| Gopher | 2021-12 | DeepMind | 280B | 300B | 60.0% | no |
+| Megatron-Turing | 2022-01 | MS+Nvidia | 530B | 270B | ~50% | no |
+| Chinchilla | 2022-03 | DeepMind | 70B | 1.4T | 67.5% | no |
+| **PaLM** | **2022-04** | **Google** | **540B** | **780B** | **69.3%** | **API only, late 2023** |
+| GPT-4 | 2023-03 | OpenAI | undisclosed | undisclosed | 86.4% | API + product |
+
+PaLM was state of the art for ~6 months. Then the world stopped caring about benchmarks because ChatGPT shipped to consumers.
+
+## What PaLM contributed technically
+
+- **Multi-query attention** — share K and V projections across attention heads. Reduces inference KV-cache memory by ~10× with minimal quality loss. Universally adopted (GQA in Llama 2, GPT-4, Claude).
+- **SwiGLU** — gated linear unit activation. Mild quality lift; standard in modern LLMs.
+- **Pathways infrastructure** — the cross-pod orchestration layer that made 6000-chip jobs tractable. Internal Google asset, never open-sourced.
+
+The architectural lessons survive in Gemini and beyond; the PaLM brand was retired in late 2024.

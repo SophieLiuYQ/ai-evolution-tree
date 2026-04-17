@@ -1,0 +1,63 @@
+---
+interface Citation {
+  type: string;
+  key: string;
+  title: string;
+  authors?: string[];
+  year: number;
+  venue?: string;
+  arxiv?: string;
+  doi?: string;
+  url?: string;
+}
+interface Props {
+  citations: Citation[];
+}
+const { citations } = Astro.props;
+---
+
+<section class="mt-12 border-t border-[var(--border)] pt-6">
+  <h2 class="mb-4 text-xl font-semibold text-[var(--accent)]">Citations</h2>
+  <ol class="space-y-3 text-sm">
+    {
+      citations.map((c) => {
+        const link = c.url ?? (c.arxiv ? `https://arxiv.org/abs/${c.arxiv}` : c.doi ? `https://doi.org/${c.doi}` : null);
+        return (
+          <li class="border-l-2 border-[var(--border-strong)] pl-3">
+            <div class="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+              {c.type} · {c.year}
+              {c.venue && <span> · {c.venue}</span>}
+            </div>
+            <div class="font-medium">
+              {link ? (
+                <a href={link} target="_blank" rel="noopener noreferrer">
+                  {c.title}
+                </a>
+              ) : (
+                c.title
+              )}
+            </div>
+            {c.authors && c.authors.length > 0 && (
+              <div class="text-[var(--fg-muted)]">{c.authors.join(", ")}</div>
+            )}
+            <div class="mt-1 flex flex-wrap gap-3 text-xs">
+              {c.arxiv && (
+                <a href={`https://arxiv.org/abs/${c.arxiv}`} target="_blank" rel="noopener noreferrer">
+                  arXiv:{c.arxiv}
+                </a>
+              )}
+              {c.doi && (
+                <a href={`https://doi.org/${c.doi}`} target="_blank" rel="noopener noreferrer">
+                  DOI:{c.doi}
+                </a>
+              )}
+              <span class="rounded bg-[var(--bg-sunk)] px-1.5 py-0.5 font-mono text-[var(--fg-muted)]">
+                {c.key}
+              </span>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+</section>
