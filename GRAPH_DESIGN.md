@@ -115,34 +115,58 @@ violating user intuition.
 ascending. Jan first, Dec last. Always. Edge crossings are an acceptable
 cost of intuitive layout.
 
-### Three routing strategies, not one
+### One routing strategy: direct cubic Bezier (V3.1 simplification)
 
-Manhattan routing for everything produces visual ugliness for adjacent
-nodes (U-shape detours through the gutter even when a direct line would
-work). Use **three** path strategies, dispatched by spatial relationship:
+V1/V2 used three different routing strategies (adjacent S-curve /
+non-adjacent Manhattan / same-bin detour) selected by spatial
+relationship. This created the **parallel-edge jitter bug**: multiple
+edges from the same source all bent at `splitX = sxR + 30`, then ran
+vertical at the same X coordinate. With ≥2 edges, the parallel
+verticals looked like "blurry double lines" — neither cleanly merged
+nor cleanly separated.
 
-| Case | Routing | When to use |
+**V3.1 fix: ONE strategy = direct cubic Bezier.** Every edge curves
+from source's right-middle to target's left-middle (h orient) or
+src.bottom → tgt.top (v orient). No splitX. No detourX. No bend.
+
+```typescript
+// Forward edge (h orient)
+const c1x = sxR + dx * 0.5;  // pull control points horizontally
+const c2x = txL - dx * 0.5;  // (so curve enters/exits horizontally)
+const d = `M ${sxR} ${sy} C ${c1x} ${sy}, ${c2x} ${ty}, ${txL} ${ty}`;
+```
+
+| Case | Routing |
+|---|---|
+| Forward edge (any column distance) | Direct cubic Bezier |
+| Same-column / backward (rare) | Wide-arc Bezier looping outside via `c1x = sxR + 60` |
+
+### Why direct curves beat Manhattan in V3
+
+In V3 (dynamic edge rendering), only ~5-10 edges are visible at hover
+time. Manhattan routing was over-engineered for this scale:
+
+| Concern | V2 Manhattan | V3.1 Direct Bezier |
 |---|---|---|
-| Adjacent forward | Cubic Bezier S-curve | Source/target in adjacent columns (or rows in V), `dx < ~260px` |
-| Non-adjacent forward | Manhattan with vertical bend | Source/target in non-adjacent columns; vertical segment at `splitX = sxR + 30` |
-| Same-bin / backward | Detour OUTSIDE the bin | Source and target in same column (or backward in time); detour at `detourX = sxR + 36` |
+| Multiple edges from same src | Share splitX, parallel vertical jitter | Curves originate at different src positions, naturally diverge |
+| Visual "directness" | Stair-stepped, sometimes long detours | Smooth diagonal — shortest visual path |
+| Routes around other nodes | Yes (vertical at splitX, edges miss cards) | No (curves can pass over faded cards in lineage) |
+| Anchor placement | Complex (which segment? horizontal? vertical?) | Simple (along the curve at parametric t) |
+| Code complexity | ~160 lines for 3 strategies | ~60 lines for 1 strategy |
 
-Adjacent edges feel "direct" (no unnecessary detour). Non-adjacent edges
-feel "structured" (Civ-tech-tree-like). Same-bin edges go around the
-column (so they don't cross through nodes in their own bin).
+The "passes over faded cards" tradeoff: in V3, non-ancestor cards are
+faded to opacity 0.18, so curves passing over them are clearly visible
+as foreground edges. The visual hierarchy still reads: hovered node
+(bold) > ancestors (full opacity, with edges between them) > everything
+else (faded background).
 
-### Routing constants: pick small numbers, validate visually
+### Routing constants for V3.1
 
 | Constant | Value | Why |
 |---|---|---|
-| `H_COL_GAP` | 100 | Routing corridor between adjacent year columns |
-| `H_NODE_V_GAP` | 44 | Vertical breathing between same-column nodes |
-| `splitX offset` | min(dx*0.55, 30) | Bend close to source for clean look; cap at 30 to keep splitX in the column gap |
-| `detour arc` | 36 | Just outside source's right edge; close enough to feel "exiting", far enough to clear the column boundary |
-
-Don't over-tune. Pick reasonable numbers, see how it looks, adjust 1-2
-iterations. Most "fix the spacing" sprints come from pixel-counting
-backward from a screenshot, not a priori calculation.
+| Bezier control offset | `dx * 0.5` | Tug control points to half the horizontal distance — tight S without overshoot |
+| Backward-edge arc | `60 + srcIdx * 8` | Loop outside the source column; per-srcIdx widening prevents overlap of multiple backward edges |
+| Source/target perpendicular pitch | adaptive (see §IV) | The ONLY stagger needed in V3.1 since there's no bend to stagger |
 
 ---
 
@@ -744,6 +768,22 @@ for every assumption.
 Dagre / ELK optimize edge crossings. Timelines need chronological order.
 These goals fight. Override the auto-layout's secondary axis with manual
 chronological sort. Accept the extra crossings.
+
+### ❌ Don't use Manhattan routing when many edges share a source
+
+Manhattan routing's `splitX = sxR + offset` is effectively constant per
+source. Multiple edges from the same source get parallel vertical
+segments at the same X — looks like one blurry double line at small
+spacing, or like train tracks at large spacing. Both wrong for the
+typical case.
+
+V3.1 lesson: when edges are dynamic and only ~10 visible at hover time,
+a single direct cubic Bezier per edge gives cleaner separation than
+Manhattan with stagger compensation. Curves from different sources
+diverge naturally because their start points differ in X.
+
+Reserve Manhattan for V1/V2-style static-pre-rendered graphs where
+edges need to clearly avoid passing through unrelated nodes.
 
 ### ❌ Don't use opacity-based "soft" backgrounds for occluding elements
 

@@ -382,13 +382,22 @@ function bezierAt(
   };
 }
 
-// Threshold: nodes within this distance are "adjacent" → use direct S-curve
-const H_ADJACENT = H_COL_W + 60; // one column gap + slack
-const V_ADJACENT = NODE_H + V_ROW_GAP * 1.2; // one row gap + slack
-
-// ===== Edge routing — Manhattan with rounded corners + adjacent-direct S-curve
-// Returns { d, mid, anchors[] } where anchors are candidate label positions ALONG the path
-function manhattanPath(
+// ===== V3.1 routing: SINGLE strategy = direct cubic Bezier
+// V1/V2 used 3 strategies (adjacent S-curve / Manhattan vertical / detour)
+// chosen by spatial relationship. The Manhattan splitX/detourX bends were
+// the source of the parallel-jitter bug: multiple edges from same source
+// would all bend at sxR+30, then run vertical at the same X, looking like
+// "blurry double lines" instead of distinct edges.
+//
+// V3.1: ONE strategy. Every edge is a direct cubic Bezier from source's
+// right-middle to target's left-middle (h orient) or src.bottom → tgt.top
+// (v orient). Curves from different sources naturally diverge because
+// they originate at different X positions. Stagger via perpendicular
+// offset on entry/exit only — no bend-X stagger, no detour.
+//
+// For same-column / backward edges (rare in ancestor lineage): use a
+// wide control-point arc to loop around outside the column.
+function directPath(
   src: Placed,
   tgt: Placed,
   orient: "h" | "v",
@@ -398,98 +407,50 @@ function manhattanPath(
   mid: { x: number; y: number };
   anchors: { x: number; y: number }[];
 } {
-  const r = 6;
-  // Perpendicular stagger so multiple edges from same source/to same target
-  // don't share start/end points. Adaptive pitch: bigger for few edges
-  // (visually clear), smaller for many (fits in card edge budget).
   const sOffsetPerp = perpOffset(stagger.srcIdx, stagger.srcTotal);
   const tOffsetPerp = perpOffset(stagger.tgtIdx, stagger.tgtTotal);
-  // Bend-point stagger so middle segments don't share X (h) or Y (v)
-  const bendOffset = bendOffsetFor(stagger.srcIdx, stagger.srcTotal);
 
   if (orient === "h") {
     const sxR = src.x + src.width / 2;
-    const sy = src.y + sOffsetPerp; // staggered exit Y on source
+    const sy = src.y + sOffsetPerp;
     const txL = tgt.x - tgt.width / 2;
-    const ty = tgt.y + tOffsetPerp; // staggered entry Y on target
+    const ty = tgt.y + tOffsetPerp;
     const dx = txL - sxR;
 
-    // ===== Adjacent forward: direct S-curve, NO splitX detour
-    if (dx > 4 && dx < H_ADJACENT) {
-      const c1x = sxR + dx * 0.55;
-      const c2x = txL - dx * 0.55;
+    // Forward edge (typical): tug control points horizontally so the curve
+    // leaves source pointing right and arrives at target pointing right.
+    // Tension = 0.5: gives a clean S that doesn't overshoot for steep dy.
+    if (dx > 4) {
+      const c1x = sxR + dx * 0.5;
+      const c2x = txL - dx * 0.5;
       const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
-      // Anchors along the curve: t = 0.5 default; 0.4 / 0.6 fallbacks
       const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
         bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
       );
       return { d, mid: anchors[0], anchors };
     }
 
-    if (sxR < txL - 4) {
-      // ===== Non-adjacent forward — Manhattan with vertical segment
-      const splitX = sxR + Math.min((txL - sxR) * 0.55, 30) + bendOffset;
-      const dy = ty - sy;
-      const sgn = dy >= 0 ? 1 : -1;
-      let d = `M ${sxR} ${sy}`;
-      if (Math.abs(dy) < r * 2) {
-        d += ` L ${splitX} ${sy} L ${splitX} ${ty} L ${txL} ${ty}`;
-      } else {
-        d += ` L ${splitX - r} ${sy} Q ${splitX} ${sy} ${splitX} ${sy + sgn * r}`;
-        d += ` L ${splitX} ${ty - sgn * r} Q ${splitX} ${ty} ${splitX + r} ${ty}`;
-        d += ` L ${txL} ${ty}`;
-      }
-      // ===== Anchors on HORIZONTAL segments (flow-aligned for horizontal view)
-      // Preferred: target horizontal segment (Y = ty, long X range from splitX → txL)
-      // Different targets have different ty → labels naturally separate vertically
-      const seg3Len = txL - splitX;
-      const seg1Len = splitX - sxR;
-      const anchors = [
-        { x: splitX + seg3Len * 0.5, y: ty }, // mid Segment 3
-        { x: splitX + seg3Len * 0.35, y: ty },
-        { x: splitX + seg3Len * 0.65, y: ty },
-        { x: splitX + seg3Len * 0.25, y: ty },
-        { x: splitX + seg3Len * 0.75, y: ty },
-        // Fallback: source horizontal segment (Y = sy)
-        { x: sxR + seg1Len * 0.5, y: sy },
-      ];
-      return { d, mid: anchors[0], anchors };
-    } else {
-      // ===== Same column / backward — detour right
-      const arc = 36;
-      const detourX = sxR + arc + bendOffset;
-      const dy = ty - sy;
-      const sgn = dy >= 0 ? 1 : -1;
-      let d = `M ${sxR} ${sy}`;
-      if (Math.abs(dy) < r * 2) {
-        d += ` L ${detourX} ${sy} L ${detourX} ${ty} L ${txL} ${ty}`;
-      } else {
-        d += ` L ${detourX - r} ${sy} Q ${detourX} ${sy} ${detourX} ${sy + sgn * r}`;
-        d += ` L ${detourX} ${ty - sgn * r} Q ${detourX} ${ty} ${detourX - r} ${ty}`;
-        d += ` L ${txL} ${ty}`;
-      }
-      // Detour edges (same-column / backward) — anchors on the VERTICAL detour segment.
-      // detourX is OUTSIDE the source column to the right; varying Y separates labels by target.
-      // We do NOT anchor on the target horizontal segment because for same-column edges,
-      // that segment runs BACKWARD into the source's card area (would overlap nodes).
-      const anchors = [0.5, 0.35, 0.65, 0.25, 0.75].map((t) => ({
-        x: detourX,
-        y: sy + (ty - sy) * t,
-      }));
-      return { d, mid: anchors[0], anchors };
-    }
+    // Same-column / backward (rare): loop the curve OUTSIDE the column
+    // to the right via wide control points.
+    const arc = 60 + Math.abs(stagger.srcIdx) * 8; // each backward edge takes a slightly wider lane
+    const c1x = sxR + arc;
+    const c2x = txL + arc;
+    const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
+    const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+      bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
+    );
+    return { d, mid: anchors[0], anchors };
   } else {
-    // ===== Vertical orient: src bottom → target top
-    const sx = src.x + sOffsetPerp; // staggered exit X on source
+    // Vertical orient: src.bottom → tgt.top, same single-strategy curve
+    const sx = src.x + sOffsetPerp;
     const syB = src.y + src.height / 2;
-    const tx = tgt.x + tOffsetPerp; // staggered entry X on target
+    const tx = tgt.x + tOffsetPerp;
     const tyT = tgt.y - tgt.height / 2;
     const dy = tyT - syB;
 
-    // Adjacent rows (one row gap): direct S-curve down
-    if (dy > 4 && dy < V_ADJACENT) {
-      const c1y = syB + dy * 0.55;
-      const c2y = tyT - dy * 0.55;
+    if (dy > 4) {
+      const c1y = syB + dy * 0.5;
+      const c2y = tyT - dy * 0.5;
       const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
       const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
         bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
@@ -497,55 +458,14 @@ function manhattanPath(
       return { d, mid: anchors[0], anchors };
     }
 
-    if (syB < tyT - 4) {
-      const splitY = syB + Math.min((tyT - syB) * 0.55, 30) + bendOffset;
-      const dx = tx - sx;
-      const sgn = dx >= 0 ? 1 : -1;
-      let d = `M ${sx} ${syB}`;
-      if (Math.abs(dx) < r * 2) {
-        d += ` L ${sx} ${splitY} L ${tx} ${splitY} L ${tx} ${tyT}`;
-      } else {
-        d += ` L ${sx} ${splitY - r} Q ${sx} ${splitY} ${sx + sgn * r} ${splitY}`;
-        d += ` L ${tx - sgn * r} ${splitY} Q ${tx} ${splitY} ${tx} ${splitY + r}`;
-        d += ` L ${tx} ${tyT}`;
-      }
-      // ===== Anchors on VERTICAL segments (flow-aligned for vertical view)
-      // Preferred: target vertical entry (X = tx, long Y range from splitY → tyT)
-      // Different targets have different tx → labels naturally separate horizontally
-      const seg3Len = tyT - splitY;
-      const seg1Len = splitY - syB;
-      const anchors = [
-        { x: tx, y: splitY + seg3Len * 0.5 }, // mid Segment 3
-        { x: tx, y: splitY + seg3Len * 0.35 },
-        { x: tx, y: splitY + seg3Len * 0.65 },
-        { x: tx, y: splitY + seg3Len * 0.25 },
-        { x: tx, y: splitY + seg3Len * 0.75 },
-        // Fallback: source vertical exit
-        { x: sx, y: syB + seg1Len * 0.5 },
-      ];
-      return { d, mid: anchors[0], anchors };
-    } else {
-      // Same row / backward — detour below
-      const arc = 36;
-      const detourY = syB + arc + bendOffset;
-      const dx = tx - sx;
-      const sgn = dx >= 0 ? 1 : -1;
-      let d = `M ${sx} ${syB}`;
-      if (Math.abs(dx) < r * 2) {
-        d += ` L ${sx} ${detourY} L ${tx} ${detourY} L ${tx} ${tyT}`;
-      } else {
-        d += ` L ${sx} ${detourY - r} Q ${sx} ${detourY} ${sx + sgn * r} ${detourY}`;
-        d += ` L ${tx - sgn * r} ${detourY} Q ${tx} ${detourY} ${tx} ${detourY - r}`;
-        d += ` L ${tx} ${tyT}`;
-      }
-      // Detour edges (same-row / backward) — anchors on the HORIZONTAL detour segment.
-      // detourY is OUTSIDE the source row below; varying X separates labels by target.
-      const anchors = [0.5, 0.35, 0.65, 0.25, 0.75].map((t) => ({
-        x: sx + (tx - sx) * t,
-        y: detourY,
-      }));
-      return { d, mid: anchors[0], anchors };
-    }
+    const arc = 60 + Math.abs(stagger.srcIdx) * 8;
+    const c1y = syB + arc;
+    const c2y = tyT + arc;
+    const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
+    const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+      bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
+    );
+    return { d, mid: anchors[0], anchors };
   }
 }
 
@@ -626,7 +546,7 @@ function finalize(
       const tgtIdx = tgtCounters.get(n.data.slug) ?? 0;
       tgtCounters.set(n.data.slug, tgtIdx + 1);
 
-      const { d, mid, anchors } = manhattanPath(src, tgt, orient, {
+      const { d, mid, anchors } = directPath(src, tgt, orient, {
         srcIdx,
         srcTotal: srcOutTotal.get(r.to) ?? 1,
         tgtIdx,
