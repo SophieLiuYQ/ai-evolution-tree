@@ -92,6 +92,15 @@ const edgeStyle: Record<
   open_alt_to: { color: "#a855f7", dash: "6,3", label: "open alt" },
 };
 
+// Edge types whose pill labels should NOT render. The edge path (colored arrow)
+// still draws — only the text label pill is suppressed. These types convey
+// less load-bearing structural information than builds_on/scales/surpasses.
+const HIDDEN_LABEL_TYPES = new Set<Rel["type"]>([
+  "applies",
+  "replaces",
+  "open_alt_to",
+]);
+
 // ===== Year colors (warm → cool gradient)
 function bandColor(idx: number, total: number): string {
   const t = total <= 1 ? 0 : idx / (total - 1);
@@ -506,6 +515,12 @@ function avoidLabelOverlaps(edges: Edge[]): void {
     );
 
   for (const e of edges) {
+    // Hidden-label edge types don't render a pill — skip allocation
+    if (HIDDEN_LABEL_TYPES.has(e.type)) {
+      e.midX = e.anchors[0].x;
+      e.midY = e.anchors[0].y;
+      continue;
+    }
     let chosen = e.anchors[0];
     for (const candidate of e.anchors) {
       if (!collides(candidate.x, candidate.y)) {
@@ -768,6 +783,7 @@ function fmtSpec(ms: {
       <g class="edge-labels">
         {
           horizontal.edges.map((e, i) => {
+            if (HIDDEN_LABEL_TYPES.has(e.type)) return null;
             const style = edgeStyle[e.type];
             return (
               <g
@@ -881,6 +897,7 @@ function fmtSpec(ms: {
       <g class="edge-labels">
         {
           vertical.edges.map((e, i) => {
+            if (HIDDEN_LABEL_TYPES.has(e.type)) return null;
             const style = edgeStyle[e.type];
             return (
               <g
@@ -904,14 +921,16 @@ function fmtSpec(ms: {
     <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
       <span class="font-semibold">Edges:</span>
       {
-        Object.entries(edgeStyle).map(([t, s]) => (
-          <span class="flex items-center gap-1.5">
-            <svg width="22" height="6" viewBox="0 0 22 6">
-              <line x1="0" x2="22" y1="3" y2="3" stroke={s.color} stroke-width="1.5" stroke-dasharray={s.dash ?? "none"} />
-            </svg>
-            {s.label}
-          </span>
-        ))
+        Object.entries(edgeStyle)
+          .filter(([t]) => !HIDDEN_LABEL_TYPES.has(t as Rel["type"]))
+          .map(([t, s]) => (
+            <span class="flex items-center gap-1.5">
+              <svg width="22" height="6" viewBox="0 0 22 6">
+                <line x1="0" x2="22" y1="3" y2="3" stroke={s.color} stroke-width="1.5" stroke-dasharray={s.dash ?? "none"} />
+              </svg>
+              {s.label}
+            </span>
+          ))
       }
     </div>
   </figcaption>
