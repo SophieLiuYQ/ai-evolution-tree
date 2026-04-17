@@ -11,6 +11,48 @@ decisions so future graph-viz projects can skip the iteration cost.
 
 ---
 
+## 📦 File layout (where to look)
+
+The graph is split across small, single-purpose files. Find the layer
+you want to change before opening anything:
+
+```
+src/
+├─ components/
+│  ├─ Graph.astro                 ← shell: imports children + payload + CSS
+│  └─ graph/
+│     ├─ LegendPanel.astro        ← left aside (title, controls, legend)
+│     ├─ OrientPane.astro         ← one SVG pane (h or v)
+│     ├─ Card.astro               ← per-node card group + zoom/pin buttons
+│     └─ ZoomModal.astro          ← top-layer modal markup (empty shell)
+├─ lib/graph/                     ← BUILD-time TypeScript (Astro frontmatter)
+│  ├─ types.ts                    ← Placed, Edge, Layout, EdgeStagger
+│  ├─ constants.ts                ← colors, edgeStyle, sizes, hidden types
+│  ├─ text.ts                     ← clip, fmtSpec, fmtCtx, fmtMonth
+│  ├─ bands.ts                    ← year band gradient
+│  ├─ routing.ts                  ← directPath, perpOffset, bezierAt, label collision
+│  └─ layout.ts                   ← computeLayout + finalize (stagger, edge build)
+└─ scripts/graph/                 ← CLIENT-time TypeScript (bundled by Vite)
+   ├─ state.ts                    ← graphData parse + adjacency + pin state
+   ├─ dom.ts                      ← buildPath, buildLabel, getActivePane
+   ├─ hover.ts                    ← renderHover, clearHover, attachInteractions
+   ├─ zoom.ts                     ← 1-hop layout + route + modal render
+   ├─ orient.ts                   ← h/v toggle + storage
+   └─ main.ts                     ← entry point (import in Graph.astro <script>)
+```
+
+Quick rules:
+- Layout/routing math → `lib/graph/`
+- Anything visible on the page that's NOT interactive → `components/graph/`
+- Anything that runs after the page loads → `scripts/graph/`
+- `Graph.astro` is just a wiring layer; resist the urge to grow it back.
+
+If you change routing, update BOTH `lib/graph/routing.ts` AND
+`scripts/graph/zoom.ts` (the zoom modal ports the same algorithm
+client-side — see §VII duplication note).
+
+---
+
 ## 🚨 Maintenance discipline (read first)
 
 **This document is the iteration contract for graph code in this project.**
@@ -321,6 +363,47 @@ the source/target counts before computing stagger indexes. Otherwise
 visible edges leave gaps where invisible edges "took" stagger slots,
 breaking the fan-out symmetry.
 
+### Spatial-order stagger (V3.3) — prevent X-crossings
+
+Pitch and budget control the *spread* of stagger slots. The remaining
+question is **which edge gets which slot**. Naive answer: assign in
+iteration order (the order edges appear in the source data).
+
+**That answer is wrong** and produces X-shaped crossings.
+
+Failure mode: two sources at very different perp positions (e.g. a left-
+column source and a same-column source) converge on one target. If the
+left-column source happens to be later in MDX, it lands in the target's
+*right* slot. Its curve must cross the same-column source's curve to
+get there. Result: a tangled X, exactly the visual the user is trying
+to read past.
+
+**Rule: assign tgtIdx by source position along the perp axis.** For each
+target, sort its incoming edges by `src.y` (h-orient) or `src.x`
+(v-orient) ascending; the topmost/leftmost source gets `tgtIdx = 0`
+(most-negative offset = topmost/leftmost slot on the target). Mirror
+the rule on the source side: for each source, sort its outgoing edges
+by target perp position to assign `srcIdx`.
+
+```typescript
+// Group by target; sort by source perp; assign tgtIdx.
+for (const group of byTarget.values()) {
+  group.sort((a, b) => srcPerp(a) - srcPerp(b)); // src.y for h, src.x for v
+  group.forEach((e, i) => { tgtIdxOf.set(e, i); tgtTotalOf.set(e, group.length); });
+}
+```
+
+The sort needs deterministic tie-breakers (orthogonal axis, then slug)
+so two sources at the same perp position don't flip between builds.
+
+Why this works: stagger slots are inherently ordered (most-negative to
+most-positive offset along the perp axis). When that order matches the
+spatial order of the sources, every curve goes "straight in" — no two
+curves need to swap sides, so no two curves cross.
+
+This rule is purely about *index assignment*. The pitch, budget, and
+center-symmetric formula are unchanged.
+
 ---
 
 ## V. Z-order (visual layering)
@@ -536,8 +619,14 @@ display granularity.
 ```
 
 Result: clean default view (only colored arrows), labels appear
-on-demand. Discoverability preserved via the legend at the bottom
-(showing color → type mapping).
+on-demand. Discoverability preserved via the **left-side legend
+panel** (200px fixed-width `<aside>` with one row per edge type,
+swatch + arrow head + label). The legend collapses to a top bar
+under 720px viewport. Sat in a bottom `<figcaption>` originally;
+moved to the side because (a) the canvas is the primary UI and
+deserves vertical space, (b) the legend is reference material the
+user glances at while hovering, so keeping it visible alongside the
+graph beats forcing them to scroll down to check a color.
 
 ### Lineage rendering — knowledge-tree gating (ancestors only, V3)
 
@@ -605,6 +694,119 @@ forward in time the same way the field actually evolved.
 **Tradeoff**: power users who want bidirectional lineage lose that view.
 Acceptable cost — power users can use the timeline view (`/timeline`)
 which shows everything chronologically.
+
+### Per-card zoom modal — 1-hop neighborhood at native size
+
+Hover reveals **two stacked pill buttons just outside each card's
+right edge** — `zoom` (top) and `highlight this path` (bottom).
+
+`zoom`: opens the 1-hop modal at z-index 9999 (focused card + direct
+parents + direct children), repacked tight and rendered at native
+pixel size (never scaled).
+
+`highlight this path`: pins the ancestor lineage so it stays
+highlighted across `mouseleave`. The user can then **scroll up/down
+or left/right to follow the full path** without losing the highlight.
+Click again to unpin. Switching orientation also unpins (positions
+differ across panes). The pinned button gets an accent-color filled
+state to make pin-mode visually obvious.
+
+Implementation: a `pinnedSlug` variable; `clearHover()` re-renders the
+pinned slug instead of wiping when set; `renderHover()` is unchanged
+(transient hovers temporarily show another card's lineage, then
+mouseleave restores the pinned one).
+
+Both buttons sit OUTSIDE the card (left-aligned at `p.width + 6`)
+because:
+- A bottom-right inside-card icon competes visually with the score
+  badge in the opposite corner; eyes can't tell which corner is "the
+  action."
+- An external pill with literal text ("zoom" / "highlight this
+  path") is unambiguous — no icon-recognition cost, no doubt about
+  what the click does.
+- Stacking vertically keeps the affordance grouped and consistent
+  across button widths.
+
+Because the buttons are outside card geometry, an invisible
+`hover-bay` rect (`p.width + 150` wide, `pointer-events="all"`,
+`fill="transparent"`) is rendered first inside `<g class="node">`. It
+extends the parent `<a class="node-link">` link's hit area into the
+right gap so the mouse can travel from card to either button without
+crossing empty space (which would `mouseleave` the link → hide them
+mid-travel).
+
+Two evolutions got us here:
+
+**1. Collapse the time axis (don't reuse main-graph positions).** The
+first attempt reused original positions inside the modal and let
+`preserveAspectRatio="xMidYMid meet"` scale to fit. A 60-year ancestor
+chain rendered as mostly whitespace with tiny far-apart modules. Fix:
+re-layout by topological depth, with `Z_DEPTH_GAP = 110px` between
+depth slots and `Z_PERP_GAP = 22px` between siblings.
+
+**2. Limit to 1 hop (don't show the full ancestor BFS).** Full lineage
+for a late node like Claude 4 expands to ~30+ ancestors — even with
+collapsed time, that's overwhelming. The modal's job is *focus*, not
+*history*. So the relevant set is just `{focused} ∪ parents(focused) ∪
+children(focused)` — exactly three depth slots: parents above, focused
+in the middle, children below.
+
+Depth assignment:
+- Parents → depth 2 (older end: left for h, top for v)
+- Focused → depth 1 (middle slot)
+- Children → depth 0 (newer end: right for h, bottom for v)
+
+The layout function (`layoutByDepth`) takes a precomputed depth map so
+the same primitive can power both 1-hop view and any future N-hop view
+without changing the layout primitives.
+
+**3. Native pixel size, not scaled.** Cards stay 220×64 (identical to
+the main graph). The modal's SVG `width`/`height` are set to the
+layout bbox; no `preserveAspectRatio`. The svg-wrap container has
+`overflow: auto` and centers the SVG via flexbox when it's smaller
+than the panel. If a node has lots of children + parents and the
+subgraph exceeds panel size, it scrolls — but text never shrinks.
+
+Edges are routed using the same V3.1 single-strategy direct cubic
+Bezier (`zRoute` is a JS port of the frontmatter `directPath`), with
+the same V3.3 spatial-order stagger to prevent crossings (sort by
+source perp position before assigning `tgtIdx`; mirror on source side).
+
+Why this set of choices:
+- 1-hop matches the cognitive question "what does this node sit
+  between?" — *what was needed to make it possible* + *what did it
+  enable*. Multi-hop ancestry belongs to hover dim-fade in the main
+  graph (which still uses `expandAncestors`).
+- Depth-based packing produces one row per generation; date packing
+  would leave the same gaps as the main graph.
+- Native size keeps the cards readable and consistent with main view.
+  Scrolling 1-hop is rare in practice (<10 nodes typical) and
+  preferable to shrinking text past readability.
+
+Implementation rules (all preserve §IX invariants):
+- Reuses `incomingByOrient` + `outgoingByOrient` built once at
+  init for both hover and zoom.
+- Clones existing `<g class="node">` from the active pane and rewrites
+  `transform` to the compact coords. Org colors, fonts, score badges
+  all stay identical to the main view.
+- The zoom button is stripped from clones to prevent nested zoom.
+- Edges and labels rebuilt fresh; arrow markers scoped to
+  `zoom-arrow-*` IDs to not collide with the main SVG's markers.
+- Focused (clicked) card gets a drop-shadow + bolder stroke so it stays
+  visually anchored after the dim background appears.
+- Close: × button, click backdrop, or Escape.
+- Title shows: `<focused title> · N parents · M children`.
+
+Button mechanics: `pointer-events: none` by default so it doesn't
+intercept the parent `<a>` link's click, then `pointer-events: all`
+when the parent card is hovered. Click handler calls `preventDefault()`
++ `stopPropagation()` so the underlying SVG `<a>` doesn't navigate.
+
+Note on duplication: `zRoute`, `zPerpOffset`, and `zBezierAt` are
+client-side ports of the frontmatter routing functions. If the main
+routing strategy changes (e.g. V4 routing), update both. Duplication is
+the price of running the layout in the browser without bundling
+frontmatter helpers.
 
 ---
 
@@ -831,6 +1033,18 @@ cluster at same X. Anchor on flow-aligned segments instead (Section III).
 
 The hidden edges' stagger slots become "ghost gaps." Filter hidden
 types from the count BEFORE computing per-source/target indexes.
+
+### ❌ Don't assign stagger indexes by iteration order
+
+When multiple edges converge on a target, assigning `tgtIdx` by the
+order edges happen to appear in MDX (or any iteration order) causes
+X-shaped crossings whenever the source positions don't already match
+that order. The eye reads the crossing as a "twisted" line pair — exactly
+the visual the stagger system was supposed to prevent.
+
+Always sort each target's incoming edges by source perp position before
+assigning `tgtIdx`. Mirror on the source side. See §IV "Spatial-order
+stagger" for the rule.
 
 ### ❌ Don't auto-fit-to-screen on first load
 

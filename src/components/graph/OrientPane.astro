@@ -1,0 +1,79 @@
+---
+import type { Layout, Orient } from "../../lib/graph/types";
+import { edgeStyle } from "../../lib/graph/constants";
+import { bandColor, bandHeader } from "../../lib/graph/bands";
+import Card from "./Card.astro";
+
+interface Props {
+  layout: Layout;
+  orient: Orient;
+  yearsTotal: number;
+  hidden?: boolean;
+}
+const { layout, orient, yearsTotal, hidden = false } = Astro.props;
+---
+
+<div
+  class="orient-pane w-full overflow-auto bg-slate-50"
+  data-orient={orient}
+  style={hidden ? "display:none" : ""}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox={`0 0 ${layout.W} ${layout.H}`}
+    width={layout.W}
+    height={layout.H}
+    class="block"
+  >
+    <defs>
+      {Object.entries(edgeStyle).map(([type, style]) => (
+        <marker
+          id={`arrow-${orient}-${type}`}
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={style.color} />
+        </marker>
+      ))}
+    </defs>
+
+    {/* Year bands (columns for h, rows for v) */}
+    <g class="bands">
+      {orient === "h"
+        ? layout.bands.map((b) => (
+            <g class="year-band" data-year={b.year}>
+              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, yearsTotal)} rx="6" />
+              <rect x={b.header.x} y={b.header.y} width={b.header.width} height={b.header.height} rx="6" fill="white" stroke={bandHeader(b.idx, yearsTotal)} stroke-width="1.25" />
+              <text x={b.header.x + b.header.width / 2} y={b.header.y + 24} text-anchor="middle" font-size="20" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, yearsTotal)}>{b.year}</text>
+              <text x={b.header.x + b.header.width / 2} y={b.header.y + 38} text-anchor="middle" font-size="9.5" font-family="ui-sans-serif, system-ui" fill="#64748b">
+                {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
+              </text>
+            </g>
+          ))
+        : layout.bands.map((b) => (
+            <g class="year-band" data-year={b.year}>
+              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, yearsTotal)} />
+              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, yearsTotal)} stroke-width="1.25" />
+              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" font-size="22" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, yearsTotal)}>{b.year}</text>
+              <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" font-size="10" font-family="ui-sans-serif, system-ui" fill="#64748b">
+                {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
+              </text>
+            </g>
+          ))}
+    </g>
+
+    {/* V3: edges populated dynamically by JS on hover/pin */}
+    <g class="edges"></g>
+
+    <g class="nodes">
+      {layout.placedNodes.map((p) => <Card p={p} />)}
+    </g>
+
+    {/* V3: labels populated dynamically by JS */}
+    <g class="edge-labels"></g>
+  </svg>
+</div>

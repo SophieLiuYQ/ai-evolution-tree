@@ -7,35 +7,30 @@ const nodes = await getCollection("nodes");
 ---
 
 <Base title="AI Evolution Tree · A living tree of ML/LLM/AI advancement">
-  <section class="mb-6">
-    <h1 class="mb-2 text-3xl font-bold tracking-tight sm:text-4xl">
-      🌳 The <span class="text-[var(--accent)]">AI Evolution Tree</span>
-    </h1>
-    <p class="max-w-3xl text-base leading-relaxed text-[var(--fg-muted)] sm:text-lg">
-      A community-curated, citation-backed tech tree of every load-bearing
-      breakthrough in machine learning, deep learning, and AI. Time flows
-      <strong>left → right</strong>; each year is a column; typed edges show
-      how every advancement built on, scaled, surpassed, or replaced its
-      predecessors.
-    </p>
-    <div class="mt-4 flex flex-wrap items-center gap-3 text-sm">
-      <a
-        href="/timeline/"
-        class="rounded-md border border-[var(--border-strong)] bg-white px-3 py-1.5 hover:border-[var(--accent)]"
-        >Timeline view →</a
-      >
-      <a
-        href="/about/"
-        class="rounded-md border border-[var(--border-strong)] bg-white px-3 py-1.5 hover:border-[var(--accent)]"
-        >How this works</a
-      >
-      <span
-        class="rounded-md border border-[var(--border)] bg-[var(--bg-sunk)] px-3 py-1.5 text-[var(--fg-muted)]"
-      >
-        {nodes.length} nodes · pre-alpha
-      </span>
-    </div>
-  </section>
-
-  <Graph nodes={nodes} />
+  {/* Full-bleed: break out of <main>'s max-width so the graph fills
+      the viewport. The negative-margin trick pulls the wrapper to
+      100vw and aligns it back under the page-content padding. */}
+  <div class="graph-fullbleed">
+    <Graph nodes={nodes} />
+  </div>
 </Base>
+
+<style is:global>
+  .graph-fullbleed {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+    /* Fill from just below top nav to bottom of viewport. Top nav
+       is sticky and ~52px tall; main has py-8 (=2rem) above us. */
+    height: calc(100vh - 6.5rem);
+    padding: 0 1rem;
+  }
+  /* Cancel the parent <main>'s py-8 so the figure sits flush */
+  main:has(> .graph-fullbleed) {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+// Top-layer modal showing the focused card's 1-hop neighborhood.
+// Markup is empty + hidden; populated by the client script on click.
+---
+
+<div class="zoom-modal" hidden>
+  <div class="zoom-backdrop"></div>
+  <div class="zoom-panel" role="dialog" aria-modal="true" aria-labelledby="zoom-title">
+    <div class="zoom-header">
+      <span id="zoom-title" class="zoom-title">Lineage view</span>
+      <button class="zoom-close" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="zoom-svg-wrap">
+      <svg class="zoom-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+</div>

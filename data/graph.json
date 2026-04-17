@@ -1,7 +1,7 @@
 {
   "version": "0.2.0",
   "schema_url": "https://github.com/SophieLiuYQ/ai-evolution-tree",
-  "generated_at": "2026-04-17T00:34:10.232Z",
+  "generated_at": "2026-04-17T01:39:33.574Z",
   "stats": {
     "node_count": 73,
     "edge_count": 126,
@@ -4693,9 +4693,87 @@
       "_source_file": "2025-01-minimax-text-01.mdx"
     },
     {
+      "slug": "doubao-1-5",
+      "title": "Doubao 1.5 Pro — ByteDance's Sparse MoE Flagship",
+      "date": "2025-01-22",
+      "era": "scale-era",
+      "category": [
+        "nlp",
+        "multimodal",
+        "generative"
+      ],
+      "authors": [
+        "ByteDance Doubao Team"
+      ],
+      "org": "ByteDance",
+      "breakthrough_score": 7,
+      "status": "active",
+      "model_spec": {
+        "parameters": "undisclosed (sparse MoE; reported active params <30B)",
+        "architecture": "Sparse MoE + Mixture of Depth optimizations",
+        "context_window": 128000,
+        "release_type": "api",
+        "modalities": [
+          "text",
+          "vision",
+          "audio"
+        ],
+        "benchmarks": [
+          {
+            "name": "MMLU (Doubao 1.5 Pro)",
+            "score": "~88% (claimed)",
+            "vs_baseline": "GPT-4o 88.7%, DeepSeek V3 88.5%"
+          },
+          {
+            "name": "C-Eval (Chinese)",
+            "score": "~80% (claimed)"
+          },
+          {
+            "name": "Active params / total",
+            "score": "~7× sparser than dense equivalent"
+          }
+        ]
+      },
+      "public_view": {
+        "plain_english": "ByteDance's flagship API model, released January 22, 2025 — one\nday before DeepSeek R1 stole the global news cycle. Doubao 1.5\nPro was the model behind ByteDance's domestic chat product\n(Doubao app) which had ~75M MAU by end of 2024, making it the\nmost-used AI assistant in China by user count.\n",
+        "analogy": "The \"TikTok of Chinese AI\" — distribution-first product strategy.\nByteDance built model capability after dominating user\nattention, the inverse of the OpenAI / Anthropic playbook.\n",
+        "applications": [
+          {
+            "product": "Doubao consumer chat (most-used AI app in China)",
+            "company": "ByteDance",
+            "year_deployed": 2024
+          },
+          {
+            "product": "Coze (agent platform, ByteDance)",
+            "company": "ByteDance",
+            "year_deployed": 2024
+          },
+          {
+            "product": "Volcengine (enterprise AI platform)",
+            "company": "ByteDance",
+            "year_deployed": 2024
+          }
+        ],
+        "investment_angle": "Doubao represents ByteDance's bet that consumer-AI distribution\nmoat (TikTok / Douyin user-graph + recommendation infrastructure)\ntransfers to AI assistant market share. By Q1 2025, Doubao MAU\nrivalled ChatGPT's China-equivalent share. ByteDance's reported\nAI capex in 2024 (~$11B) was the largest of any Chinese tech\ncompany. The strategic message: model capability is necessary\nbut not sufficient — the distribution moat is now the wider\ncompetitive moat in the consumer AI market.\n",
+        "why_it_matters": "Doubao is the consumer Chinese AI product the West underestimates\nmost. By distribution count, it's larger than any Western AI\nconsumer product outside ChatGPT. ByteDance's quiet success here\nshapes the long-term competitive landscape more than the more\npublicized DeepSeek / Qwen battles.\n"
+      },
+      "citations": [
+        {
+          "type": "release",
+          "key": "bytedance2025doubao15",
+          "title": "Doubao 1.5 Pro release",
+          "year": 2025,
+          "venue": "Volcengine",
+          "url": "https://www.volcengine.com/product/doubao"
+        }
+      ],
+      "body_md": "## What it is\n\nByteDance's flagship LLM API as of early 2025. Architecturally a sparse Mixture-of-Experts model (specific size undisclosed) trained with what ByteDance calls \"Mixture of Depth\" optimizations — adaptive layer skipping for inference efficiency. Multimodal across text, vision, and audio.\n\nThe release timing was striking — January 22, 2025, the same week as DeepSeek R1 — and was largely overshadowed by R1's global market impact.\n\n## How Doubao 1.5 Pro fits the Chinese AI landscape (Q1 2025)\n\n| Lab | Flagship model | Date | Strategy | Distribution |\n|---|---|---|---|---|\n| Alibaba | Qwen 2.5-Max | 2025-01 | open + closed dual-track | Aliyun cloud + open ecosystem |\n| **ByteDance** | **Doubao 1.5 Pro** | **2025-01** | **closed + consumer-app-first** | **Doubao app, 75M+ MAU** |\n| DeepSeek | R1 / V3 | 2025-01 | open-only | Hugging Face + API |\n| Tencent | Hunyuan-Large | 2024-11 | open + WeChat integration | Tencent ecosystem |\n| Baidu | Ernie 4.5 | 2024-04 | closed + Baidu Search | Wenxin Yiyan |\n| Moonshot | Kimi K1.5 | 2025-01 | closed + long-context | Kimi app |\n| Zhipu | GLM-4-Plus | 2024-08 | open base + closed flagship | API marketplace |\n\nAmong Chinese AI flagships, ByteDance's distribution position is the strongest — Doubao is integrated into Douyin (Chinese TikTok) and accessible to that platform's ~700M domestic MAU.",
+      "_source_file": "2025-01-doubao-1-5.mdx"
+    },
+    {
       "slug": "deepseek-r1",
       "title": "DeepSeek R1 — Open-Weight Reasoning Model",
-      "date": "2025-01-20",
+      "date": "2025-01-23",
       "era": "reasoning",
       "category": [
         "nlp",
@@ -4785,84 +4863,6 @@
       ],
       "body_md": "## What it is\n\nA 671B-parameter Mixture-of-Experts decoder-only transformer (37B active) post-trained via reinforcement learning on reasoning tasks with verifiable rewards (math correctness, code execution). The technical contribution is the training recipe (reported as \"GRPO\" — Group Relative Policy Optimization), which trained reasoning capability from a base model with minimal supervised fine-tuning beforehand.\n\nThe paper claims the reasoning behavior emerged purely from RL on rule-based rewards — the model was not trained on any human-labeled CoT data. If correct, this is a meaningful methodological discovery: reasoning capability can be elicited from base models with verifiable rewards alone, no expensive reasoning-trace dataset needed.\n\n## R1 vs o1 — the comparison that moved markets\n\n| Dimension | OpenAI o1 (2024-09) | DeepSeek R1 (2025-01) |\n|---|---|---|\n| Org | OpenAI (US, closed) | DeepSeek (China, open) |\n| Architecture | undisclosed | 671B MoE / 37B active |\n| Weights | not released | open (MIT license) |\n| Training data | undisclosed | partial disclosure |\n| Training compute (reported) | undisclosed (likely >100M GPU-hr) | 5.6M GPU-hr |\n| AIME 2024 | 83.3% | 79.8% |\n| MATH-500 | 96.4% | 97.3% |\n| GPQA Diamond | 78.0% | 71.5% |\n| API cost / 1M output | $60 | $2.19 |\n\nThe 27× cost difference at near-comparable benchmarks is the headline number that drove the market reaction.\n\n## The Sputnik framing — and the pushback\n\nWithin 72 hours of release, R1 was the most-discussed AI release since GPT-4. The \"Sputnik moment\" framing dominated US tech press. Pushback emerged within weeks:\n\n- The reported $5M training cost excluded research compute, ablations, and infrastructure — full-cost estimates landed in the $50M-$500M range.\n- DeepSeek had likely distilled outputs from o1 / Claude / GPT-4 in pretraining (denied by DeepSeek; widely suspected based on sample analysis).\n- The benchmark performance had gaps vs o1 on several axes (GPQA, real-world coding) that the headline \"matches o1\" didn't capture.\n- The H800 GPUs used were a downgraded export-compliant variant; H100 access would have changed the picture.\n\nBy Q2 2025 the consensus had moderated: R1 was a real and significant achievement, but the framing as \"China matched US frontier at 1% the cost\" had been substantially walked back.\n\n## Permanent effects\n\nRegardless of the contested specifics, R1 made permanent the following:\n\n- **Open-weight reasoning is a category** — Qwen QwQ, Sky-T1, Mistral Magistral, all followed within months.\n- **US export-control debate intensified** — R1 became Exhibit A in arguments both for tighter chip export restrictions and against them (depending on whether you read it as \"controls failed\" or \"controls slowed but didn't stop\").\n- **Closed-model pricing pressure** — OpenAI, Anthropic, Google all repriced reasoning tiers downward in February-April 2025.",
       "_source_file": "2025-01-deepseek-r1.mdx"
-    },
-    {
-      "slug": "doubao-1-5",
-      "title": "Doubao 1.5 Pro — ByteDance's Sparse MoE Flagship",
-      "date": "2025-01-22",
-      "era": "scale-era",
-      "category": [
-        "nlp",
-        "multimodal",
-        "generative"
-      ],
-      "authors": [
-        "ByteDance Doubao Team"
-      ],
-      "org": "ByteDance",
-      "breakthrough_score": 7,
-      "status": "active",
-      "model_spec": {
-        "parameters": "undisclosed (sparse MoE; reported active params <30B)",
-        "architecture": "Sparse MoE + Mixture of Depth optimizations",
-        "context_window": 128000,
-        "release_type": "api",
-        "modalities": [
-          "text",
-          "vision",
-          "audio"
-        ],
-        "benchmarks": [
-          {
-            "name": "MMLU (Doubao 1.5 Pro)",
-            "score": "~88% (claimed)",
-            "vs_baseline": "GPT-4o 88.7%, DeepSeek V3 88.5%"
-          },
-          {
-            "name": "C-Eval (Chinese)",
-            "score": "~80% (claimed)"
-          },
-          {
-            "name": "Active params / total",
-            "score": "~7× sparser than dense equivalent"
-          }
-        ]
-      },
-      "public_view": {
-        "plain_english": "ByteDance's flagship API model, released January 22, 2025 — one\nday before DeepSeek R1 stole the global news cycle. Doubao 1.5\nPro was the model behind ByteDance's domestic chat product\n(Doubao app) which had ~75M MAU by end of 2024, making it the\nmost-used AI assistant in China by user count.\n",
-        "analogy": "The \"TikTok of Chinese AI\" — distribution-first product strategy.\nByteDance built model capability after dominating user\nattention, the inverse of the OpenAI / Anthropic playbook.\n",
-        "applications": [
-          {
-            "product": "Doubao consumer chat (most-used AI app in China)",
-            "company": "ByteDance",
-            "year_deployed": 2024
-          },
-          {
-            "product": "Coze (agent platform, ByteDance)",
-            "company": "ByteDance",
-            "year_deployed": 2024
-          },
-          {
-            "product": "Volcengine (enterprise AI platform)",
-            "company": "ByteDance",
-            "year_deployed": 2024
-          }
-        ],
-        "investment_angle": "Doubao represents ByteDance's bet that consumer-AI distribution\nmoat (TikTok / Douyin user-graph + recommendation infrastructure)\ntransfers to AI assistant market share. By Q1 2025, Doubao MAU\nrivalled ChatGPT's China-equivalent share. ByteDance's reported\nAI capex in 2024 (~$11B) was the largest of any Chinese tech\ncompany. The strategic message: model capability is necessary\nbut not sufficient — the distribution moat is now the wider\ncompetitive moat in the consumer AI market.\n",
-        "why_it_matters": "Doubao is the consumer Chinese AI product the West underestimates\nmost. By distribution count, it's larger than any Western AI\nconsumer product outside ChatGPT. ByteDance's quiet success here\nshapes the long-term competitive landscape more than the more\npublicized DeepSeek / Qwen battles.\n"
-      },
-      "citations": [
-        {
-          "type": "release",
-          "key": "bytedance2025doubao15",
-          "title": "Doubao 1.5 Pro release",
-          "year": 2025,
-          "venue": "Volcengine",
-          "url": "https://www.volcengine.com/product/doubao"
-        }
-      ],
-      "body_md": "## What it is\n\nByteDance's flagship LLM API as of early 2025. Architecturally a sparse Mixture-of-Experts model (specific size undisclosed) trained with what ByteDance calls \"Mixture of Depth\" optimizations — adaptive layer skipping for inference efficiency. Multimodal across text, vision, and audio.\n\nThe release timing was striking — January 22, 2025, the same week as DeepSeek R1 — and was largely overshadowed by R1's global market impact.\n\n## How Doubao 1.5 Pro fits the Chinese AI landscape (Q1 2025)\n\n| Lab | Flagship model | Date | Strategy | Distribution |\n|---|---|---|---|---|\n| Alibaba | Qwen 2.5-Max | 2025-01 | open + closed dual-track | Aliyun cloud + open ecosystem |\n| **ByteDance** | **Doubao 1.5 Pro** | **2025-01** | **closed + consumer-app-first** | **Doubao app, 75M+ MAU** |\n| DeepSeek | R1 / V3 | 2025-01 | open-only | Hugging Face + API |\n| Tencent | Hunyuan-Large | 2024-11 | open + WeChat integration | Tencent ecosystem |\n| Baidu | Ernie 4.5 | 2024-04 | closed + Baidu Search | Wenxin Yiyan |\n| Moonshot | Kimi K1.5 | 2025-01 | closed + long-context | Kimi app |\n| Zhipu | GLM-4-Plus | 2024-08 | open base + closed flagship | API marketplace |\n\nAmong Chinese AI flagships, ByteDance's distribution position is the strongest — Doubao is integrated into Douyin (Chinese TikTok) and accessible to that platform's ~700M domestic MAU.",
-      "_source_file": "2025-01-doubao-1-5.mdx"
     },
     {
       "slug": "grok-3",
