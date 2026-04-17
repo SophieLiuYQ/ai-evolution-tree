@@ -1119,9 +1119,13 @@ function fmtSpec(ms: {
         clearLabels();
         return;
       }
-      const ancestors = expand(slug, "up");
-      const descendants = expand(slug, "down");
-      const keep = new Set([...ancestors, ...descendants]);
+      // Knowledge-tree gating: highlight ONLY ancestors (the prerequisite
+      // chain leading to this node). Descendants ("downstream knowledge
+      // not yet unlocked") fade into background. Hovered node + everything
+      // it depends on = visible; everything that depends on hovered node
+      // = greyed out.
+      const ancestors = expand(slug, "up"); // includes hovered node itself
+      const keep = ancestors;
       allNodeLinks.forEach((n) => {
         const s = n.getAttribute("data-slug")!;
         n.style.opacity = keep.has(s) ? "1" : "0.18";
@@ -1131,15 +1135,19 @@ function fmtSpec(ms: {
       allEdges.forEach((e) => {
         const f = e.getAttribute("data-from")!;
         const t = e.getAttribute("data-to")!;
+        // Edge is in the ancestor lineage iff BOTH endpoints are ancestors
+        // (this excludes any edge going to a descendant)
         const inLineage = keep.has(f) && keep.has(t);
         e.style.opacity = inLineage ? "1" : "0.05";
-        const isDirect = f === slug || t === slug;
-        e.classList.toggle("related", isDirect);
-        // Toggle the matching label in the top-layer
+        // "Direct" labels show only on edges INCOMING to the hovered node
+        // (the immediate prerequisites). We no longer show outgoing-edge
+        // labels because outgoing edges lead to "locked" descendants.
+        const isDirectIncoming = t === slug && keep.has(f);
+        e.classList.toggle("related", isDirectIncoming);
         const key = e.getAttribute("data-edge-key");
         if (key) {
           const label = labelByKey.get(key);
-          label?.classList.toggle("related", isDirect);
+          label?.classList.toggle("related", isDirectIncoming);
         }
       });
     };

@@ -391,29 +391,56 @@ Result: clean default view (only colored arrows), labels appear
 on-demand. Discoverability preserved via the legend at the bottom
 (showing color → type mapping).
 
-### Lineage highlighting (full ancestry chain)
+### Lineage highlighting — knowledge-tree gating (ancestors only)
 
-When hovering a node, highlight not just direct edges but the entire
-lineage:
-- All ancestors (anything reachable by walking edges backward)
-- All descendants (anything reachable by walking forward)
-- Other nodes/edges fade to opacity 0.18 (greyed out)
+When hovering a node, highlight ONLY its **ancestors** (the prerequisite
+chain leading to this node). Descendants — knowledge that depends on
+this node and hasn't been "unlocked" yet from the user's vantage —
+fade to background.
+
+This treats the graph as a **knowledge tree**, not a general DAG
+explorer:
+- Hovered node: full opacity + drop-shadow
+- All ancestors (prerequisites): full opacity
+- Edges INTO the hovered node: highlighted with label visible
+- Edges among ancestors: full opacity (no labels)
+- Hovered node's descendants AND non-related nodes: opacity 0.18 (faded)
+- Their edges: opacity 0.05 (almost invisible)
 
 ```typescript
-function expand(start: string, dir: "up" | "down"): Set<string> {
-  const seen = new Set<string>([start]);
-  const queue = [start];
-  while (queue.length) {
-    const cur = queue.shift()!;
-    const next = (dir === "up" ? incoming : outgoing)[cur] ?? [];
-    for (const n of next) if (!seen.has(n)) { seen.add(n); queue.push(n); }
-  }
-  return seen;
-}
+const ancestors = expand(slug, "up"); // includes hovered node itself
+const keep = ancestors;
+allNodeLinks.forEach((n) => {
+  const s = n.getAttribute("data-slug")!;
+  n.style.opacity = keep.has(s) ? "1" : "0.18";
+  n.style.filter = s === slug ? "drop-shadow(0 0 6px rgba(15,23,42,0.25))" : "";
+});
+allEdges.forEach((e) => {
+  const f = e.getAttribute("data-from")!;
+  const t = e.getAttribute("data-to")!;
+  const inLineage = keep.has(f) && keep.has(t);
+  e.style.opacity = inLineage ? "1" : "0.05";
+  // Labels show only on edges INCOMING to hovered (immediate prereqs)
+  const isDirectIncoming = t === slug && keep.has(f);
+  e.classList.toggle("related", isDirectIncoming);
+});
 ```
 
-This turns the static graph into an exploration tool. Hover any node →
-trace its full intellectual lineage in the tree.
+**Why ancestors-only, not bidirectional**: showing both ancestors and
+descendants on hover treats the user as a "graph explorer." Showing
+ancestors-only treats them as a **learner discovering history**: this is
+what existed before this advancement. Future work that depended on it is
+not relevant to "understanding what this node IS" — it's relevant to
+"what this node ENABLED," a separate question.
+
+**The rule in plain terms**: hover a node → see the prerequisite chain.
+You can hover any descendant later to see ITS prerequisites (which will
+include the original node). This forces the user to walk the tree
+forward in time the same way the field actually evolved.
+
+**Tradeoff**: power users who want bidirectional lineage lose that view.
+Acceptable cost — power users can use the timeline view (`/timeline`)
+which shows everything chronologically.
 
 ---
 
