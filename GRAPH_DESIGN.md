@@ -271,15 +271,25 @@ it ALONG the path geometry.
 
 ### Generate multiple candidate anchors per edge
 
-For each edge, compute 5 candidate label positions, all on the path.
-For Manhattan paths: 5 points along the vertical segment at parameter
-t = [0.5, 0.35, 0.65, 0.25, 0.75]. For S-curves: 5 cubic-Bezier-evaluated
-points at the same t values.
+For each edge, compute 9 candidate label positions, all on the path,
+at parameters `t = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75]`.
+The midpoint variants come first; spread-toward-endpoints come last.
+This gives the avoider room to pull labels off card-occupied space.
 
-Collision avoidance picks the FIRST candidate that doesn't overlap an
-already-placed label. If all 5 collide, default to t=0.5 (geometric
-midpoint). This gives flexibility without ever placing labels off the
-edge.
+### Two-pass collision avoidance: cards first, labels second
+
+`avoidLabelOverlaps(edges, placedNodes)` checks BOTH placed labels AND
+card rectangles. A label sitting on top of a card title is just as bad
+as two labels overlapping each other — the user reads the card text
+through the pill background. Original behavior only checked labels;
+when an edge passed through an unrelated card, the label landed on
+its title.
+
+Pass 1: pick the first anchor that's clean of cards AND labels.
+Pass 2: if all anchors fail the card test (rare — would mean the
+entire visible curve sits inside cards), fall back to "clean of
+labels only" so we still avoid label-on-label overlaps.
+Fallback: anchors[0] (geometric midpoint).
 
 ### Flow-aligned anchors (the key insight)
 

@@ -14,6 +14,7 @@
 // outside the column.
 
 import type { Edge, EdgeStagger, Orient, Placed } from "./types";
+export type { Placed };
 import {
   H_COL_GAP,
   HIDDEN_EDGE_TYPES,
@@ -84,7 +85,7 @@ export function directPath(
       const c1x = sxR + dx * 0.5;
       const c2x = txL - dx * 0.5;
       const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
-      const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+      const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
         bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
       );
       return { d, mid: anchors[0], anchors };
@@ -95,7 +96,7 @@ export function directPath(
     const c1x = sxR + arc;
     const c2x = txL + arc;
     const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
-    const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+    const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
       bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
     );
     return { d, mid: anchors[0], anchors };
@@ -112,7 +113,7 @@ export function directPath(
     const c1y = syB + dy * 0.5;
     const c2y = tyT - dy * 0.5;
     const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
-    const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+    const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
       bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
     );
     return { d, mid: anchors[0], anchors };
@@ -122,24 +123,47 @@ export function directPath(
   const c1y = syB + arc;
   const c2y = tyT + arc;
   const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
-  const anchors = [0.5, 0.4, 0.6, 0.45, 0.55].map((t) =>
+  const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
     bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
   );
   return { d, mid: anchors[0], anchors };
 }
 
-// Pick a label position that doesn't collide with already-placed labels.
-// Tries each anchor in order (anchors are along the edge's geometry, so the
-// label always remains visually attached to the edge it labels).
-export function avoidLabelOverlaps(edges: Edge[]): void {
+// Pick a label position that doesn't overlap (a) already-placed labels OR
+// (b) any card rectangle. Tries each anchor in order (anchors lie ON the
+// edge geometry, so the label stays visually attached to its edge).
+//
+// Two-pass strategy:
+//   pass 1: pick first anchor that's clean of BOTH labels and cards
+//   pass 2: if all anchors fail card check, pick first that's clean of labels
+//   fallback: anchors[0]
+export function avoidLabelOverlaps(
+  edges: Edge[],
+  placedNodes?: Placed[],
+): void {
   const placed: Array<{ x: number; y: number }> = [];
-  const X_PAD = LABEL_W * 0.55;
-  const Y_PAD = LABEL_H + 3;
+  const LABEL_X_PAD = LABEL_W * 0.55;
+  const LABEL_Y_PAD = LABEL_H + 3;
+  // Half-extents of the label PLUS a small breathing room
+  const LABEL_HALF_W = LABEL_W / 2 + 4;
+  const LABEL_HALF_H = LABEL_H / 2 + 4;
 
-  const collides = (cx: number, cy: number) =>
+  const labelCollides = (cx: number, cy: number) =>
     placed.some(
-      (p) => Math.abs(p.x - cx) < X_PAD && Math.abs(p.y - cy) < Y_PAD,
+      (p) => Math.abs(p.x - cx) < LABEL_X_PAD && Math.abs(p.y - cy) < LABEL_Y_PAD,
     );
+
+  const cardCollides = (cx: number, cy: number) => {
+    if (!placedNodes) return false;
+    for (const p of placedNodes) {
+      const left = p.x - p.width / 2 - LABEL_HALF_W;
+      const right = p.x + p.width / 2 + LABEL_HALF_W;
+      const top = p.y - p.height / 2 - LABEL_HALF_H;
+      const bot = p.y + p.height / 2 + LABEL_HALF_H;
+      if (cx > left && cx < right && cy > top && cy < bot) return true;
+    }
+    return false;
+  };
 
   for (const e of edges) {
     if (HIDDEN_EDGE_TYPES.has(e.type)) {
@@ -147,11 +171,23 @@ export function avoidLabelOverlaps(edges: Edge[]): void {
       e.midY = e.anchors[0].y;
       continue;
     }
+    // Pass 1: clean of both
     let chosen = e.anchors[0];
-    for (const candidate of e.anchors) {
-      if (!collides(candidate.x, candidate.y)) {
-        chosen = candidate;
+    let foundClean = false;
+    for (const c of e.anchors) {
+      if (!cardCollides(c.x, c.y) && !labelCollides(c.x, c.y)) {
+        chosen = c;
+        foundClean = true;
         break;
+      }
+    }
+    // Pass 2: clean of labels only (last resort — overlap a card)
+    if (!foundClean) {
+      for (const c of e.anchors) {
+        if (!labelCollides(c.x, c.y)) {
+          chosen = c;
+          break;
+        }
       }
     }
     e.midX = chosen.x;

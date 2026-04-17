@@ -462,6 +462,6 @@ function finalize(
       label: edgeStyle[e.type]?.label ?? e.type,
     });
   }
-  avoidLabelOverlaps(edges);
+  avoidLabelOverlaps(edges, placedNodes);
   return { W, H, placedNodes, edges, bands };
 }
