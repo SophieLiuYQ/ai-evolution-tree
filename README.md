@@ -62,7 +62,11 @@ Pre-alpha. Schema is stabilizing; expect breaking changes until v0.2. See [ROADM
 
 ## Architecture
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for tech stack rationale, data model, rendering strategy, and contributor ergonomics.
+- [ARCHITECTURE.md](./ARCHITECTURE.md) — tech stack rationale, data model, rendering strategy, contributor ergonomics
+- [GRAPH_DESIGN.md](./GRAPH_DESIGN.md) — drawing principles for graph-based data visualization (layout topology, anchor system, fan-out stagger, z-order, invariants — distilled from 18 sprints of iteration)
+- [DEVLOG.md](./DEVLOG.md) — chronological build journal of how the project came together
+- [NODE_SCHEMA.md](./NODE_SCHEMA.md) — authoritative node schema spec
+- [data/README.md](./data/README.md) — V2 embedded JSON architecture decision
 
 ## Licensing
 
