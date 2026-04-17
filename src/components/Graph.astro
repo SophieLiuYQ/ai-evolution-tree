@@ -324,6 +324,26 @@ function computeLayout(orient: "h" | "v"): Layout {
   }
 }
 
+// Edge fan-out stagger — when a node has multiple in/outgoing edges,
+// each edge's exit point on the source AND entry point on the target are
+// offset perpendicular to the flow so the lines don't overlap each other.
+// Bend points (splitX/splitY/detourX/detourY) also stagger by source index
+// so vertical/horizontal middle segments fan out into different lanes.
+type EdgeStagger = {
+  srcIdx: number; // this edge's index among edges sharing the same source
+  srcTotal: number; // total edges sharing the same source
+  tgtIdx: number; // ditto for target
+  tgtTotal: number;
+};
+const STAGGER_PERP = 5; // perpendicular offset per edge (px)
+const STAGGER_BEND = 8; // bend-point offset per source-edge index (px)
+
+function perpOffset(idx: number, total: number): number {
+  if (total <= 1) return 0;
+  // Centered around 0: for total=4 → -7.5, -2.5, +2.5, +7.5
+  return (idx - (total - 1) / 2) * STAGGER_PERP;
+}
+
 // Cubic Bézier point at parameter t (0..1)
 function bezierAt(
   x1: number, y1: number,
@@ -349,17 +369,25 @@ function manhattanPath(
   src: Placed,
   tgt: Placed,
   orient: "h" | "v",
+  stagger: EdgeStagger = { srcIdx: 0, srcTotal: 1, tgtIdx: 0, tgtTotal: 1 },
 ): {
   d: string;
   mid: { x: number; y: number };
   anchors: { x: number; y: number }[];
 } {
   const r = 6;
+  // Perpendicular stagger so multiple edges from same source/to same target
+  // don't share start/end points
+  const sOffsetPerp = perpOffset(stagger.srcIdx, stagger.srcTotal);
+  const tOffsetPerp = perpOffset(stagger.tgtIdx, stagger.tgtTotal);
+  // Bend-point stagger so middle segments don't share X (h) or Y (v)
+  const bendOffset = stagger.srcIdx * STAGGER_BEND;
+
   if (orient === "h") {
     const sxR = src.x + src.width / 2;
-    const sy = src.y;
+    const sy = src.y + sOffsetPerp; // staggered exit Y on source
     const txL = tgt.x - tgt.width / 2;
-    const ty = tgt.y;
+    const ty = tgt.y + tOffsetPerp; // staggered entry Y on target
     const dx = txL - sxR;
 
     // ===== Adjacent forward: direct S-curve, NO splitX detour
@@ -376,7 +404,7 @@ function manhattanPath(
 
     if (sxR < txL - 4) {
       // ===== Non-adjacent forward — Manhattan with vertical segment
-      const splitX = sxR + Math.min((txL - sxR) * 0.55, 30);
+      const splitX = sxR + Math.min((txL - sxR) * 0.55, 30) + bendOffset;
       const dy = ty - sy;
       const sgn = dy >= 0 ? 1 : -1;
       let d = `M ${sxR} ${sy}`;
@@ -405,7 +433,7 @@ function manhattanPath(
     } else {
       // ===== Same column / backward — detour right
       const arc = 36;
-      const detourX = sxR + arc;
+      const detourX = sxR + arc + bendOffset;
       const dy = ty - sy;
       const sgn = dy >= 0 ? 1 : -1;
       let d = `M ${sxR} ${sy}`;
@@ -428,9 +456,9 @@ function manhattanPath(
     }
   } else {
     // ===== Vertical orient: src bottom → target top
-    const sx = src.x;
+    const sx = src.x + sOffsetPerp; // staggered exit X on source
     const syB = src.y + src.height / 2;
-    const tx = tgt.x;
+    const tx = tgt.x + tOffsetPerp; // staggered entry X on target
     const tyT = tgt.y - tgt.height / 2;
     const dy = tyT - syB;
 
@@ -446,7 +474,7 @@ function manhattanPath(
     }
 
     if (syB < tyT - 4) {
-      const splitY = syB + Math.min((tyT - syB) * 0.55, 30);
+      const splitY = syB + Math.min((tyT - syB) * 0.55, 30) + bendOffset;
       const dx = tx - sx;
       const sgn = dx >= 0 ? 1 : -1;
       let d = `M ${sx} ${syB}`;
@@ -475,7 +503,7 @@ function manhattanPath(
     } else {
       // Same row / backward — detour below
       const arc = 36;
-      const detourY = syB + arc;
+      const detourY = syB + arc + bendOffset;
       const dx = tx - sx;
       const sgn = dx >= 0 ? 1 : -1;
       let d = `M ${sx} ${syB}`;
@@ -542,6 +570,22 @@ function finalize(
   orient: "h" | "v",
 ): Layout {
   const placedById = new Map(placedNodes.map((p) => [p.slug, p]));
+
+  // Pre-pass: count outgoing edges per source slug + incoming edges per target slug
+  // so each individual edge knows its index within these groups (for fan-out stagger)
+  const srcOutTotal = new Map<string, number>();
+  const tgtInTotal = new Map<string, number>();
+  for (const n of nodes) {
+    if (!placedById.has(n.data.slug)) continue;
+    for (const r of n.data.relationships) {
+      if (!placedById.has(r.to)) continue;
+      srcOutTotal.set(r.to, (srcOutTotal.get(r.to) ?? 0) + 1);
+      tgtInTotal.set(n.data.slug, (tgtInTotal.get(n.data.slug) ?? 0) + 1);
+    }
+  }
+
+  const srcCounters = new Map<string, number>();
+  const tgtCounters = new Map<string, number>();
   const edges: Edge[] = [];
   for (const n of nodes) {
     const tgt = placedById.get(n.data.slug);
@@ -549,7 +593,17 @@ function finalize(
     for (const r of n.data.relationships) {
       const src = placedById.get(r.to);
       if (!src) continue;
-      const { d, mid, anchors } = manhattanPath(src, tgt, orient);
+      const srcIdx = srcCounters.get(r.to) ?? 0;
+      srcCounters.set(r.to, srcIdx + 1);
+      const tgtIdx = tgtCounters.get(n.data.slug) ?? 0;
+      tgtCounters.set(n.data.slug, tgtIdx + 1);
+
+      const { d, mid, anchors } = manhattanPath(src, tgt, orient, {
+        srcIdx,
+        srcTotal: srcOutTotal.get(r.to) ?? 1,
+        tgtIdx,
+        tgtTotal: tgtInTotal.get(n.data.slug) ?? 1,
+      });
       edges.push({
         v: r.to,
         w: n.data.slug,
