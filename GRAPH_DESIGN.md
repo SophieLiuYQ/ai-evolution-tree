@@ -11,6 +11,40 @@ decisions so future graph-viz projects can skip the iteration cost.
 
 ---
 
+## 🚨 Maintenance discipline (read first)
+
+**This document is the iteration contract for graph code in this project.**
+Every change to graph rendering / layout / interaction code MUST be
+accompanied by a corresponding update to this file, in the same commit.
+
+Why: without this discipline, every new sprint re-discovers bugs we
+already fixed. With it, contributors can layer changes confidently
+because they know what rules already hold. Small steps, fast iteration
+(小步快跑) requires that the contract is always current.
+
+**For contributors** (human or AI): when you edit `src/components/Graph.astro`
+(or related layout / anchor / stagger / routing / labeling code):
+
+1. Identify which section below your change touches
+2. Edit that section to reflect the new rule, parameter, or fix
+3. If you reverse a prior rule, update it (don't append contradictions)
+4. If you learn what NOT to do, add it to Section X
+5. Commit message references both files
+
+For Claude Code sessions specifically, this rule is enforced by
+`CLAUDE.md` in the project root.
+
+**Sections most often updated**:
+- §II Layout topology — when routing logic changes
+- §III Anchor system — when label placement changes
+- §IV Fan-out stagger — when handling multiple-edges-from-same-node
+- §V Z-order — when render order changes
+- §X Anti-patterns — every time you fix a regression you should have caught earlier
+
+---
+
+---
+
 ## I. Foundational architectural decisions
 
 ### Static-first beats runtime — until ~5,000 nodes
