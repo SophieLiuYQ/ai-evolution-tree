@@ -245,16 +245,50 @@ around node center.
 
 For `total = 11, pitch = 5`: offsets span ±25px — visible but contained.
 
-### Stagger pitch sizing
+### Stagger pitch sizing — adaptive (v0.21)
 
-| Stagger type | Pitch | Reasoning |
-|---|---|---|
-| Source/target perpendicular | 5 px | Visible but doesn't push exit point past card edge (card height = 64) |
-| Bend lane offset | 8 px | Per-edge X shift big enough to be visually distinct; small enough that 10 edges fit in the column gap (10 × 8 = 80 < COL_GAP 100) |
+Earlier versions used a FIXED pitch of 5px for perpendicular stagger
+and 8px for bend offset. This worked OK for hub nodes (5px × 11 edges
+= 55px spread, fits the 64px card) but produced a visually disastrous
+"jitter doubling" effect for the 2-edge case: two edges 5px apart
+look like a single blurry line, not two distinct lines.
+
+**Lesson from v0.21**: human eye perceives ~10-15px as "clearly
+distinct lines" and ~3-7px as "single jittery line." For visual
+clarity, pitch must be ≥10px. But for hub nodes with 11 edges,
+10px × 11 = 110px would push exit points off the card.
+
+**Fix: adaptive pitch sizing**:
+
+```typescript
+function perpOffset(idx: number, total: number): number {
+  if (total <= 1) return 0;
+  // Adaptive: large pitch when few edges (clear train tracks),
+  // shrinks to fit the budget when many edges
+  const pitch = Math.min(STAGGER_PERP_MAX, STAGGER_PERP_BUDGET / (total - 1));
+  return (idx - (total - 1) / 2) * pitch;
+}
+```
+
+| Total edges | Pitch | Total spread | Reasoning |
+|---|---|---|---|
+| 2 | 16px | 16px | clear parallel tracks (max pitch) |
+| 3 | 16px | 32px | still distinct |
+| 5 | ~9.6px | 38.4px | starts shrinking to fit |
+| 8 | ~5.5px | 38.4px | budget exhausted, packed |
+| 11 | ~3.8px | 38px | tight but fits within 60% of card height |
+
+The same adaptive logic applies to bend lane offset (capped at 24px,
+budget = 70% of column gap).
+
+**Why "≥10px = distinct"**: 1.6px stroke width × ~3 = ~5px minimum
+visual "white space" between lines for them to read as separate.
+Pitch needs to exceed that × 2 (one space between, one stroke each)
+= 10px minimum to look like train tracks.
 
 Validate: a hub node with 11 edges should still fit all stagger lanes
-within the available routing space. Test with the highest-degree node
-in your dataset.
+within 60% of card height. Test with the highest-degree node in your
+dataset (Transformer with 11 outgoing in our case).
 
 ### Stagger only the ones that count
 

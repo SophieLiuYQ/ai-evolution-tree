@@ -344,13 +344,27 @@ type EdgeStagger = {
   tgtIdx: number; // ditto for target
   tgtTotal: number;
 };
-const STAGGER_PERP = 5; // perpendicular offset per edge (px)
-const STAGGER_BEND = 8; // bend-point offset per source-edge index (px)
+// Pitch caps and budgets:
+// - Perp budget: edges enter/exit on the card's edge (height = NODE_H = 64).
+//   Use up to 60% of card height as budget so exit points stay inside card.
+// - For 2-3 edges, use the maximum 16px pitch so they look like CLEAR parallel
+//   tracks (not "jitter doubling"). For many edges, pitch shrinks to fit.
+const STAGGER_PERP_MAX = 16; // visually-clear spacing for few edges
+const STAGGER_PERP_BUDGET = NODE_H * 0.6; // total spread across the card edge
+const STAGGER_BEND_MAX = 24; // bend-lane spacing for few edges
+const STAGGER_BEND_BUDGET = H_COL_GAP * 0.7; // fit within column gap
 
 function perpOffset(idx: number, total: number): number {
   if (total <= 1) return 0;
-  // Centered around 0: for total=4 → -7.5, -2.5, +2.5, +7.5
-  return (idx - (total - 1) / 2) * STAGGER_PERP;
+  // Adaptive pitch: large for few edges (clear train tracks), small for many
+  const pitch = Math.min(STAGGER_PERP_MAX, STAGGER_PERP_BUDGET / (total - 1));
+  return (idx - (total - 1) / 2) * pitch;
+}
+
+function bendOffsetFor(idx: number, total: number): number {
+  if (total <= 1) return 0;
+  const pitch = Math.min(STAGGER_BEND_MAX, STAGGER_BEND_BUDGET / (total - 1));
+  return idx * pitch;
 }
 
 // Cubic Bézier point at parameter t (0..1)
@@ -386,11 +400,12 @@ function manhattanPath(
 } {
   const r = 6;
   // Perpendicular stagger so multiple edges from same source/to same target
-  // don't share start/end points
+  // don't share start/end points. Adaptive pitch: bigger for few edges
+  // (visually clear), smaller for many (fits in card edge budget).
   const sOffsetPerp = perpOffset(stagger.srcIdx, stagger.srcTotal);
   const tOffsetPerp = perpOffset(stagger.tgtIdx, stagger.tgtTotal);
   // Bend-point stagger so middle segments don't share X (h) or Y (v)
-  const bendOffset = stagger.srcIdx * STAGGER_BEND;
+  const bendOffset = bendOffsetFor(stagger.srcIdx, stagger.srcTotal);
 
   if (orient === "h") {
     const sxR = src.x + src.width / 2;
