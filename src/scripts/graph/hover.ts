@@ -7,7 +7,9 @@ import {
   getActivePane,
 } from "./dom";
 import {
+  edgesFor,
   getPinned,
+  getSort,
   graphData,
   incoming,
   type Orient,
@@ -45,7 +47,7 @@ export function renderHover(slug: string) {
   // only the visible one matters; matching the wrong one moves an invisible
   // node and leaves the visible card's buttons translucent under neighbors.
   const activePaneEl = document.querySelector<HTMLElement>(
-    `.orient-pane[data-orient="${orient}"]`,
+    `.orient-pane[data-orient="${orient}"][data-sort="${getSort()}"]`,
   );
   const hoveredLink = activePaneEl?.querySelector<SVGAElement>(
     `.node-link[data-slug="${CSS.escape(slug)}"]`,
@@ -59,7 +61,7 @@ export function renderHover(slug: string) {
 
   // Render every edge whose endpoints are both in the ancestor lineage.
   // EVERY rendered edge gets its labeled pill (§VII invariant: 1:1 edge to label).
-  for (const e of data[orient]) {
+  for (const e of edgesFor(orient)) {
     if (!ancestors.has(e.v) || !ancestors.has(e.w)) continue;
     const style = data.edgeStyle[e.type];
     if (!style) continue;
@@ -102,6 +104,23 @@ function refreshPinButtonStates() {
     if (s && s === pinned) b.classList.add("active");
     else b.classList.remove("active");
   });
+  // Tag the pinned link itself so CSS can keep its hover behavior alive
+  // (pinned card may still want zoom button), and hide hover-reveal on
+  // every other card via .has-pin on the figure.
+  document.querySelectorAll<SVGAElement>(".node-link.pinned-card").forEach((l) =>
+    l.classList.remove("pinned-card"),
+  );
+  const figures = document.querySelectorAll<HTMLElement>(".ai-tree-graph");
+  if (pinned) {
+    figures.forEach((f) => f.classList.add("has-pin"));
+    // Tag the pinned card in EVERY pane (orient × sort) — when the user
+    // toggles orient or sort, the pinned card stays visually marked.
+    document
+      .querySelectorAll<SVGAElement>(`.node-link[data-slug="${CSS.escape(pinned)}"]`)
+      .forEach((l) => l.classList.add("pinned-card"));
+  } else {
+    figures.forEach((f) => f.classList.remove("has-pin"));
+  }
 }
 
 export function attachInteractions() {
@@ -111,8 +130,17 @@ export function attachInteractions() {
 
   allNodeLinks.forEach((n) => {
     const slug = n.getAttribute("data-slug")!;
-    n.addEventListener("mouseenter", () => renderHover(slug));
-    n.addEventListener("mouseleave", () => clearHover());
+    n.addEventListener("mouseenter", () => {
+      // While a path is pinned, hover on OTHER cards is locked out — the
+      // user is studying the pinned lineage and doesn't want it disturbed.
+      // Re-enabled when they click "highlight this path" again to unpin.
+      if (getPinned()) return;
+      renderHover(slug);
+    });
+    n.addEventListener("mouseleave", () => {
+      if (getPinned()) return;
+      clearHover();
+    });
   });
 
   // Pin button: lock highlight to this slug. Click again to unpin.

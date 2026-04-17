@@ -3,8 +3,11 @@
 
 import { buildLabel, getActivePane, NS } from "./dom";
 import {
+  edgesFor,
+  getSort,
   graphData,
   incoming,
+  nodePosFor,
   type NodePos,
   type Orient,
   outgoing,
@@ -247,7 +250,7 @@ function openZoom(slug: string) {
   if (!active) return;
   const orient = active.orient;
   const data = graphData();
-  const origPos = data.nodePos[orient];
+  const origPos = nodePosFor(orient);
 
   // 1. 1-hop neighborhood
   const { relevant, depth } = expandLineage1Hop(slug, orient);
@@ -257,7 +260,7 @@ function openZoom(slug: string) {
 
   // 3. Build raw edges
   const raw: ZRaw[] = [];
-  for (const e of data[orient]) {
+  for (const e of edgesFor(orient)) {
     if (!relevant.has(e.v) || !relevant.has(e.w)) continue;
     const src = newPos[e.v], tgt = newPos[e.w];
     if (!src || !tgt) continue;
@@ -319,7 +322,7 @@ function openZoom(slug: string) {
   // 7. Nodes — clone existing card <g>, update transform to compact coords
   const nodesG = document.createElementNS(NS, "g");
   const sourceLinks = document.querySelectorAll<SVGAElement>(
-    `.orient-pane[data-orient="${orient}"] .node-link`,
+    `.orient-pane[data-orient="${orient}"][data-sort="${getSort()}"] .node-link`,
   );
   sourceLinks.forEach((link) => {
     const s = link.getAttribute("data-slug");
@@ -351,7 +354,7 @@ function openZoom(slug: string) {
 
   // 8. Title — focused card's title + 1-hop counts
   const focused = document.querySelector<SVGAElement>(
-    `.orient-pane[data-orient="${orient}"] .node-link[data-slug="${slug}"]`,
+    `.orient-pane[data-orient="${orient}"][data-sort="${getSort()}"] .node-link[data-slug="${slug}"]`,
   );
   const titleNode = focused?.querySelectorAll("text")[1];
   const titleText = titleNode?.textContent ?? slug;

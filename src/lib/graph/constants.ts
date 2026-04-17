@@ -101,7 +101,7 @@ export const NODE_W = 220;
 export const NODE_H = 64;
 
 // Horizontal layout (LR)
-export const H_COL_GAP = 100;
+export const H_COL_GAP = 50; // gap between year columns (room for edge curves)
 export const H_COL_W = NODE_W + H_COL_GAP;
 export const H_NODE_V_GAP = 44;
 export const H_TOP_PAD = 72;
@@ -109,7 +109,7 @@ export const H_BOT_PAD = 32;
 export const H_SIDE_PAD = 24;
 
 // Vertical layout (TB)
-export const V_ROW_GAP = 80;
+export const V_ROW_GAP = 40; // gap between year rows
 export const V_NODE_H_GAP = 44;
 export const V_TOP_PAD = 32;
 export const V_BOT_PAD = 32;

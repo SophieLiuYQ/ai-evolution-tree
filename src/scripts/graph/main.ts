@@ -3,6 +3,7 @@
 
 import { attachInteractions } from "./hover";
 import { attachOrientHandlers } from "./orient";
+import { attachSortHandlers } from "./sort";
 import { initState } from "./state";
 import { attachZoomHandlers } from "./zoom";
 
@@ -11,4 +12,5 @@ document.addEventListener("DOMContentLoaded", () => {
   attachOrientHandlers();
   attachInteractions();
   attachZoomHandlers();
+  attachSortHandlers();
 });

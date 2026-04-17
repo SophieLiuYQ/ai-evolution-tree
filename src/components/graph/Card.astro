@@ -64,6 +64,10 @@ const metaText = clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX);
     text-decoration: none; /* kill default <a> underline that bleeds onto SVG text */
     transition: opacity 0.15s ease, filter 0.15s ease;
   }
+  /* Smooth motion when sort mode swaps card positions */
+  .node {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
   /* Hover emphasis: thick border on the main card rect.
      (Targeting .card-border explicitly — the invisible .hover-bay rect
      is the first child of .node, so :first-child wouldn't work.) */
@@ -104,4 +108,14 @@ const metaText = clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX);
     stroke: var(--accent, #2563eb);
   }
   .pin-btn.active text { fill: white; }
+
+  /* While ANY card is pinned (.has-pin on the figure), suppress the
+     hover-reveal on every NON-pinned card. The pinned card keeps its
+     active pin button via the rule above; user can't accidentally
+     trigger zoom/pin on neighbors while studying the pinned lineage. */
+  :global(.ai-tree-graph.has-pin) .node-link:not(.pinned-card):hover .zoom-btn,
+  :global(.ai-tree-graph.has-pin) .node-link:not(.pinned-card):hover .pin-btn {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 </style>

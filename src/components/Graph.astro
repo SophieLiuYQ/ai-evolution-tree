@@ -2,7 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 import { HIDDEN_EDGE_TYPES, edgeStyle } from "../lib/graph/constants";
 import { computeLayout, groupByYear } from "../lib/graph/layout";
-import type { Rel } from "../lib/graph/types";
+import type { Layout, Rel, SortMode } from "../lib/graph/types";
+import { SORT_MODES } from "../lib/graph/types";
 import LegendPanel from "./graph/LegendPanel.astro";
 import OrientPane from "./graph/OrientPane.astro";
 import ZoomModal from "./graph/ZoomModal.astro";
@@ -13,36 +14,46 @@ interface Props {
 const { nodes } = Astro.props;
 
 const { byYear, years } = groupByYear(nodes);
-const horizontal = computeLayout(nodes, byYear, years, "h");
-const vertical = computeLayout(nodes, byYear, years, "v");
 
-// Embedded JSON the client script reads on init. Keeps geometry off the
-// initial DOM (V3 dynamic-edge architecture, see GRAPH_DESIGN.md §Va).
+// Pre-compute every (orient × sort mode) layout. Layout dimensions are
+// the same across sort modes within an orient; only intra-year card
+// positions and routed edges change. Default = chronological.
+const sortIds = SORT_MODES.map((m) => m.id);
+const layouts: Record<"h" | "v", Record<SortMode, Layout>> = {
+  h: Object.fromEntries(
+    sortIds.map((m) => [m, computeLayout(nodes, byYear, years, "h", m)]),
+  ) as Record<SortMode, Layout>,
+  v: Object.fromEntries(
+    sortIds.map((m) => [m, computeLayout(nodes, byYear, years, "v", m)]),
+  ) as Record<SortMode, Layout>,
+};
+const horizontal = layouts.h.chronological;
+const vertical = layouts.v.chronological;
+
+// Pack a layout into the minimal client shape (edges + node positions).
+const packLayout = (layout: Layout) => ({
+  edges: layout.edges
+    .filter((e) => !HIDDEN_EDGE_TYPES.has(e.type))
+    .map((e) => ({ v: e.v, w: e.w, type: e.type, d: e.d, midX: e.midX, midY: e.midY })),
+  nodePos: Object.fromEntries(
+    layout.placedNodes.map((p) => [
+      p.slug,
+      { x: p.x, y: p.y, w: p.width, h: p.height },
+    ]),
+  ),
+});
+
+// Embedded JSON the client script reads on init. Holds all 6 layout
+// variants; client swaps by orient + sort mode without recomputing.
 const clientPayload = {
   edgeStyle: Object.fromEntries(
     Object.entries(edgeStyle).filter(
       ([t]) => !HIDDEN_EDGE_TYPES.has(t as Rel["type"]),
     ),
   ),
-  h: horizontal.edges
-    .filter((e) => !HIDDEN_EDGE_TYPES.has(e.type))
-    .map((e) => ({ v: e.v, w: e.w, type: e.type, d: e.d, midX: e.midX, midY: e.midY })),
-  v: vertical.edges
-    .filter((e) => !HIDDEN_EDGE_TYPES.has(e.type))
-    .map((e) => ({ v: e.v, w: e.w, type: e.type, d: e.d, midX: e.midX, midY: e.midY })),
-  nodePos: {
-    h: Object.fromEntries(
-      horizontal.placedNodes.map((p) => [
-        p.slug,
-        { x: p.x, y: p.y, w: p.width, h: p.height },
-      ]),
-    ),
-    v: Object.fromEntries(
-      vertical.placedNodes.map((p) => [
-        p.slug,
-        { x: p.x, y: p.y, w: p.width, h: p.height },
-      ]),
-    ),
+  layouts: {
+    h: Object.fromEntries(sortIds.map((m) => [m, packLayout(layouts.h[m])])),
+    v: Object.fromEntries(sortIds.map((m) => [m, packLayout(layouts.v[m])])),
   },
 };
 ---
@@ -56,8 +67,19 @@ const clientPayload = {
     />
 
     <div class="canvas-area min-w-0 flex-1">
-      <OrientPane layout={horizontal} orient="h" yearsTotal={years.length} />
-      <OrientPane layout={vertical} orient="v" yearsTotal={years.length} hidden />
+      {/* 6 panes: 2 orients × 3 sort modes. Only one is visible at a time;
+          orient.ts + sort.ts toggle display via data-orient + data-sort. */}
+      {(["h", "v"] as const).flatMap((orient) =>
+        sortIds.map((m) => (
+          <OrientPane
+            layout={layouts[orient][m]}
+            orient={orient}
+            sortMode={m}
+            yearsTotal={layouts[orient][m].bands.length}
+            hidden={!(orient === "h" && m === "chronological")}
+          />
+        )),
+      )}
     </div>
   </div>
 

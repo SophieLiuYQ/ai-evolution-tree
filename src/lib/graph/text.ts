@@ -37,3 +37,16 @@ export function fmtSpec(
 
 export const fmtMonth = (d: Date) =>
   d.toLocaleDateString("en-US", { month: "short" });
+
+// Derive a coarse "model type" from the category array for sort/group display.
+// User-facing buckets: voice, image, llm, multimodal, agents, rl, other.
+// Order of checks matters: more specific first (e.g. multimodal before nlp).
+export function modelType(cats: readonly string[]): string {
+  if (cats.includes("audio")) return "voice";
+  if (cats.includes("multimodal")) return "multimodal";
+  if (cats.includes("cv")) return "image";
+  if (cats.includes("rl")) return "rl";
+  if (cats.includes("agents")) return "agents";
+  if (cats.includes("nlp") || cats.includes("generative")) return "llm";
+  return cats[0] ?? "other";
+}

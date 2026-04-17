@@ -1,31 +1,36 @@
 // Orientation toggle (h/v) with localStorage persistence.
+// Pane visibility is jointly determined by current orient + sort mode
+// (we render 6 panes — see updateActivePane).
 
 import { clearDynamicEdges } from "./dom";
 import { clearPinOnOrientChange } from "./hover";
-import type { Orient } from "./state";
+import { getSort, type Orient } from "./state";
+import { updateActivePane } from "./sort";
 
 const STORAGE_KEY = "ai-tree:orient";
 
-function setOrient(o: Orient, scrollEnd = true) {
-  document.querySelectorAll<HTMLElement>(".orient-pane").forEach((p) => {
-    p.style.display = p.dataset.orient === o ? "" : "none";
-  });
+let _currentOrient: Orient = "h";
+
+export function getOrient(): Orient {
+  return _currentOrient;
+}
+
+export function setOrient(o: Orient, scrollEnd = true) {
+  _currentOrient = o;
   document.querySelectorAll<HTMLButtonElement>(".orient-btn").forEach((b) => {
-    b.setAttribute(
-      "aria-selected",
-      b.dataset.orient === o ? "true" : "false",
-    );
+    b.setAttribute("aria-selected", b.dataset.orient === o ? "true" : "false");
   });
   try {
     localStorage.setItem(STORAGE_KEY, o);
   } catch {}
 
+  updateActivePane(); // toggles which of the 6 panes is visible
+
   if (scrollEnd) {
     const pane = document.querySelector<HTMLElement>(
-      `.orient-pane[data-orient="${o}"]`,
+      `.orient-pane[data-orient="${o}"][data-sort="${getSort()}"]`,
     );
     if (!pane) return;
-    // h: scroll right (latest year). v: scroll down (latest year).
     if (o === "h") pane.scrollLeft = pane.scrollWidth;
     else pane.scrollTop = pane.scrollHeight;
   }

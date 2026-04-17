@@ -1,4 +1,13 @@
-import type { Band, Edge, Layout, NodeEntry, Orient, Placed } from "./types";
+import type {
+  Band,
+  Edge,
+  Layout,
+  NodeEntry,
+  Orient,
+  Placed,
+  SortMode,
+} from "./types";
+import { modelType } from "./text";
 import {
   edgeStyle,
   HIDDEN_EDGE_TYPES,
@@ -30,139 +39,333 @@ export function groupByYear(nodes: NodeEntry[]) {
     byYear.get(y)!.push(n);
   }
   const years = Array.from(byYear.keys()).sort((a, b) => a - b);
-  // Within each year, sort STRICTLY by date ascending so the column / row is
-  // always chronological — earliest at top/left, latest at bottom/right.
   for (const y of years) {
-    byYear.get(y)!.sort(
-      (a, b) => a.data.date.getTime() - b.data.date.getTime(),
-    );
+    byYear.get(y)!.sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
   }
   return { byYear, years };
 }
 
+// Cross-axis key for grid layouts. Empty string for chronological (no grid).
+function crossKeyOf(n: NodeEntry, mode: SortMode): string {
+  if (mode === "byOrg") return n.data.org;
+  if (mode === "byType") return modelType(n.data.category ?? []);
+  return "";
+}
+
+// Extra padding to make room for the cross-axis label strip (top in v,
+// left in h). Year is ALWAYS the primary axis; sort key is the secondary.
+const CROSS_HEADER_TOP_H = 36; // v: top strip height showing company/type names
+const CROSS_HEADER_LEFT_W = 130; // h: left strip width showing company/type names
+
 export function computeLayout(
   nodes: NodeEntry[],
-  byYear: Map<number, NodeEntry[]>,
+  byYearOriginal: Map<number, NodeEntry[]>,
   years: number[],
   orient: Orient,
+  sortMode: SortMode = "chronological",
 ): Layout {
   const placedNodes: Placed[] = [];
   const bands: Band[] = [];
 
+  // Re-sort within year by date asc (consistent across all modes)
+  const byYear = new Map<number, NodeEntry[]>();
+  for (const y of years) {
+    byYear.set(
+      y,
+      [...byYearOriginal.get(y)!].sort(
+        (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+      ),
+    );
+  }
+
+  // Cross-axis keys (alphabetical) for non-chronological modes
+  const crossKeys: string[] = [];
+  if (sortMode !== "chronological") {
+    const set = new Set<string>();
+    for (const n of nodes) set.add(crossKeyOf(n, sortMode));
+    crossKeys.push(...Array.from(set).sort());
+  }
+  const crossIdxOf = (s: string) => crossKeys.indexOf(s);
+
+  // ===== HORIZONTAL: year = column (X axis), sort key = row (Y axis when grid)
   if (orient === "h") {
-    // ===== HORIZONTAL: years are columns
-    const colHeights: number[] = [];
-    for (const year of years) {
+    if (sortMode === "chronological") {
+      const colHeights: number[] = [];
+      for (let colIdx = 0; colIdx < years.length; colIdx++) {
+        const year = years[colIdx];
+        const yearNodes = byYear.get(year)!;
+        const xCenter = H_SIDE_PAD + colIdx * H_COL_W + NODE_W / 2;
+        let yCursor = H_TOP_PAD;
+        for (const n of yearNodes) {
+          placedNodes.push({
+            slug: n.data.slug,
+            x: xCenter,
+            y: yCursor + NODE_H / 2,
+            width: NODE_W,
+            height: NODE_H,
+            org: n.data.org,
+            node: n,
+          });
+          yCursor += NODE_H + H_NODE_V_GAP;
+        }
+        colHeights.push(yCursor + H_BOT_PAD);
+      }
+      const totalHeight = Math.max(...colHeights, H_TOP_PAD + 200);
+      const totalWidth = H_SIDE_PAD * 2 + years.length * H_COL_W - H_COL_GAP;
+      for (let colIdx = 0; colIdx < years.length; colIdx++) {
+        const year = years[colIdx];
+        const xLeft = H_SIDE_PAD + colIdx * H_COL_W;
+        bands.push({
+          key: year,
+          label: String(year),
+          idx: colIdx,
+          rect: { x: xLeft, y: 0, width: NODE_W, height: totalHeight },
+          header: { x: xLeft, y: 8, width: NODE_W, height: 42 },
+          headerAlign: "center",
+          nodeCount: yearNodes(byYear, year),
+        });
+      }
+      return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
+    }
+
+    // ===== H + grid (byOrg / byType): year columns × cross rows
+    // Cards from same (year, key) stack horizontally inside that cell.
+    // Y positions: indexed by crossKeys, with a left header strip for labels.
+    const ROW_H = NODE_H + 14;
+    const totalRowsH = CROSS_HEADER_TOP_H + crossKeys.length * ROW_H + 24;
+    const totalWidthH =
+      CROSS_HEADER_LEFT_W +
+      H_SIDE_PAD +
+      years.length * H_COL_W -
+      H_COL_GAP +
+      H_SIDE_PAD;
+    // Year column bands
+    for (let colIdx = 0; colIdx < years.length; colIdx++) {
+      const year = years[colIdx];
+      const xLeft = CROSS_HEADER_LEFT_W + H_SIDE_PAD + colIdx * H_COL_W;
+      bands.push({
+        key: year,
+        label: String(year),
+        idx: colIdx,
+        rect: { x: xLeft, y: 0, width: NODE_W, height: totalRowsH },
+        header: { x: xLeft, y: 8, width: NODE_W, height: CROSS_HEADER_TOP_H - 16 },
+        headerAlign: "center",
+        nodeCount: byYear.get(year)?.length ?? 0,
+      });
+    }
+    // Cross-axis (rows) bands
+    const crossBandsH: Band[] = crossKeys.map((k, i) => ({
+      key: k,
+      label: k,
+      idx: i,
+      rect: {
+        x: 0,
+        y: CROSS_HEADER_TOP_H + i * ROW_H,
+        width: totalWidthH,
+        height: ROW_H,
+      },
+      header: {
+        x: 4,
+        y: CROSS_HEADER_TOP_H + i * ROW_H,
+        width: CROSS_HEADER_LEFT_W - 8,
+        height: ROW_H,
+      },
+      headerAlign: "left",
+      nodeCount: 0, // recomputed below
+    }));
+    // Place cards: cell (year, key). Multiple cards in same cell tile horizontally.
+    // Within a year column, the X is shared across all cells; we tile vertically
+    // by crossKey index, and horizontally within the cell if duplicates.
+    const cellCount = new Map<string, number>();
+    for (let colIdx = 0; colIdx < years.length; colIdx++) {
+      const year = years[colIdx];
       const yearNodes = byYear.get(year)!;
-      const colIdx = years.indexOf(year);
-      const xCenter = H_SIDE_PAD + colIdx * H_COL_W + NODE_W / 2;
-      let yCursor = H_TOP_PAD;
       for (const n of yearNodes) {
+        const k = crossKeyOf(n, sortMode);
+        const ki = crossIdxOf(k);
+        if (ki < 0) continue;
+        const cellKey = `${colIdx}|${ki}`;
+        const stackIdx = cellCount.get(cellKey) ?? 0;
+        cellCount.set(cellKey, stackIdx + 1);
+        const xCenter =
+          CROSS_HEADER_LEFT_W +
+          H_SIDE_PAD +
+          colIdx * H_COL_W +
+          NODE_W / 2 +
+          stackIdx * 6; // tiny offset for stacked duplicates
+        const yCenter = CROSS_HEADER_TOP_H + ki * ROW_H + ROW_H / 2;
         placedNodes.push({
           slug: n.data.slug,
           x: xCenter,
-          y: yCursor + NODE_H / 2,
+          y: yCenter,
           width: NODE_W,
           height: NODE_H,
           org: n.data.org,
           node: n,
         });
-        yCursor += NODE_H + H_NODE_V_GAP;
+        crossBandsH[ki].nodeCount++;
       }
-      colHeights.push(yCursor + H_BOT_PAD);
     }
-    const totalHeight = Math.max(...colHeights, H_TOP_PAD + 200);
-    const totalWidth = H_SIDE_PAD * 2 + years.length * H_COL_W - H_COL_GAP;
+    const lay = finalize(nodes, placedNodes, bands, totalWidthH, totalRowsH, orient);
+    lay.crossBands = crossBandsH;
+    return lay;
+  }
 
-    for (const year of years) {
-      const colIdx = years.indexOf(year);
-      const xLeft = H_SIDE_PAD + colIdx * H_COL_W;
+  // ===== VERTICAL =====
+  if (sortMode === "chronological") {
+    const rowWidth = V_MAX_INNER_WIDTH - V_LEFT_PAD - V_RIGHT_PAD;
+    const nodesPerSubRow = Math.max(
+      1,
+      Math.floor((rowWidth + V_NODE_H_GAP) / (NODE_W + V_NODE_H_GAP)),
+    );
+    let yCursor = V_TOP_PAD;
+    for (let rowIdx = 0; rowIdx < years.length; rowIdx++) {
+      const year = years[rowIdx];
+      const groupNodes = byYear.get(year)!;
+      const subRowCount = Math.max(1, Math.ceil(groupNodes.length / nodesPerSubRow));
+      const rowInnerHeight =
+        subRowCount * NODE_H + (subRowCount - 1) * V_NODE_H_GAP;
+      const rowHeight = V_ROW_PAD_TOP + rowInnerHeight + V_ROW_PAD_BOTTOM;
       bands.push({
-        year,
-        idx: colIdx,
-        rect: { x: xLeft, y: 0, width: NODE_W, height: totalHeight },
-        header: { x: xLeft, y: 8, width: NODE_W, height: 42 },
-        headerAlign: "center",
-        nodeCount: byYear.get(year)!.length,
+        key: year,
+        label: String(year),
+        idx: rowIdx,
+        rect: { x: 0, y: yCursor, width: V_MAX_INNER_WIDTH, height: rowHeight },
+        header: { x: 0, y: yCursor, width: V_LEFT_PAD - 16, height: rowHeight },
+        headerAlign: "left",
+        nodeCount: groupNodes.length,
       });
+      for (let i = 0; i < groupNodes.length; i++) {
+        const n = groupNodes[i];
+        const subRow = Math.floor(i / nodesPerSubRow);
+        const colInRow = i % nodesPerSubRow;
+        const nodesInThisSubRow = Math.min(
+          nodesPerSubRow,
+          groupNodes.length - subRow * nodesPerSubRow,
+        );
+        const subRowTotalWidth =
+          nodesInThisSubRow * NODE_W + (nodesInThisSubRow - 1) * V_NODE_H_GAP;
+        const subRowStartX = V_LEFT_PAD + (rowWidth - subRowTotalWidth) / 2;
+        const x = subRowStartX + colInRow * (NODE_W + V_NODE_H_GAP) + NODE_W / 2;
+        const y = yCursor + V_ROW_PAD_TOP + subRow * (NODE_H + V_NODE_H_GAP) + NODE_H / 2;
+        placedNodes.push({
+          slug: n.data.slug,
+          x,
+          y,
+          width: NODE_W,
+          height: NODE_H,
+          org: n.data.org,
+          node: n,
+        });
+      }
+      yCursor += rowHeight + V_ROW_GAP;
     }
-
+    const totalHeight = yCursor - V_ROW_GAP + V_BOT_PAD;
+    const totalWidth = V_MAX_INNER_WIDTH;
+    for (const b of bands) b.rect.width = totalWidth;
     return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
   }
 
-  // ===== VERTICAL: years are rows
-  const rowWidth = V_MAX_INNER_WIDTH - V_LEFT_PAD - V_RIGHT_PAD;
-  const nodesPerSubRow = Math.max(
-    1,
-    Math.floor((rowWidth + V_NODE_H_GAP) / (NODE_W + V_NODE_H_GAP)),
-  );
+  // ===== V + grid (byOrg / byType): year rows × cross columns
+  // X positions: indexed by crossKeys, with a top header strip for labels.
+  // Cards from same (year, key) stack vertically inside that cell.
+  const COL_W_V = NODE_W + V_NODE_H_GAP;
+  const totalWidthV =
+    V_LEFT_PAD + crossKeys.length * COL_W_V - V_NODE_H_GAP + V_RIGHT_PAD;
 
-  let yCursor = V_TOP_PAD;
-  for (const year of years) {
-    const yearNodes = byYear.get(year)!;
-    const subRowCount = Math.max(1, Math.ceil(yearNodes.length / nodesPerSubRow));
+  let yCursorV = V_TOP_PAD + CROSS_HEADER_TOP_H + 8;
+  for (let rowIdx = 0; rowIdx < years.length; rowIdx++) {
+    const year = years[rowIdx];
+    const groupNodes = byYear.get(year)!;
+    // Determine the tallest cell in this row (max stack count over crossKeys)
+    const stackByKey = new Map<string, NodeEntry[]>();
+    for (const n of groupNodes) {
+      const k = crossKeyOf(n, sortMode);
+      if (!stackByKey.has(k)) stackByKey.set(k, []);
+      stackByKey.get(k)!.push(n);
+    }
+    const maxStack = Math.max(
+      1,
+      ...Array.from(stackByKey.values()).map((a) => a.length),
+    );
     const rowInnerHeight =
-      subRowCount * NODE_H + (subRowCount - 1) * V_NODE_H_GAP;
+      maxStack * NODE_H + (maxStack - 1) * V_NODE_H_GAP;
     const rowHeight = V_ROW_PAD_TOP + rowInnerHeight + V_ROW_PAD_BOTTOM;
-    const idx = years.indexOf(year);
 
     bands.push({
-      year,
-      idx,
-      rect: { x: 0, y: yCursor, width: V_MAX_INNER_WIDTH, height: rowHeight },
-      header: { x: 0, y: yCursor, width: V_LEFT_PAD - 16, height: rowHeight },
+      key: year,
+      label: String(year),
+      idx: rowIdx,
+      rect: { x: 0, y: yCursorV, width: totalWidthV, height: rowHeight },
+      header: { x: 0, y: yCursorV, width: V_LEFT_PAD - 16, height: rowHeight },
       headerAlign: "left",
-      nodeCount: yearNodes.length,
+      nodeCount: groupNodes.length,
     });
 
-    for (let i = 0; i < yearNodes.length; i++) {
-      const n = yearNodes[i];
-      const subRow = Math.floor(i / nodesPerSubRow);
-      const colInRow = i % nodesPerSubRow;
-      const nodesInThisSubRow = Math.min(
-        nodesPerSubRow,
-        yearNodes.length - subRow * nodesPerSubRow,
-      );
-      const subRowTotalWidth =
-        nodesInThisSubRow * NODE_W + (nodesInThisSubRow - 1) * V_NODE_H_GAP;
-      const subRowStartX = V_LEFT_PAD + (rowWidth - subRowTotalWidth) / 2;
-
-      const x =
-        subRowStartX + colInRow * (NODE_W + V_NODE_H_GAP) + NODE_W / 2;
-      const y =
-        yCursor +
-        V_ROW_PAD_TOP +
-        subRow * (NODE_H + V_NODE_H_GAP) +
-        NODE_H / 2;
-
-      placedNodes.push({
-        slug: n.data.slug,
-        x,
-        y,
-        width: NODE_W,
-        height: NODE_H,
-        org: n.data.org,
-        node: n,
-      });
+    // Place each card at its (year, crossKey) cell, stacking vertically
+    for (const [k, cellNodes] of stackByKey.entries()) {
+      const ki = crossIdxOf(k);
+      if (ki < 0) continue;
+      for (let s = 0; s < cellNodes.length; s++) {
+        const n = cellNodes[s];
+        const x = V_LEFT_PAD + ki * COL_W_V + NODE_W / 2;
+        const y =
+          yCursorV +
+          V_ROW_PAD_TOP +
+          s * (NODE_H + V_NODE_H_GAP) +
+          NODE_H / 2;
+        placedNodes.push({
+          slug: n.data.slug,
+          x,
+          y,
+          width: NODE_W,
+          height: NODE_H,
+          org: n.data.org,
+          node: n,
+        });
+      }
     }
+    yCursorV += rowHeight + V_ROW_GAP;
+  }
+  const totalHeightV = yCursorV - V_ROW_GAP + V_BOT_PAD;
 
-    yCursor += rowHeight + V_ROW_GAP;
+  const crossBandsV: Band[] = crossKeys.map((k, i) => ({
+    key: k,
+    label: k,
+    idx: i,
+    rect: {
+      x: V_LEFT_PAD + i * COL_W_V,
+      y: 0,
+      width: NODE_W,
+      height: totalHeightV,
+    },
+    header: {
+      x: V_LEFT_PAD + i * COL_W_V,
+      y: V_TOP_PAD,
+      width: NODE_W,
+      height: CROSS_HEADER_TOP_H,
+    },
+    headerAlign: "center",
+    nodeCount: 0, // recomputed
+  }));
+  // Count nodes per cross key
+  for (const p of placedNodes) {
+    const k = crossKeyOf(p.node, sortMode);
+    const ki = crossIdxOf(k);
+    if (ki >= 0) crossBandsV[ki].nodeCount++;
   }
 
-  const totalHeight = yCursor - V_ROW_GAP + V_BOT_PAD;
-  const totalWidth = V_MAX_INNER_WIDTH;
-
-  for (const b of bands) {
-    b.rect.width = totalWidth;
-  }
-
-  return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
+  const lay = finalize(nodes, placedNodes, bands, totalWidthV, totalHeightV, orient);
+  lay.crossBands = crossBandsV;
+  return lay;
 }
 
-// Build edges with V3.3 spatial-order stagger to prevent X-crossings.
-// Group incoming edges by target → sort by source perp position → assign
-// tgtIdx in that order so leftmost source enters target's leftmost slot
-// (no curves need to swap sides → no crossings). Mirror on source side.
+// Helper for the chronological branch above
+function yearNodes(byYear: Map<number, NodeEntry[]>, year: number): number {
+  return byYear.get(year)?.length ?? 0;
+}
+
+// (finalize unchanged from before — V3.3 spatial-order stagger)
 function finalize(
   nodes: NodeEntry[],
   placedNodes: Placed[],
@@ -193,13 +396,11 @@ function finalize(
     }
   }
 
-  // h-orient stagger is along Y; v-orient along X.
   const srcPerp = (e: RawEdge) => (orient === "h" ? e.src.y : e.src.x);
   const tgtPerp = (e: RawEdge) => (orient === "h" ? e.tgt.y : e.tgt.x);
   const srcOrth = (e: RawEdge) => (orient === "h" ? e.src.x : e.src.y);
   const tgtOrth = (e: RawEdge) => (orient === "h" ? e.tgt.x : e.tgt.y);
 
-  // Per-target: assign tgtIdx in source-perp order
   const tgtIdxOf = new Map<RawEdge, number>();
   const tgtTotalOf = new Map<RawEdge, number>();
   const byTarget = new Map<string, RawEdge[]>();
@@ -221,7 +422,6 @@ function finalize(
     });
   }
 
-  // Per-source: mirror logic, sorted by target perp
   const srcIdxOf = new Map<RawEdge, number>();
   const srcTotalOf = new Map<RawEdge, number>();
   const bySource = new Map<string, RawEdge[]>();

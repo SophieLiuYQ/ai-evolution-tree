@@ -1,6 +1,6 @@
 // DOM helpers — SVG element creation + active-pane lookup.
 
-import type { Orient } from "./state";
+import { getSort, type Orient } from "./state";
 
 export const NS = "http://www.w3.org/2000/svg";
 
@@ -11,9 +11,15 @@ export type ActivePane = {
 } | null;
 
 export function getActivePane(): ActivePane {
-  const visible = document.querySelector<HTMLElement>(
-    '.orient-pane:not([style*="display: none"])',
-  );
+  // 6 panes are rendered (2 orients × 3 sort modes) — find the one currently
+  // showing. We MUST use computed style (not attribute substring matching)
+  // because Astro emits `style="display:none"` while JS sets it via
+  // `el.style.display = "none"` which serializes as `display: none;`
+  // (with space + semicolon). A `[style*="display: none"]` selector matches
+  // one and not the other → wrong pane gets picked → edges go nowhere visible.
+  const visible = Array.from(
+    document.querySelectorAll<HTMLElement>(".orient-pane"),
+  ).find((el) => getComputedStyle(el).display !== "none");
   if (!visible) return null;
   const orient = visible.dataset.orient as Orient;
   const edgesGroup = visible.querySelector<SVGGElement>(".edges");
@@ -43,7 +49,10 @@ export function buildPath(
   path.setAttribute("stroke-linejoin", "round");
   if (style.dash) path.setAttribute("stroke-dasharray", style.dash);
   path.setAttribute("opacity", "0.85");
-  path.setAttribute("marker-end", `url(#arrow-${orient}-${edgeType})`);
+  path.setAttribute(
+    "marker-end",
+    `url(#arrow-${orient}-${getSort()}-${edgeType})`,
+  );
   return path;
 }
 

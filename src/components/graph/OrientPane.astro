@@ -1,5 +1,5 @@
 ---
-import type { Layout, Orient } from "../../lib/graph/types";
+import type { Layout, Orient, SortMode } from "../../lib/graph/types";
 import { edgeStyle } from "../../lib/graph/constants";
 import { bandColor, bandHeader } from "../../lib/graph/bands";
 import Card from "./Card.astro";
@@ -7,15 +7,18 @@ import Card from "./Card.astro";
 interface Props {
   layout: Layout;
   orient: Orient;
+  sortMode: SortMode;
   yearsTotal: number;
   hidden?: boolean;
 }
-const { layout, orient, yearsTotal, hidden = false } = Astro.props;
+const { layout, orient, sortMode, yearsTotal, hidden = false } = Astro.props;
+const totalGroups = layout.bands.length;
 ---
 
 <div
   class="orient-pane w-full overflow-auto bg-slate-50"
   data-orient={orient}
+  data-sort={sortMode}
   style={hidden ? "display:none" : ""}
 >
   <svg
@@ -26,9 +29,13 @@ const { layout, orient, yearsTotal, hidden = false } = Astro.props;
     class="block"
   >
     <defs>
+      {/* Marker IDs scoped by (orient, sortMode) — with 6 panes in the same
+          document, un-scoped IDs would collide and `url(#arrow-v-builds_on)`
+          could resolve to a marker in a hidden pane, breaking rendering in
+          some browsers. */}
       {Object.entries(edgeStyle).map(([type, style]) => (
         <marker
-          id={`arrow-${orient}-${type}`}
+          id={`arrow-${orient}-${sortMode}-${type}`}
           viewBox="0 0 10 10"
           refX="9"
           refY="5"
@@ -41,24 +48,45 @@ const { layout, orient, yearsTotal, hidden = false } = Astro.props;
       ))}
     </defs>
 
-    {/* Year bands (columns for h, rows for v) */}
+    {/* Cross-axis labels (only for byOrg/byType): top strip in v with
+        company/type names spanning the column above each cell; left strip
+        in h with company/type names labeling each row. */}
+    {layout.crossBands && layout.crossBands.length > 0 && (
+      <g class="cross-bands">
+        {orient === "v"
+          ? layout.crossBands.map((cb) => (
+              <g class="cross-band" data-key={String(cb.key)}>
+                <rect x={cb.header.x + 4} y={cb.header.y} width={cb.header.width - 8} height={cb.header.height - 4} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1" />
+                <text x={cb.header.x + cb.header.width / 2} y={cb.header.y + cb.header.height / 2 + 4} text-anchor="middle" font-size="12" font-family="ui-sans-serif, system-ui" font-weight="700" fill={bandHeader(cb.idx, layout.crossBands!.length)}>{cb.label}</text>
+              </g>
+            ))
+          : layout.crossBands.map((cb) => (
+              <g class="cross-band" data-key={String(cb.key)}>
+                <rect x={cb.header.x} y={cb.header.y + 4} width={cb.header.width} height={cb.header.height - 8} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1" />
+                <text x={cb.header.x + 8} y={cb.header.y + cb.header.height / 2 + 4} text-anchor="start" font-size="12" font-family="ui-sans-serif, system-ui" font-weight="700" fill={bandHeader(cb.idx, layout.crossBands!.length)}>{cb.label}</text>
+              </g>
+            ))}
+      </g>
+    )}
+
+    {/* Primary axis bands (year — rows in v, columns in h). */}
     <g class="bands">
       {orient === "h"
         ? layout.bands.map((b) => (
-            <g class="year-band" data-year={b.year}>
-              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, yearsTotal)} rx="6" />
-              <rect x={b.header.x} y={b.header.y} width={b.header.width} height={b.header.height} rx="6" fill="white" stroke={bandHeader(b.idx, yearsTotal)} stroke-width="1.25" />
-              <text x={b.header.x + b.header.width / 2} y={b.header.y + 24} text-anchor="middle" font-size="20" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, yearsTotal)}>{b.year}</text>
+            <g class="group-band" data-key={String(b.key)}>
+              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, totalGroups)} rx="6" />
+              <rect x={b.header.x} y={b.header.y} width={b.header.width} height={b.header.height} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
+              <text x={b.header.x + b.header.width / 2} y={b.header.y + 24} text-anchor="middle" font-size="20" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
               <text x={b.header.x + b.header.width / 2} y={b.header.y + 38} text-anchor="middle" font-size="9.5" font-family="ui-sans-serif, system-ui" fill="#64748b">
                 {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
               </text>
             </g>
           ))
         : layout.bands.map((b) => (
-            <g class="year-band" data-year={b.year}>
-              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, yearsTotal)} />
-              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, yearsTotal)} stroke-width="1.25" />
-              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" font-size="22" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, yearsTotal)}>{b.year}</text>
+            <g class="group-band" data-key={String(b.key)}>
+              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, totalGroups)} />
+              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
+              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" font-size="22" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
               <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" font-size="10" font-family="ui-sans-serif, system-ui" fill="#64748b">
                 {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
               </text>
@@ -66,12 +94,15 @@ const { layout, orient, yearsTotal, hidden = false } = Astro.props;
           ))}
     </g>
 
-    {/* V3: edges populated dynamically by JS on hover/pin */}
-    <g class="edges"></g>
-
     <g class="nodes">
       {layout.placedNodes.map((p) => <Card p={p} />)}
     </g>
+
+    {/* V3: edges populated dynamically by JS on hover/pin.
+        Rendered AFTER nodes so long edges spanning many cards aren't
+        occluded by the intermediate cards' white fill. Labels render
+        after edges so the pill rectangles sit on top. */}
+    <g class="edges"></g>
 
     {/* V3: labels populated dynamically by JS */}
     <g class="edge-labels"></g>

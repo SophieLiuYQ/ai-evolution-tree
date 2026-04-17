@@ -135,6 +135,36 @@ Native scroll is universal and well-debugged. Lock the visual contract
 
 ## II. Layout topology
 
+### Sort mode — year stays primary, sort key becomes the second axis
+
+Year is **always** the primary axis (rows in v-orient, columns in
+h-orient). The sort selector controls the SECONDARY axis:
+
+| Sort | Primary axis (always year) | Secondary axis (cards positioned along) |
+|---|---|---|
+| chronological | year rows/cols | within-row date spread (no extra axis labels) |
+| byOrg | year rows/cols | one column/row per company (~28 keys, alphabetical) |
+| byType | year rows/cols | one column/row per type (voice/image/llm/multimodal/agents/rl) |
+
+For non-chronological modes, layout is a **2D grid**: each card lands
+in cell `(year, sort-key)`. Multiple cards in the same cell stack
+(vertically in v, horizontally in h with a small offset). Cells with
+no data render as empty space — that's a feature; it makes "Anthropic
+shipped nothing in 2018" visible at a glance.
+
+A second `crossBands` array on Layout carries the secondary axis
+labels (rendered as a header strip — top in v-orient, left in
+h-orient). Year bands stay as the primary header; cross bands sit
+orthogonal to them.
+
+All 6 layouts (2 orients × 3 modes) are pre-computed at build and
+emitted as separate `<OrientPane>` instances. The sort + orient
+selectors toggle `display:none` between them — no live re-layout.
+
+Implication: payload roughly triples (~3× edges + ~3× node positions).
+At 73 nodes / ~200 visible edges the cost is acceptable; revisit if
+the graph grows past ~5000 nodes.
+
 ### Time-as-axis is non-negotiable for timeline graphs
 
 For temporal data, position along ONE axis MUST encode time. We chose:
@@ -209,6 +239,19 @@ else (faded background).
 | Bezier control offset | `dx * 0.5` | Tug control points to half the horizontal distance — tight S without overshoot |
 | Backward-edge arc | `60 + srcIdx * 8` | Loop outside the source column; per-srcIdx widening prevents overlap of multiple backward edges |
 | Source/target perpendicular pitch | adaptive (see §IV) | The ONLY stagger needed in V3.1 since there's no bend to stagger |
+
+### Year-bin spacing
+
+| Constant | Value | Why |
+|---|---|---|
+| `H_COL_GAP` | 50px | Horizontal gap between year columns. Must leave room for cubic Bezier to make a clean S — `dx * 0.5` control offset means even at 50px the curve pulls 25px on each side. |
+| `V_ROW_GAP` | 40px | Vertical gap between year rows in v-orient. |
+| `H_NODE_V_GAP` / `V_NODE_H_GAP` | 44px | Within a year, gap between sibling cards. Bigger than year-gap is OK because intra-year edges are rare; the user reads down the column more often. |
+
+Tightening these reduces visual whitespace but compresses the edge-routing
+corridor. If you go below ~40px H_COL_GAP, expect curves to look bunched
+and labels to start overlapping cards — bump `STAGGER_PERP_BUDGET` or
+revisit before going tighter.
 
 ---
 
@@ -410,23 +453,28 @@ center-symmetric formula are unchanged.
 
 ### Render order matters for SVG (no z-index)
 
-SVG renders in document order. Later elements draw on top. For a graph
-that pre-renders all edges (V1/V2 architecture):
+SVG renders in document order. Later elements draw on top. Current
+stacking:
 
 ```
-1. Year band backgrounds       (bottom layer)
-2. Edge paths                  (mid)
-3. Node cards                  (above edges — opaque cards hide edges
-                                that pass behind them)
-4. Edge labels                 (TOP layer — above everything)
+1. Cross-axis labels (byOrg/byType only) (bottom)
+2. Year band backgrounds
+3. Node cards
+4. Edge paths                             (ON TOP of cards in V3.4+)
+5. Edge labels                            (very top)
 ```
 
-For V3 (dynamic edge rendering — see §Va below), this concern partially
-goes away because at most ~5-10 edges exist in the DOM at any moment.
-But the rule still applies WHEN edges are dynamically created: append
-them to the `<g class="edges">` group BEFORE nodes in document order,
-and labels to `<g class="edge-labels">` group AFTER nodes. The empty
-groups exist at build time as positioning anchors.
+**V3.4 rule change — edges render on top of cards.** Earlier (V3–V3.3)
+edges were rendered *under* nodes on the theory that opaque cards
+would cleanly occlude any edges passing through them. This worked in
+H mode where edges are short (span ~1-3 year columns). It broke in
+V mode where long edges can span 10+ year rows — every intermediate
+card covered the edge, leaving the user seeing only a blue stub near
+the hovered card. Fix: render `<g class="edges">` AFTER `<g class="nodes">`
+in OrientPane. The small 2px stroke at 0.85 opacity barely visually
+competes with card text when an edge does cross a card, but the edge
+is now always legible end-to-end. Labels still render last so their
+pill rectangles sit on top of everything.
 
 ### Opaque label backgrounds
 
