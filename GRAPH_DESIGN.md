@@ -450,10 +450,24 @@ isn't enough if your **3 most frequent uses cluster on the same side
 of the wheel**. The eye doesn't process 6 colors equally — it processes
 the most common ones first and gets confused there.
 
-**v0.19b attempt failed** — moved scales off blue but put surpasses
-(#DC2626 crimson 0°) too close to scales (orange 22°). User caught it
-immediately. Lesson: the **top 4 most-frequent edge types** all need
-≥70° hue separation, not just the top 3.
+**Iteration log** (illustrating the difficulty of choosing 6 distinct colors):
+
+- v0.18: blue/violet/indigo all within 40° — confused user
+- v0.19a: Tableau 10 — top 3 still in cool zone
+- v0.19b: surpasses crimson 0° too close to scales orange 22°
+- v0.19c: fine_tunes teal 175° too close to competes green 140°
+- **v0.19d (current)**: fine_tunes moved to gold 50°. Now in orange
+  family but lightness gap means it reads as "yellow" not "orange"
+
+Lesson: a 6-color categorical palette has ~6 useful hue zones on the
+wheel. When you assign top types to primaries (blue/orange/green) and
+top secondary to magenta, the remaining 2 slots (fine_tunes / distills
+in our case) MUST use lightness differentiation within an existing
+primary's hue zone — there's no spare hue zone left.
+
+The **top 4 most-frequent edge types** must all have ≥70° hue separation.
+The remaining 2 can share hue zones with primaries IF lightness/saturation
+differ enough to read as visually distinct at typical 1.6px stroke width.
 
 **Current palette** (v0.19c) — top 4 mutually-distant + 2 fillers:
 
@@ -463,7 +477,7 @@ immediately. Lesson: the **top 4 most-frequent edge types** all need
 | `scales` | 22 | Bold orange | `#EA580C` | 22° | primary 2 (158° from blue) |
 | `competes_with` | 17 | Forest green | `#16A34A` | 140° | primary 3 (100°+ from both) |
 | `surpasses` | 13 | Magenta | `#C026D3` | 290° | primary 4 (92° from orange, 70° from blue) |
-| `fine_tunes` | 5 | Teal | `#0D9488` | 175° | filler (close to green in hue, distinguished by lightness) |
+| `fine_tunes` | 5 | Gold | `#EAB308` | 50° | filler (warm-yellow; in orange family but much lighter so reads as "yellow not orange") |
 | `distills` | few | Dark brown | `#78350F` | 25° | filler (same hue as orange, distinguished by 30% lower lightness) |
 
 Pairwise hue gaps for the top 4:
