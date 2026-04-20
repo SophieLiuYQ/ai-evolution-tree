@@ -34,6 +34,13 @@ interface Props {
 }
 const { spec, org, modelTitle } = Astro.props;
 
+import { stroke as orgStrokeColor } from "../lib/graph/constants";
+// Use the model's own org color for scale-bar markers + active pills,
+// matching the search-result pulse and main-graph card border. This
+// keeps a card visually unified across pages instead of drowning in
+// a single accent green.
+const markerColor = org ? orgStrokeColor(org) : "#2563eb";
+
 // ============== Value formatters ==============
 
 const fmtCtx = (n?: number) => {
@@ -46,26 +53,63 @@ const fmtCtx = (n?: number) => {
 // ============== Value-driven IMPLICATIONS ==============
 // One sentence about what this specific value means in practice.
 
+function paramTier(b: number): string {
+  if (b < 3) return "Edge";
+  if (b < 15) return "Single GPU";
+  if (b < 80) return "Workstation";
+  if (b < 300) return "Multi-GPU";
+  return "Datacenter";
+}
+
 function paramImpl(s: string): string {
-  const isMoE = /\b(MoE|active|experts?)\b/i.test(s);
-  const m = s.match(/(\d+(?:\.\d+)?)\s*([BMK])/i);
-  if (!m) return isMoE ? "MoE — total ≠ active params" : "";
-  const n = parseFloat(m[1]);
-  const unit = m[2].toUpperCase();
-  let b = n;
-  if (unit === "M") b = n / 1000;
-  if (unit === "K") b = n / 1_000_000;
-  const tier =
-    b < 3
-      ? "Edge / mobile-class"
-      : b < 15
-        ? "Single consumer GPU (RTX 4090)"
-        : b < 80
-          ? "Workstation (A100 80GB)"
-          : b < 300
-            ? "Multi-GPU (A100 × 4–8)"
-            : "Datacenter-scale";
-  return isMoE ? `${tier} · MoE (active params drive cost)` : tier;
+  // Use the family-aware parser (same as scale bar) so the implication
+  // matches what's actually drawn. For multi-variant models, report
+  // the RANGE instead of just the smallest size.
+  const p = parseAllParamsLite(s);
+  if (!p) return /\b(MoE|active|experts?)\b/i.test(s) ? "MoE — total ≠ active params" : "";
+  const max = Math.max(...p.variants, ...p.active, 0);
+  const min = p.variants.length ? Math.min(...p.variants) : max;
+  const isMoE = p.active.length > 0 || /\bMoE\b/i.test(s);
+  if (p.variants.length <= 1) {
+    const flagship = paramTier(max);
+    return isMoE ? `${flagship} · MoE (active params drive cost)` : flagship;
+  }
+  const lo = paramTier(min);
+  const hi = paramTier(max);
+  const range = lo === hi ? lo : `${lo} → ${hi}`;
+  return `${p.variants.length} sizes · ${range}${isMoE ? " · incl. MoE" : ""}`;
+}
+
+// Lite parser used only by paramImpl — same logic as parseAllParams
+// but no de-dupe overhead. Inlined here to avoid forward-ref ordering.
+function parseAllParamsLite(s: string): { variants: number[]; active: number[] } | null {
+  const moeShort = [...s.matchAll(/(\d+(?:\.\d+)?)\s*B\s*-\s*A\s*(\d+(?:\.\d+)?)\s*B/gi)];
+  const variants: number[] = [];
+  const active: number[] = [];
+  let scrubbed = s;
+  for (const m of moeShort) {
+    variants.push(parseFloat(m[1]));
+    active.push(parseFloat(m[2]));
+    scrubbed = scrubbed.replace(m[0], " ");
+  }
+  const toB = (n: number, u: string) => {
+    const U = u.toUpperCase();
+    if (U === "B") return n;
+    if (U === "M") return n / 1000;
+    if (U === "K") return n / 1_000_000;
+    return n;
+  };
+  const remaining = [...scrubbed.matchAll(/(\d+(?:\.\d+)?)\s*([BMK])\b/gi)].map(
+    (m) => toB(parseFloat(m[1]), m[2]),
+  );
+  if (/\bactive\b/i.test(scrubbed) && remaining.length === 2) {
+    variants.push(remaining[0]);
+    active.push(remaining[1]);
+  } else {
+    for (const v of remaining) variants.push(v);
+  }
+  if (variants.length === 0 && active.length === 0) return null;
+  return { variants, active };
 }
 
 function contextImpl(n: number): string {
@@ -357,6 +401,309 @@ const ORG_HOMEPAGE: Record<string, string> = {
 
 const officialUrl = spec.homepage ?? (org ? ORG_HOMEPAGE[org] : undefined);
 
+// ============== Scale-bar references ==============
+// Each scale defines tick marks (the labeled stops) on a log axis from
+// min..max. logScalePos() maps a value to a 0-100 percentage along the
+// bar; we plot the active value as a marker on top.
+
+type Tick = { label: string; value: number; note?: string };
+
+function logScalePos(value: number, min: number, max: number): number {
+  if (value <= min) return 0;
+  if (value >= max) return 100;
+  const lo = Math.log10(min);
+  const hi = Math.log10(max);
+  return ((Math.log10(value) - lo) / (hi - lo)) * 100;
+}
+
+// PARAMETERS scale — billions, log axis 0.5B..2T
+const PARAM_TICKS: Tick[] = [
+  { label: "1B", value: 1, note: "Edge" },
+  { label: "7B", value: 7, note: "Single GPU" },
+  { label: "70B", value: 70, note: "Workstation" },
+  { label: "200B", value: 200 },
+  { label: "700B", value: 700, note: "Datacenter" },
+  { label: "2T", value: 2000 },
+];
+const PARAM_MIN = 0.5;
+const PARAM_MAX = 2000;
+
+// Parse a parameter string into ALL the param sizes it lists.
+//   "70B"                              → [70]
+//   "8B / 70B / 405B"                  → [8, 70, 405]
+//   "1B / 4B / 12B / 27B dense"        → [1, 4, 12, 27]
+//   "671B total / 37B active MoE"      → total=671, active=37
+//   "0.6B/1.7B/4B/8B/14B/32B dense + 30B-A3B and 235B-A22B MoE"
+//                                       → variants=[0.6,1.7,4,8,14,32,30,235],
+//                                         active=[3,22]   (MoE active counts)
+//
+// Strategy:
+//  - "<X>B-A<Y>B" ("MoE shorthand") emits X total + Y active.
+//  - When "active" appears with exactly two B-numbers, treat them as
+//    total + active (DeepSeek-V3 / Hunyuan-Large style).
+//  - Everything else is a regular variant.
+type ParamParse = { variants: number[]; active: number[] };
+
+function parseAllParams(s: string): ParamParse | null {
+  // Capture MoE shorthand "30B-A3B" / "235B-A22B" first
+  const moeShort = [...s.matchAll(/(\d+(?:\.\d+)?)\s*B\s*-\s*A\s*(\d+(?:\.\d+)?)\s*B/gi)];
+  const variants: number[] = [];
+  const active: number[] = [];
+  let scrubbed = s;
+  for (const m of moeShort) {
+    variants.push(parseFloat(m[1]));
+    active.push(parseFloat(m[2]));
+    scrubbed = scrubbed.replace(m[0], " ");
+  }
+
+  const toB = (n: number, u: string) => {
+    const U = u.toUpperCase();
+    if (U === "B") return n;
+    if (U === "M") return n / 1000;
+    if (U === "K") return n / 1_000_000;
+    return n;
+  };
+  const remaining = [...scrubbed.matchAll(/(\d+(?:\.\d+)?)\s*([BMK])\b/gi)].map(
+    (m) => toB(parseFloat(m[1]), m[2]),
+  );
+
+  // total/active pattern: "236B total / 21B active" or "671B / 37B active"
+  const isExplicitMoE = /\bactive\b/i.test(scrubbed);
+  if (isExplicitMoE && remaining.length === 2) {
+    variants.push(remaining[0]);
+    active.push(remaining[1]);
+  } else {
+    for (const v of remaining) variants.push(v);
+  }
+
+  if (variants.length === 0 && active.length === 0) return null;
+  // Sort + dedupe
+  const dedup = (a: number[]) =>
+    [...new Set(a.map((n) => Math.round(n * 100) / 100))].sort((x, y) => x - y);
+  return { variants: dedup(variants), active: dedup(active) };
+}
+
+// CONTEXT WINDOW scale — tokens, log axis 4k..10M
+const CTX_TICKS: Tick[] = [
+  { label: "4k", value: 4_000, note: "Chat" },
+  { label: "32k", value: 32_000 },
+  { label: "128k", value: 128_000, note: "Long doc" },
+  { label: "1M", value: 1_000_000, note: "Codebase" },
+  { label: "10M", value: 10_000_000 },
+];
+const CTX_MIN = 2_000;
+const CTX_MAX = 10_000_000;
+
+// TRAINING TOKENS scale — trillions, log axis 0.3T..50T
+const TOK_TICKS: Tick[] = [
+  { label: "1T", value: 1 },
+  { label: "5T", value: 5, note: "Modern" },
+  { label: "15T", value: 15, note: "Frontier" },
+  { label: "30T", value: 30 },
+];
+const TOK_MIN = 0.3;
+const TOK_MAX = 50;
+
+// Parse "15T" / "5.6T" / "1.4T tokens" → trillions
+function parseTokensT(s: string): number | null {
+  const m = s.match(/(\d+(?:\.\d+)?)\s*([TB])/i);
+  if (!m) return null;
+  const n = parseFloat(m[1]);
+  return m[2].toUpperCase() === "T" ? n : n / 1000;
+}
+
+// TRAINING COMPUTE scale — FLOPs exponent (linear axis)
+const COMPUTE_TICKS: Tick[] = [
+  { label: "1e22", value: 22 },
+  { label: "1e23", value: 23, note: "GPT-3 era" },
+  { label: "1e24", value: 24 },
+  { label: "1e25", value: 25, note: "GPT-4 era" },
+  { label: "1e26", value: 26, note: "Frontier" },
+];
+const COMPUTE_MIN_EXP = 22;
+const COMPUTE_MAX_EXP = 26.5;
+
+// Parse "3.8e25" / "2e+25 FLOPs" → exponent (with mantissa contribution)
+function parseComputeExp(s: string): number | null {
+  const m = s.match(/(\d+(?:\.\d+)?)\s*[eE]\+?(\d+)/);
+  if (!m) return null;
+  const mant = parseFloat(m[1]);
+  const exp = parseInt(m[2], 10);
+  return exp + Math.log10(Math.max(1, mant));
+}
+
+function linearPos(value: number, min: number, max: number): number {
+  if (value <= min) return 0;
+  if (value >= max) return 100;
+  return ((value - min) / (max - min)) * 100;
+}
+
+// ============== Pill-group enum options ==============
+
+const RELEASE_PILLS: { id: string; label: string; note: string }[] = [
+  { id: "paper", label: "Paper", note: "Theory only" },
+  { id: "demo", label: "Demo", note: "Limited / waitlisted" },
+  { id: "open_weights", label: "Open weights", note: "Self-hostable" },
+  { id: "api", label: "API", note: "Vendor-hosted" },
+  { id: "product", label: "Product", note: "Embedded only" },
+];
+
+const MODALITY_PILLS: { id: string; label: string }[] = [
+  { id: "text", label: "Text" },
+  { id: "vision", label: "Vision" },
+  { id: "audio", label: "Audio" },
+  { id: "video", label: "Video" },
+  { id: "generative", label: "Generative" },
+];
+
+// Architecture chip extraction. Splits the free-form architecture
+// string into a small set of canonical, recognizable tags. Order of
+// checks matters — more specific tokens first.
+const ARCH_PATTERNS: { pattern: RegExp; chip: string }[] = [
+  { pattern: /\bsparse[- ]attention\b|\bDSA\b/i, chip: "Sparse Attention" },
+  { pattern: /\b(linear[- ]attention|lightning[- ]attention)\b/i, chip: "Lightning Attention" },
+  { pattern: /\bmamba\b|\bSSM\b|\bstate[- ]?space\b/i, chip: "SSM" },
+  { pattern: /\bmixture[- ]of[- ]experts\b|\bMoE\b/i, chip: "MoE" },
+  { pattern: /\b(rectified[- ]?flow|MMDiT|DiT)\b/i, chip: "Diffusion / Flow" },
+  { pattern: /\bdiffusion\b/i, chip: "Diffusion" },
+  { pattern: /\bdecoder[- ]only\b|\bGPT[- ]style\b/i, chip: "Decoder-only" },
+  { pattern: /\bencoder[- ]decoder\b|\bseq2seq\b/i, chip: "Encoder-decoder" },
+  { pattern: /\bvision encoder\b|\bvision[- ]language\b|\bVL[A]?\b/i, chip: "Vision encoder" },
+  { pattern: /\bthinking\b|\breasoning\b|\bRL post[- ]?training\b/i, chip: "Reasoning" },
+  { pattern: /\bagent(ic)?\b|\btool[- ]use\b/i, chip: "Agent" },
+  { pattern: /\bGNN\b|\bgraph neural\b/i, chip: "GNN" },
+  { pattern: /\bU-Net\b/i, chip: "U-Net" },
+];
+
+function archChips(s: string): string[] {
+  const found: string[] = [];
+  for (const { pattern, chip } of ARCH_PATTERNS) {
+    if (pattern.test(s) && !found.includes(chip)) found.push(chip);
+  }
+  return found;
+}
+
+// ============== Per-row visualization config builders ==============
+// Extracted from the JSX scope so generic types like Set<string> don't
+// get mis-parsed as JSX tags.
+
+type Marker = {
+  pos: number;
+  label?: string;        // small inline label rendered above/below the dot
+  hollow?: boolean;
+  rawLabel?: string;     // tooltip + value-attribute fallback
+  stack?: number;        // 0/1/2 — which staggered row the label sits in
+};
+type ScaleCfg = { ticks: Tick[]; markers: Marker[]; min: number; max: number; isLinear?: boolean };
+
+// Stagger marker labels into 2-3 rows so adjacent markers don't collide
+// on the log axis. We assume ~28px label width and the bar is ~600px
+// wide, so anything within ~5% of an earlier marker's column gets bumped.
+function staggerMarkers(markers: Marker[]): Marker[] {
+  const sorted = [...markers].sort((a, b) => a.pos - b.pos);
+  const STAGGER_DIST = 6; // % of bar width
+  const stackTops: number[] = [-Infinity, -Infinity, -Infinity];
+  for (const m of sorted) {
+    let placed = false;
+    for (let i = 0; i < stackTops.length; i++) {
+      if (m.pos - stackTops[i] >= STAGGER_DIST) {
+        m.stack = i;
+        stackTops[i] = m.pos;
+        placed = true;
+        break;
+      }
+    }
+    if (!placed) m.stack = 0; // fall back; let it overlap
+  }
+  return sorted;
+}
+
+function paramLabel(n: number): string {
+  if (n >= 1000) return `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}T`;
+  if (n >= 10) return `${Math.round(n)}B`;
+  if (n >= 1) return `${n.toFixed(n < 10 ? 1 : 0).replace(/\.0$/, "")}B`;
+  return `${Math.round(n * 1000)}M`;
+}
+
+function buildScaleCfg(
+  key: string,
+  value: string,
+  ctxWindow: number | undefined,
+): ScaleCfg | null {
+  if (key === "parameters") {
+    const p = parseAllParams(value);
+    if (!p) return null;
+    const markers: Marker[] = [];
+    for (const v of p.variants) {
+      markers.push({
+        pos: logScalePos(v, PARAM_MIN, PARAM_MAX),
+        rawLabel: paramLabel(v),
+        label: paramLabel(v),
+      });
+    }
+    for (const v of p.active) {
+      markers.push({
+        pos: logScalePos(v, PARAM_MIN, PARAM_MAX),
+        rawLabel: paramLabel(v),
+        label: paramLabel(v),
+        hollow: true,
+      });
+    }
+    return { ticks: PARAM_TICKS, markers: staggerMarkers(markers), min: PARAM_MIN, max: PARAM_MAX };
+  }
+  if (key === "context_window" && ctxWindow) {
+    return {
+      ticks: CTX_TICKS,
+      markers: [{ pos: logScalePos(ctxWindow, CTX_MIN, CTX_MAX), label: "this model" }],
+      min: CTX_MIN,
+      max: CTX_MAX,
+    };
+  }
+  if (key === "training_tokens") {
+    const v = parseTokensT(value);
+    if (!v) return null;
+    return {
+      ticks: TOK_TICKS,
+      markers: [{ pos: logScalePos(v, TOK_MIN, TOK_MAX), label: "this model" }],
+      min: TOK_MIN,
+      max: TOK_MAX,
+    };
+  }
+  if (key === "training_compute") {
+    const exp = parseComputeExp(value);
+    if (exp == null) return null;
+    return {
+      ticks: COMPUTE_TICKS,
+      markers: [{ pos: linearPos(exp, COMPUTE_MIN_EXP, COMPUTE_MAX_EXP), label: "this model" }],
+      min: COMPUTE_MIN_EXP,
+      max: COMPUTE_MAX_EXP,
+      isLinear: true,
+    };
+  }
+  return null;
+}
+
+function tickPos(t: Tick, cfg: ScaleCfg): number {
+  return cfg.isLinear ? linearPos(t.value, cfg.min, cfg.max) : logScalePos(t.value, cfg.min, cfg.max);
+}
+
+type PillOpt = { id: string; label: string; note?: string };
+type PillCfg = { options: PillOpt[]; active: Set<string> };
+
+function buildPillCfg(
+  key: string,
+  releaseType: string | undefined,
+  modalities: string[] | undefined,
+): PillCfg | null {
+  if (key === "release_type" && releaseType) {
+    return { options: RELEASE_PILLS, active: new Set([releaseType]) };
+  }
+  if (key === "modalities" && modalities) {
+    return { options: MODALITY_PILLS, active: new Set(modalities.map((m) => m.toLowerCase())) };
+  }
+  return null;
+}
+
 // ============== Build the row data ==============
 
 type Row = {
@@ -436,37 +783,19 @@ if (spec.modalities && spec.modalities.length)
     )}
   </div>
 
-  {officialUrl && (
-    <p class="mb-4 text-xs text-[var(--fg-muted)]">
-      Specs and claims sourced from the
-      {" "}
-      <a
-        href={officialUrl}
-        target="_blank"
-        rel="noopener"
-        class="text-[var(--accent)] underline-offset-2 hover:underline"
-      >
-        official lab page
-      </a>
-      {". "}
-      Benchmark scores cite
-      {" "}
-      <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener" class="text-[var(--accent)] underline-offset-2 hover:underline">artificialanalysis.ai</a>
-      {", "}
-      <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" target="_blank" rel="noopener" class="text-[var(--accent)] underline-offset-2 hover:underline">huggingface.co</a>
-      {", or "}
-      <a href="https://llm-stats.com/" target="_blank" rel="noopener" class="text-[var(--accent)] underline-offset-2 hover:underline">llm-stats.com</a>
-      {"."}
-    </p>
-  )}
 
   {
     rows.length > 0 && (
-      <dl class="mb-6 grid grid-cols-1 gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
+      <dl class="mb-6 flex flex-col gap-5 text-sm">
         {rows.map((r) => {
           const help = FIELD_HELP[r.key];
+          const scale = buildScaleCfg(r.key, r.value, spec.context_window);
+          const pillCfg = buildPillCfg(r.key, spec.release_type, spec.modalities);
+          const archTags = r.key === "architecture" ? archChips(r.value) : [];
+          const hasMoEMarkers = scale ? scale.markers.some((m) => m.hollow) : false;
           return (
-            <div class="spec-row">
+            <div class="spec-row spec-row-stacked">
+              {/* Header: label + tooltip on left, value text on right */}
               <div class="spec-row-head">
                 <dt class="spec-label">{r.label}</dt>
                 {help && (
@@ -495,10 +824,87 @@ if (spec.modalities && spec.modalities.length)
                     </span>
                   </span>
                 )}
+                <dd class="spec-value-inline">{r.value}</dd>
               </div>
-              <dd class="spec-value">{r.value}</dd>
+
+              {/* Implication moved ABOVE the visualization — the conclusion
+                  is the most useful line; bury it below and people skip it. */}
               {r.implication && (
                 <p class="spec-implication">▸ {r.implication}</p>
+              )}
+
+              {/* Architecture: render canonical chips when we recognize tokens */}
+              {r.key === "architecture" && archTags.length > 0 && (
+                <div class="arch-chips" role="list">
+                  {archTags.map((tag) => (
+                    <span class="arch-chip" role="listitem">{tag}</span>
+                  ))}
+                </div>
+              )}
+
+              {/* Scale bar visualization */}
+              {scale && (
+                <div
+                  class="scale-bar-wrap"
+                  style={`--marker-color: ${markerColor};`}
+                >
+                  <div class="scale-bar">
+                    <div class="scale-bar-track" />
+                    {scale.ticks.map((t) => (
+                      <div class="scale-tick" style={`left: ${tickPos(t, scale)}%;`}>
+                        <span class="scale-tick-mark" />
+                        <span class="scale-tick-label">{t.label}</span>
+                        {t.note && <span class="scale-tick-note">{t.note}</span>}
+                      </div>
+                    ))}
+                    {scale.markers.map((m) => (
+                      <div
+                        class={`scale-marker ${m.hollow ? "scale-marker-hollow" : ""} stack-${m.stack ?? 0}`}
+                        style={`left: ${m.pos}%;`}
+                        title={m.rawLabel ?? r.value}
+                        aria-label={m.rawLabel ?? r.value}
+                      >
+                        <span class="scale-marker-dot" />
+                        {m.label && (
+                          <span class="scale-marker-label">{m.label}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {hasMoEMarkers && (
+                    <div class="scale-legend">
+                      <span class="legend-item">
+                        <span class="legend-swatch legend-filled" /> total
+                      </span>
+                      <span class="legend-item">
+                        <span class="legend-swatch legend-hollow" /> active (MoE)
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Pill group visualization */}
+              {pillCfg && (
+                <div
+                  class="pill-group"
+                  role="list"
+                  style={`--marker-color: ${markerColor};`}
+                >
+                  {pillCfg.options.map((opt) => {
+                    const isActive = pillCfg!.active.has(opt.id);
+                    return (
+                      <span
+                        class={`pill ${isActive ? "pill-active" : ""}`}
+                        role="listitem"
+                        title={opt.note ?? ""}
+                      >
+                        {isActive && <span class="pill-dot" />}
+                        {opt.label}
+                      </span>
+                    );
+                  })}
+                </div>
               )}
             </div>
           );
@@ -595,19 +1001,24 @@ if (spec.modalities && spec.modalities.length)
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding-bottom: 6px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
+  }
+  .spec-row-stacked {
+    gap: 8px;
+    padding-bottom: 14px;
   }
   .spec-row-head {
     display: flex;
-    align-items: center;
-    gap: 6px;
+    align-items: baseline;
+    gap: 8px;
   }
   .spec-label {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--fg-muted);
+    font-weight: 700;
   }
   .spec-value {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
@@ -615,11 +1026,201 @@ if (spec.modalities && spec.modalities.length)
     color: var(--fg);
     margin: 0;
   }
+  .spec-value-inline {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--fg);
+    margin: 0 0 0 auto;
+    text-align: right;
+  }
   .spec-implication {
     font-size: 11.5px;
     color: var(--fg-muted);
     margin: 0;
     font-style: italic;
+  }
+
+  /* ===== Architecture chips ===== */
+  .arch-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+  }
+  .arch-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* ===== Scale bar ===== */
+  .scale-bar-wrap {
+    --marker-color: #2563eb;
+    padding: 60px 4px 38px;  /* top: 3-stack label room, bottom: tick + notes */
+  }
+  .scale-bar {
+    position: relative;
+    height: 6px;
+    margin: 0 8px;
+  }
+  .scale-bar-track {
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    background: linear-gradient(to right, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  }
+  .scale-tick {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+  }
+  .scale-tick-mark {
+    width: 1px;
+    height: 10px;
+    background: #94a3b8;
+    margin-top: -2px;
+  }
+  .scale-tick-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    color: #64748b;
+    margin-top: 3px;
+    white-space: nowrap;
+  }
+  .scale-tick-note {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 1px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .scale-marker {
+    position: absolute;
+    top: -6px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+  .scale-marker-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--marker-color);
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--marker-color), 0 1px 2px rgba(15, 23, 42, 0.18);
+  }
+  .scale-marker-label {
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 5px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: white;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--marker-color);
+    white-space: nowrap;
+  }
+  /* Stagger labels into 3 vertical rows so neighboring markers don't
+     collide on the log axis. The connector line bridges marker to label. */
+  .scale-marker.stack-0 .scale-marker-label { margin-bottom: 5px; }
+  .scale-marker.stack-1 .scale-marker-label { margin-bottom: 22px; }
+  .scale-marker.stack-2 .scale-marker-label { margin-bottom: 39px; }
+  .scale-marker.stack-1 .scale-marker-label::after,
+  .scale-marker.stack-2 .scale-marker-label::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 1px;
+    background: var(--marker-color);
+    opacity: 0.45;
+  }
+  .scale-marker.stack-1 .scale-marker-label::after { height: 17px; }
+  .scale-marker.stack-2 .scale-marker-label::after { height: 34px; }
+
+  /* MoE active marker — hollow dot on white, same color border */
+  .scale-marker-hollow .scale-marker-dot {
+    background: white;
+    box-shadow: 0 0 0 2px var(--marker-color), 0 1px 2px rgba(15, 23, 42, 0.18);
+  }
+
+  .scale-legend {
+    margin-top: 18px;
+    display: flex;
+    gap: 14px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    color: #64748b;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .legend-filled {
+    background: var(--marker-color, #2563eb);
+    border: 1.5px solid white;
+    box-shadow: 0 0 0 1px var(--marker-color, #2563eb);
+  }
+  .legend-hollow {
+    background: white;
+    box-shadow: 0 0 0 1.5px var(--marker-color, #2563eb);
+  }
+
+  /* ===== Pill group ===== */
+  .pill-group {
+    --marker-color: #2563eb;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 2px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.12s ease;
+  }
+  .pill-active {
+    color: white;
+    background: var(--marker-color);
+    border-color: var(--marker-color);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+  }
+  .pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+    display: inline-block;
   }
 
   /* ⓘ tooltip — pure CSS, hover or :focus-within reveal */
