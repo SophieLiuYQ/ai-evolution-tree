@@ -1,0 +1,75 @@
+---
+slug: hunyuan-video
+title: "HunyuanVideo 1.5 — Open-Source Video on a 4090"
+date: 2025-11-10
+era: multimodal
+category: [generative, multimodal]
+relationships:
+  - to: sora-preview
+    type: open_alt_to
+    note: "Open-weight competitor to Sora; HunyuanVideo runs on a single RTX 4090"
+authors:
+  - "Tencent Hunyuan Team"
+org: "Tencent"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "8.3B"
+  architecture: "DiT (diffusion transformer) for video"
+  release_type: open_weights
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    Tencent's open-weight video model — only 8.3B parameters, designed
+    to run on a single consumer RTX 4090. Released under Apache 2.0
+    in late 2025, it's the entry point for hobbyists and academics
+    to do real video generation locally without datacenter access.
+  analogy: |
+    Stable Diffusion did this for images in 2022. HunyuanVideo is the
+    same moment for video — runnable on a gaming PC, hackable,
+    forkable, and forever changing the calculus of who can build
+    video tools.
+  applications:
+    - product: "ComfyUI / Diffusers self-hosted"
+      company: "Multiple"
+      year_deployed: 2025
+    - product: "fal.ai / Replicate hosted"
+      company: "Multiple"
+      year_deployed: 2025
+    - product: "Tencent Cloud API"
+      company: "Tencent"
+      year_deployed: 2025
+  investment_angle: |
+    Tencent's open-source video play parallels Hunyuan-Large in text
+    — establish the open frontier so the closed Tencent Cloud API
+    looks credible. HunyuanVideo's hackability spawned a wave of
+    LoRA fine-tunes and creative tools that closed-API video models
+    never enable.
+  why_it_matters: |
+    Made consumer-GPU video generation real. Prior open-source video
+    models were either too small (talking-head only) or required
+    8×A100 setups. HunyuanVideo fits the entire frontier-quality
+    pipeline on a $1500 GPU.
+
+citations:
+  - type: release
+    key: tencent2025hunyuanvideo
+    title: "HunyuanVideo 1.5 Release"
+    year: 2025
+    venue: "Tencent Hunyuan"
+    url: "https://aivideo.hunyuan.tencent.com/"
+  - type: paper
+    key: hunyuanvideo2024
+    title: "HunyuanVideo Technical Report"
+    year: 2024
+    arxiv: "2412.03603"
+    url: "https://arxiv.org/abs/2412.03603"
+---
+
+## What's distinctive
+
+- 8.3B params (vs Sora's reported 50B+, Wan 2.2's 14B+)
+- Single-GPU inference (RTX 4090 / A100 40GB)
+- Apache 2.0 license — no usage restrictions
+- LoRA fine-tuning support out of the box

@@ -1,0 +1,73 @@
+---
+slug: deepseek-coder-v2
+title: "DeepSeek-Coder V2 — Open Coding Frontier"
+date: 2024-06-17
+era: scale-era
+category: [generative, code, nlp]
+relationships:
+  - to: deepseek-v2
+    type: fine_tunes
+    note: "Coding-specialized variant of DeepSeek-V2 MoE; 338 languages, beats Codestral and CodeLlama at release"
+authors:
+  - "DeepSeek Team"
+org: "DeepSeek"
+breakthrough_score: 6
+status: superseded
+model_spec:
+  parameters: "236B total / 21B active MoE; 16B and 6.7B sibling sizes"
+  architecture: "DeepSeek-V2 MoE with code-specialized post-training"
+  context_window: 128000
+  release_type: open_weights
+  modalities: [text, code]
+  benchmarks:
+    - name: "HumanEval Python"
+      score: "90.2%"
+    - name: "MATH"
+      score: "75.7%"
+
+public_view:
+  plain_english: |
+    DeepSeek's June 2024 coding model — 236B mixture-of-experts
+    activating 21B per token, fine-tuned for code in 338 programming
+    languages. At release, it beat Codestral 22B and matched closed-
+    source GPT-4 Turbo on HumanEval. Open under a custom permissive
+    license. The Coder V3 / V3.2 successors keep DeepSeek at the
+    open coding frontier.
+  analogy: |
+    DeepSeek-V2 is the general model that learned medicine, law,
+    history. Coder V2 is the same brain that went to coding boot camp
+    and stayed there.
+  applications:
+    - product: "DeepSeek Coder API"
+      company: "DeepSeek"
+      year_deployed: 2024
+    - product: "Continue.dev / Cursor (community integration)"
+      company: "Multiple"
+      year_deployed: 2024
+    - product: "Self-hosted IDE assistants"
+      company: "Multiple"
+      year_deployed: 2024
+  investment_angle: |
+    DeepSeek-Coder V2 made open-weight coding competitive with closed
+    Copilot at the frontier. Combined with V3.2's coding mode and
+    DeepSeekMath-V2, DeepSeek owns the "open coding leader" position
+    that GitHub Copilot's pricing model can't easily defend against.
+  why_it_matters: |
+    Pushed open-weight coding models past GPT-4 Turbo. By late 2024,
+    serious enterprise coding deployments started defaulting to
+    DeepSeek-Coder for self-hosted Copilot replacements.
+
+citations:
+  - type: paper
+    key: deepseek2024coderv2
+    title: "DeepSeek-Coder-V2: Breaking the Barrier of Closed-Source Models in Code Intelligence"
+    year: 2024
+    arxiv: "2406.11931"
+    url: "https://arxiv.org/abs/2406.11931"
+---
+
+## What's distinctive
+
+- **338 languages** — broadest language coverage in any open coding model
+- **236B / 21B active MoE** — efficient inference relative to parameter count
+- **128K context** — fits most repos

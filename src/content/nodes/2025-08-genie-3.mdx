@@ -1,0 +1,79 @@
+---
+slug: genie-3
+title: "Genie 3 — Real-Time Interactive World Model"
+date: 2025-08-05
+era: agents
+category: [generative, multimodal, agents]
+relationships:
+  - to: sora-preview
+    type: competes_with
+    note: "Both are video-frame generators; Genie 3 is INTERACTIVE — generates 24fps responding to user actions"
+authors:
+  - "Google DeepMind"
+org: "Google DeepMind"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Autoregressive world model with action conditioning"
+  release_type: demo
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    DeepMind's August 2025 world model — generates a 720p / 24fps
+    walkable, controllable world from a single image prompt, with
+    minutes of temporal coherence. Move forward, turn, pick up
+    objects — Genie 3 generates the next frame in real time based
+    on your action. The first generative world model that's actually
+    a playable environment, not a passive video.
+  analogy: |
+    Sora generates a video clip — passive. Genie 3 generates a video
+    GAME world — you walk around inside it. Closer to a holodeck
+    than a film.
+  applications:
+    - product: "DeepMind Genie 3 demo"
+      company: "DeepMind"
+      year_deployed: 2025
+    - product: "Internal robot training environments"
+      company: "DeepMind"
+      year_deployed: 2025
+    - product: "Game prototyping"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    World models are the upstream layer for embodied AI training —
+    safer and cheaper than real-world data collection for robotics,
+    autonomous driving, and game design. Genie 3 + V-JEPA 2 + Cosmos
+    + Wayve GAIA define the category. The economic question: do
+    embodied agents train on real-world data or in synthetic worlds?
+    World models bet on the latter.
+  why_it_matters: |
+    First credible interactive world model at production fidelity —
+    a category that includes Decart's Oasis (Minecraft), Microsoft
+    Muse, Wayve GAIA-2 (driving), and World Labs Marble (3D scenes).
+    Sets the trajectory for "AI generates the simulator, not just
+    the agent."
+
+citations:
+  - type: release
+    key: deepmind2025genie3
+    title: "Genie 3: A new frontier for world models"
+    year: 2025
+    venue: "Google DeepMind Blog"
+    url: "https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/"
+---
+
+## World model field (2024-2026)
+
+| Model | Org | Domain |
+|---|---|---|
+| **Genie 1 / 2 / 3** | DeepMind | General interactive worlds |
+| V-JEPA / V-JEPA 2 | Meta | Self-supervised video understanding |
+| Oasis | Decart + Etched | Minecraft (specific) |
+| GameNGen | Google | Doom (specific) |
+| Muse | Microsoft | Bleeding Edge gameplay |
+| GAIA-1 / 2 | Wayve | Autonomous driving |
+| Marble | World Labs | Single-image 3D scenes |
+| Cosmos Predict / Reason / Policy | NVIDIA | Robot training simulation |
+| PAN | MBZUAI | General foundation world model |

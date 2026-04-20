@@ -1,0 +1,69 @@
+---
+slug: esm-3
+title: "ESM-3 — Generative Protein Language Model"
+date: 2024-06-25
+era: scale-era
+category: [generative, training]
+relationships:
+  - to: alphafold-2
+    type: competes_with
+    note: "Different approach to proteins — ESM is a language model on sequences; AlphaFold predicts structure"
+authors:
+  - "EvolutionaryScale Team"
+org: "Meta AI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "1.4B / 7B / 98B"
+  architecture: "Multi-track protein language model (sequence + structure + function)"
+  release_type: open_weights
+  modalities: [text]
+
+public_view:
+  plain_english: |
+    EvolutionaryScale (Meta spinoff) released ESM-3 in June 2024 — a
+    98-billion-parameter protein language model that handles sequence,
+    structure, and function in a unified framework. Unlike AlphaFold,
+    ESM-3 is generative — it can DESIGN new proteins, not just
+    predict the shape of existing ones.
+  analogy: |
+    AlphaFold reads existing proteins. ESM-3 writes new ones.
+    Different jobs, both essential to AI-driven biology.
+  applications:
+    - product: "ESM-3 (open weights via EvolutionaryScale)"
+      company: "EvolutionaryScale"
+      year_deployed: 2024
+    - product: "Drug-design startups (Generate Biomedicines, etc.)"
+      company: "Multiple"
+      year_deployed: 2024
+    - product: "Academic protein-engineering labs"
+      company: "Multiple universities"
+      year_deployed: 2024
+  investment_angle: |
+    EvolutionaryScale spun out of Meta in 2024 with $142M+ in
+    funding from Lux Capital and Nat Friedman. ESM-3 + ESMFold is
+    the open-source protein backbone that competes with closed
+    AlphaFold-based pipelines. Open weights matter for biotech
+    workflows that don't fit Google/DeepMind's licensing.
+  why_it_matters: |
+    Made high-quality generative protein design open. Combined with
+    Baker Lab's RFdiffusion + ProteinMPNN, established the open-
+    source protein-engineering toolkit that competes with closed
+    Google offerings.
+
+citations:
+  - type: paper
+    key: evolutionary2024esm3
+    title: "Simulating 500 million years of evolution with a language model"
+    year: 2024
+    venue: "Science"
+    url: "https://www.science.org/doi/10.1126/science.ads0018"
+---
+
+## ESM family
+
+| Version | Year | Notes |
+|---|---|---|
+| ESM-1 | 2019 | First protein LM at scale |
+| ESM-2 | 2022 | 15B params; ESMFold structure prediction |
+| **ESM-3** | 2024 | 98B; multi-track sequence + structure + function |

@@ -1,0 +1,88 @@
+---
+slug: gemini-3-pro
+title: "Gemini 3 Pro — Native Omni-Modal Frontier"
+date: 2025-11-19
+era: multimodal
+category: [nlp, multimodal, generative, reasoning]
+relationships:
+  - to: gemini-2-5-pro
+    type: scales
+    note: "Successor to 2.5 Pro; native omni-modal across text/image/video/audio with longer-context router"
+  - to: gpt-5
+    type: competes_with
+    note: "Both ship as unified routers over reasoning + multimodal modes"
+authors:
+  - "Google DeepMind"
+org: "Google DeepMind"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed; MoE"
+  architecture: "Native omni-modal router with Deep Think mode"
+  context_window: 1000000
+  release_type: api
+  modalities: [text, vision, audio, video]
+  benchmarks:
+    - name: "Humanity's Last Exam"
+      score: "37.5%"
+    - name: "MMMU-Pro"
+      score: "81.0%"
+    - name: "GPQA Diamond"
+      score: "91.9%"
+
+public_view:
+  plain_english: |
+    Google DeepMind's late-2025 frontier model — handles text, images,
+    video, and audio in one architecture (no separate "vision mode").
+    Comes with a Deep Think reasoning mode for hard problems and
+    integrates across Gemini app, Vertex AI, AI Studio, and Search.
+    Gemini 3.1 Pro / Flash / Flash-Lite refreshed the line in Q1 2026.
+  analogy: |
+    Earlier models had separate brains for words, pictures, and sound.
+    Gemini 3 has one brain that sees all modalities at the same time —
+    closer to how a person processes a video call.
+  applications:
+    - product: "Gemini app (consumer)"
+      company: "Google"
+      year_deployed: 2025
+    - product: "Vertex AI / AI Studio"
+      company: "Google Cloud"
+      year_deployed: 2025
+    - product: "Google Search AI Mode"
+      company: "Google"
+      year_deployed: 2025
+    - product: "Workspace (Docs, Gmail, Meet)"
+      company: "Google"
+      year_deployed: 2025
+  investment_angle: |
+    Gemini 3 is Google's most credible frontier position to date,
+    deeply integrated with Search and Workspace — the distribution
+    advantages that no competitor matches. The Deep Think mode +
+    Gemini Robotics + Gemini for Code Assist stack is Google's bet
+    that vertical breadth beats raw reasoning leadership.
+  why_it_matters: |
+    Closed the gap with GPT-5 and Claude on reasoning while shipping
+    natively multimodal. Established that omni-modal is now table
+    stakes at the frontier — single-modality models look antique by
+    comparison.
+
+citations:
+  - type: release
+    key: google2025gemini3
+    title: "A new era of intelligence with Gemini 3"
+    year: 2025
+    venue: "Google Blog"
+    url: "https://blog.google/products/gemini/gemini-3/"
+---
+
+## What's new vs Gemini 2.5
+
+- **Native omni-modal** — text, image, video, audio share a unified backbone
+- **Deep Think on by default** for hard problems
+- **1M-token context** as standard
+- **Gemini 3.1 Flash / Flash-Lite** speed/cost tier siblings
+- **Image generation** integrated (Nano Banana Pro / Gemini 3 Pro Image)
+
+## The unified-router pattern
+
+Gemini 3 follows the GPT-5 / Claude 4-series pattern: one model name covers a range of behaviors (fast vs deep thinking, single vs tool-use), with the router picking the right mode automatically. The user doesn't choose "reasoning model" anymore; they ask a question.

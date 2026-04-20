@@ -1,0 +1,63 @@
+---
+slug: cartesia-sonic
+title: "Cartesia Sonic — Sub-100ms TTS"
+date: 2025-05-15
+era: multimodal
+category: [generative, audio]
+relationships:
+  - to: elevenlabs-v3
+    type: competes_with
+    note: "Both at the TTS frontier; Cartesia differentiates on latency (40–90ms TTFA)"
+authors:
+  - "Cartesia Team"
+org: "Cartesia"
+breakthrough_score: 6
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "State-space TTS for low-latency streaming"
+  release_type: api
+  modalities: [audio, generative]
+
+public_view:
+  plain_english: |
+    Cartesia's text-to-speech model — Sonic-3 hits 40–90 millisecond
+    time-to-first-audio, the fastest in production. Built on
+    state-space-model architecture (the team came out of Mamba's
+    research group at Stanford), it's optimized for live voice agents
+    and call-center deployments where latency kills conversation
+    quality.
+  analogy: |
+    ElevenLabs is the Rolls-Royce — best sound. Cartesia is the
+    Formula 1 — fast enough that the conversation feels real-time.
+    Different optima for different jobs.
+  applications:
+    - product: "Cartesia Voice API"
+      company: "Cartesia"
+      year_deployed: 2024
+    - product: "Voice agent platforms (Vapi, Bland, Retell)"
+      company: "Multiple"
+      year_deployed: 2024
+  investment_angle: |
+    Voice agents (replacing call centers, ordering, scheduling) are
+    the highest-revenue voice AI category. Latency is the bottleneck
+    — 200ms+ feels like a delay, 100ms+ feels natural. Cartesia's
+    sub-100ms makes voice agents feel like talking to a person, not
+    waiting for a bot. Raised $80M+ on this thesis.
+  why_it_matters: |
+    Made low-latency TTS competitive with quality-tier alternatives.
+    Cartesia is the reason voice agents stopped feeling laggy in
+    2024–2025.
+
+citations:
+  - type: release
+    key: cartesia2025sonic
+    title: "Cartesia Sonic-3"
+    year: 2025
+    venue: "Cartesia Blog"
+    url: "https://cartesia.ai/sonic-3"
+---
+
+## Why latency matters for voice
+
+In a phone conversation, humans expect responses within ~250ms. Earlier TTS pipelines (200ms TTFA + 200ms LLM + 100ms ASR) blew that budget. Cartesia at 40-90ms TTFA leaves headroom for the LLM to think, keeping the perceived response time under the natural-conversation threshold.

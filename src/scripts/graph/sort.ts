@@ -56,7 +56,12 @@ export function attachSortHandlers() {
   let initial: SortMode = "chronological";
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === "chronological" || saved === "byOrg" || saved === "byType") {
+    if (
+      saved === "chronological" ||
+      saved === "byOrg" ||
+      saved === "byType" ||
+      saved === "byLicense"
+    ) {
       initial = saved;
     }
   } catch {}

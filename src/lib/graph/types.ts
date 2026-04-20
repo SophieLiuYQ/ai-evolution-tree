@@ -3,12 +3,13 @@ import type { CollectionEntry } from "astro:content";
 export type NodeEntry = CollectionEntry<"nodes">;
 export type Rel = NodeEntry["data"]["relationships"][number];
 export type Orient = "h" | "v";
-export type SortMode = "chronological" | "byOrg" | "byType";
+export type SortMode = "chronological" | "byOrg" | "byType" | "byLicense";
 
 export const SORT_MODES: { id: SortMode; label: string }[] = [
   { id: "chronological", label: "Date" },
   { id: "byOrg", label: "Company" },
   { id: "byType", label: "Type" },
+  { id: "byLicense", label: "License" },
 ];
 
 export type Placed = {

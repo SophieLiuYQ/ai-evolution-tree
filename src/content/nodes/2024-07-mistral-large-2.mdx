@@ -1,0 +1,83 @@
+---
+slug: mistral-large-2
+title: "Mistral Large 2 — France's Closed-Frontier Flagship"
+date: 2024-07-24
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: mixtral
+    type: scales
+    note: "Mistral's flagship dense model alongside the Mixtral MoE family; 123B dense for closed API"
+authors:
+  - "Mistral AI Team"
+org: "Mistral AI"
+breakthrough_score: 6
+status: superseded
+model_spec:
+  parameters: "123B dense"
+  architecture: "Decoder-only transformer"
+  context_window: 128000
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU"
+      score: "84.0%"
+    - name: "HumanEval"
+      score: "92.0%"
+
+public_view:
+  plain_english: |
+    Mistral's July 2024 flagship — a 123-billion-parameter dense model
+    for the European market. Released under the Mistral Research
+    License (free for research, paid for commercial). Followed by
+    Mistral Medium 3 and Mistral Small 4 as Mistral built a tiered
+    product line to compete with OpenAI's GPT-4o family.
+  analogy: |
+    Mistral's answer to GPT-4 Turbo — same general capability tier,
+    European-hosted, with weights you can audit if you have a research
+    license. Less censored, more open about training data origins.
+  applications:
+    - product: "Le Chat (chat.mistral.ai)"
+      company: "Mistral AI"
+      year_deployed: 2024
+    - product: "Mistral La Plateforme API"
+      company: "Mistral AI"
+      year_deployed: 2024
+    - product: "Microsoft Azure (model-as-a-service)"
+      company: "Microsoft"
+      year_deployed: 2024
+  investment_angle: |
+    Mistral is the European sovereign-AI bet. Mistral Large 2 anchored
+    the closed-API tier; combined with open Mixtral 8x22B and the 2025
+    Magistral reasoning models, Mistral covers a Llama + Claude
+    portfolio under EU jurisdiction. Strategic value to French and EU
+    digital-sovereignty buyers regardless of pure benchmark position.
+  why_it_matters: |
+    Established that a non-US, non-Chinese lab could ship a frontier
+    model. Mistral Large 2 was Europe's first independent frontier
+    LLM and the foundation of the EU's AI sovereignty argument.
+
+citations:
+  - type: release
+    key: mistral2024large2
+    title: "Large Enough — Mistral Large 2"
+    year: 2024
+    venue: "Mistral AI Blog"
+    url: "https://mistral.ai/news/mistral-large-2407/"
+---
+
+## What it is
+
+A 123B dense transformer with a 128K context window, native multilingual support across 11 languages, and strong code performance (92% HumanEval at release).
+
+## Mistral product hierarchy
+
+| Tier | Model | License |
+|---|---|---|
+| Flagship closed | Mistral Large 2 / Medium 3 / Small 4 | Research / Commercial |
+| Open MoE | Mixtral 8x7B / 8x22B | Apache 2.0 |
+| Open dense | Mistral 7B, Nemo 12B, Ministral 3B/8B | Apache 2.0 |
+| Reasoning | Magistral | Apache 2.0 |
+| Audio | Voxtral | Apache 2.0 |
+| Multimodal | Pixtral 12B / Pixtral Large 124B | Apache 2.0 / Research |
+| Code | Codestral 25.01 / Codestral Mamba / Devstral | Mixed |

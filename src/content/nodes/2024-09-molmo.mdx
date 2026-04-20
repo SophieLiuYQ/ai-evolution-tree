@@ -1,0 +1,73 @@
+---
+slug: molmo
+title: "Molmo — Allen AI's Open Vision-Language Model"
+date: 2024-09-25
+era: multimodal
+category: [nlp, multimodal, generative]
+relationships:
+  - to: olmo-2
+    type: builds_on
+    note: "Allen AI's vision sibling to OLMo; pioneered 'pointing' as a VLM output modality"
+authors:
+  - "Allen Institute for AI"
+org: "Allen AI"
+breakthrough_score: 6
+status: active
+model_spec:
+  parameters: "1B (E) / 7B (D) / 7B (O) / 72B"
+  architecture: "Vision encoder + Olmo / Qwen language backbone"
+  release_type: open_weights
+  modalities: [text, vision]
+
+public_view:
+  plain_english: |
+    Allen AI's open vision-language family — released September 2024
+    with sizes from 1B to 72B. Trained with a small (1M-image)
+    high-quality dataset (PixMo), Molmo demonstrated that you don't
+    need internet-scale image-text pretraining to get strong VLMs.
+    Its signature trick: "pointing" — the model outputs (x,y)
+    coordinates to point at things in images.
+  analogy: |
+    A vision model that uses its finger. Most VLMs describe an image
+    in words; Molmo can also point at the specific pixel where the
+    answer is.
+  applications:
+    - product: "Molmo demo (Allen AI playground)"
+      company: "Allen AI"
+      year_deployed: 2024
+    - product: "Open robotics research (pointing for grasping)"
+      company: "Multiple universities"
+      year_deployed: 2024
+    - product: "Molmo 2 (Dec 2025) on Olmo / Qwen 3 backbones"
+      company: "Allen AI"
+      year_deployed: 2025
+  investment_angle: |
+    Molmo's "pointing" output reframes VLMs as components of
+    embodied / interactive systems, not just chat. Used heavily in
+    open robotics research where the model needs to specify a
+    grasping point or attention region. The Molmo 2 / MolmoAct
+    extensions (with Ai2's robotics work) make this a real toolchain.
+  why_it_matters: |
+    Showed that high-quality small datasets + open weights beat the
+    Llava-style "scrape and pretrain" approach for many VLM tasks.
+    Molmo 72B held its own against Gemini 1.5 Pro and Claude 3 Opus
+    at release with a fraction of the data.
+
+citations:
+  - type: paper
+    key: ai2024molmo
+    title: "Molmo and PixMo: Open Weights and Open Data for State-of-the-Art Multimodal Models"
+    year: 2024
+    arxiv: "2409.17146"
+    url: "https://arxiv.org/abs/2409.17146"
+---
+
+## Family
+
+| Variant | Backbone | Size |
+|---|---|---|
+| MolmoE-1B | OLMoE | 1B active |
+| Molmo-7B-O | OLMo 7B | 7B |
+| Molmo-7B-D | Qwen2 7B | 7B |
+| Molmo-72B | Qwen2 72B | 72B |
+| **Molmo 2** (Dec 2025) | OLMo / Qwen 3 | Multi-frame video reasoning |

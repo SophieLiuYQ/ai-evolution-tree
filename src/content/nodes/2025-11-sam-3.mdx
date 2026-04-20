@@ -1,0 +1,73 @@
+---
+slug: sam-3
+title: "SAM 3 — Promptable Concept Segmentation"
+date: 2025-11-20
+era: multimodal
+category: [cv, generative]
+relationships:
+  - to: dinov3
+    type: builds_on
+    note: "SAM 3 uses DINOv3 features as backbone; both are Meta CV foundation stack"
+authors:
+  - "Meta AI Team"
+org: "Meta AI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Promptable segmentation transformer + concept head"
+  release_type: open_weights
+  modalities: [vision]
+
+public_view:
+  plain_english: |
+    Meta's November 2025 segmentation model — the third generation of
+    SAM. New trick: you can prompt with a TEXT phrase ("the red car
+    in the background") and SAM 3 will segment all matching objects.
+    Earlier SAM versions only accepted point/box prompts. Combined
+    with SAM 3.1 and SAM 3D for shape inference, deployed in Facebook
+    Marketplace's "View in Room" and Instagram Edits.
+  analogy: |
+    SAM 1/2 were "click anywhere and I'll outline that object." SAM 3
+    is "describe what you want and I'll find every instance" — a
+    semantic version of click-to-mask.
+  applications:
+    - product: "Facebook Marketplace 'View in Room'"
+      company: "Meta"
+      year_deployed: 2025
+    - product: "Instagram Edits"
+      company: "Meta"
+      year_deployed: 2025
+    - product: "Open CV research / Roboflow"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    SAM is Meta's most-cited CV release after Llama. SAM 3's text
+    prompting opens up zero-shot segmentation for any pipeline that
+    has a description but no labels — a huge unlock for medical
+    imaging, robotics, and content moderation. Open weights keep
+    Meta upstream of every CV product.
+  why_it_matters: |
+    Replaced annotation pipelines with text prompts in many CV
+    workflows. Pushes toward a future where computer vision is
+    "describe what you want" rather than "label thousands of
+    examples."
+
+citations:
+  - type: release
+    key: meta2025sam3
+    title: "SAM 3 — Promptable Concept Segmentation"
+    year: 2025
+    venue: "Meta AI Blog"
+    url: "https://ai.meta.com/sam3/"
+---
+
+## SAM family
+
+| Version | Date | Key feature |
+|---|---|---|
+| SAM 1 | 2023 | Promptable segmentation (points / boxes) |
+| SAM 2 | 2024 | Video segmentation + tracking |
+| **SAM 3** | Nov 2025 | Text prompts → concept-level masks |
+| SAM 3.1 | Late 2025 | Refinement |
+| SAM 3D | Late 2025 | 3D shape inference from masks |

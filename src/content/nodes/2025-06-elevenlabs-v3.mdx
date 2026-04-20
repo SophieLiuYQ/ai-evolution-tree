@@ -1,0 +1,77 @@
+---
+slug: elevenlabs-v3
+title: "ElevenLabs Eleven v3 — Emotive TTS at Scale"
+date: 2025-06-04
+era: multimodal
+category: [audio, generative, multimodal]
+relationships:
+  - to: whisper
+    type: competes_with
+    note: "ElevenLabs sits opposite Whisper on the audio stack — Whisper transcribes, Eleven generates"
+authors:
+  - "ElevenLabs Team"
+org: "ElevenLabs"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "diffusion-based TTS with style embedding"
+  release_type: api
+  modalities: [audio, generative]
+
+public_view:
+  plain_english: |
+    ElevenLabs' June 2025 flagship voice model — generates speech
+    that conveys emotion, accents, and conversational pacing. Used to
+    require professional voice actors and a recording studio; with
+    v3, a 5-second sample is enough to clone a voice that sounds
+    natural across paragraphs of varied content. Conversational v3
+    (Feb 2026) added live agent capability.
+  analogy: |
+    Earlier TTS sounds like a navigation system — flat, robotic.
+    Eleven v3 is closer to actually hiring a voice actor — it shouts,
+    laughs, whispers, and pauses where a human would.
+  applications:
+    - product: "ElevenLabs Reader / Studio"
+      company: "ElevenLabs"
+      year_deployed: 2025
+    - product: "ElevenLabs Agents (live voice)"
+      company: "ElevenLabs"
+      year_deployed: 2025
+    - product: "Audiobook production (multiple publishers)"
+      company: "Multiple"
+      year_deployed: 2024
+    - product: "Hollywood dubbing / localization"
+      company: "Studios"
+      year_deployed: 2024
+  investment_angle: |
+    ElevenLabs is the category-defining voice infrastructure
+    company — used by audiobook publishers, video creators, game
+    studios, and increasingly customer-service voice agents. Raised
+    $180M+ at $3B+ valuation. Network effect: the larger their voice
+    library, the better any new voice clone sounds.
+  why_it_matters: |
+    Made convincing synthetic voice ubiquitous. Combined with
+    OpenAI's Realtime API and Google's Gemini Live, v3 anchors the
+    transition from text-first to voice-first AI products.
+
+citations:
+  - type: release
+    key: elevenlabs2025v3
+    title: "Eleven v3 — The Most Expressive AI Voice Model"
+    year: 2025
+    venue: "ElevenLabs Blog"
+    url: "https://elevenlabs.io/blog/eleven-v3"
+---
+
+## Where Eleven v3 sits
+
+April 2026 TTS-arena leaderboard:
+
+| Rank | Model | Elo |
+|---|---|---|
+| 1 | Inworld TTS-1.5 Max | ~1236 |
+| 2 | Google Gemini 3.1 Flash TTS | ~1211 |
+| 3 | **ElevenLabs Eleven v3** | ~1179 |
+| ... | OpenAI gpt-4o-mini-tts, gpt-realtime | (closed) |
+| ... | Cartesia Sonic-3 | (low-latency leader) |

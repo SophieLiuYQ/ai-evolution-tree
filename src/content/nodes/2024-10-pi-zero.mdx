@@ -1,0 +1,71 @@
+---
+slug: pi-zero
+title: "π₀ — Physical Intelligence's Open Robot Foundation"
+date: 2024-10-31
+era: agents
+category: [agents, multimodal, generative]
+relationships:
+  - to: gemini-robotics
+    type: open_alt_to
+    note: "Open-weight VLA via openpi; Pi differentiates on flow-matching action generation"
+authors:
+  - "Physical Intelligence Team"
+org: "Physical Intelligence"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "3B"
+  architecture: "VLA with flow-matching action head"
+  release_type: open_weights
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    Physical Intelligence's flagship vision-language-action model —
+    π₀ (October 2024) opened the open-weight VLA category. π₀.₅
+    (April 2025) added open-world generalization; π*0.6 (Nov 2025)
+    added experience-based RL. Released through the openpi GitHub
+    repo, with reference deployments on commodity robot arms.
+  analogy: |
+    Pi is the Android of robot brains — open foundation that lab and
+    startup robots can fine-tune for their specific gripper /
+    workspace, instead of every team training from scratch.
+  applications:
+    - product: "openpi (open-source robot stack)"
+      company: "Physical Intelligence"
+      year_deployed: 2024
+    - product: "Pi Robots (commercial humanoid)"
+      company: "Physical Intelligence"
+      year_deployed: 2024
+    - product: "Academic robotics research"
+      company: "Multiple universities"
+      year_deployed: 2024
+  investment_angle: |
+    Physical Intelligence raised $400M+ at $2B+ valuation on the
+    open-weight robotics-foundation thesis. Pi sits one layer above
+    the hardware (which they also build) and one layer below
+    application (which their customers / partners build). The open
+    weights are a wedge to make Pi the default VLA stack.
+  why_it_matters: |
+    Made open-weight VLA a real thing — before π₀, every serious VLA
+    was closed (Google's RT, Tesla's, Figure's). Pi proved you could
+    open-source the architecture and still build a business on
+    hardware + integration + commercial fine-tuning.
+
+citations:
+  - type: paper
+    key: pi2024pi0
+    title: "π₀: A Vision-Language-Action Flow Model for General Robot Control"
+    year: 2024
+    arxiv: "2410.24164"
+    url: "https://arxiv.org/abs/2410.24164"
+---
+
+## Pi family timeline
+
+| Model | Date | What's new |
+|---|---|---|
+| **π₀** | Oct 2024 | First flow-matching VLA |
+| **π₀-FAST** | Late 2024 | Latency-optimized variant |
+| **π₀.₅** | Apr 2025 | Open-world generalization |
+| **π*0.6** | Nov 2025 | Experience-based RL |

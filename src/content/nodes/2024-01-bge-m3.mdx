@@ -1,0 +1,67 @@
+---
+slug: bge-m3
+title: "BGE-M3 — Open Multilingual Multifunction Embeddings"
+date: 2024-01-30
+era: multimodal
+category: [nlp, infrastructure]
+relationships:
+  - to: clip
+    type: builds_on
+    note: "Embedding model lineage; BGE family from BAAI is the open-source workhorse for retrieval"
+authors:
+  - "BAAI Team"
+org: "BAAI"
+breakthrough_score: 6
+status: active
+model_spec:
+  parameters: "568M"
+  architecture: "XLM-RoBERTa fine-tune with multi-functional output"
+  context_window: 8192
+  release_type: open_weights
+  modalities: [text]
+
+public_view:
+  plain_english: |
+    Beijing Academy of AI's January 2024 embedding model — supports
+    100+ languages and produces dense, sparse, AND multi-vector
+    outputs from a single forward pass. The de facto open embedding
+    model for multilingual RAG; widely deployed and forked.
+  analogy: |
+    BGE-M3 is the embedding equivalent of "free shipping included" —
+    most open RAG stacks just default to it because it's the obvious
+    choice that works.
+  applications:
+    - product: "LangChain / LlamaIndex default embeddings"
+      company: "Multiple"
+      year_deployed: 2024
+    - product: "Hugging Face Text Embeddings Inference"
+      company: "Hugging Face"
+      year_deployed: 2024
+    - product: "Self-hosted enterprise RAG"
+      company: "Multiple"
+      year_deployed: 2024
+  investment_angle: |
+    BGE is BAAI's strongest single export to the global open-source
+    AI ecosystem. The fact that most LangChain-tier deployments
+    default to it gives BAAI quiet upstream influence on retrieval
+    architecture worldwide.
+  why_it_matters: |
+    Made high-quality multilingual embeddings free and self-hostable.
+    Combined with BGE-Reranker v2-m3, the BGE stack is the open RAG
+    backbone for languages other than English.
+
+citations:
+  - type: paper
+    key: baai2024bgem3
+    title: "BGE M3-Embedding: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation"
+    year: 2024
+    arxiv: "2402.03216"
+    url: "https://arxiv.org/abs/2402.03216"
+---
+
+## BGE family
+
+- **BGE-large** / BGE-base / BGE-small — English-focused
+- **BGE-M3** — multilingual + multi-function (Jan 2024)
+- **bge-en-icl** — in-context learning embeddings (71.24 MTEB)
+- **BGE-Reranker v2-m3** — companion reranker

@@ -1,0 +1,71 @@
+---
+slug: dinov3
+title: "DINOv3 — Meta's Self-Supervised Vision Foundation"
+date: 2025-08-13
+era: multimodal
+category: [cv, training]
+relationships:
+  - to: clip
+    type: competes_with
+    note: "Both are foundation visual encoders; DINOv3 is purely self-supervised (no captions), unlike CLIP's image-text contrast"
+authors:
+  - "Meta AI Team"
+org: "Meta AI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "1.7B (ViT-7B distilled to family)"
+  architecture: "Self-supervised ViT + DINO objective with Gram anchoring"
+  release_type: open_weights
+  modalities: [vision]
+
+public_view:
+  plain_english: |
+    Meta's August 2025 self-supervised vision encoder — a vision
+    transformer trained on 1.7 BILLION images without any labels or
+    captions. The model learns visual structure on its own, then
+    transfers to detection, segmentation, depth, and feature-matching
+    tasks. The default backbone for serious computer-vision research
+    in late 2025.
+  analogy: |
+    CLIP learned vision by reading the captions humans wrote about
+    images — secondhand text knowledge. DINO is the patient observer
+    who watches a billion images and figures out what matters by
+    looking, no captions needed.
+  applications:
+    - product: "Meta SAM 3 / 3D backbone"
+      company: "Meta"
+      year_deployed: 2025
+    - product: "Open computer-vision research"
+      company: "Universities + open-source"
+      year_deployed: 2025
+    - product: "Self-driving stack feature extraction"
+      company: "Multiple AV companies"
+      year_deployed: 2025
+  investment_angle: |
+    Foundation visual encoders are infrastructure — the moat is
+    whoever's encoder gets baked into downstream pipelines. DINOv3 is
+    the de facto vision backbone for academic + open-source CV in
+    2025-2026, putting Meta in the same upstream position for vision
+    that Hugging Face has for NLP.
+  why_it_matters: |
+    Established that self-supervised pretraining at scale beats
+    image-text contrastive (CLIP) on most non-zero-shot CV tasks.
+    Combined with SAM 3 (segmentation) and DINOv3, Meta now anchors
+    the academic CV stack the way it anchored NLP with Llama.
+
+citations:
+  - type: paper
+    key: meta2025dinov3
+    title: "DINOv3"
+    year: 2025
+    arxiv: "2508.10104"
+    url: "https://arxiv.org/abs/2508.10104"
+---
+
+## What's distinctive
+
+- **No captions required** — pure self-supervised; learns visual structure from raw pixels
+- **1.7B image dataset** — largest self-supervised vision pretraining to date
+- **Gram anchoring** — novel technique to prevent feature collapse
+- **ConvNeXt + ViT variants** — ships as a family, picks architecture per use case

@@ -1,0 +1,80 @@
+---
+slug: olmo-2
+title: "OLMo 2 — Allen AI's Fully Open Foundation"
+date: 2024-11-26
+era: scale-era
+category: [nlp, generative, training]
+relationships:
+  - to: llama-3
+    type: open_alt_to
+    note: "Fully-open alternative to Llama; releases data + weights + training code + intermediate checkpoints"
+authors:
+  - "Allen Institute for AI"
+org: "Allen AI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "7B / 13B / 32B dense"
+  architecture: "Decoder-only transformer"
+  context_window: 4096
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU (OLMo 2 32B)"
+      score: "63.4%"
+
+public_view:
+  plain_english: |
+    The Allen Institute's truly-open language model — not just weights,
+    but the training data (Dolma), the training code, intermediate
+    checkpoints, and evaluation suites. OLMo 2 (and the instruction-
+    tuned Tulu 3 family) is what most academic ML researchers use when
+    they need a model they can REPRODUCE, not just download.
+  analogy: |
+    Llama is "we'll show you the cake." OLMo is "here's the cake, the
+    recipe, every ingredient with sourcing, and a video of us baking
+    it." The full reproducibility difference matters for science even
+    when product capability is similar.
+  applications:
+    - product: "Academic research (most-cited open base)"
+      company: "Multiple universities"
+      year_deployed: 2024
+    - product: "Tulu 3 instruction family"
+      company: "Allen AI"
+      year_deployed: 2024
+    - product: "Molmo multimodal sibling"
+      company: "Allen AI"
+      year_deployed: 2024
+  investment_angle: |
+    OLMo's economic impact is in the academic + government tier where
+    full reproducibility is required. Doesn't compete head-to-head
+    with Llama or Qwen for product, but defines the upper bound on
+    "open enough for science." Used heavily by safety / interpretability
+    research labs (Anthropic interp team, Apollo Research, etc.).
+  why_it_matters: |
+    Pushes the definition of "open source AI" — exposes how partial
+    Llama, Mistral, and Qwen open releases really are. Ai2's continued
+    pressure (Tulu 3 405B, Molmo, OLMoE) anchors the open-science end
+    of the model spectrum.
+
+citations:
+  - type: paper
+    key: ai2024olmo2
+    title: "OLMo 2: Open Language Models v2"
+    year: 2024
+    arxiv: "2501.00656"
+    url: "https://arxiv.org/abs/2501.00656"
+---
+
+## What "fully open" means
+
+| Layer | Llama 3 | Qwen 3 | OLMo 2 |
+|---|---|---|---|
+| Final weights | ✅ | ✅ | ✅ |
+| Training code | partial | partial | ✅ |
+| Training data | ❌ | partial | ✅ (Dolma) |
+| Intermediate checkpoints | ❌ | ❌ | ✅ |
+| Evaluation harness | ❌ | partial | ✅ |
+| Apache / MIT license | ❌ (custom) | mostly | ✅ Apache |
+
+The OLMo / Tulu / Molmo / OLMoE stack is the only complete open-source pipeline at modern frontier scale.

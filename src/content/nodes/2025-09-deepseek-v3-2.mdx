@@ -1,0 +1,96 @@
+---
+slug: deepseek-v3-2
+title: "DeepSeek V3.2 — Sparse Attention at Scale"
+date: 2025-09-29
+era: reasoning
+category: [nlp, architecture, generative]
+relationships:
+  - to: deepseek-v3
+    type: scales
+    note: "Same 671B MoE base; replaces full attention with DSA (DeepSeek Sparse Attention) for 163K context at lower cost"
+  - to: deepseek-r1
+    type: builds_on
+    note: "V3.2 fuses thinking mode into the base model — no separate R1-style reasoning model required"
+authors:
+  - "DeepSeek Team"
+org: "DeepSeek"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "671B total / 37B active MoE"
+  architecture: "MoE + DeepSeek Sparse Attention (DSA)"
+  context_window: 163840
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "AIME 2025"
+      score: "89.3%"
+      vs_baseline: "DeepSeek-R1 79.8%"
+    - name: "Codeforces"
+      score: "2121 Elo"
+      vs_baseline: "Top-tier human competitive"
+
+public_view:
+  plain_english: |
+    DeepSeek's late-2025 refresh of V3. The big change is "sparse
+    attention" — instead of every token comparing itself to every other
+    token, each token only attends to the most relevant ones. This
+    drops inference cost dramatically at long context, letting the
+    model handle 163K-token inputs without quadratic blow-up.
+  analogy: |
+    Full attention is like every guest at a party speaking with every
+    other guest — fine for 10 people, exponentially expensive for
+    1,000. Sparse attention is "talk to the 30 people you care about" —
+    same conversation, vastly less audio.
+  applications:
+    - product: "chat.deepseek.com"
+      company: "DeepSeek"
+      year_deployed: 2025
+    - product: "DeepSeek API (50%+ cheaper than V3.1)"
+      company: "DeepSeek"
+      year_deployed: 2025
+    - product: "Self-hosted via vLLM / SGLang"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    Long-context inference cost has been the wall for legal /
+    healthcare / agent workflows. DSA is the first production-scale
+    proof that you can break the n² attention bill without losing
+    quality. DeepSeek slashed prices ~50% with V3.2 — putting
+    further pressure on closed-API margins. The architecture is open;
+    expect Qwen, Llama, and Mistral followers in 2026.
+  why_it_matters: |
+    Establishes sparse attention as a viable production path, not just
+    a research idea. Combined with R1's thinking and V3's MoE, V3.2 is
+    the third major architectural axis DeepSeek has industrialized in
+    a single year.
+
+citations:
+  - type: paper
+    key: deepseek2025v32
+    title: "DeepSeek-V3.2: Sparse Attention for Efficient Long-Context"
+    year: 2025
+    arxiv: "2509.18795"
+    url: "https://arxiv.org/abs/2509.18795"
+  - type: release
+    key: deepseek2025v32release
+    title: "DeepSeek V3.2 Release Notes"
+    year: 2025
+    url: "https://api-docs.deepseek.com/news/news250929"
+---
+
+## What changed from V3
+
+V3.2 keeps the 671B / 37B active MoE backbone. The new piece is **DeepSeek Sparse Attention (DSA)** — each query attends to a learned subset of keys rather than all of them. At 128K context, attention compute drops ~3-4× with negligible quality loss.
+
+It also bakes "thinking" mode into the base model — no separate R1 distillation step needed.
+
+## Why this matters strategically
+
+DeepSeek has now shipped, in a single year:
+
+1. **V3** — Multi-head Latent Attention + DeepSeekMoE (cheap MoE training)
+2. **R1** — Pure-RL reasoning emergence at scale
+3. **V3.2** — Sparse attention production deployment
+
+Each is a published recipe. Each changes how the rest of the field builds. Combined, they pushed open-weight Chinese models from "behind" to "ahead on cost" in 12 months.

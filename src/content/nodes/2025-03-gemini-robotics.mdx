@@ -1,0 +1,73 @@
+---
+slug: gemini-robotics
+title: "Gemini Robotics — VLA from DeepMind"
+date: 2025-03-12
+era: agents
+category: [agents, multimodal, generative]
+relationships:
+  - to: gemini-2-5-pro
+    type: builds_on
+    note: "Vision-Language-Action model fine-tuned from Gemini 2.0/2.5 backbone for embodied control"
+authors:
+  - "Google DeepMind"
+org: "Google DeepMind"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "VLA — vision + language + robot action tokens"
+  release_type: api
+  modalities: [vision, audio, generative]
+
+public_view:
+  plain_english: |
+    DeepMind's vision-language-action (VLA) family — Gemini Robotics,
+    Robotics-ER, On-Device, and Robotics 1.5/ER 1.5 (Sept 2025).
+    Same Gemini multimodal brain, fine-tuned to output robot motor
+    commands instead of text. Deployed on Boston Dynamics Atlas,
+    Apptronik Apollo, and partner humanoid platforms with multi-
+    embodiment Motion Transfer.
+  analogy: |
+    Gemini learned to talk and see. Gemini Robotics learned to
+    move — same brain, different output channel (motor commands
+    instead of words).
+  applications:
+    - product: "Boston Dynamics Atlas (integrated)"
+      company: "Boston Dynamics"
+      year_deployed: 2025
+    - product: "Apptronik Apollo humanoid"
+      company: "Apptronik"
+      year_deployed: 2025
+    - product: "Gemini Robotics On-Device (no-cloud)"
+      company: "Google DeepMind"
+      year_deployed: 2025
+  investment_angle: |
+    DeepMind's bet that the AI moat extends from chat → code →
+    physical action. Gemini Robotics is the platform play — Google
+    provides the brain, hardware partners (Apptronik, Boston Dynamics,
+    Agility) provide the body. Mirrors Android's OEM model. Apptronik
+    raised $5B with this thesis.
+  why_it_matters: |
+    Established VLA as a real product category, not just research.
+    Combined with Physical Intelligence π series, NVIDIA GR00T, and
+    Figure Helix, embodied AI is at the same "early commercialization"
+    point that LLMs were in 2022.
+
+citations:
+  - type: release
+    key: deepmind2025geminirobotics
+    title: "Gemini Robotics: Bringing AI into the Physical World"
+    year: 2025
+    venue: "Google DeepMind Blog"
+    url: "https://deepmind.google/discover/blog/gemini-robotics-brings-ai-into-the-physical-world/"
+---
+
+## VLA frontier (2025-2026)
+
+| Model | Org | Notes |
+|---|---|---|
+| Gemini Robotics 1.5 / ER 1.5 | Google DeepMind | Multi-embodiment Motion Transfer |
+| π₀ / π₀.₅ / π*0.6 | Physical Intelligence | Open via openpi |
+| Figure Helix / Helix 02 | Figure AI | On Figure 02/03 humanoids |
+| NVIDIA GR00T N1 / N1.5 / N1.7 | NVIDIA | Open Apache-2.0 ecosystem |
+| OpenVLA / OFT | Stanford / Berkeley | MIT-licensed academic |

@@ -1,0 +1,74 @@
+---
+slug: gpt-oss
+title: "gpt-oss — OpenAI's First Open-Weight Models in 6 Years"
+date: 2025-08-05
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: gpt-2
+    type: open_alt_to
+    note: "OpenAI's first major open-weight release since GPT-2 (2019); positions against Llama / Qwen / DeepSeek"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "20B and 120B"
+  architecture: "Decoder-only transformer; Apache 2.0"
+  context_window: 131072
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU (gpt-oss-120B)"
+      score: "85.4%"
+    - name: "AIME 2024"
+      score: "76.7%"
+
+public_view:
+  plain_english: |
+    OpenAI's first open-weight language models since GPT-2 in 2019 —
+    a 20B and 120B Apache-2.0 release in August 2025. gpt-oss is
+    OpenAI's concession that the open ecosystem (Llama, Qwen,
+    DeepSeek) had become too important to ignore strategically.
+  analogy: |
+    Like Apple finally releasing iWork as open source — a company
+    that had defined itself by closed products yielding ground to
+    keep developers in its ecosystem.
+  applications:
+    - product: "Hugging Face (gpt-oss-20B / 120B)"
+      company: "OpenAI"
+      year_deployed: 2025
+    - product: "Together AI / Fireworks / Groq hosted"
+      company: "Multiple"
+      year_deployed: 2025
+    - product: "Self-hosted via vLLM / SGLang"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    Strategic concession more than a competitive shot — gpt-oss-120B
+    is solid but not best-in-class against Qwen3-235B-A22B or
+    DeepSeek-V3.2. OpenAI's goal: keep developers in OpenAI tooling
+    (responses API, agents SDK, evals) even when they want open
+    weights. Distribution-focused play, not a benchmark race.
+  why_it_matters: |
+    Removed OpenAI's "no open weights" position as a talking point
+    against the closed-API model. Every Western frontier lab now
+    ships at least some open models (Anthropic the holdout). The
+    open/closed line is now PRODUCT TIER, not company identity.
+
+citations:
+  - type: release
+    key: openai2025gptoss
+    title: "Introducing gpt-oss"
+    year: 2025
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/introducing-gpt-oss/"
+---
+
+## What it is
+
+- gpt-oss-20B and gpt-oss-120B
+- Apache 2.0 license — no usage restrictions
+- 131K context, decoder-only transformer
+- Optimized for Triton-Lang inference; ships with reference vLLM and Ollama support

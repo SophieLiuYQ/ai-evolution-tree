@@ -1,0 +1,65 @@
+---
+slug: ltx-2
+title: "LTX-2 — Lightricks' Open Video + Audio Model"
+date: 2026-01-22
+era: multimodal
+category: [generative, multimodal]
+relationships:
+  - to: hunyuan-video
+    type: competes_with
+    note: "Open-weight video peer; LTX-2 adds 5B audio model + 4K/50fps under Apache 2.0"
+authors:
+  - "Lightricks Team"
+org: "Lightricks"
+breakthrough_score: 6
+status: active
+model_spec:
+  parameters: "19B (14B video + 5B audio)"
+  architecture: "DiT video + diffusion audio"
+  release_type: open_weights
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    Lightricks (the Israeli company behind Photoleap) released LTX-2
+    in January 2026 — 19B parameters total, including a 5B audio
+    model that generates synchronized sound on top of 4K/50fps
+    video. Apache 2.0 licensing makes it the most permissive open
+    video+audio stack available.
+  analogy: |
+    HunyuanVideo + ElevenLabs in a single open-weight package. You
+    get a complete videos-with-sound generator without stitching
+    multiple models together.
+  applications:
+    - product: "LTX Studio (creator app)"
+      company: "Lightricks"
+      year_deployed: 2026
+    - product: "Hugging Face / fal.ai self-hosted"
+      company: "Multiple"
+      year_deployed: 2026
+  investment_angle: |
+    Lightricks is profitable on the Photoleap consumer-app franchise,
+    funding LTX as a category-defining open release. Strategic value:
+    bring video+audio together in a single distributable model that
+    other open-source tools (ComfyUI, Diffusers) can integrate.
+  why_it_matters: |
+    First open-weight video+audio integrated stack. Sets the bar for
+    "open Sora 2 alternative" — closed competitors were already
+    shipping synchronized audio (Sora 2, Veo 3, Kling 3); LTX-2 made
+    the same combination open.
+
+citations:
+  - type: release
+    key: lightricks2026ltx2
+    title: "LTX-2 Release"
+    year: 2026
+    venue: "Lightricks Blog"
+    url: "https://www.lightricks.com/blog/ltx-2"
+---
+
+## LTX-2 spec
+
+- **14B video DiT** — 4K up to 50fps
+- **5B audio model** — synchronized sound generation
+- **Apache 2.0** — fully unrestricted use
+- **LTX Studio** — Lightricks' web tool exposing the model with timeline + multi-clip editing

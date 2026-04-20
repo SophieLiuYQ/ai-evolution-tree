@@ -45,17 +45,28 @@ export function groupByYear(nodes: NodeEntry[]) {
   return { byYear, years };
 }
 
+// License bucket: "Open" for open-weight / paper / research (no model_spec);
+// "Closed" for api / product / demo. Mirrors the 2026 open-vs-closed split
+// that the compass research calls out as the defining market structure.
+function licenseKey(n: NodeEntry): string {
+  const rt = n.data.model_spec?.release_type;
+  if (!rt) return "Open (research)";
+  if (rt === "open_weights" || rt === "paper") return "Open";
+  return "Closed";
+}
+
 // Cross-axis key for grid layouts. Empty string for chronological (no grid).
 function crossKeyOf(n: NodeEntry, mode: SortMode): string {
   if (mode === "byOrg") return n.data.org;
-  if (mode === "byType") return modelType(n.data.category ?? []);
+  if (mode === "byType") return modelType(n.data.category ?? [], n.data.slug);
+  if (mode === "byLicense") return licenseKey(n);
   return "";
 }
 
 // Extra padding to make room for the cross-axis label strip (top in v,
 // left in h). Year is ALWAYS the primary axis; sort key is the secondary.
-const CROSS_HEADER_TOP_H = 36; // v: top strip height showing company/type names
-const CROSS_HEADER_LEFT_W = 130; // h: left strip width showing company/type names
+const CROSS_HEADER_TOP_H = 56; // v: top strip height showing company/type names
+const CROSS_HEADER_LEFT_W = 160; // h: left strip width showing company/type names
 
 export function computeLayout(
   nodes: NodeEntry[],
@@ -128,82 +139,133 @@ export function computeLayout(
       return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
     }
 
-    // ===== H + grid (byOrg / byType): year columns × cross rows
-    // Cards from same (year, key) stack horizontally inside that cell.
-    // Y positions: indexed by crossKeys, with a left header strip for labels.
-    const ROW_H = NODE_H + 14;
-    const totalRowsH = CROSS_HEADER_TOP_H + crossKeys.length * ROW_H + 24;
-    const totalWidthH =
-      CROSS_HEADER_LEFT_W +
-      H_SIDE_PAD +
-      years.length * H_COL_W -
-      H_COL_GAP +
-      H_SIDE_PAD;
-    // Year column bands
+    // ===== H + grid (byOrg / byType / byLicense): year cols × cross rows.
+    // Cards at (year, key) stack vertically inside cell. If the stack is
+    // too tall, the cell wraps into sub-columns (side-by-side sub-stacks).
+    // Year column width expands to fit the widest wrap required at that year.
+    const STACK_GAP = 8;
+    const ROW_PAD_TOP = 6;
+    const ROW_PAD_BOT = 14;
+    const WRAP_THRESHOLD_H = 5;
+    const MAX_COL_SPAN_H = 3;
+
+    // 1. Per (row, year) stack counts → deduce col span per YEAR (width of
+    //    year column), and effective max stack per ROW (row height).
+    const stackCounts: number[][] = crossKeys.map(() => years.map(() => 0));
     for (let colIdx = 0; colIdx < years.length; colIdx++) {
       const year = years[colIdx];
-      const xLeft = CROSS_HEADER_LEFT_W + H_SIDE_PAD + colIdx * H_COL_W;
+      for (const n of byYear.get(year)!) {
+        const ki = crossIdxOf(crossKeyOf(n, sortMode));
+        if (ki < 0) continue;
+        stackCounts[ki][colIdx]++;
+      }
+    }
+    // Year column span: max stack across all rows at this year → how many
+    // sub-columns the year column must accommodate.
+    const colSpanByYear: number[] = years.map((_, colIdx) => {
+      let m = 1;
+      for (let ki = 0; ki < crossKeys.length; ki++) {
+        if (stackCounts[ki][colIdx] > m) m = stackCounts[ki][colIdx];
+      }
+      return Math.min(MAX_COL_SPAN_H, Math.max(1, Math.ceil(m / WRAP_THRESHOLD_H)));
+    });
+    // Row effective max stack: after wrapping, max across years is
+    // ceil(stackCount / colSpanByYear[colIdx]).
+    const maxStackByRow = crossKeys.map((_, ki) => {
+      let m = 1;
+      for (let colIdx = 0; colIdx < years.length; colIdx++) {
+        const span = colSpanByYear[colIdx];
+        const eff = Math.ceil(stackCounts[ki][colIdx] / span);
+        if (eff > m) m = eff;
+      }
+      return m;
+    });
+
+    // 2. Per-row heights + cumulative Y starts
+    const rowHeights = maxStackByRow.map(
+      (m: number) => ROW_PAD_TOP + m * NODE_H + (m - 1) * STACK_GAP + ROW_PAD_BOT,
+    );
+    const rowYStarts: number[] = [];
+    let yAcc = CROSS_HEADER_TOP_H;
+    for (const rh of rowHeights) {
+      rowYStarts.push(yAcc);
+      yAcc += rh;
+    }
+    const totalRowsH = yAcc + 24;
+
+    // 3. Variable-width year columns: cumulative X starts
+    const yearXStart: number[] = [];
+    let xAccH = CROSS_HEADER_LEFT_W + H_SIDE_PAD;
+    for (let colIdx = 0; colIdx < years.length; colIdx++) {
+      yearXStart.push(xAccH);
+      xAccH += colSpanByYear[colIdx] * H_COL_W;
+    }
+    const totalWidthH = xAccH - H_COL_GAP + H_SIDE_PAD;
+
+    // 4. Year column bands — each spans colSpan columns
+    for (let colIdx = 0; colIdx < years.length; colIdx++) {
+      const year = years[colIdx];
+      const xLeft = yearXStart[colIdx];
+      const w = colSpanByYear[colIdx] * H_COL_W - H_COL_GAP;
       bands.push({
         key: year,
         label: String(year),
         idx: colIdx,
-        rect: { x: xLeft, y: 0, width: NODE_W, height: totalRowsH },
-        header: { x: xLeft, y: 8, width: NODE_W, height: CROSS_HEADER_TOP_H - 16 },
+        rect: { x: xLeft, y: 0, width: w, height: totalRowsH },
+        header: { x: xLeft, y: 8, width: w, height: CROSS_HEADER_TOP_H - 16 },
         headerAlign: "center",
         nodeCount: byYear.get(year)?.length ?? 0,
       });
     }
-    // Cross-axis (rows) bands
+
+    // 5. Cross-axis (rows) bands
     const crossBandsH: Band[] = crossKeys.map((k, i) => ({
       key: k,
       label: k,
       idx: i,
-      rect: {
-        x: 0,
-        y: CROSS_HEADER_TOP_H + i * ROW_H,
-        width: totalWidthH,
-        height: ROW_H,
-      },
+      rect: { x: 0, y: rowYStarts[i], width: totalWidthH, height: rowHeights[i] },
       header: {
         x: 4,
-        y: CROSS_HEADER_TOP_H + i * ROW_H,
+        y: rowYStarts[i],
         width: CROSS_HEADER_LEFT_W - 8,
-        height: ROW_H,
+        height: rowHeights[i],
       },
       headerAlign: "left",
-      nodeCount: 0, // recomputed below
+      nodeCount: 0,
     }));
-    // Place cards: cell (year, key). Multiple cards in same cell tile horizontally.
-    // Within a year column, the X is shared across all cells; we tile vertically
-    // by crossKey index, and horizontally within the cell if duplicates.
-    const cellCount = new Map<string, number>();
+
+    // 6. Place cards, wrapping stacks into colSpanByYear sub-columns
     for (let colIdx = 0; colIdx < years.length; colIdx++) {
       const year = years[colIdx];
-      const yearNodes = byYear.get(year)!;
-      for (const n of yearNodes) {
-        const k = crossKeyOf(n, sortMode);
-        const ki = crossIdxOf(k);
+      const span = colSpanByYear[colIdx];
+      // Bucket cards by cross key so we know total count per cell
+      const cellNodes = new Map<number, NodeEntry[]>();
+      for (const n of byYear.get(year)!) {
+        const ki = crossIdxOf(crossKeyOf(n, sortMode));
         if (ki < 0) continue;
-        const cellKey = `${colIdx}|${ki}`;
-        const stackIdx = cellCount.get(cellKey) ?? 0;
-        cellCount.set(cellKey, stackIdx + 1);
-        const xCenter =
-          CROSS_HEADER_LEFT_W +
-          H_SIDE_PAD +
-          colIdx * H_COL_W +
-          NODE_W / 2 +
-          stackIdx * 6; // tiny offset for stacked duplicates
-        const yCenter = CROSS_HEADER_TOP_H + ki * ROW_H + ROW_H / 2;
-        placedNodes.push({
-          slug: n.data.slug,
-          x: xCenter,
-          y: yCenter,
-          width: NODE_W,
-          height: NODE_H,
-          org: n.data.org,
-          node: n,
-        });
-        crossBandsH[ki].nodeCount++;
+        if (!cellNodes.has(ki)) cellNodes.set(ki, []);
+        cellNodes.get(ki)!.push(n);
+      }
+      for (const [ki, arr] of cellNodes.entries()) {
+        const perCol = Math.ceil(arr.length / span);
+        for (let s = 0; s < arr.length; s++) {
+          const n = arr[s];
+          const subCol = Math.floor(s / perCol);
+          const subRow = s % perCol;
+          const xCenter = yearXStart[colIdx] + subCol * H_COL_W + NODE_W / 2;
+          const yCenter =
+            rowYStarts[ki] + ROW_PAD_TOP + subRow * (NODE_H + STACK_GAP) + NODE_H / 2;
+          placedNodes.push({
+            slug: n.data.slug,
+            x: xCenter,
+            y: yCenter,
+            width: NODE_W,
+            height: NODE_H,
+            org: n.data.org,
+            node: n,
+          });
+          crossBandsH[ki].nodeCount++;
+        }
       }
     }
     const lay = finalize(nodes, placedNodes, bands, totalWidthH, totalRowsH, orient);
@@ -266,30 +328,62 @@ export function computeLayout(
     return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
   }
 
-  // ===== V + grid (byOrg / byType): year rows × cross columns
-  // X positions: indexed by crossKeys, with a top header strip for labels.
-  // Cards from same (year, key) stack vertically inside that cell.
+  // ===== V + grid (byOrg / byType / byLicense): year rows × cross columns
+  // Cards at (year, key) stack vertically. If a cross key's largest cell
+  // exceeds WRAP_THRESHOLD, that key gets allocated multiple sub-columns
+  // (max 3) so cards wrap into a sub-grid inside the cell instead of a
+  // towering stack — keeps year rows from ballooning vertically.
   const COL_W_V = NODE_W + V_NODE_H_GAP;
-  const totalWidthV =
-    V_LEFT_PAD + crossKeys.length * COL_W_V - V_NODE_H_GAP + V_RIGHT_PAD;
+  const WRAP_THRESHOLD = 5;
+  const MAX_COL_SPAN = 3;
+
+  // 1. Per-key max stack count across all years → colSpan per key
+  const maxStackByKey: number[] = crossKeys.map(() => 1);
+  for (const year of years) {
+    const counts = new Map<number, number>();
+    for (const n of byYear.get(year)!) {
+      const ki = crossIdxOf(crossKeyOf(n, sortMode));
+      if (ki < 0) continue;
+      counts.set(ki, (counts.get(ki) ?? 0) + 1);
+    }
+    for (const [ki, c] of counts) {
+      if (c > maxStackByKey[ki]) maxStackByKey[ki] = c;
+    }
+  }
+  const colSpanByKey = maxStackByKey.map((m) =>
+    Math.min(MAX_COL_SPAN, Math.max(1, Math.ceil(m / WRAP_THRESHOLD))),
+  );
+
+  // 2. Cumulative X start per key (variable-width columns)
+  const keyXStart: number[] = [];
+  let xAcc = V_LEFT_PAD;
+  for (let i = 0; i < crossKeys.length; i++) {
+    keyXStart.push(xAcc);
+    xAcc += colSpanByKey[i] * COL_W_V;
+  }
+  const totalWidthV = xAcc - V_NODE_H_GAP + V_RIGHT_PAD;
 
   let yCursorV = V_TOP_PAD + CROSS_HEADER_TOP_H + 8;
   for (let rowIdx = 0; rowIdx < years.length; rowIdx++) {
     const year = years[rowIdx];
     const groupNodes = byYear.get(year)!;
-    // Determine the tallest cell in this row (max stack count over crossKeys)
     const stackByKey = new Map<string, NodeEntry[]>();
     for (const n of groupNodes) {
       const k = crossKeyOf(n, sortMode);
       if (!stackByKey.has(k)) stackByKey.set(k, []);
       stackByKey.get(k)!.push(n);
     }
-    const maxStack = Math.max(
+    // Effective stack height after wrapping into colSpan sub-columns
+    const effectiveMaxStack = Math.max(
       1,
-      ...Array.from(stackByKey.values()).map((a) => a.length),
+      ...Array.from(stackByKey.entries()).map(([k, arr]) => {
+        const ki = crossIdxOf(k);
+        const span = ki >= 0 ? colSpanByKey[ki] : 1;
+        return Math.ceil(arr.length / span);
+      }),
     );
     const rowInnerHeight =
-      maxStack * NODE_H + (maxStack - 1) * V_NODE_H_GAP;
+      effectiveMaxStack * NODE_H + (effectiveMaxStack - 1) * V_NODE_H_GAP;
     const rowHeight = V_ROW_PAD_TOP + rowInnerHeight + V_ROW_PAD_BOTTOM;
 
     bands.push({
@@ -302,17 +396,22 @@ export function computeLayout(
       nodeCount: groupNodes.length,
     });
 
-    // Place each card at its (year, crossKey) cell, stacking vertically
+    // Place cards within each cell, wrapping into colSpan sub-columns.
+    // Order: down the first sub-column, then down the second, etc.
     for (const [k, cellNodes] of stackByKey.entries()) {
       const ki = crossIdxOf(k);
       if (ki < 0) continue;
+      const span = colSpanByKey[ki];
+      const perCol = Math.ceil(cellNodes.length / span);
       for (let s = 0; s < cellNodes.length; s++) {
         const n = cellNodes[s];
-        const x = V_LEFT_PAD + ki * COL_W_V + NODE_W / 2;
+        const subCol = Math.floor(s / perCol);
+        const subRow = s % perCol;
+        const x = keyXStart[ki] + subCol * COL_W_V + NODE_W / 2;
         const y =
           yCursorV +
           V_ROW_PAD_TOP +
-          s * (NODE_H + V_NODE_H_GAP) +
+          subRow * (NODE_H + V_NODE_H_GAP) +
           NODE_H / 2;
         placedNodes.push({
           slug: n.data.slug,
@@ -334,15 +433,15 @@ export function computeLayout(
     label: k,
     idx: i,
     rect: {
-      x: V_LEFT_PAD + i * COL_W_V,
+      x: keyXStart[i],
       y: 0,
-      width: NODE_W,
+      width: colSpanByKey[i] * COL_W_V - V_NODE_H_GAP,
       height: totalHeightV,
     },
     header: {
-      x: V_LEFT_PAD + i * COL_W_V,
+      x: keyXStart[i],
       y: V_TOP_PAD,
-      width: NODE_W,
+      width: colSpanByKey[i] * COL_W_V - V_NODE_H_GAP,
       height: CROSS_HEADER_TOP_H,
     },
     headerAlign: "center",

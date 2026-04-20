@@ -1,0 +1,76 @@
+---
+slug: rfdiffusion
+title: "RFdiffusion — Generative Protein Design"
+date: 2023-07-11
+era: scale-era
+category: [generative, training]
+relationships:
+  - to: alphafold-2
+    type: builds_on
+    note: "Uses RoseTTAFold (AlphaFold-style structure prediction) as the diffusion denoiser"
+authors:
+  - "Watson, J. L."
+  - "Juergens, D."
+  - "Bennett, N. R."
+  - "et al."
+org: "Academic / Independent"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Diffusion model + RoseTTAFold denoiser"
+  release_type: open_weights
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    The Baker Lab's diffusion-based protein design model — released
+    July 2023, the first model that could generate novel proteins
+    that actually fold and bind to specified targets. Spawned an
+    entire wave of design tools: ProteinMPNN, LigandMPNN, RFantibody,
+    BindCraft, RFdiffusion 2/3. Foundation of David Baker's 2024
+    Nobel-recognized work.
+  analogy: |
+    Stable Diffusion for proteins. Type a description ("bind to this
+    cancer marker"), get a candidate molecule that physically does
+    the thing.
+  applications:
+    - product: "RFdiffusion (open via Baker Lab GitHub)"
+      company: "University of Washington"
+      year_deployed: 2023
+    - product: "Therapeutic protein design pipelines"
+      company: "Multiple biotechs"
+      year_deployed: 2023
+    - product: "Antibody design (RFantibody)"
+      company: "Multiple"
+      year_deployed: 2024
+  investment_angle: |
+    The Baker Lab has spawned more biotech startups than any single
+    academic group in the last decade. RFdiffusion + ProteinMPNN +
+    LigandMPNN are the open-source protein-engineering stack that
+    funds Generate Biomedicines, Cradle, Kura Bio, Profluent, and
+    others. Open weights with permissive academic licensing.
+  why_it_matters: |
+    Earned David Baker a share of the 2024 Chemistry Nobel (alongside
+    Hassabis and Jumper for AlphaFold). Established that AI can
+    design novel functional proteins from scratch — a capability
+    biology had been chasing for 50 years.
+
+citations:
+  - type: paper
+    key: baker2023rfdiffusion
+    title: "De novo design of protein structure and function with RFdiffusion"
+    year: 2023
+    venue: "Nature"
+    doi: "10.1038/s41586-023-06415-8"
+    url: "https://www.nature.com/articles/s41586-023-06415-8"
+---
+
+## The Baker Lab open stack
+
+- **RFdiffusion / RFdiffusion2 / RFdiffusion3** — protein backbone generation
+- **RFantibody** — antibody-specialized variant
+- **ProteinMPNN** — sequence design from structure
+- **LigandMPNN** — ligand-aware sequence design
+- **BindCraft** — binder design pipeline
+- **RoseTTAFold2 / All-Atom** — structure prediction (parallels AlphaFold)

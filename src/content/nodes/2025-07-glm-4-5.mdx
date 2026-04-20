@@ -1,0 +1,97 @@
+---
+slug: glm-4-5
+title: "GLM-4.5 — Zhipu's Open Frontier Family"
+date: 2025-07-28
+era: reasoning
+category: [nlp, multimodal, generative]
+relationships:
+  - to: chatglm
+    type: scales
+    note: "Multi-generation jump from ChatGLM lineage; open-weight 355B MoE flagship + Air mid-tier + V vision sibling"
+  - to: deepseek-v3
+    type: competes_with
+    note: "Open Chinese MoE peer; GLM differentiates on coding + Cambricon-chip training story"
+authors:
+  - "Zhipu AI Team"
+org: "Tsinghua / Zhipu"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "355B total / 32B active MoE (4.5); 106B vision (4.5V)"
+  architecture: "MoE + reasoning + vision variants"
+  context_window: 128000
+  release_type: open_weights
+  modalities: [text, vision]
+  benchmarks:
+    - name: "WebDev Arena (GLM-4.7)"
+      score: "#1"
+    - name: "BFCL-v3 tool use"
+      score: "76.0%"
+    - name: "SWE-bench Verified"
+      score: "64.2%"
+
+public_view:
+  plain_english: |
+    Zhipu's GLM-4.5 is a complete open-weight family — frontier MoE,
+    a smaller "Air" tier, and a vision variant — released July 2025
+    under the MIT license. By the time GLM-4.6 shipped in late 2025
+    (trained on Chinese Cambricon chips, no Nvidia), the family was
+    at parity with closed Western coding models on WebDev Arena.
+  analogy: |
+    Zhipu played the role for China that Anthropic plays for the US —
+    quietly shipping a competitive frontier model with strong coding
+    and tool use, but doing it under MIT instead of behind an API.
+  applications:
+    - product: "Z.ai chat (formerly chatglm.cn)"
+      company: "Zhipu AI"
+      year_deployed: 2025
+    - product: "BigModel.cn API"
+      company: "Zhipu AI"
+      year_deployed: 2025
+    - product: "Hosted via OpenRouter, Together, Hugging Face"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    GLM-4.6 is reportedly the first frontier-tier model trained on
+    domestic Chinese accelerators (Cambricon). If accurate, it's a
+    proof point that the Nvidia hardware moat is breachable, not just
+    in theory. Strategic implication: Western export controls are
+    less of a brake on the Chinese open-weight curve than expected
+    in 2023.
+  why_it_matters: |
+    GLM-4.7 (Dec 2025) became the first non-Western model to top
+    WebDev Arena. The family's combination of MIT licensing, Chinese
+    hardware, and frontier coding scores marks a turning point in the
+    geopolitical model landscape.
+
+citations:
+  - type: release
+    key: zhipu2025glm45
+    title: "GLM-4.5: Reasoning, Coding, and Agentic Capabilities"
+    year: 2025
+    venue: "Z.ai Blog"
+    url: "https://z.ai/blog/glm-4.5"
+  - type: paper
+    key: glm2024report
+    title: "ChatGLM Technical Report"
+    year: 2024
+    arxiv: "2406.12793"
+    url: "https://arxiv.org/abs/2406.12793"
+---
+
+## Family timeline
+
+| Date | Model | Notes |
+|---|---|---|
+| Jul 2025 | GLM-4.5 / 4.5-Air | Initial open frontier; 355B MoE flagship |
+| Aug 2025 | GLM-4.5V (106B vision) | First open vision model from Zhipu |
+| Late 2025 | GLM-4.6 | Reportedly trained on Cambricon (Chinese) chips |
+| Dec 22 2025 | **GLM-4.7** | #1 on WebDev Arena |
+| Feb 2026 | "Pony Alpha" (suspected GLM-5) | Anonymous OpenRouter listing; rumored 745B/44B on Huawei Ascend |
+
+## What's distinctive
+
+- **MIT-licensed weights** — most permissive open license at frontier scale
+- **Domestic hardware** — GLM-4.6's Cambricon training story (if validated) breaks a key Western talking point
+- **Coding + tool use focus** — explicitly trained for agent workflows; WebDev Arena win reflects this
+- **Tied to Tsinghua KEG** — academic + commercial dual identity, similar to DeepSeek's role

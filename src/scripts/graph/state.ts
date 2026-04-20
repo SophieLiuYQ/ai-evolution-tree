@@ -2,7 +2,7 @@
 // Loaded once at init from the inline JSON embedded by Graph.astro.
 
 export type Orient = "h" | "v";
-export type SortMode = "chronological" | "byOrg" | "byType";
+export type SortMode = "chronological" | "byOrg" | "byType" | "byLicense";
 
 export type EdgeStyle = { color: string; dash?: string; label: string };
 
@@ -52,7 +52,7 @@ export function initState(): GraphData {
   _data = JSON.parse(dataNode?.textContent ?? "{}") as GraphData;
   // Pre-build adjacency for every variant so hover/zoom never blocks.
   for (const o of ["h", "v"] as Orient[]) {
-    for (const m of ["chronological", "byOrg", "byType"] as SortMode[]) {
+    for (const m of ["chronological", "byOrg", "byType", "byLicense"] as SortMode[]) {
       buildAdjacency(o, m);
     }
   }
@@ -96,3 +96,52 @@ export const getSort = (): SortMode => _currentSort;
 export const setSort = (m: SortMode) => {
   _currentSort = m;
 };
+
+// ===== Edge-type visibility =====
+// Per-type on/off filter. Default: all visible types enabled. Restored
+// from localStorage on init. Hover and zoom skip rendering edges whose
+// type is currently disabled.
+const EDGE_TYPES_KEY = "ai-tree:edgeTypes";
+let _enabledEdgeTypes = new Set<string>();
+
+function persistEdgeTypes() {
+  try {
+    localStorage.setItem(
+      EDGE_TYPES_KEY,
+      JSON.stringify(Array.from(_enabledEdgeTypes)),
+    );
+  } catch {}
+}
+
+export function initEdgeTypeState() {
+  if (!_data) return;
+  const all = Object.keys(_data.edgeStyle);
+  _enabledEdgeTypes = new Set(all);
+  try {
+    const raw = localStorage.getItem(EDGE_TYPES_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (Array.isArray(saved)) {
+        _enabledEdgeTypes = new Set(saved.filter((t) => all.includes(t)));
+      }
+    }
+  } catch {}
+}
+
+export const isEdgeTypeEnabled = (t: string) => _enabledEdgeTypes.has(t);
+
+export function setEdgeTypeEnabled(t: string, on: boolean) {
+  if (on) _enabledEdgeTypes.add(t);
+  else _enabledEdgeTypes.delete(t);
+  persistEdgeTypes();
+}
+
+export function setAllEdgeTypesEnabled(on: boolean) {
+  if (!_data) return;
+  if (on) _enabledEdgeTypes = new Set(Object.keys(_data.edgeStyle));
+  else _enabledEdgeTypes.clear();
+  persistEdgeTypes();
+}
+
+export const allVisibleEdgeTypes = (): string[] =>
+  _data ? Object.keys(_data.edgeStyle) : [];

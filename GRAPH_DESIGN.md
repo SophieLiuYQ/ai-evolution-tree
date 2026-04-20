@@ -143,8 +143,9 @@ h-orient). The sort selector controls the SECONDARY axis:
 | Sort | Primary axis (always year) | Secondary axis (cards positioned along) |
 |---|---|---|
 | chronological | year rows/cols | within-row date spread (no extra axis labels) |
-| byOrg | year rows/cols | one column/row per company (~28 keys, alphabetical) |
-| byType | year rows/cols | one column/row per type (voice/image/llm/multimodal/agents/rl) |
+| byOrg | year rows/cols | one column/row per company (~45 keys, alphabetical) |
+| byType | year rows/cols | 15 buckets: LLM · Multimodal · Reasoning · Image · Video · Vision · Voice · Code · Agent · Robotics · Embedding · Science · World Model · RL · Theory. Derived in `modelType(cats, slug)` — categories first, slug-keyword fallback for modalities the `category` array can't disambiguate (e.g. image vs video gen both tag `[generative, multimodal]`). |
+| byLicense | year rows/cols | two keys: `Open` (open_weights / paper / no-model_spec) vs `Closed` (api / product / demo). `Open (research)` falls into Open for older nodes with no model_spec. Makes the 2026 open-vs-closed geopolitical divide visible in one axis. |
 
 For non-chronological modes, layout is a **2D grid**: each card lands
 in cell `(year, sort-key)`. Multiple cards in the same cell stack
@@ -152,12 +153,30 @@ in cell `(year, sort-key)`. Multiple cards in the same cell stack
 no data render as empty space — that's a feature; it makes "Anthropic
 shipped nothing in 2018" visible at a glance.
 
+#### Stack-wrap for oversized cells
+
+When a single cell would stack more than `WRAP_THRESHOLD = 5` cards,
+that axis slot is widened into multiple sub-columns (V mode) or the
+year column is widened into multiple sub-columns (H mode), capped at
+`MAX_COL_SPAN = 3`:
+
+- **V mode**: colSpan is computed per **cross key** from its max stack
+  across all years. Cross-band header spans the wider slot; cards wrap
+  into sub-columns left→right, top→bottom inside the cell.
+- **H mode**: colSpan is computed per **year** from the max stack in
+  any row at that year. Year-band header spans the wider slot; cards
+  wrap into sub-columns inside the year column.
+
+Effective row (V) / row (H) height is recomputed as
+`ceil(stackCount / colSpan) * NODE_H` so wrapping actually shortens
+the tall axis instead of just spreading cards sideways.
+
 A second `crossBands` array on Layout carries the secondary axis
 labels (rendered as a header strip — top in v-orient, left in
 h-orient). Year bands stay as the primary header; cross bands sit
 orthogonal to them.
 
-All 6 layouts (2 orients × 3 modes) are pre-computed at build and
+All 8 layouts (2 orients × 4 modes) are pre-computed at build and
 emitted as separate `<OrientPane>` instances. The sort + orient
 selectors toggle `display:none` between them — no live re-layout.
 
@@ -467,7 +486,7 @@ SVG renders in document order. Later elements draw on top. Current
 stacking:
 
 ```
-1. Cross-axis labels (byOrg/byType only) (bottom)
+1. Cross-axis labels (byOrg/byType/byLicense only) (bottom)
 2. Year band backgrounds
 3. Node cards
 4. Edge paths                             (ON TOP of cards in V3.4+)

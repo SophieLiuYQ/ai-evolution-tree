@@ -1,0 +1,69 @@
+---
+slug: hunyuan-large
+title: "Hunyuan-Large — Tencent's First Open Frontier MoE"
+date: 2024-11-04
+era: scale-era
+category: [nlp, generative]
+relationships:
+  - to: mixtral
+    type: scales
+    note: "MoE lineage; Hunyuan-Large is the first 389B-class Chinese MoE released open"
+authors:
+  - "Tencent Hunyuan Team"
+org: "Tencent"
+breakthrough_score: 6
+status: superseded
+model_spec:
+  parameters: "389B total / 52B active MoE"
+  architecture: "Cross-Layer Attention (CLA) MoE"
+  context_window: 256000
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "MMLU"
+      score: "88.4%"
+    - name: "MATH"
+      score: "69.8%"
+
+public_view:
+  plain_english: |
+    Tencent's first major open-weight large model — a 389-billion-
+    parameter mixture-of-experts that activates 52B per token. Released
+    Nov 2024, it brought Tencent into the same league as DeepSeek and
+    Alibaba on the open frontier.
+  analogy: |
+    Mixtral with 50× the parameters. Same idea — only some "experts"
+    work on each input — at a scale only hyperscalers had matched
+    until then.
+  applications:
+    - product: "Tencent Cloud Hunyuan API"
+      company: "Tencent Cloud"
+      year_deployed: 2024
+    - product: "Tencent Yuanbao chatbot"
+      company: "Tencent"
+      year_deployed: 2024
+  investment_angle: |
+    Tencent's late but full entry into the open-weight LLM race.
+    Hunyuan-Large was the proof point that Tencent could match
+    DeepSeek / Alibaba at scale; the follow-on Hunyuan-T1, A13B, and
+    Hunyuan 2.0 (Dec 2025, 406B/32B-active) build on this base.
+  why_it_matters: |
+    Made it three Chinese hyperscalers (Alibaba, DeepSeek/Tencent)
+    shipping frontier-scale open MoE — a market structure unique to
+    China through 2024–2026.
+
+citations:
+  - type: paper
+    key: tencent2024hunyuan
+    title: "Hunyuan-Large: An Open-Source MoE Model with 52 Billion Activated Parameters"
+    year: 2024
+    arxiv: "2411.02265"
+    url: "https://arxiv.org/abs/2411.02265"
+---
+
+## What it shipped
+
+- 389B total / 52B active MoE — at release, the largest open MoE
+- Cross-Layer Attention (CLA) for KV-cache compression
+- 256K context, training on 7T+ multilingual tokens
+- Followed by Hunyuan-Turbo (proprietary), Hunyuan-T1 (reasoning, March 2025), Hunyuan-A13B open MoE (June 2025), and Hunyuan 2.0 (406B/32B active, Dec 2025)

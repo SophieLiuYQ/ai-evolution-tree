@@ -1,0 +1,73 @@
+---
+slug: seedream-4
+title: "Seedream 4.0 — ByteDance's MoE Image Speed King"
+date: 2025-08-15
+era: multimodal
+category: [generative, multimodal, cv]
+relationships:
+  - to: stable-diffusion
+    type: competes_with
+    note: "Chinese closed image model; Seedream 4 generates 2K in 1.8s via MoE — fastest at quality tier"
+authors:
+  - "ByteDance Seed Team"
+org: "ByteDance"
+breakthrough_score: 6
+status: active
+model_spec:
+  parameters: "MoE (active params undisclosed)"
+  architecture: "MoE diffusion / rectified-flow"
+  release_type: api
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    ByteDance's August 2025 image model — generates 2K-resolution
+    images in 1.8 seconds via a mixture-of-experts architecture.
+    Speed is the differentiator: most quality-tier models take 5-15
+    seconds. Powers ByteDance's Doubao image generation and the
+    Jimeng creative app, plus is the image backbone for Seedance
+    video.
+  analogy: |
+    Most image models are oil painters — careful, slow. Seedream is
+    a charcoal-sketch artist who can produce a finished piece in
+    seconds without losing detail.
+  applications:
+    - product: "Doubao image gen (consumer)"
+      company: "ByteDance"
+      year_deployed: 2025
+    - product: "Jimeng (creative app)"
+      company: "ByteDance"
+      year_deployed: 2025
+    - product: "Volcengine API"
+      company: "ByteDance Cloud"
+      year_deployed: 2025
+  investment_angle: |
+    ByteDance's image+video stack (Seedream + Seedance + Hailuo
+    counterpart at MiniMax) is the basis of TikTok's coming
+    generative-video feature pipeline. Seedream's MoE speed makes
+    creator-tier real-time editing economically viable.
+  why_it_matters: |
+    Demonstrated that MoE works for image diffusion as well as
+    language — same active-parameter trick. Seedream 4.5 / 5.0
+    refreshes have iterated quickly, and Seedance video is built on
+    the same architecture.
+
+citations:
+  - type: release
+    key: bytedance2025seedream
+    title: "Doubao Seedream 4.0"
+    year: 2025
+    venue: "Volcengine Blog"
+    url: "https://www.volcengine.com/product/seedream"
+---
+
+## Chinese image-model landscape
+
+| Model | Org | Notes |
+|---|---|---|
+| Seedream 4.0 / 5.0 | ByteDance | Speed leader; MoE |
+| Qwen-Image | Alibaba | Apache 2.0; best Chinese text rendering |
+| HunyuanImage 3.0 | Tencent | 80B/13B-active MoE; largest open image model |
+| Kolors / Kling Image | Kuaishou | Pre-Kling video stack |
+| ERNIE-ViLG | Baidu | — |
+| Jimeng | ByteDance | Consumer app on Seedream backbone |

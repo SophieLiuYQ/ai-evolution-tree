@@ -1,0 +1,87 @@
+---
+slug: alphafold-3
+title: "AlphaFold 3 — All-Atom Biomolecular Prediction"
+date: 2024-05-08
+era: multimodal
+category: [generative, training]
+relationships:
+  - to: alphafold-2
+    type: scales
+    note: "Adds nucleic acids, ligands, and ions; predicts protein-DNA-drug complexes, not just protein structure"
+authors:
+  - "Abramson, J."
+  - "Adler, J."
+  - "Dunger, J."
+  - "et al."
+org: "DeepMind"
+breakthrough_score: 9
+status: foundational
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Diffusion-based all-atom structure prediction"
+  release_type: api
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    DeepMind + Isomorphic Labs' May 2024 release — extends AlphaFold 2
+    from "predict the shape of one protein" to "predict the shape of
+    proteins together with DNA, RNA, drugs, and ions." This is what
+    you actually need for drug discovery, not just academic structural
+    biology. Released open for academic use through the AlphaFold
+    Server.
+  analogy: |
+    AlphaFold 2 was a sculpture-of-the-protein generator. AlphaFold 3
+    is a sculpture-of-the-protein-with-drugs-bound-to-it generator —
+    the one drug discovery actually wanted.
+  applications:
+    - product: "AlphaFold Server (academic)"
+      company: "DeepMind"
+      year_deployed: 2024
+    - product: "Isomorphic Labs drug discovery"
+      company: "Isomorphic Labs"
+      year_deployed: 2024
+    - product: "Pharma R&D pipelines (multiple)"
+      company: "Multiple"
+      year_deployed: 2024
+  investment_angle: |
+    AlphaFold 3 is the centerpiece of Isomorphic Labs' drug-discovery
+    pipeline (DeepMind spinoff valued at ~$3B). Combined with
+    AlphaProteo (binder design) and AlphaMissense (variant effect),
+    DeepMind's biology stack is the leading AI-discovery platform.
+    Multiple pharmas have signed multi-year deals.
+  why_it_matters: |
+    Made AI-driven structural biology actually useful for drug
+    discovery, not just basic science. Extended the reach of
+    AlphaFold's economic impact from "PDB completion" to "real
+    therapeutic pipelines." The 2024 chemistry Nobel went to David
+    Baker + Demis Hassabis + John Jumper for this lineage.
+
+citations:
+  - type: paper
+    key: deepmind2024alphafold3
+    title: "Accurate structure prediction of biomolecular interactions with AlphaFold 3"
+    year: 2024
+    venue: "Nature"
+    doi: "10.1038/s41586-024-07487-w"
+    url: "https://www.nature.com/articles/s41586-024-07487-w"
+---
+
+## What's new
+
+| Capability | AlphaFold 2 | AlphaFold 3 |
+|---|---|---|
+| Single proteins | ✅ | ✅ |
+| Protein-protein complexes | ✅ (multimer) | ✅ |
+| Protein-DNA / RNA | ❌ | ✅ |
+| Protein-ligand | ❌ | ✅ |
+| Protein-ion | ❌ | ✅ |
+| Diffusion architecture | ❌ (Evoformer) | ✅ |
+
+## The DeepMind biology stack (2024-2026)
+
+- AlphaFold 3 — structure prediction
+- AlphaProteo — binder design
+- AlphaMissense — variant effect prediction
+- AlphaGenome — 1Mb-context DNA variant effects (June 2025)
+- AlphaProof — math reasoning (also Nature, Nov 2025)

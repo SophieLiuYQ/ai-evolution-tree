@@ -1,0 +1,103 @@
+---
+slug: qwen-3
+title: "Qwen 3 — Toggleable Thinking, 119 Languages"
+date: 2025-04-29
+era: reasoning
+category: [nlp, multimodal, generative]
+relationships:
+  - to: qwen-2-5
+    type: scales
+    note: "Adds toggleable thinking mode and expands to 119-language support across the family"
+  - to: deepseek-r1
+    type: competes_with
+    note: "Open-weight reasoning peer; both ship MoE thinking variants under permissive licenses"
+authors:
+  - "Qwen Team"
+org: "Alibaba"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "0.6B / 1.7B / 4B / 8B / 14B / 32B dense + 30B-A3B and 235B-A22B MoE"
+  architecture: "Decoder-only transformer + MoE with toggleable thinking mode"
+  context_window: 1000000
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "AIME (Qwen3-235B-A22B-Thinking)"
+      score: "85.7%"
+      vs_baseline: "DeepSeek-R1 79.8%"
+    - name: "LiveCodeBench v5 (235B-A22B)"
+      score: "70.7%"
+      vs_baseline: "DeepSeek-R1 65.9%"
+
+public_view:
+  plain_english: |
+    Alibaba's open-weight Qwen 3 family covers everything from a tiny
+    0.6B model to a 235B mixture-of-experts. Every size has a switch
+    that turns "thinking" mode on or off — same weights, two behaviors.
+    Speaks 119 languages and was the first big open release to match
+    DeepSeek-R1 on reasoning benchmarks.
+  analogy: |
+    Like a car with eco / sport modes — the Qwen3 weights swap between
+    fast direct answers and slow deliberate chain-of-thought reasoning,
+    no second model required.
+  applications:
+    - product: "Qwen Chat (chat.qwen.ai)"
+      company: "Alibaba"
+      year_deployed: 2025
+    - product: "Alibaba Cloud Bailian"
+      company: "Alibaba"
+      year_deployed: 2025
+    - product: "OpenRouter / Hugging Face hosted endpoints"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    Qwen 3 is the credible open alternative to DeepSeek for enterprises
+    that want hosted inference with Apache 2.0 weights. The toggleable
+    thinking mode means one deployment serves both cheap chat and
+    expensive reasoning — collapsing a tier of model ops. Alibaba is
+    using Qwen as anchor for Bailian Cloud, the same way Anthropic
+    anchors AWS Bedrock and Google anchors Vertex.
+  why_it_matters: |
+    Demonstrated that the open-weight Chinese ecosystem could match
+    Western closed reasoning models within months of o3 and R1, on
+    permissive licenses, across the entire size spectrum from edge
+    (0.6B) to frontier (235B MoE).
+
+citations:
+  - type: release
+    key: alibaba2025qwen3
+    title: "Qwen3: Think Deeper, Act Faster"
+    year: 2025
+    venue: "Qwen Blog"
+    url: "https://qwenlm.github.io/blog/qwen3/"
+  - type: paper
+    key: qwen2025tech
+    title: "Qwen3 Technical Report"
+    year: 2025
+    arxiv: "2505.09388"
+    url: "https://arxiv.org/abs/2505.09388"
+---
+
+## What it is
+
+Alibaba's third major Qwen generation, released April 29 2025 as a complete family:
+
+| Variant | Type | Active / Total | Notes |
+|---|---|---|---|
+| Qwen3-0.6B / 1.7B / 4B | Dense | — | Edge / on-device |
+| Qwen3-8B / 14B / 32B | Dense | — | Workstation / single-GPU |
+| Qwen3-30B-A3B | MoE | 3B / 30B | Cheap MoE |
+| **Qwen3-235B-A22B** | MoE | 22B / 235B | Frontier-class flagship |
+
+All variants ship Apache 2.0. Subsequent updates pushed context to 1M tokens (Qwen3-2507 refresh), added a coding family (Qwen3-Coder), and a closed-source >1T Qwen3-Max.
+
+## Why it mattered
+
+Three things at once:
+
+1. **Toggleable thinking** — `enable_thinking=True/False` in the chat template switches the same weights between R1-style chain-of-thought and direct answers. No second model.
+2. **119 languages** — overtook Llama 3 on multilingual coverage; only Aya Expanse (Cohere) matched it for non-English breadth.
+3. **Open-weight reasoning parity** — first non-DeepSeek open release to reach o1-mini / DeepSeek-R1 levels on AIME, LiveCodeBench, and GPQA.
+
+The April 2025 release made it impossible to argue that "real reasoning models are closed-source only."

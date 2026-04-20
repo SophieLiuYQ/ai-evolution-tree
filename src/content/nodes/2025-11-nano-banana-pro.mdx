@@ -1,0 +1,74 @@
+---
+slug: nano-banana-pro
+title: "Nano Banana Pro / Gemini 3 Pro Image — 4K Text-Native Image"
+date: 2025-11-19
+era: multimodal
+category: [generative, multimodal, cv]
+relationships:
+  - to: gemini-3-pro
+    type: builds_on
+    note: "Image-generation head on Gemini 3 backbone; native multimodal training pays off in coherence + text rendering"
+authors:
+  - "Google DeepMind"
+org: "Google DeepMind"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Gemini 3 multimodal backbone with image decoder"
+  release_type: api
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    Google DeepMind's image model integrated into Gemini 3 — internally
+    "Nano Banana" — outputs 4K with industry-leading text rendering
+    and strict SynthID watermarking on every pixel. The Gemini 3.1
+    Flash Image variant (Nano Banana 2) launched soon after as a
+    cheap / fast tier.
+  analogy: |
+    The image model that comes WITH the chat — instead of switching
+    apps to MidJourney or DALL-E, Gemini just draws what you ask
+    inline, and the result reads as if a designer made it.
+  applications:
+    - product: "Gemini app (consumer image gen)"
+      company: "Google"
+      year_deployed: 2025
+    - product: "Vertex AI Imagen / Gemini Image"
+      company: "Google Cloud"
+      year_deployed: 2025
+    - product: "Workspace Slides / Docs"
+      company: "Google"
+      year_deployed: 2025
+  investment_angle: |
+    Distribution is the play — Nano Banana ships in every Gemini
+    surface (Search, Slides, Workspace, app). For Google, image gen
+    is a feature of Gemini, not a separate product. SynthID
+    watermarking also positions Google as the regulator-friendly
+    choice for enterprise.
+  why_it_matters: |
+    Combined with Gemini 3's native omni-modal architecture, Nano
+    Banana made image generation a baseline LLM feature rather than
+    a specialized tool. Closed the prompt-adherence + text-rendering
+    gap with GPT Image 1.5 at the top of the leaderboards.
+
+citations:
+  - type: release
+    key: google2025nanobanana
+    title: "Gemini 3 Pro Image (Nano Banana Pro)"
+    year: 2025
+    venue: "Google Blog"
+    url: "https://blog.google/technology/google-deepmind/nano-banana-pro/"
+---
+
+## Why this matters for the leaderboards
+
+April 2026 image-arena standings (Elo):
+
+| Rank | Model | Org | Elo |
+|---|---|---|---|
+| 1 | GPT Image 1.5 | OpenAI | ~1264 |
+| 2 | Nano Banana Pro / Gemini 3 Pro Image | Google | ~1255 |
+| 3 | Nano Banana 2 / Gemini 3.1 Flash Image | Google | — |
+| ... | Midjourney V7 | Midjourney | (artistic) |
+| ... | FLUX.2 [pro] | Black Forest Labs | (open) |

@@ -1,0 +1,75 @@
+---
+slug: grok-4-1
+title: "Grok 4.1 — Hallucination Halved, 2M Context"
+date: 2025-11-17
+era: reasoning
+category: [nlp, generative, reasoning]
+relationships:
+  - to: grok-4
+    type: scales
+    note: "Same family; 4.1 cuts hallucination rate to 4.22% and ships 2M-context Fast variant"
+authors:
+  - "xAI Team"
+org: "xAI"
+breakthrough_score: 6
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "MoE with reasoning + tool-use"
+  context_window: 2000000
+  release_type: api
+  modalities: [text, vision]
+  benchmarks:
+    - name: "Hallucination rate (FACTS Grounding)"
+      score: "4.22%"
+      vs_baseline: "Grok 4: ~9%"
+
+public_view:
+  plain_english: |
+    xAI's November 2025 update to Grok 4 — most notably, it cut the
+    hallucination rate roughly in half (from ~9% to 4.22%). The Fast
+    variant ships with a 2 million-token context window, making it
+    one of the longest-context production models available.
+  analogy: |
+    Grok 4 was confident but wrong too often. Grok 4.1 is the same
+    model after a tutor sat down with it and forced it to admit when
+    it doesn't know — the kind of correction a junior analyst gets
+    after their first quarter on the job.
+  applications:
+    - product: "X (formerly Twitter) AI features"
+      company: "xAI"
+      year_deployed: 2025
+    - product: "Grok app"
+      company: "xAI"
+      year_deployed: 2025
+    - product: "xAI API"
+      company: "xAI"
+      year_deployed: 2025
+  investment_angle: |
+    Grok 4.1's hallucination drop matters for enterprise procurement —
+    factual accuracy was the long-standing argument against Grok in
+    serious deployments. Combined with the 2M context Fast variant,
+    Grok is now competitive on long-document workflows where Gemini
+    used to be the default. Grok 5 began training Sept 2025.
+  why_it_matters: |
+    Demonstrated that aggressive RLHF + factuality-focused training
+    can halve hallucination at the frontier without sacrificing
+    capability. Grok 4.20 Beta 2 (March 2026) continued this trend.
+
+citations:
+  - type: release
+    key: xai2025grok41
+    title: "Grok 4.1 Release Notes"
+    year: 2025
+    venue: "xAI Blog"
+    url: "https://x.ai/news/grok-4-1"
+---
+
+## Family
+
+| Model | Date | Notes |
+|---|---|---|
+| Grok 4 | Jul 2025 | First reasoning-tier Grok |
+| **Grok 4.1** | Nov 2025 | Hallucination halved; Fast variant 2M context |
+| Grok 4.20 Beta 2 | Mar 2026 | Latest preview |
+| Grok 5 | training (Sep 2025–) | Next-gen, undisclosed scope |

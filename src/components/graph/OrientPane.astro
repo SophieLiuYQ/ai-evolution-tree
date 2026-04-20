@@ -1,7 +1,8 @@
 ---
 import type { Layout, Orient, SortMode } from "../../lib/graph/types";
-import { edgeStyle } from "../../lib/graph/constants";
+import { edgeStyle, H_TOP_PAD, V_LEFT_PAD } from "../../lib/graph/constants";
 import { bandColor, bandHeader } from "../../lib/graph/bands";
+import { fitAxisLabel } from "../../lib/graph/text";
 import Card from "./Card.astro";
 
 interface Props {
@@ -13,6 +14,17 @@ interface Props {
 }
 const { layout, orient, sortMode, yearsTotal, hidden = false } = Astro.props;
 const totalGroups = layout.bands.length;
+
+// Pre-fit cross-axis labels: wrap on word boundary first, shrink font
+// only if a single word still overflows. V cross strip is short (56px)
+// so cap at 2 lines; H cross strip is full row height so allow 3 lines.
+const crossFitted = layout.crossBands?.map((cb) => {
+  const innerW =
+    orient === "v" ? cb.header.width - 16 : cb.header.width - 24;
+  const maxLines = orient === "v" ? 2 : 3;
+  const fit = fitAxisLabel(cb.label, innerW, maxLines);
+  return { cb, lines: fit.lines, fontSize: fit.fontSize };
+});
 ---
 
 <div
@@ -27,6 +39,16 @@ const totalGroups = layout.bands.length;
     width={layout.W}
     height={layout.H}
     class="block"
+    role="img"
+    aria-label={`AI evolution tree — ${orient === "h" ? "horizontal" : "vertical"} layout, ${
+      sortMode === "chronological"
+        ? "sorted by year"
+        : sortMode === "byOrg"
+          ? "grouped by company"
+          : sortMode === "byType"
+            ? "grouped by model type"
+            : "grouped by license (open vs closed)"
+    }. ${layout.placedNodes.length} nodes, ${layout.bands.length} year groups.`}
   >
     <defs>
       {/* Marker IDs scoped by (orient, sortMode) — with 6 panes in the same
@@ -48,50 +70,12 @@ const totalGroups = layout.bands.length;
       ))}
     </defs>
 
-    {/* Cross-axis labels (only for byOrg/byType): top strip in v with
-        company/type names spanning the column above each cell; left strip
-        in h with company/type names labeling each row. */}
-    {layout.crossBands && layout.crossBands.length > 0 && (
-      <g class="cross-bands">
-        {orient === "v"
-          ? layout.crossBands.map((cb) => (
-              <g class="cross-band" data-key={String(cb.key)}>
-                <rect x={cb.header.x + 4} y={cb.header.y} width={cb.header.width - 8} height={cb.header.height - 4} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1" />
-                <text x={cb.header.x + cb.header.width / 2} y={cb.header.y + cb.header.height / 2 + 4} text-anchor="middle" font-size="12" font-family="ui-sans-serif, system-ui" font-weight="700" fill={bandHeader(cb.idx, layout.crossBands!.length)}>{cb.label}</text>
-              </g>
-            ))
-          : layout.crossBands.map((cb) => (
-              <g class="cross-band" data-key={String(cb.key)}>
-                <rect x={cb.header.x} y={cb.header.y + 4} width={cb.header.width} height={cb.header.height - 8} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1" />
-                <text x={cb.header.x + 8} y={cb.header.y + cb.header.height / 2 + 4} text-anchor="start" font-size="12" font-family="ui-sans-serif, system-ui" font-weight="700" fill={bandHeader(cb.idx, layout.crossBands!.length)}>{cb.label}</text>
-              </g>
-            ))}
-      </g>
-    )}
-
-    {/* Primary axis bands (year — rows in v, columns in h). */}
-    <g class="bands">
-      {orient === "h"
-        ? layout.bands.map((b) => (
-            <g class="group-band" data-key={String(b.key)}>
-              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, totalGroups)} rx="6" />
-              <rect x={b.header.x} y={b.header.y} width={b.header.width} height={b.header.height} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
-              <text x={b.header.x + b.header.width / 2} y={b.header.y + 24} text-anchor="middle" font-size="20" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
-              <text x={b.header.x + b.header.width / 2} y={b.header.y + 38} text-anchor="middle" font-size="9.5" font-family="ui-sans-serif, system-ui" fill="#64748b">
-                {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
-              </text>
-            </g>
-          ))
-        : layout.bands.map((b) => (
-            <g class="group-band" data-key={String(b.key)}>
-              <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, totalGroups)} />
-              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
-              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" font-size="22" font-family="ui-monospace, monospace" font-weight="700" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
-              <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" font-size="10" font-family="ui-sans-serif, system-ui" fill="#64748b">
-                {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
-              </text>
-            </g>
-          ))}
+    {/* Year band BACKGROUNDS — full row/column colored fills. Rendered
+        first so cards and edges draw on top. NOT sticky. */}
+    <g class="bands-bg">
+      {layout.bands.map((b) => (
+        <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, totalGroups)} rx={orient === "h" ? "6" : "0"} />
+      ))}
     </g>
 
     <g class="nodes">
@@ -106,6 +90,89 @@ const totalGroups = layout.bands.length;
 
     {/* V3: labels populated dynamically by JS */}
     <g class="edge-labels"></g>
+
+    {/* Year HEADERS — pinned to LEFT in v / TOP in h. Rendered after
+        edge-labels so they overlay everything when sticky-translated. */}
+    <g class="bands-header">
+      {orient === "h"
+        ? <rect x="0" y="0" width={layout.W} height={H_TOP_PAD - 18} fill="#f8fafc" />
+        : <rect x="0" y="0" width={V_LEFT_PAD - 8} height={layout.H} fill="#f8fafc" />}
+      {orient === "h"
+        ? layout.bands.map((b) => {
+            // Center year label vertically in the actual header height
+            // (chronological gives ~42px, grid gives ~40px).
+            const cy = b.header.y + b.header.height / 2;
+            return (
+              <g class="band-header" data-key={String(b.key)}>
+                <rect x={b.header.x} y={b.header.y} width={b.header.width} height={b.header.height} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
+                <text x={b.header.x + b.header.width / 2} y={cy + 1} text-anchor="middle" class="axis-label-primary" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
+                <text x={b.header.x + b.header.width / 2} y={cy + 16} text-anchor="middle" class="axis-label-secondary" fill="#64748b">
+                  {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
+                </text>
+              </g>
+            );
+          })
+        : layout.bands.map((b) => (
+            <g class="band-header" data-key={String(b.key)}>
+              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
+              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" class="axis-label-primary" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
+              <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" class="axis-label-secondary" fill="#64748b">
+                {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
+              </text>
+            </g>
+          ))}
+    </g>
+
+    {/* Cross-axis labels (only for byOrg/byType): top strip in v with
+        company/type names; left strip in h. Rendered LAST so it draws on
+        top of everything — JS translates this group on scroll to keep
+        the X-axis labels pinned to the visible viewport edge. */}
+    {layout.crossBands && layout.crossBands.length > 0 && (
+      <g class="cross-bands">
+        {/* Solid background: prevents cards behind from bleeding through
+            once the group is sticky-translated over the canvas. */}
+        {/* Background spans from top to where the first card row starts —
+            covers the cross-axis labels AND the year-band color stripe
+            that would otherwise peek between sticky strip and cards. */}
+        {orient === "v"
+          ? <rect x="0" y="0" width={layout.W} height="96" fill="#f8fafc" />
+          : <rect x="0" y="0" width="184" height={layout.H} fill="#f8fafc" />}
+        {orient === "v"
+          ? crossFitted!.map(({ cb, lines, fontSize }) => {
+              const cx = cb.header.x + cb.header.width / 2;
+              const cy = cb.header.y + cb.header.height / 2;
+              // Vertically center N lines around the rect's center
+              const blockH = lines.length * fontSize * 1.05;
+              const startY = cy - blockH / 2 + fontSize * 0.85;
+              return (
+                <g class="cross-band" data-key={String(cb.key)}>
+                  <rect x={cb.header.x + 4} y={cb.header.y} width={cb.header.width - 8} height={cb.header.height - 4} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1.25" />
+                  <text x={cx} text-anchor="middle" class="axis-label-primary" style={`font-size:${fontSize}px`} fill={bandHeader(cb.idx, layout.crossBands!.length)}>
+                    {lines.map((line, i) => (
+                      <tspan x={cx} y={startY + i * fontSize * 1.05}>{line}</tspan>
+                    ))}
+                  </text>
+                </g>
+              );
+            })
+          : crossFitted!.map(({ cb, lines, fontSize }) => {
+              const cy = cb.header.y + cb.header.height / 2;
+              const blockH = lines.length * fontSize * 1.05;
+              const startY = cy - blockH / 2 + fontSize * 0.85;
+              const tx = cb.header.x + 12;
+              return (
+                <g class="cross-band" data-key={String(cb.key)}>
+                  <rect x={cb.header.x} y={cb.header.y + 4} width={cb.header.width} height={cb.header.height - 8} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1.25" />
+                  <text x={tx} text-anchor="start" class="axis-label-primary" style={`font-size:${fontSize}px`} fill={bandHeader(cb.idx, layout.crossBands!.length)}>
+                    {lines.map((line, i) => (
+                      <tspan x={tx} y={startY + i * fontSize * 1.05}>{line}</tspan>
+                    ))}
+                  </text>
+                </g>
+              );
+            })}
+      </g>
+    )}
   </svg>
 </div>
 
@@ -120,4 +187,19 @@ const totalGroups = layout.bands.length;
   }
   .edge-label.related { opacity: 1; }
   .edge.related path { stroke-width: 2.4; }
+
+  /* Unified axis-label typography. ALL axis labels — year (h or v) AND
+     cross-axis (company/type) — share these exact properties so visual
+     prominence is identical across orient/sort modes. */
+  .axis-label-primary {
+    font-size: 22px;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+  }
+  .axis-label-secondary {
+    font-size: 11px;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+    fill: #64748b;
+  }
 </style>

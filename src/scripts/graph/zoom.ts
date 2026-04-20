@@ -7,6 +7,7 @@ import {
   getSort,
   graphData,
   incoming,
+  isEdgeTypeEnabled,
   nodePosFor,
   type NodePos,
   type Orient,
@@ -262,6 +263,7 @@ function openZoom(slug: string) {
   const raw: ZRaw[] = [];
   for (const e of edgesFor(orient)) {
     if (!relevant.has(e.v) || !relevant.has(e.w)) continue;
+    if (!isEdgeTypeEnabled(e.type)) continue;
     const src = newPos[e.v], tgt = newPos[e.w];
     if (!src || !tgt) continue;
     raw.push({ v: e.v, w: e.w, type: e.type, src, tgt });

@@ -1,0 +1,93 @@
+---
+slug: qwen-3-coder
+title: "Qwen3-Coder — Open-Source Coding Agent Frontier"
+date: 2025-07-22
+era: agents
+category: [nlp, generative, code, agents]
+relationships:
+  - to: qwen-3
+    type: fine_tunes
+    note: "Specialized post-training of Qwen 3 base on agentic coding traces and 256K-context repos"
+  - to: deepseek-v3
+    type: competes_with
+    note: "Both fight for top of open-weight SWE-bench leaderboard; Qwen3-Coder claims SOTA at release"
+authors:
+  - "Qwen Team"
+org: "Alibaba"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "480B-A35B MoE flagship + 30B-A3B Flash"
+  architecture: "MoE with extended 256K → 1M context (YaRN)"
+  context_window: 1000000
+  release_type: open_weights
+  modalities: [text, code]
+  benchmarks:
+    - name: "SWE-bench Verified (480B-A35B)"
+      score: "69.6%"
+      vs_baseline: "Claude Sonnet 4 72.7%, DeepSeek-V3 38.8%"
+    - name: "Terminal-Bench"
+      score: "37.5%"
+
+public_view:
+  plain_english: |
+    Qwen3-Coder is Alibaba's specialized coding-agent variant of Qwen 3,
+    fine-tuned on real software-engineering traces. It edits code across
+    repositories up to 1 million tokens long and can drive a terminal,
+    not just complete a single function. Released open-weights under
+    Apache 2.0 — the strongest open coding model of mid-2025.
+  analogy: |
+    Most coding models are autocomplete. Qwen3-Coder is closer to a
+    junior engineer with a checked-out repo open in their editor — it
+    reads the whole codebase before suggesting an edit, then runs the
+    tests.
+  applications:
+    - product: "Qwen Code CLI"
+      company: "Alibaba"
+      year_deployed: 2025
+    - product: "Cline / Roo Code (open IDE agents)"
+      company: "Multiple"
+      year_deployed: 2025
+    - product: "Hugging Face Inference Providers"
+      company: "Hugging Face"
+      year_deployed: 2025
+  investment_angle: |
+    Coding is the highest-revenue LLM use case and the one where open
+    weights threaten Cursor / Copilot economics most directly. Qwen3-
+    Coder closed the gap to Claude Sonnet 4 to ~3 SWE-bench points
+    while shipping fully open. Self-hosted enterprises (banks,
+    governments, hyperscalers) now have a real local-deployment
+    coding option.
+  why_it_matters: |
+    Made "agentic coding under Apache 2.0" a real product, not a
+    benchmark game. Cursor, Cline, Roo, and Aider all shipped Qwen3-
+    Coder integrations within weeks — the first open model to drive
+    serious agentic coding workflows.
+
+citations:
+  - type: release
+    key: alibaba2025qwen3coder
+    title: "Qwen3-Coder: Agentic Coding in the World"
+    year: 2025
+    venue: "Qwen Blog"
+    url: "https://qwenlm.github.io/blog/qwen3-coder/"
+---
+
+## What it is
+
+A coding-specialized post-training of Qwen 3 base, in two sizes:
+
+- **Qwen3-Coder-480B-A35B** — flagship; matches or beats DeepSeek-V3 on SWE-bench Verified
+- **Qwen3-Coder-30B-A3B-Flash** — cheap MoE for IDE autocomplete
+
+Both ship 256K native context, extended to 1M via YaRN scaling. Post-training combined synthetic agent traces, repo-level diffs, and 100+ programming languages.
+
+## Why it matters
+
+Agentic coding requires three things working together:
+
+1. Long context (whole repos, not single files)
+2. Tool use (file edits, shell, tests)
+3. Multi-turn planning
+
+Qwen3-Coder is the first open model to ship all three competently. It became the de-facto open backbone for self-hosted Copilot replacements within a quarter of release.

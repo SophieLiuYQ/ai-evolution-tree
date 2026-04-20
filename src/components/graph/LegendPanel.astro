@@ -16,7 +16,7 @@ const visibleEdges = Object.entries(edgeStyle).filter(
 ---
 
 <aside class="edge-legend overflow-y-auto border-r border-slate-200 bg-slate-50 px-4 py-4">
-  <a href="/" class="block text-base font-bold leading-tight text-slate-900" title="AI Evolution Tree — home">
+  <a href="/tree/" class="block text-base font-bold leading-tight text-slate-900" title="AI Evolution Tree — back to graph">
     🌳 <span class="text-[var(--accent)]">AI Tree</span>
   </a>
   <p class="mt-1 text-[10.5px] leading-snug text-slate-500">
@@ -65,21 +65,65 @@ const visibleEdges = Object.entries(edgeStyle).filter(
     </div>
   </dl>
 
-  {/* Edge legend — swatch + label inline */}
+  {/* Edge legend — each row is a click toggle (eye indicator on the right).
+      Bulk Show all / Hide all controls at the bottom of the list. */}
   <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
     Edge types
   </h3>
-  <ul class="space-y-2">
-    {visibleEdges.map(([_, s]) => (
-      <li class="flex items-center gap-2 text-xs text-slate-700" title={s.label}>
-        <svg width="32" height="10" viewBox="0 0 32 10" class="shrink-0">
-          <line x1="1" x2="25" y1="5" y2="5" stroke={s.color} stroke-width="2.2" stroke-linecap="round" stroke-dasharray={s.dash ?? "none"} />
-          <path d="M 25 1.5 L 31 5 L 25 8.5 z" fill={s.color} />
-        </svg>
-        <span class="font-medium">{s.label}</span>
+  <ul class="space-y-1">
+    {visibleEdges.map(([t, s]) => (
+      <li class="edge-type-row" data-type={t} data-on="true">
+        <button
+          type="button"
+          class="edge-type-toggle flex w-full items-center gap-2 rounded px-1 py-0.5 text-xs text-slate-700 hover:bg-slate-100"
+          data-type={t}
+          aria-pressed="true"
+          title={`Toggle ${s.label}`}
+        >
+          <svg width="32" height="10" viewBox="0 0 32 10" class="shrink-0">
+            <line x1="1" x2="25" y1="5" y2="5" stroke={s.color} stroke-width="2.2" stroke-linecap="round" stroke-dasharray={s.dash ?? "none"} />
+            <path d="M 25 1.5 L 31 5 L 25 8.5 z" fill={s.color} />
+          </svg>
+          <span class="flex-1 text-left font-medium">{s.label}</span>
+          {/* Photoshop-style eye toggle. .eye-pupil hidden when row is off,
+              .eye-slash hidden when row is on — controlled via data-on
+              attribute on the parent .edge-type-row. */}
+          <svg
+            class="edge-type-eye shrink-0"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path class="eye-outline" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="3"/>
+            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </button>
       </li>
     ))}
   </ul>
+  <div class="mt-2 flex gap-1.5 text-[10px]">
+    <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="all" title="Show all edge types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span>Show all</span>
+    </button>
+    <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all edge types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <line x1="3" y1="3" x2="21" y2="21"/>
+      </svg>
+      <span>Hide all</span>
+    </button>
+  </div>
 
   <p class="mt-5 border-t border-slate-200 pt-3 text-[10.5px] leading-relaxed text-slate-500">
     Hover a card → ancestor lineage.<br/>
@@ -106,6 +150,34 @@ const visibleEdges = Object.entries(edgeStyle).filter(
   }
   .sort-btn:hover:not([aria-selected="true"]) {
     background: #f1f5f9;
+  }
+
+  /* Edge-type toggle rows */
+  .edge-type-row {
+    transition: opacity 0.12s ease, filter 0.12s ease;
+  }
+  .edge-type-row[data-on="false"] {
+    opacity: 0.45;
+    filter: grayscale(0.8);
+  }
+  /* Eye icon: pupil-on / slash-on swap by data-on. Color follows
+     the parent row state (slate when on, dimmer slate when off). */
+  .edge-type-row .edge-type-eye {
+    color: #475569;
+    transition: color 0.12s ease;
+  }
+  .edge-type-row[data-on="false"] .edge-type-eye {
+    color: #94a3b8;
+  }
+  .edge-type-row[data-on="true"] .eye-slash { display: none; }
+  .edge-type-row[data-on="false"] .eye-pupil { display: none; }
+  .edge-type-toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  .edge-type-toggle:hover .edge-type-eye {
+    color: #0f172a;
   }
   @media (max-width: 720px) {
     .edge-legend {

@@ -35,7 +35,12 @@ const isActive = (p: string) =>
         <div class="flex items-center gap-1 text-sm">
           <a
             href="/"
-            class={`rounded-md px-3 py-1.5 ${isActive("/") && path === "/" ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
+            class={`rounded-md px-3 py-1.5 ${path === "/" ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
+            >Home</a
+          >
+          <a
+            href="/tree/"
+            class={`rounded-md px-3 py-1.5 ${isActive("/tree") ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
             >Graph</a
           >
           <a

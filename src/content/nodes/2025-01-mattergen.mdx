@@ -1,0 +1,69 @@
+---
+slug: mattergen
+title: "MatterGen — Generative Materials Discovery"
+date: 2025-01-16
+era: scale-era
+category: [generative, training]
+relationships:
+  - to: rfdiffusion
+    type: applies
+    note: "Same diffusion-on-3D-structure paradigm applied to inorganic crystals instead of proteins"
+authors:
+  - "Microsoft Research AI4Science"
+org: "Microsoft"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Diffusion model on crystal structure"
+  release_type: open_weights
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    Microsoft's January 2025 generative model for inorganic materials
+    — generates novel crystal structures with target properties
+    (band gap, magnetism, ionic conductivity). Published in Nature.
+    Combined with Microsoft's MatterSim (property simulator),
+    forms a closed-loop materials design system. Used by partners
+    in battery, semiconductor, and catalyst R&D.
+  analogy: |
+    What RFdiffusion did for proteins, MatterGen does for crystals —
+    "design me a material with these properties" instead of "find
+    one in a database."
+  applications:
+    - product: "Microsoft Research AI4Science (academic access)"
+      company: "Microsoft"
+      year_deployed: 2025
+    - product: "Battery / semiconductor R&D partnerships"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    Materials discovery is a 5-10 year R&D problem; AI-acceleration
+    tools like MatterGen are bets that the next-decade breakthroughs
+    in batteries / solar / catalysts will originate in AI-designed
+    candidates rather than human intuition + DFT scans. Microsoft is
+    positioning Azure as the cloud for AI4Science workloads.
+  why_it_matters: |
+    Made generative materials discovery a real workflow rather than
+    a research demo. Combined with Orbital Materials, NVIDIA BioNeMo,
+    and academic Boltz / RFdiffusion, AI-for-materials is now an
+    investment category.
+
+citations:
+  - type: paper
+    key: ms2025mattergen
+    title: "A generative model for inorganic materials design"
+    year: 2025
+    venue: "Nature"
+    doi: "10.1038/s41586-025-08628-5"
+    url: "https://www.nature.com/articles/s41586-025-08628-5"
+---
+
+## Materials AI stack
+
+- **MatterGen** — Microsoft generative model
+- **MatterSim** — Microsoft property simulator
+- **NVIDIA BioNeMo / MolMIM** — molecular generation
+- **Microsoft AI2BMD** — ab initio molecular dynamics
+- **Orbital Materials** — startup applying similar techniques to commercial materials discovery

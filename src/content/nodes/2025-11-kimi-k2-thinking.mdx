@@ -1,0 +1,87 @@
+---
+slug: kimi-k2-thinking
+title: "Kimi K2 Thinking — 200-Tool-Call Agent"
+date: 2025-11-06
+era: agents
+category: [nlp, generative, agents, reasoning]
+relationships:
+  - to: kimi-k2
+    type: fine_tunes
+    note: "K2 base + thinking RL; chains 200–300 tool calls per task"
+  - to: deepseek-r1
+    type: surpasses
+    note: "Tops HLE (Humanity's Last Exam) and BrowseComp at release"
+authors:
+  - "Moonshot AI Team"
+org: "Moonshot AI"
+breakthrough_score: 8
+status: active
+model_spec:
+  parameters: "1T total / 32B active MoE"
+  architecture: "MoE + extended-thinking RL with native tool-call interleaving"
+  context_window: 256000
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "Humanity's Last Exam"
+      score: "44.9%"
+      vs_baseline: "Claude Sonnet 4.5 41.7%, GPT-5 26.1%"
+    - name: "BrowseComp"
+      score: "60.2%"
+    - name: "SWE-bench Verified"
+      score: "71.3%"
+
+public_view:
+  plain_english: |
+    Moonshot's K2 model trained to think while it acts. Most reasoning
+    models think THEN call a tool. K2 Thinking interleaves reasoning
+    and tool calls — chaining 200–300 actions per task without losing
+    the plot. Released with open weights and a reported $4.6M training
+    bill, it shocked the field by topping benchmarks at a fraction of
+    Claude / GPT-5 cost.
+  analogy: |
+    A junior researcher given a notebook and a browser. Most models
+    write a plan and then dump 5 search queries. K2 reads, thinks,
+    refines its question, searches again, reads, thinks — for hours.
+  applications:
+    - product: "Kimi.com (free chat tier)"
+      company: "Moonshot AI"
+      year_deployed: 2025
+    - product: "OpenRouter / Hugging Face inference"
+      company: "Multiple"
+      year_deployed: 2025
+    - product: "Self-hosted agentic stacks"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    K2 Thinking is the empirical proof that long-horizon agents can be
+    built on open weights. Its $4.6M training cost is roughly what
+    OpenAI spends per WEEK on research compute. The economic argument
+    against open agents — "they'll never match closed at frontier" —
+    cracked here. Expect Anthropic and OpenAI to respond on price by
+    2026 H2.
+  why_it_matters: |
+    Made long-horizon, tool-using agents accessible without an API
+    contract. Proved that test-time compute scaling — chaining hundreds
+    of tool calls — beats pure parameter scaling on many tasks.
+
+citations:
+  - type: release
+    key: moonshot2025k2thinking
+    title: "Kimi K2 Thinking Release"
+    year: 2025
+    venue: "Moonshot AI Blog"
+    url: "https://moonshotai.github.io/Kimi-K2/thinking.html"
+---
+
+## What's new
+
+K2 Thinking is built on the existing K2 1T/32B-active MoE base, with three deltas:
+
+1. **Interleaved reasoning + tool calls** — model can pause mid-thought to invoke a tool and resume reasoning with the result.
+2. **Native long-horizon RL** — reward signal extends across 200+ step trajectories rather than per-call.
+3. **Lower-precision inference** — KAS (Kimi-Aware Sparse) quantization keeps cost down at chain-of-tool depth.
+
+## The $4.6M number
+
+Moonshot reported the post-training run cost ~$4.6M total — about 1/100 of GPT-4-class budgets. The number is debated, but the order of magnitude is supported by their published recipe and similar reports from DeepSeek. The implication: frontier agentic capability no longer requires hyperscaler-class budgets, only the right RL recipe and a base model.

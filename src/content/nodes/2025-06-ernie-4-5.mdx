@@ -1,0 +1,87 @@
+---
+slug: ernie-4-5
+title: "ERNIE 4.5 — Baidu Goes Open"
+date: 2025-06-30
+era: reasoning
+category: [nlp, multimodal, generative]
+relationships:
+  - to: baidu-ernie-4
+    type: scales
+    note: "Baidu's first major open-weight release after years of closed ERNIE — 10 variants up to 424B/47B-active MoE"
+authors:
+  - "Baidu ERNIE Team"
+org: "Baidu"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "Up to 424B total / 47B active MoE; smaller dense variants from 0.3B"
+  architecture: "MoE; some variants with vision (28B-A3B-VL)"
+  context_window: 128000
+  release_type: open_weights
+  modalities: [text, vision]
+  benchmarks:
+    - name: "MMLU (424B)"
+      score: "86.9%"
+    - name: "GSM8K"
+      score: "93.0%"
+
+public_view:
+  plain_english: |
+    Baidu's June 2025 strategy reversal — they open-sourced ten
+    variants of ERNIE 4.5 under Apache 2.0, from 0.3B all the way to a
+    424B mixture-of-experts. Until then, Baidu had kept ERNIE closed
+    while DeepSeek, Qwen, and GLM defined the open-weight Chinese
+    landscape. ERNIE 4.5 was Baidu's catch-up move.
+  analogy: |
+    Microsoft's "embrace, extend, extinguish" inverted — Baidu spent
+    years insisting closed APIs were the right model, then conceded
+    the open-weight ground in a single release.
+  applications:
+    - product: "Baidu AI Cloud Qianfan"
+      company: "Baidu"
+      year_deployed: 2025
+    - product: "ERNIE Bot (free consumer)"
+      company: "Baidu"
+      year_deployed: 2025
+    - product: "Hugging Face hosted"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    Baidu's pivot to Apache 2.0 was forced by the market — open-weight
+    Chinese models had eaten its enterprise share. ERNIE X1 (reasoning,
+    March 2025) and ERNIE-4.5-VL (vision-thinking) round out the
+    product line. Baidu Cloud is now a hosting layer rather than a
+    model moat.
+  why_it_matters: |
+    The shift from Baidu-closed to Baidu-open is the most visible
+    capitulation to the DeepSeek-led open-weight wave. It means EVERY
+    major Chinese hyperscaler (Alibaba, ByteDance via Doubao, Baidu,
+    Tencent, Huawei) now ships open-weight models at frontier scale.
+
+citations:
+  - type: release
+    key: baidu2025ernie45
+    title: "ERNIE 4.5 Open-Source Release"
+    year: 2025
+    venue: "Baidu AI Blog"
+    url: "https://ai.baidu.com/blog/ernie-4.5-open-source"
+  - type: paper
+    key: baidu2025erniepaper
+    title: "ERNIE 4.5 Technical Report"
+    year: 2025
+    arxiv: "2507.04543"
+    url: "https://arxiv.org/abs/2507.04543"
+---
+
+## The 10-variant lineup
+
+| Size | Type | Notes |
+|---|---|---|
+| 0.3B / 1.5B / 8B | Dense | Edge / on-device |
+| 21B / 70B | Dense | Workstation tier |
+| 28B-A3B / 70B-A14B | MoE | Cheap MoE |
+| 200B-A28B / 424B-A47B | MoE | Frontier flagship |
+| 28B-A3B-VL | MoE+Vision | Multimodal |
+| 28B-A3B-Thinking | MoE+Reasoning | ERNIE X1 lineage |
+
+All Apache 2.0.

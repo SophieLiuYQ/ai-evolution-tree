@@ -12,6 +12,7 @@ import {
   getSort,
   graphData,
   incoming,
+  isEdgeTypeEnabled,
   type Orient,
   setPinned,
 } from "./state";
@@ -63,6 +64,7 @@ export function renderHover(slug: string) {
   // EVERY rendered edge gets its labeled pill (§VII invariant: 1:1 edge to label).
   for (const e of edgesFor(orient)) {
     if (!ancestors.has(e.v) || !ancestors.has(e.w)) continue;
+    if (!isEdgeTypeEnabled(e.type)) continue;
     const style = data.edgeStyle[e.type];
     if (!style) continue;
     edgesGroup.appendChild(buildPath(e.d, style, orient, e.type));

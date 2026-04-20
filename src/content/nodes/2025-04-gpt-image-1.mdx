@@ -1,0 +1,72 @@
+---
+slug: gpt-image-1
+title: "GPT Image 1 / 1.5 — OpenAI's Image Frontier"
+date: 2025-04-23
+era: multimodal
+category: [generative, multimodal, cv]
+relationships:
+  - to: gpt-4o
+    type: builds_on
+    note: "Image generation head on the GPT-4o multimodal backbone; replaces DALL-E 3"
+authors:
+  - "OpenAI Team"
+org: "OpenAI"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "undisclosed"
+  architecture: "Multimodal transformer with image decoder"
+  release_type: api
+  modalities: [vision, generative]
+
+public_view:
+  plain_english: |
+    OpenAI's image generator integrated directly into ChatGPT and the
+    Responses API — released as gpt-image-1 in April 2025 and refined
+    to gpt-image-1.5 in late 2025. Excels at prompt adherence,
+    in-image text rendering, and style transfer. Currently leads the
+    Artificial Analysis image arena at ~1264 Elo.
+  analogy: |
+    DALL-E 3's successor that learned to actually READ the prompt.
+    Where DALL-E often missed details, gpt-image-1 nails specific
+    layouts, text, and reference styles.
+  applications:
+    - product: "ChatGPT (image generation)"
+      company: "OpenAI"
+      year_deployed: 2025
+    - product: "OpenAI Responses API"
+      company: "OpenAI"
+      year_deployed: 2025
+    - product: "Microsoft Copilot Designer"
+      company: "Microsoft"
+      year_deployed: 2025
+    - product: "Sora (text-to-video share backbone)"
+      company: "OpenAI"
+      year_deployed: 2025
+  investment_angle: |
+    Image generation in ChatGPT drives massive consumer engagement
+    (the "Studio Ghibli" trend in early 2025 single-handedly added
+    millions of users). At the API layer, gpt-image-1 is OpenAI's
+    answer to Adobe Firefly for commercial-safe image generation
+    with audit trails.
+  why_it_matters: |
+    Replaced DALL-E as the OpenAI image model and reasserted
+    OpenAI's frontier position after a year of MidJourney and Flux
+    leading. Demonstrated that backbone-shared multimodal models
+    beat single-modality image specialists on prompt adherence.
+
+citations:
+  - type: release
+    key: openai2025gptimage1
+    title: "Introducing 4o Image Generation"
+    year: 2025
+    venue: "OpenAI Blog"
+    url: "https://openai.com/index/introducing-4o-image-generation/"
+---
+
+## What's distinctive
+
+- **Native ChatGPT integration** — image gen is just another response type, not a separate tool
+- **Reference image input** — pass a photo, ask the model to restyle it, edit it, or extend it
+- **Best-in-class text rendering** — readable signs, posters, UI mockups
+- **C2PA + watermarking** for commercial trust

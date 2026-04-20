@@ -1,0 +1,71 @@
+---
+slug: wan-2
+title: "Wan 2.x — Alibaba's Open-Source Video Family"
+date: 2025-09-19
+era: multimodal
+category: [generative, multimodal]
+relationships:
+  - to: hunyuan-video
+    type: competes_with
+    note: "Open-weight Chinese video peer; Wan ships under Apache 2.0 across 2.2 / 2.5 / 2.6 / 2.7 with Thinking Mode"
+authors:
+  - "Alibaba Wan Team"
+org: "Alibaba"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "14B (Wan 2.2)"
+  architecture: "DiT (diffusion transformer) with Thinking Mode (2.7)"
+  release_type: open_weights
+  modalities: [vision, generative]
+  benchmarks:
+    - name: "VBench"
+      score: "84.7%"
+
+public_view:
+  plain_english: |
+    Alibaba's open-source video family — Wan 2.2 → 2.5 → 2.6 → 2.7 —
+    leads the open VBench leaderboard. Wan 2.7 (early 2026) added a
+    "Thinking Mode" that plans complex multi-shot videos before
+    generating, similar to Veo 3 Ingredients. Apache 2.0 throughout.
+  analogy: |
+    What Qwen is to text, Wan is to video — Alibaba's fully-open
+    play in a closed-dominated market.
+  applications:
+    - product: "Tongyi Wanxiang (Alibaba consumer)"
+      company: "Alibaba"
+      year_deployed: 2025
+    - product: "ModelScope hosted"
+      company: "Alibaba"
+      year_deployed: 2025
+    - product: "Hugging Face / fal.ai self-hosted"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    Alibaba's open video play, parallel to Qwen's open text play.
+    Strategic value: anchor Bailian Cloud video offerings and prove
+    that Alibaba can compete with ByteDance (closed Seedance) on
+    technical merits without licensing fees.
+  why_it_matters: |
+    Currently the strongest fully-open video model on VBench. Pushed
+    HunyuanVideo and other open competitors to keep up. Made open
+    video generation a real procurement option for media / agencies.
+
+citations:
+  - type: release
+    key: alibaba2025wan
+    title: "Wan 2.5 Release"
+    year: 2025
+    venue: "Alibaba Wan"
+    url: "https://github.com/Wan-Video/Wan2.2"
+---
+
+## Wan timeline
+
+| Version | Date | Key feature |
+|---|---|---|
+| Wan 2.0 | Mid 2024 | Initial release |
+| Wan 2.2 | Late 2024 | 14B params, VBench leader |
+| Wan 2.5 | Sep 2025 | Lip-sync + multi-shot |
+| Wan 2.6 | Late 2025 | 1080p/30fps |
+| Wan 2.7 | Early 2026 | Thinking Mode (plan-then-generate) |

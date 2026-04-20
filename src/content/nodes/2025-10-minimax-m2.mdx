@@ -1,0 +1,84 @@
+---
+slug: minimax-m2
+title: "MiniMax M2 — Lightning-Fast Open Reasoning"
+date: 2025-10-27
+era: reasoning
+category: [nlp, generative, reasoning, code]
+relationships:
+  - to: minimax-text-01
+    type: scales
+    note: "Same Lightning Attention lineage; M2 adds RL reasoning + agentic coding focus"
+  - to: kimi-k2-thinking
+    type: competes_with
+    note: "Both target open-weight reasoning frontier; M2 emphasizes inference speed"
+authors:
+  - "MiniMax Team"
+org: "MiniMax"
+breakthrough_score: 7
+status: active
+model_spec:
+  parameters: "230B total / 10B active MoE"
+  architecture: "Lightning Attention MoE"
+  context_window: 200000
+  release_type: open_weights
+  modalities: [text]
+  benchmarks:
+    - name: "Artificial Analysis Intelligence"
+      score: "61"
+    - name: "SWE-bench Verified"
+      score: "69.4%"
+    - name: "Terminal-Bench"
+      score: "46.3%"
+
+public_view:
+  plain_english: |
+    MiniMax's October 2025 reasoning model — 230B total parameters but
+    only 10B active per token thanks to mixture-of-experts. The 10B
+    active count means it's drastically cheaper to serve than peers
+    while still scoring at frontier reasoning levels. Released open
+    under the MIT license.
+  analogy: |
+    A car with a 230-horsepower engine but only 10 cylinders firing at
+    a time. You get the responsiveness of a smaller engine and the
+    capability of a bigger one — the right cylinders fire for the
+    right load.
+  applications:
+    - product: "MiniMax Chat (chat.minimax.io)"
+      company: "MiniMax"
+      year_deployed: 2025
+    - product: "MiniMax API (~50% cheaper than GPT-5-mini)"
+      company: "MiniMax"
+      year_deployed: 2025
+    - product: "Self-hosted via Hugging Face"
+      company: "Multiple"
+      year_deployed: 2025
+  investment_angle: |
+    M2's 10B-active count is the lowest at this benchmark tier — about
+    1/4 of DeepSeek-V3 active params for similar quality. That makes
+    it the cheapest credible open frontier model for high-throughput
+    serving (chatbots, assistants). Subsequent M2.1 (polyglot coding)
+    and M2.5 / M2.7 refresh the position monthly.
+  why_it_matters: |
+    Showed that Lightning Attention + ultra-low active-parameter MoE
+    can match denser reasoning models on benchmarks while serving 5×
+    faster. Reframes "frontier" along the cost-per-token axis, not
+    just quality.
+
+citations:
+  - type: release
+    key: minimax2025m2
+    title: "MiniMax M2 Model Release"
+    year: 2025
+    venue: "MiniMax Blog"
+    url: "https://www.minimax.io/news/minimax-m2"
+---
+
+## What's distinctive
+
+- **10B active / 230B total** — among the lowest active-parameter ratios at frontier benchmark tier
+- **Lightning Attention** — the same linear-attention variant pioneered in MiniMax-01; scales to 1M+ tokens cheaply
+- **MIT license** — full open-weight, no usage restrictions
+
+## Why it ships fast
+
+Inference cost scales with ACTIVE parameters, not total. M2's 10B active is roughly the cost of running a Llama 3.1 8B, but with 23× more total knowledge to draw from. For agent workflows that make 100+ LLM calls per task, the cost difference compounds.
