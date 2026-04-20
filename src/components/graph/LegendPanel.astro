@@ -23,6 +23,24 @@ const visibleEdges = Object.entries(edgeStyle).filter(
     Tech tree of ML/AI breakthroughs. Time → right.
   </p>
 
+  {/* Search — type a model name, jump to its card on the active pane */}
+  <div class="tree-search relative mt-4">
+    <input
+      id="tree-search-input"
+      type="search"
+      placeholder="Search a model…"
+      autocomplete="off"
+      spellcheck="false"
+      class="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-xs leading-none text-slate-700 placeholder-slate-400 shadow-sm focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+    />
+    <div
+      id="tree-search-dropdown"
+      class="hidden absolute left-0 right-0 z-30 mt-1 max-h-72 overflow-y-auto rounded-md border border-slate-200 bg-white shadow-lg"
+      role="listbox"
+      aria-label="Search results"
+    ></div>
+  </div>
+
   {/* Orient toggle */}
   <div
     class="orient-toggle mt-4 flex flex-col items-stretch gap-0.5 rounded-md border border-slate-300 bg-white p-0.5"
@@ -150,6 +168,45 @@ const visibleEdges = Object.entries(edgeStyle).filter(
   }
   .sort-btn:hover:not([aria-selected="true"]) {
     background: #f1f5f9;
+  }
+
+  /* ===== Search dropdown ===== */
+  #tree-search-dropdown:empty,
+  #tree-search-dropdown.hidden {
+    display: none;
+  }
+  #tree-search-dropdown :global(.search-hit) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.1s ease;
+  }
+  #tree-search-dropdown :global(.search-hit:last-child) {
+    border-bottom: none;
+  }
+  #tree-search-dropdown :global(.search-hit:hover),
+  #tree-search-dropdown :global(.search-hit.first-hit) {
+    background: var(--accent-soft, #eff6ff);
+  }
+  #tree-search-dropdown :global(.search-hit-title) {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.2;
+  }
+  #tree-search-dropdown :global(.search-hit-org) {
+    font-size: 10px;
+    color: #64748b;
+    font-family: ui-monospace, monospace;
   }
 
   /* Edge-type toggle rows */

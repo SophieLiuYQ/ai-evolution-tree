@@ -8,7 +8,7 @@ import PublicView from "../../components/PublicView.astro";
 import CitationsBlock from "../../components/CitationsBlock.astro";
 import ModelSpec from "../../components/ModelSpec.astro";
 import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
-import MiniGraph from "../../components/MiniGraph.astro";
+import LineageZoom from "../../components/LineageZoom.astro";
 
 export async function getStaticPaths() {
   const nodes = await getCollection("nodes");
@@ -61,13 +61,13 @@ const fmtMonth = d.date.toLocaleDateString("en-US", {
     </header>
 
     <div class="mb-6">
-      <MiniGraph nodes={allNodes} currentSlug={d.slug} />
+      <LineageZoom nodes={allNodes} currentSlug={d.slug} />
     </div>
 
     <ViewToggle />
 
     <div data-view-section="tech" class="prose-node max-w-none">
-      {d.model_spec && <ModelSpec spec={d.model_spec} />}
+      {d.model_spec && <ModelSpec spec={d.model_spec} org={d.org} modelTitle={d.title} />}
       <Content />
     </div>
 

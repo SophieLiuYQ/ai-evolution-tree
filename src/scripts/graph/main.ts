@@ -4,6 +4,7 @@
 import { attachEdgeTypeHandlers } from "./edge-types";
 import { attachInteractions } from "./hover";
 import { attachOrientHandlers } from "./orient";
+import { attachSearchHandlers } from "./search";
 import { attachSortHandlers } from "./sort";
 import { initState } from "./state";
 import { attachStickyHeaders } from "./sticky";
@@ -17,4 +18,5 @@ document.addEventListener("DOMContentLoaded", () => {
   attachSortHandlers();
   attachEdgeTypeHandlers();
   attachStickyHeaders();
+  attachSearchHandlers();
 });

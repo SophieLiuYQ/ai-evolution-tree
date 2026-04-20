@@ -75,6 +75,20 @@ const metaText = clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX);
     stroke-width: 4;
   }
 
+  /* Search-result pulse: when a card is jumped to from the search box,
+     thicken its border + flash a glow in the card's OWN org color
+     (set as --highlight-shadow on the link by search.ts). The card's
+     `stroke` attribute is left alone so the border keeps its identity
+     (Anthropic orange / Alibaba yellow / OpenAI green / ...). */
+  .node-link.search-highlight .node > rect.card-border {
+    stroke-width: 5;
+    animation: search-pulse 0.7s ease-in-out 3;
+  }
+  @keyframes search-pulse {
+    0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+    50% { filter: drop-shadow(0 0 12px var(--highlight-shadow, rgba(15, 23, 42, 0.45))); }
+  }
+
   /* ===== Per-card action buttons (zoom + pin) — outside the card,
      hover-revealed via the parent .node-link. ===== */
   .zoom-btn,

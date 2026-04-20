@@ -186,6 +186,12 @@ const benchmark = z.object({
   name: z.string(),
   score: z.string(),
   vs_baseline: z.string().optional(),
+  // Citation source for the score — required to be one of the three
+  // approved leaderboards: llm-stats.com, huggingface.co,
+  // artificialanalysis.ai. Optional in schema (back-compat with existing
+  // nodes); ModelSpec.astro falls back to a per-benchmark default URL
+  // pointing at one of the three sources when omitted.
+  source_url: z.string().url().optional(),
 });
 
 const modelSpec = z.object({
@@ -199,6 +205,10 @@ const modelSpec = z.object({
     .optional(),
   modalities: z.array(z.string()).optional(),
   benchmarks: z.array(benchmark).optional(),
+  // Official model / family page on the lab's own site (e.g.
+  // https://www.anthropic.com/news/claude-3-family). Optional —
+  // ModelSpec.astro falls back to an org→homepage lookup when omitted.
+  homepage: z.string().url().optional(),
 });
 
 const nodes = defineCollection({

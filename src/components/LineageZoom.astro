@@ -1,0 +1,294 @@
+---
+// Server-rendered 1-hop lineage view. Shown on the individual node detail
+// page in place of the whole-tree minimap — fits the same screen real estate
+// but gives the reader actual context (parents / focused / children with
+// labels on edges) instead of "you are this dot, somewhere."
+
+import type { CollectionEntry } from "astro:content";
+import type { Placed, Rel } from "../lib/graph/types";
+import Card from "./graph/Card.astro";
+import {
+  edgeStyle,
+  HIDDEN_EDGE_TYPES,
+  NODE_H,
+  NODE_W,
+} from "../lib/graph/constants";
+
+interface Props {
+  nodes: CollectionEntry<"nodes">[];
+  currentSlug: string;
+}
+const { nodes, currentSlug } = Astro.props;
+
+const byId = new Map(nodes.map((n) => [n.data.slug, n]));
+const focused = byId.get(currentSlug);
+if (!focused) throw new Error(`LineageZoom: unknown slug ${currentSlug}`);
+
+// Parents: focused node's outgoing relationships (it builds on / scales / ...)
+type EdgeSpec = { v: string; w: string; type: Rel["type"]; note?: string };
+const parentEdges: EdgeSpec[] = [];
+for (const r of focused.data.relationships) {
+  if (HIDDEN_EDGE_TYPES.has(r.type)) continue;
+  if (!byId.has(r.to)) continue;
+  parentEdges.push({ v: r.to, w: currentSlug, type: r.type, note: r.note });
+}
+
+// Children: any other node whose relationships reference focused
+const childEdges: EdgeSpec[] = [];
+for (const n of nodes) {
+  if (n.data.slug === currentSlug) continue;
+  for (const r of n.data.relationships) {
+    if (HIDDEN_EDGE_TYPES.has(r.type)) continue;
+    if (r.to !== currentSlug) continue;
+    childEdges.push({ v: n.data.slug, w: currentSlug, type: r.type, note: r.note });
+  }
+}
+
+const parents = parentEdges.map((e) => byId.get(e.v)!).filter(Boolean);
+const children = childEdges
+  .map((e) => ({ node: byId.get(e.v)!, type: e.type, note: e.note }))
+  .filter((c) => !!c.node);
+
+// ===== Layout — 3 vertical rows: parents / focused / children =====
+const H_GAP = 40; // horizontal gap between sibling cards in a row
+const V_GAP = 70; // vertical gap between rows (room for edge curves + label)
+const PAD = 40;
+
+function rowWidth(count: number) {
+  return count === 0 ? 0 : count * NODE_W + (count - 1) * H_GAP;
+}
+
+const parentsW = rowWidth(parents.length);
+const childrenW = rowWidth(children.length);
+const contentW = Math.max(parentsW, childrenW, NODE_W);
+const W = contentW + 2 * PAD;
+
+const rowY = {
+  parents: PAD,
+  focused: PAD + NODE_H + V_GAP,
+  children: PAD + NODE_H + V_GAP + NODE_H + V_GAP,
+};
+const totalH = rowY.children + NODE_H + PAD + (children.length > 0 ? 0 : -NODE_H - V_GAP);
+const H =
+  parents.length === 0 && children.length === 0
+    ? NODE_H + 2 * PAD
+    : parents.length === 0
+      ? rowY.children + NODE_H + PAD - rowY.focused + NODE_H + PAD
+      : children.length === 0
+        ? rowY.focused + NODE_H + PAD
+        : rowY.children + NODE_H + PAD;
+
+// Shift top row up if no parents so focused is at the top
+const shiftUp = parents.length === 0 ? rowY.focused - PAD : 0;
+
+function rowX(count: number, i: number) {
+  const rw = rowWidth(count);
+  const startX = (W - rw) / 2;
+  return startX + i * (NODE_W + H_GAP);
+}
+
+// Build Placed structs for <Card>
+function placedFor(
+  node: CollectionEntry<"nodes">,
+  x: number,
+  y: number,
+): Placed {
+  return {
+    slug: node.data.slug,
+    x: x + NODE_W / 2,
+    y: y + NODE_H / 2 - shiftUp,
+    width: NODE_W,
+    height: NODE_H,
+    org: node.data.org,
+    node,
+  };
+}
+
+const parentPlaced = parents.map((n, i) =>
+  placedFor(n, rowX(parents.length, i), rowY.parents),
+);
+const focusedPlaced = placedFor(focused, rowX(1, 0), rowY.focused);
+const childPlaced = children.map((c, i) =>
+  placedFor(c.node, rowX(children.length, i), rowY.children),
+);
+
+// ===== Edges — top-to-bottom cubic bezier between card edges =====
+type Edge = {
+  d: string;
+  midX: number;
+  midY: number;
+  color: string;
+  dash?: string;
+  label: string;
+  type: string;
+};
+
+function bezierMid(
+  x1: number, y1: number,
+  c1x: number, c1y: number,
+  c2x: number, c2y: number,
+  x2: number, y2: number,
+) {
+  const t = 0.5;
+  const u = 1 - t;
+  return {
+    x: u * u * u * x1 + 3 * u * u * t * c1x + 3 * u * t * t * c2x + t * t * t * x2,
+    y: u * u * u * y1 + 3 * u * u * t * c1y + 3 * u * t * t * c2y + t * t * t * y2,
+  };
+}
+
+function routeDown(src: Placed, tgt: Placed, type: string, srcPerpIdx: number, srcCount: number): Edge {
+  const spread = srcCount > 1 ? ((srcPerpIdx - (srcCount - 1) / 2) * 12) : 0;
+  const sx = src.x + spread;
+  const sy = src.y + src.height / 2;
+  const tx = tgt.x - spread;
+  const ty = tgt.y - tgt.height / 2;
+  const dy = ty - sy;
+  const c1y = sy + dy * 0.5;
+  const c2y = ty - dy * 0.5;
+  const mid = bezierMid(sx, sy, sx, c1y, tx, c2y, tx, ty);
+  const st = edgeStyle[type as Rel["type"]];
+  return {
+    d: `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${ty.toFixed(1)}`,
+    midX: mid.x,
+    midY: mid.y,
+    color: st?.color ?? "#64748b",
+    dash: st?.dash,
+    label: st?.label ?? type,
+    type,
+  };
+}
+
+const edges: Edge[] = [];
+// parent → focused edges
+parentEdges.forEach((e, i) => {
+  const src = parentPlaced[i];
+  edges.push(routeDown(src, focusedPlaced, e.type, 0, 1));
+});
+// focused → child edges (focused as source; stagger by child count)
+childEdges.forEach((e, i) => {
+  const tgt = childPlaced[i];
+  edges.push(routeDown(focusedPlaced, tgt, e.type, i, childEdges.length));
+});
+
+const viewBoxH = H;
+const viewBoxW = W;
+---
+
+<aside class="lineage-zoom rounded-lg border border-slate-200 bg-slate-50 p-3 shadow-sm">
+  <div class="mb-2 flex items-baseline justify-between gap-2 text-xs">
+    <span class="font-semibold text-slate-700">🔎 Lineage</span>
+    <span class="text-slate-500">
+      {parents.length} parent{parents.length === 1 ? "" : "s"} · {children.length} child{children.length === 1 ? "" : "ren"}
+    </span>
+  </div>
+  <div class="overflow-x-auto">
+    <svg
+      width={viewBoxW}
+      height={viewBoxH}
+      viewBox={`0 0 ${viewBoxW} ${viewBoxH}`}
+      class="block lineage-svg"
+      role="img"
+      aria-labelledby="lineage-zoom-label"
+      style={`max-width: 100%; height: auto;`}
+    >
+      <title id="lineage-zoom-label">
+        1-hop lineage view: parents (above), {focused.data.title} (center), children (below)
+      </title>
+      <defs>
+        {Object.entries(edgeStyle).map(([type, style]) => (
+          <marker
+            id={`lz-arrow-${type}`}
+            viewBox="0 0 10 10"
+            refX="9"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            orient="auto-start-reverse"
+          >
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={style.color} />
+          </marker>
+        ))}
+      </defs>
+
+      {/* Edges */}
+      <g class="edges">
+        {edges.map((e) => (
+          <path
+            d={e.d}
+            fill="none"
+            stroke={e.color}
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-dasharray={e.dash ?? "none"}
+            opacity="0.9"
+            marker-end={`url(#lz-arrow-${e.type})`}
+          />
+        ))}
+      </g>
+
+      {/* Nodes */}
+      <g class="nodes">
+        {parentPlaced.map((p) => <Card p={p} />)}
+        <Card p={focusedPlaced} />
+        {childPlaced.map((p) => <Card p={p} />)}
+      </g>
+
+      {/* Edge-type labels (pills at midpoints) — rendered LAST so they overlay edges */}
+      <g class="edge-labels">
+        {edges.map((e) => {
+          const w = e.label.length * 6.5 + 16;
+          return (
+            <g transform={`translate(${e.midX}, ${e.midY})`}>
+              <rect
+                x={-w / 2}
+                y={-9}
+                width={w}
+                height={18}
+                rx="9"
+                fill="white"
+                stroke={e.color}
+                stroke-width="1.2"
+              />
+              <text
+                x="0"
+                y="3.5"
+                text-anchor="middle"
+                font-size="10.5"
+                font-family="ui-monospace, monospace"
+                font-weight="700"
+                fill={e.color}
+              >
+                {e.label}
+              </text>
+            </g>
+          );
+        })}
+      </g>
+
+    </svg>
+  </div>
+  {parents.length === 0 && children.length === 0 && (
+    <p class="mt-2 text-xs text-slate-500">
+      No other nodes are linked to this one yet.
+    </p>
+  )}
+</aside>
+
+<style>
+  .lineage-zoom {
+    overflow: hidden;
+  }
+  .lineage-svg {
+    /* Card components embed their own hover rules + zoom/pin buttons.
+       Inside LineageZoom those buttons don't wire up (no main-graph JS),
+       so suppress them with display:none. */
+  }
+  .lineage-svg :global(.zoom-btn),
+  .lineage-svg :global(.pin-btn) {
+    display: none !important;
+  }
+  .lineage-svg :global(.hover-bay) {
+    display: none !important;
+  }
+</style>

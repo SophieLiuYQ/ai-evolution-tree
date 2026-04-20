@@ -1,4 +1,16 @@
 ---
+// Model Spec — value-driven implication + ⓘ tooltip + citations.
+//
+// Sourcing rules (per project policy):
+//   • Every benchmark / ranking score MUST link to one of:
+//       llm-stats.com · huggingface.co · artificialanalysis.ai
+//     (per-benchmark `source_url` overrides; otherwise default lookup
+//     resolves to one of the three).
+//   • Every model spec block MUST link to the model's official
+//     homepage (`spec.homepage` overrides; otherwise org → homepage
+//     fallback applies). Both ensure no number on this page is
+//     dangling without an authority behind it.
+
 interface Spec {
   parameters?: string;
   architecture?: string;
@@ -7,12 +19,22 @@ interface Spec {
   training_compute?: string;
   release_type?: string;
   modalities?: string[];
-  benchmarks?: { name: string; score: string; vs_baseline?: string }[];
+  benchmarks?: {
+    name: string;
+    score: string;
+    vs_baseline?: string;
+    source_url?: string;
+  }[];
+  homepage?: string;
 }
 interface Props {
   spec: Spec;
+  org?: string;
+  modelTitle?: string;
 }
-const { spec } = Astro.props;
+const { spec, org, modelTitle } = Astro.props;
+
+// ============== Value formatters ==============
 
 const fmtCtx = (n?: number) => {
   if (!n) return null;
@@ -21,34 +43,466 @@ const fmtCtx = (n?: number) => {
   return `${n} tokens`;
 };
 
-const rows: { label: string; value: string | null }[] = [
-  { label: "Parameters", value: spec.parameters ?? null },
-  { label: "Architecture", value: spec.architecture ?? null },
-  { label: "Context window", value: fmtCtx(spec.context_window) },
-  { label: "Training tokens", value: spec.training_tokens ?? null },
-  { label: "Training compute", value: spec.training_compute ?? null },
-  { label: "Release type", value: spec.release_type ?? null },
-  { label: "Modalities", value: spec.modalities ? spec.modalities.join(", ") : null },
-];
-const visibleRows = rows.filter((r) => r.value);
+// ============== Value-driven IMPLICATIONS ==============
+// One sentence about what this specific value means in practice.
+
+function paramImpl(s: string): string {
+  const isMoE = /\b(MoE|active|experts?)\b/i.test(s);
+  const m = s.match(/(\d+(?:\.\d+)?)\s*([BMK])/i);
+  if (!m) return isMoE ? "MoE — total ≠ active params" : "";
+  const n = parseFloat(m[1]);
+  const unit = m[2].toUpperCase();
+  let b = n;
+  if (unit === "M") b = n / 1000;
+  if (unit === "K") b = n / 1_000_000;
+  const tier =
+    b < 3
+      ? "Edge / mobile-class"
+      : b < 15
+        ? "Single consumer GPU (RTX 4090)"
+        : b < 80
+          ? "Workstation (A100 80GB)"
+          : b < 300
+            ? "Multi-GPU (A100 × 4–8)"
+            : "Datacenter-scale";
+  return isMoE ? `${tier} · MoE (active params drive cost)` : tier;
+}
+
+function contextImpl(n: number): string {
+  if (n < 16_000) return "Single chat / short prompt";
+  if (n < 64_000) return "Long doc / chapter fits";
+  if (n < 256_000) return "Whole book / long PDF fits";
+  if (n < 1_000_000) return "Multi-doc RAG, full repo possible";
+  return "Whole codebase / corpus fits";
+}
+
+function licenseImpl(t: string): string {
+  switch (t) {
+    case "open_weights":
+      return "Self-hostable — no vendor lock";
+    case "api":
+      return "Vendor-hosted only — pay per token";
+    case "product":
+      return "Embedded in a product — no raw access";
+    case "paper":
+      return "Research artifact — no public weights";
+    case "demo":
+      return "Limited / waitlisted access";
+    default:
+      return "";
+  }
+}
+
+function archImpl(s: string): string {
+  const x = s.toLowerCase();
+  if (/\bmoe\b|mixture/.test(x))
+    return "MoE — only some experts fire per token (cheap inference)";
+  if (/mamba|ssm|state[- ]?space/.test(x))
+    return "Linear-time alternative to attention";
+  if (/diffusion|rectified[- ]?flow/.test(x))
+    return "Iterative-refinement generation";
+  if (/sparse[- ]?attention/.test(x))
+    return "Sub-quadratic attention — long context cheaper";
+  if (/decoder[- ]?only|gpt[- ]?style/.test(x)) return "Standard LLM topology";
+  if (/encoder[- ]?decoder|seq2seq/.test(x))
+    return "Encoder-decoder (seq2seq lineage)";
+  return "";
+}
+
+function modalitiesImpl(arr: string[]): string {
+  const set = new Set(arr.map((m) => m.toLowerCase()));
+  if (set.has("video") || (set.has("audio") && set.has("vision")))
+    return "Native omni-modal — text+image+audio+video";
+  if (set.has("vision") && set.has("audio"))
+    return "Reads images and listens to speech";
+  if (set.has("vision")) return "Reads images / PDFs / screenshots";
+  if (set.has("audio")) return "Speech I/O";
+  if (arr.length === 1) return `${arr[0]} only`;
+  return arr.join(" + ");
+}
+
+function trainingTokensImpl(s: string): string {
+  const m = s.match(/(\d+(?:\.\d+)?)\s*([TB])/i);
+  if (!m) return "";
+  const n = parseFloat(m[1]);
+  const t = m[2].toUpperCase() === "T" ? n : n / 1000;
+  if (t >= 15) return "Heavily trained — modern frontier scale";
+  if (t >= 5) return "Modern scale (post-Chinchilla optimal)";
+  if (t >= 1) return "Light training — likely undertrained";
+  return "Small training corpus";
+}
+
+function computeImpl(s: string): string {
+  const m = s.match(/(\d+(?:\.\d+)?)e(\+?)(\d+)/i);
+  if (!m) return "";
+  const exp = parseInt(m[3], 10);
+  if (exp >= 26) return "Frontier-class — datacenter-month order";
+  if (exp >= 25) return "GPT-4 era (~$50–100M training cost)";
+  if (exp >= 24) return "GPT-3 era (~$5–15M training cost)";
+  return "Pre-frontier compute";
+}
+
+// ============== "Why this matters" tooltip help text ==============
+// One concise paragraph + a "Learn more" link to the most relevant
+// internal node or external resource.
+
+const FIELD_HELP: Record<
+  string,
+  { question: string; body: string; link?: { label: string; href: string } }
+> = {
+  parameters: {
+    question: "How many GPUs do I need to run this?",
+    body: "7B fits a single RTX 4090. 70B needs an A100 80GB or 4× consumer GPUs. 700B+ needs a datacenter. For Mixture-of-Experts, total parameters set RAM but only the active parameters drive inference cost — MoE wins on cost-per-token.",
+    link: { label: "Scaling laws (Kaplan 2020)", href: "/node/scaling-laws/" },
+  },
+  architecture: {
+    question: "What's the topology — and what does that imply about cost?",
+    body: "Decoder-only transformers are the default since GPT-3. Mixture-of-Experts (MoE) cuts inference cost by activating a fraction of params per token. State-space models (Mamba) and sparse attention dodge attention's n² scaling for long context.",
+    link: { label: "Transformer (Vaswani 2017)", href: "/node/transformer/" },
+  },
+  context_window: {
+    question: "How much can I shove into a single prompt?",
+    body: "8k = single chat. 32–128k = long documents. 1M+ = whole codebases. The context window directly determines whether the model fits your RAG / agent / long-doc workflow without chunking gymnastics.",
+    link: { label: "DeepSeek V3.2 (sparse attention)", href: "/node/deepseek-v3-2/" },
+  },
+  training_tokens: {
+    question: "Was it trained on enough data?",
+    body: "Chinchilla showed that compute-optimal training pairs ~20 tokens per parameter. 15T+ tokens at frontier scale is heavily trained; 1T at 70B is undertrained and explains weak performance even before benchmarks.",
+    link: { label: "Chinchilla scaling laws", href: "/node/chinchilla/" },
+  },
+  training_compute: {
+    question: "How much did it cost to train — and who can replicate it?",
+    body: "Total FLOPs is the rough cost proxy. GPT-4 ≈ 2×10²⁵ FLOPs ≈ $50–100M. DeepSeek V3 reported ~$5.6M via algorithmic efficiency. Lower compute = more replicable = thinner moat.",
+    link: { label: "Epoch AI compute trends", href: "https://epoch.ai/data/notable-ai-models" },
+  },
+  release_type: {
+    question: "Can I get the weights — and on what license?",
+    body: "open_weights: download and self-host. api: rent per token. product: only inside a vendor app. paper / demo: theoretical or waitlisted. The 2026 split is regional — most Chinese frontier models are open; most US frontier models are closed.",
+    link: { label: "Filter the tree by license", href: "/tree/" },
+  },
+  modalities: {
+    question: "What inputs and outputs does it handle natively?",
+    body: "Native multimodal (single backbone for text+image+audio+video) is now table stakes for frontier models like GPT-5, Gemini 3, Claude 4.x. Single-modality models are increasingly niche.",
+    link: { label: "GPT-4o (native omni-modal)", href: "/node/gpt-4o/" },
+  },
+  benchmarks: {
+    question: "How is it actually measured — and against what baseline?",
+    body: "Absolute scores mean little without context. Always read the baseline column: a 70% on SWE-bench is mediocre against a 72% Claude baseline, frontier against a 49% one. Benchmark hill-climbing also drifts (training contamination), so trust deltas more than absolute peaks.",
+    link: { label: "Open LLM Leaderboard", href: "https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" },
+  },
+};
+
+// ============== Benchmark → leaderboard source ==============
+// Default citation source for each benchmark. Constrained to the three
+// approved authorities: artificialanalysis.ai (frontier evals),
+// huggingface.co (open-weight evals), llm-stats.com (cross-model
+// comparison). A node's per-benchmark `source_url` overrides this.
+
+type LBProvider = "artificialanalysis" | "huggingface" | "llm-stats";
+const LB_HOME: Record<LBProvider, { label: string; url: string }> = {
+  "artificialanalysis": { label: "Artificial Analysis", url: "https://artificialanalysis.ai/" },
+  "huggingface": { label: "Hugging Face", url: "https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" },
+  "llm-stats": { label: "LLM Stats", url: "https://llm-stats.com/" },
+};
+
+const BENCHMARK_PROVIDER: Record<string, LBProvider> = {
+  // Frontier reasoning + generic LLM (artificialanalysis)
+  "MMLU": "artificialanalysis",
+  "MMLU-Pro": "artificialanalysis",
+  "GPQA": "artificialanalysis",
+  "GPQA Diamond": "artificialanalysis",
+  "AIME": "artificialanalysis",
+  "AIME 2024": "artificialanalysis",
+  "AIME 2025": "artificialanalysis",
+  "Humanity's Last Exam": "artificialanalysis",
+  "BrowseComp": "artificialanalysis",
+  "Artificial Analysis Intelligence": "artificialanalysis",
+  // Coding (artificialanalysis tracks SWE-bench Verified)
+  "SWE-bench": "artificialanalysis",
+  "SWE-bench Verified": "artificialanalysis",
+  "HumanEval": "huggingface",
+  "Terminal-Bench": "artificialanalysis",
+  "LiveCodeBench v5": "artificialanalysis",
+  "RepoBench": "huggingface",
+  "Codeforces": "artificialanalysis",
+  // Math
+  "MATH": "huggingface",
+  "GSM8K": "huggingface",
+  // Multimodal (artificialanalysis)
+  "MathVista": "artificialanalysis",
+  "MMMU": "artificialanalysis",
+  "MMMU-Pro": "artificialanalysis",
+  // Image / video (artificialanalysis covers image + video arenas)
+  "VBench": "artificialanalysis",
+  // Cross-comparison (llm-stats)
+  "ChatBot Arena": "llm-stats",
+  "ChatBot Arena Elo": "llm-stats",
+  "LMArena": "llm-stats",
+  "ARC-AGI": "artificialanalysis",
+  // Hallucination (artificialanalysis tracks FACTS Grounding)
+  "FACTS Grounding": "artificialanalysis",
+  "Hallucination rate (FACTS Grounding)": "artificialanalysis",
+  // Tool use
+  "BFL-v3 tool use": "artificialanalysis",
+  "BFCL-v3 tool use": "artificialanalysis",
+};
+
+// Resolve a citation URL for a benchmark row. Priority:
+//   1. explicit source_url on the row
+//   2. exact-match provider in BENCHMARK_PROVIDER
+//   3. prefix-match provider (e.g., "AIME 2025" → "AIME")
+//   4. default to artificialanalysis.ai homepage
+function benchSource(b: { name: string; source_url?: string }): {
+  label: string;
+  url: string;
+} {
+  if (b.source_url) {
+    // Detect which provider hosts the URL for the label
+    if (/llm-stats\.com/.test(b.source_url)) return { label: "LLM Stats", url: b.source_url };
+    if (/huggingface\.co/.test(b.source_url)) return { label: "Hugging Face", url: b.source_url };
+    if (/artificialanalysis\.ai/.test(b.source_url))
+      return { label: "Artificial Analysis", url: b.source_url };
+    return { label: "Source", url: b.source_url };
+  }
+  let provider: LBProvider | undefined = BENCHMARK_PROVIDER[b.name];
+  if (!provider) {
+    for (const k of Object.keys(BENCHMARK_PROVIDER)) {
+      if (b.name.startsWith(k)) {
+        provider = BENCHMARK_PROVIDER[k];
+        break;
+      }
+    }
+  }
+  return LB_HOME[provider ?? "artificialanalysis"];
+}
+
+// ============== Org → official homepage fallback ==============
+// Used when the node's model_spec.homepage is missing.
+
+const ORG_HOMEPAGE: Record<string, string> = {
+  "OpenAI": "https://openai.com/",
+  "Anthropic": "https://www.anthropic.com/",
+  "Google": "https://ai.google/",
+  "Google DeepMind": "https://deepmind.google/",
+  "DeepMind": "https://deepmind.google/",
+  "Google Brain": "https://research.google/teams/brain/",
+  "Meta AI": "https://ai.meta.com/",
+  "Microsoft": "https://www.microsoft.com/en-us/research/",
+  "Mistral AI": "https://mistral.ai/",
+  "Stability AI": "https://stability.ai/",
+  "EleutherAI": "https://www.eleuther.ai/",
+  "Cohere": "https://cohere.com/",
+  "xAI": "https://x.ai/",
+  "Alibaba": "https://qwen.ai/",
+  "DeepSeek": "https://www.deepseek.com/",
+  "Tsinghua / Zhipu": "https://z.ai/",
+  "01.AI": "https://www.01.ai/",
+  "Baidu": "https://research.baidu.com/",
+  "Tencent": "https://hunyuan.tencent.com/",
+  "Moonshot AI": "https://www.moonshot.cn/",
+  "MiniMax": "https://www.minimax.io/",
+  "ByteDance": "https://www.volcengine.com/",
+  "Stepfun": "https://www.stepfun.ai/",
+  "Suno": "https://suno.com/",
+  "Runway": "https://runwayml.com/",
+  "Black Forest Labs": "https://blackforestlabs.ai/",
+  "Databricks": "https://www.databricks.com/research",
+  "Perplexity": "https://www.perplexity.ai/",
+  "Kuaishou": "https://kling.kuaishou.com/",
+  "Hugging Face": "https://huggingface.co/",
+  "BigScience": "https://bigscience.huggingface.co/",
+  "Allen AI": "https://allenai.org/",
+  "Salesforce": "https://www.salesforce.com/ai/",
+  "Nvidia": "https://www.nvidia.com/en-us/ai/",
+  "Apple": "https://machinelearning.apple.com/",
+  "IBM": "https://research.ibm.com/artificial-intelligence",
+  "Huawei": "https://www.huaweicloud.com/intl/en-us/product/pangu.html",
+  "Xiaomi": "https://www.xiaomi.com/",
+  "Ant Group": "https://www.antgroup.com/en/research",
+  "Shanghai AI Lab": "https://www.shlab.org.cn/",
+  "BAAI": "https://www.baai.ac.cn/english.html",
+  "AI21 Labs": "https://www.ai21.com/",
+  "Reka AI": "https://www.reka.ai/",
+  "Adobe": "https://research.adobe.com/",
+  "Amazon": "https://www.aboutamazon.com/news/aws/amazon-nova-foundation-models",
+  "Arc Institute": "https://arcinstitute.org/",
+  "Boston Dynamics": "https://bostondynamics.com/",
+  "Cartesia": "https://cartesia.ai/",
+  "Cognition": "https://www.cognition.ai/",
+  "ElevenLabs": "https://elevenlabs.io/",
+  "Figure AI": "https://www.figure.ai/",
+  "Ideogram": "https://ideogram.ai/",
+  "Lightricks": "https://www.lightricks.com/",
+  "Liquid AI": "https://www.liquid.ai/",
+  "Luma AI": "https://lumalabs.ai/",
+  "Midjourney": "https://www.midjourney.com/",
+  "MIT": "https://www.csail.mit.edu/",
+  "Physical Intelligence": "https://www.physicalintelligence.company/",
+  "Pika Labs": "https://pika.art/",
+  "Sesame": "https://www.sesame.com/",
+  "Snowflake": "https://www.snowflake.com/en/data-cloud/snowflake-arctic/",
+  "Synthesia": "https://www.synthesia.io/",
+  "Tesla": "https://www.tesla.com/AI",
+  "Together AI": "https://www.together.ai/",
+  "Ultralytics": "https://www.ultralytics.com/",
+  "Unitree": "https://www.unitree.com/",
+  "Voyage AI": "https://www.voyageai.com/",
+  "Wayve": "https://wayve.ai/",
+  "Writer": "https://writer.com/",
+  "Hedra": "https://www.hedra.com/",
+  "Hume AI": "https://hume.ai/",
+  "Nari Labs": "https://nari.ai/",
+  "Recraft": "https://www.recraft.ai/",
+};
+
+const officialUrl = spec.homepage ?? (org ? ORG_HOMEPAGE[org] : undefined);
+
+// ============== Build the row data ==============
+
+type Row = {
+  key: string;
+  label: string;
+  value: string;
+  implication: string;
+};
+
+const rows: Row[] = [];
+if (spec.parameters)
+  rows.push({
+    key: "parameters",
+    label: "Parameters",
+    value: spec.parameters,
+    implication: paramImpl(spec.parameters),
+  });
+if (spec.architecture)
+  rows.push({
+    key: "architecture",
+    label: "Architecture",
+    value: spec.architecture,
+    implication: archImpl(spec.architecture),
+  });
+if (spec.context_window)
+  rows.push({
+    key: "context_window",
+    label: "Context window",
+    value: fmtCtx(spec.context_window) ?? "",
+    implication: contextImpl(spec.context_window),
+  });
+if (spec.training_tokens)
+  rows.push({
+    key: "training_tokens",
+    label: "Training tokens",
+    value: spec.training_tokens,
+    implication: trainingTokensImpl(spec.training_tokens),
+  });
+if (spec.training_compute)
+  rows.push({
+    key: "training_compute",
+    label: "Training compute",
+    value: spec.training_compute,
+    implication: computeImpl(spec.training_compute),
+  });
+if (spec.release_type)
+  rows.push({
+    key: "release_type",
+    label: "Release type",
+    value: spec.release_type,
+    implication: licenseImpl(spec.release_type),
+  });
+if (spec.modalities && spec.modalities.length)
+  rows.push({
+    key: "modalities",
+    label: "Modalities",
+    value: spec.modalities.join(", "),
+    implication: modalitiesImpl(spec.modalities),
+  });
 ---
 
-<section class="mb-8 rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm">
-  <h2 class="mb-4 text-sm uppercase tracking-wider text-[var(--accent)]">
-    Model spec
-  </h2>
+<section class="model-spec mb-8 rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm">
+  <div class="mb-4 flex items-baseline justify-between gap-3">
+    <h2 class="text-sm uppercase tracking-wider text-[var(--accent)]">
+      Model spec
+    </h2>
+    {officialUrl && (
+      <a
+        href={officialUrl}
+        target="_blank"
+        rel="noopener"
+        class="official-link"
+        title={`Official site for ${modelTitle ?? "this model"}`}
+      >
+        Official site ↗
+      </a>
+    )}
+  </div>
+
+  {officialUrl && (
+    <p class="mb-4 text-xs text-[var(--fg-muted)]">
+      Specs and claims sourced from the
+      {" "}
+      <a
+        href={officialUrl}
+        target="_blank"
+        rel="noopener"
+        class="text-[var(--accent)] underline-offset-2 hover:underline"
+      >
+        official lab page
+      </a>
+      {". "}
+      Benchmark scores cite
+      {" "}
+      <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener" class="text-[var(--accent)] underline-offset-2 hover:underline">artificialanalysis.ai</a>
+      {", "}
+      <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" target="_blank" rel="noopener" class="text-[var(--accent)] underline-offset-2 hover:underline">huggingface.co</a>
+      {", or "}
+      <a href="https://llm-stats.com/" target="_blank" rel="noopener" class="text-[var(--accent)] underline-offset-2 hover:underline">llm-stats.com</a>
+      {"."}
+    </p>
+  )}
 
   {
-    visibleRows.length > 0 && (
-      <dl class="mb-4 grid grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
-        {visibleRows.map((r) => (
-          <div class="flex items-baseline gap-2 border-b border-[var(--border)] py-1.5">
-            <dt class="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
-              {r.label}
-            </dt>
-            <dd class="ml-auto text-right font-mono text-[var(--fg)]">{r.value}</dd>
-          </div>
-        ))}
+    rows.length > 0 && (
+      <dl class="mb-6 grid grid-cols-1 gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
+        {rows.map((r) => {
+          const help = FIELD_HELP[r.key];
+          return (
+            <div class="spec-row">
+              <div class="spec-row-head">
+                <dt class="spec-label">{r.label}</dt>
+                {help && (
+                  <span class="spec-info-wrap">
+                    <button
+                      type="button"
+                      class="spec-info-btn"
+                      aria-label={`What ${r.label.toLowerCase()} means`}
+                      tabindex="0"
+                    >
+                      ⓘ
+                    </button>
+                    <span class="spec-tooltip" role="tooltip">
+                      <strong class="spec-tooltip-q">{help.question}</strong>
+                      <span class="spec-tooltip-body">{help.body}</span>
+                      {help.link && (
+                        <a
+                          href={help.link.href}
+                          class="spec-tooltip-link"
+                          target={help.link.href.startsWith("http") ? "_blank" : undefined}
+                          rel={help.link.href.startsWith("http") ? "noopener" : undefined}
+                        >
+                          {help.link.label} →
+                        </a>
+                      )}
+                    </span>
+                  </span>
+                )}
+              </div>
+              <dd class="spec-value">{r.value}</dd>
+              {r.implication && (
+                <p class="spec-implication">▸ {r.implication}</p>
+              )}
+            </div>
+          );
+        })}
       </dl>
     )
   }
@@ -56,32 +510,234 @@ const visibleRows = rows.filter((r) => r.value);
   {
     spec.benchmarks && spec.benchmarks.length > 0 && (
       <div>
-        <h3 class="mb-2 text-xs uppercase tracking-wider text-[var(--fg-muted)]">
-          Benchmarks
-        </h3>
+        <div class="mb-2 flex items-center gap-1.5">
+          <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+            Benchmarks
+          </h3>
+          {FIELD_HELP.benchmarks && (
+            <span class="spec-info-wrap">
+              <button
+                type="button"
+                class="spec-info-btn"
+                aria-label="What benchmarks mean"
+                tabindex="0"
+              >
+                ⓘ
+              </button>
+              <span class="spec-tooltip" role="tooltip">
+                <strong class="spec-tooltip-q">
+                  {FIELD_HELP.benchmarks.question}
+                </strong>
+                <span class="spec-tooltip-body">
+                  {FIELD_HELP.benchmarks.body}
+                </span>
+                <a
+                  href={FIELD_HELP.benchmarks.link!.href}
+                  class="spec-tooltip-link"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {FIELD_HELP.benchmarks.link!.label} →
+                </a>
+              </span>
+            </span>
+          )}
+        </div>
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-[var(--border)] text-left text-xs text-[var(--fg-muted)]">
               <th class="py-1.5 pr-2">Benchmark</th>
               <th class="py-1.5 pr-2">Score</th>
-              <th class="py-1.5">Baseline</th>
+              <th class="py-1.5 pr-2">Baseline</th>
+              <th class="py-1.5">Source</th>
             </tr>
           </thead>
           <tbody>
-            {spec.benchmarks.map((b) => (
-              <tr class="border-b border-[var(--border)]/60">
-                <td class="py-1.5 pr-2">{b.name}</td>
-                <td class="py-1.5 pr-2 font-mono font-semibold text-[var(--accent)]">
-                  {b.score}
-                </td>
-                <td class="py-1.5 text-xs text-[var(--fg-muted)]">
-                  {b.vs_baseline ?? "—"}
-                </td>
-              </tr>
-            ))}
+            {spec.benchmarks.map((b) => {
+              const src = benchSource(b);
+              return (
+                <tr class="border-b border-[var(--border)]/60">
+                  <td class="py-1.5 pr-2">{b.name}</td>
+                  <td class="py-1.5 pr-2 font-mono font-semibold text-[var(--accent)]">
+                    {b.score}
+                  </td>
+                  <td class="py-1.5 pr-2 text-xs text-[var(--fg-muted)]">
+                    {b.vs_baseline ?? "—"}
+                  </td>
+                  <td class="py-1.5 text-xs">
+                    <a
+                      href={src.url}
+                      target="_blank"
+                      rel="noopener"
+                      class="bench-source-link"
+                      title={`Verified on ${src.label}`}
+                    >
+                      {src.label} ↗
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+        <p class="mt-2 text-[10.5px] italic text-[var(--fg-muted)]">
+          All ranking scores cite one of three approved leaderboards
+          (Artificial Analysis, Hugging Face, LLM Stats). Click "Source"
+          to verify.
+        </p>
       </div>
     )
   }
 </section>
+
+<style>
+  .spec-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-row-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .spec-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+  }
+  .spec-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--fg);
+    margin: 0;
+  }
+  .spec-implication {
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* ⓘ tooltip — pure CSS, hover or :focus-within reveal */
+  .spec-info-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .spec-info-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: help;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.12s ease, background 0.12s ease;
+  }
+  .spec-info-btn:hover,
+  .spec-info-btn:focus {
+    color: var(--accent);
+    background: var(--accent-soft, rgba(37, 99, 235, 0.08));
+    outline: none;
+  }
+  .spec-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 10px 12px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.4);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.45;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .spec-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #0f172a;
+  }
+  .spec-info-wrap:hover .spec-tooltip,
+  .spec-info-wrap:focus-within .spec-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .spec-tooltip-q {
+    font-weight: 700;
+    font-style: italic;
+    color: #fde68a;
+    font-size: 12.5px;
+  }
+  .spec-tooltip-body {
+    color: #e2e8f0;
+  }
+  .spec-tooltip-link {
+    color: #93c5fd;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .spec-tooltip-link:hover {
+    text-decoration: underline;
+    color: #bfdbfe;
+  }
+
+  /* Official-site button (top right of spec card) */
+  .official-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--accent);
+    background: var(--accent-soft, rgba(37, 99, 235, 0.08));
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background 0.12s ease, border-color 0.12s ease;
+    white-space: nowrap;
+  }
+  .official-link:hover {
+    background: white;
+    border-color: var(--accent);
+  }
+
+  /* Per-benchmark leaderboard source link */
+  .bench-source-link {
+    color: var(--fg-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--fg-muted);
+    transition: color 0.12s ease, border-color 0.12s ease;
+  }
+  .bench-source-link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+</style>

@@ -812,6 +812,43 @@ right gap so the mouse can travel from card to either button without
 crossing empty space (which would `mouseleave` the link → hide them
 mid-travel).
 
+### Search box — type a model name, jump to its card
+
+`scripts/graph/search.ts` indexes node titles + slugs by walking the
+DOM of the (h, chronological) pane on init (cheap — ~130 cards). The
+input lives in `LegendPanel.astro`. Ranking is simple substring +
+prefix scoring (slug-exact = 100, title-prefix = 40, org-substring = 5).
+
+On select, `scrollToNode(slug)` reads the matched card's coords from
+the inline `nodePosFor(orient)` lookup and calls `scrollTo({ behavior:
+'smooth' })` on the active `.orient-pane` (the SVG width/height equals
+its viewBox dims, so coords map 1:1 to scroll pixels). The matched
+card briefly pulses via a `.search-highlight` class on `.node-link`
+that drives a 3-cycle `search-pulse` keyframe — needed because after
+a smooth scroll lands, eye attention has nothing to anchor to without
+a flash.
+
+Why DOM-based indexing: the inline `clientPayload` JSON only carries
+edges and `nodePos`, no titles. We could embed titles too, but pulling
+them from rendered cards keeps the JSON smaller and means the index
+auto-updates if Card.astro changes how titles render.
+
+### Detail-page lineage view (server-rendered zoom)
+
+The individual node page at `/node/<slug>/` embeds a server-rendered
+version of the same 1-hop view — `components/LineageZoom.astro`. Why
+replace the earlier `MiniGraph` minimap: the minimap showed "you are
+this tiny dot in the whole 126-node grid" which gave almost no usable
+context. The lineage view at card size shows *who built on what and
+in which direction*, with labeled edges the reader can actually read.
+
+The component is pure SSR (no dependency on the main graph's JS
+state), so it renders on every detail page regardless of whether the
+user ever opened the Graph page. Layout: three vertical rows — parents
+on top, focused in the middle (red ring), children below. It reuses
+the same `<Card>` component and edge colors as the main graph so
+visual identity is preserved; only the surrounding layout differs.
+
 Two evolutions got us here:
 
 **1. Collapse the time axis (don't reuse main-graph positions).** The
