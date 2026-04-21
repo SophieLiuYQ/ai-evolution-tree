@@ -20,7 +20,7 @@ const x = p.x - p.width / 2;
 const y = p.y - p.height / 2;
 const titleClipped = clip(d.title, TITLE_MAX);
 const specText = fmtSpec(d.model_spec);
-const metaText = clip(`${fmtMonth(d.date)} · ${d.org}`, META_MAX);
+const metaText = clip(`${fmtMonth(d.date)} · ${normalizeOrg(d.org)}`, META_MAX);
 // Two-bucket license signal for the LegendPanel "License" filter. Same
 // rule as licenseKey() in layout.ts: missing model_spec → open
 // (research papers, foundational nodes); open_weights / paper → open;

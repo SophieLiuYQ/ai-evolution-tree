@@ -9,6 +9,7 @@ import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
 import LineageZoom from "../../components/LineageZoom.astro";
 import { stroke as orgStrokeColor, fill as orgFillColor } from "../../lib/graph/constants";
 import { ORG_HOMEPAGE, ORG_GITHUB } from "../../lib/org-links";
+import { normalizeOrg } from "../../lib/org-display";
 
 export async function getStaticPaths() {
   const nodes = await getCollection("nodes");
@@ -127,9 +128,9 @@ const githubUrl =
             href="/tree/"
             class="key-pill key-pill-org"
             style={`--pill-stroke: ${orgStroke}; --pill-fill: ${orgFill};`}
-            title={`See models from ${d.org}`}
+            title={`See models from ${normalizeOrg(d.org)}`}
           >
-            {d.org}
+            {normalizeOrg(d.org)}
           </a>
           {releaseLabel && (
             <span class="key-pill key-pill-release">{releaseLabel}</span>
@@ -177,7 +178,7 @@ const githubUrl =
     <ViewToggle />
 
     <div data-view-section="tech" class="prose-node max-w-none">
-      {d.model_spec && <ModelSpec spec={d.model_spec} org={d.org} modelTitle={d.title} category={d.category} />}
+      {d.model_spec && <ModelSpec spec={d.model_spec} org={normalizeOrg(d.org)} modelTitle={d.title} category={d.category} />}
       <Content />
     </div>
 

@@ -3,12 +3,16 @@ import type { CollectionEntry } from "astro:content";
 export type NodeEntry = CollectionEntry<"nodes">;
 export type Rel = NodeEntry["data"]["relationships"][number];
 export type Orient = "h" | "v";
+// Only `chronological` is user-facing as of 2026-04-21; `byOrg` /
+// `byLicense` were retired in favour of the LegendPanel filter rows.
+// SortMode type kept broad to avoid a cascade of TS changes in the
+// layout engine, but SORT_MODES below is the single source of truth
+// for the UI: trim it and the whole system (panes, payload, filters)
+// shrinks to match.
 export type SortMode = "chronological" | "byOrg" | "byLicense";
 
 export const SORT_MODES: { id: SortMode; label: string }[] = [
   { id: "chronological", label: "Date" },
-  { id: "byOrg", label: "Company" },
-  { id: "byLicense", label: "License" },
 ];
 
 export type Placed = {
@@ -33,9 +37,7 @@ export type Edge = {
 };
 
 export type Band = {
-  /** Generic group identifier — year number for chronological, slug for org/type. */
   key: string | number;
-  /** Display label shown in the band header (year, company name, or type name). */
   label: string;
   idx: number;
   rect: { x: number; y: number; width: number; height: number };
@@ -49,10 +51,10 @@ export type Layout = {
   H: number;
   placedNodes: Placed[];
   edges: Edge[];
-  /** Primary axis bands (years — rows in v, columns in h). */
+  /** Year axis bands (rows in v, columns in h). */
   bands: Band[];
-  /** Secondary axis bands (sort keys — columns in v, rows in h). Only
-   *  populated when sort mode groups beyond year (byOrg / byLicense). */
+  /** Legacy secondary axis (byOrg/byLicense grouping). No longer
+   *  populated since both sort modes were retired. */
   crossBands?: Band[];
 };
 

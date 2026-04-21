@@ -143,10 +143,19 @@ h-orient). The sort selector controls the SECONDARY axis:
 | Sort | Primary axis (always year) | Secondary axis (cards positioned along) |
 |---|---|---|
 | chronological | year rows/cols | within-row date spread (no extra axis labels) |
-| byOrg | year rows/cols | one column/row per company (~45 keys, alphabetical) |
-| byLicense | year rows/cols | two keys: `Open` (open_weights / paper / no-model_spec) vs `Closed` (api / product / demo). `Open (research)` falls into Open for older nodes with no model_spec. Makes the 2026 open-vs-closed geopolitical divide visible in one axis. |
 
-**Removed `byType` (2026-04-20):** the single-bucket `modelType(cats, slug)` classifier was fundamentally lossy — a robotics VLA is *both* Agent AND Multimodal AND Generative, and forcing one bucket hid the overlap. Type is now rendered as *overlapping* tag pills in the node detail's `ModelSpec` section, not as a graph sort axis. The `slug`-keyword heuristic lists (video / robotics / world-model / science) were deleted with `modelType()` and must not be reintroduced — type now comes verbatim from the frontmatter `category[]` array.
+**Removed `byType` (2026-04-20):** the single-bucket `modelType(cats, slug)` classifier was fundamentally lossy — a robotics VLA is *both* Agent AND Multimodal AND Generative, and forcing one bucket hid the overlap. Type is now rendered as *overlapping* tag pills in the node detail's `ModelSpec` section, not as a graph sort axis.
+
+**Removed `byOrg` and `byLicense` (2026-04-21):** the LegendPanel filter
+rows (Company, License) cover the same need — pick the subset you care
+about — without pinning the user to a fixed grouping axis. With only
+chronological surviving, the sort-mode UI (the "Sort within year"
+segmented control) was removed from the LegendPanel entirely; the
+`SortMode` type stays broader than `"chronological"` for backward
+compat in `layout.ts`, but `SORT_MODES` exposes only chronological so
+the 6-pane SSR matrix collapses to 2 (one per orient) and the cross-
+axis code paths (crossKeyOf, licenseKey, cross-bands rendering) are
+no longer reachable from the UI.
 
 For non-chronological modes, layout is a **2D grid**: each card lands
 in cell `(year, sort-key)`. Multiple cards in the same cell stack
@@ -789,14 +798,17 @@ rows to 9.
 **Google/DeepMind consolidation (2026-04-21):** same display-layer
 collapse idea applied to orgs. `lib/org-display.ts` provides
 `normalizeOrg()` which rewrites `Google` / `DeepMind` / `Google
-DeepMind` to a single `Google/DeepMind` label. Applied in the
-`.node-link` `data-org` attribute and in the Company filter's
-org-count map (Graph.astro). Result: the three historical lab names
-collapse to one row with the combined model count, while frontmatter
-retains the accurate org (Word2vec stays as Google, AlphaGo stays as
-DeepMind — the 2013 and 2016 attributions are historically correct).
-The `constants.ts` color maps gain a `Google/DeepMind` entry reusing
-the Google-blue so the filter swatch matches the card borders.
+DeepMind` to a single `Google/DeepMind` label. Applied across every
+user-facing surface: the `.node-link` `data-org` attribute, the
+Company filter's org-count map (Graph.astro), the card-top meta line
+(Card.astro `metaText`), the compact tile meta line, the detail-page
+org pill, the `OrgBadge` component, and `ModelSpec`'s org prop.
+Result: all three historical lab names render as one "Google/DeepMind"
+everywhere the user sees an org. Frontmatter retains the accurate
+attribution (Word2vec stays as Google, AlphaGo stays as DeepMind —
+the 2013 and 2016 attributions are historically correct). The
+`constants.ts` color maps gain a `Google/DeepMind` entry reusing the
+Google-blue so the filter swatch matches the card borders.
 
 Node-type filter semantics:
 - A card is shown if **at least one** of its `category[]` tags is in the

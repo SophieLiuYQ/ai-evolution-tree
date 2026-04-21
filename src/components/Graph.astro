@@ -163,7 +163,7 @@ const clientPayload = {
                     data-org={normalizeOrg(d.org)}
                     style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}
                   >
-                    <div class="compact-tile-meta">{monthLabel} · {d.org}</div>
+                    <div class="compact-tile-meta">{monthLabel} · {normalizeOrg(d.org)}</div>
                     <div class="compact-tile-title">{d.title}</div>
                   </a>
                 );
