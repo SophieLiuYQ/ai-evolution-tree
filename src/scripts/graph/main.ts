@@ -1,6 +1,7 @@
 // Entry point for the graph component's client-side runtime.
 // Loaded via <script>import "../scripts/graph/main.ts"</script> in Graph.astro.
 
+import { attachCompactHandler } from "./compact";
 import { attachEdgeTypeHandlers } from "./edge-types";
 import { attachInteractions } from "./hover";
 import { attachNodeTypeHandlers } from "./node-types";
@@ -21,4 +22,5 @@ document.addEventListener("DOMContentLoaded", () => {
   attachNodeTypeHandlers();
   attachStickyHeaders();
   attachSearchHandlers();
+  attachCompactHandler();
 });

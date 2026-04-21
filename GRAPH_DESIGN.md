@@ -720,6 +720,29 @@ buttons. Persistence is via `localStorage`
 (`ai-tree:edgeTypes`, `ai-tree:nodeTypes`, `ai-tree:orgs`,
 `ai-tree:license`).
 
+**Compact view toggle (2026-04-21):** above the filter sections, a
+"Compact view" button swaps the SVG tree for a flat tile grid via a
+`.compact-mode` class on `.ai-tree-graph`. Motivation: with filters
+active, the faded cards leave large empty bands in the tree — visually
+noisy when the user just wants to see "which selected models are
+there?". Compact view re-renders the filtered set as a packed grid.
+
+Design notes:
+- Tiles are plain HTML (not SVG), rendered server-side in Graph.astro
+  alongside the panes — one `<a class="node-link compact-tile">` per
+  node, sorted by date asc, with the same `data-cats` / `data-org` /
+  `data-license` grammar as the SVG cards. The filter chain in
+  `node-types.ts` applies unchanged — it just iterates
+  `.node-link[data-cats]`, which matches both SVG cards and HTML tiles.
+- In compact mode, `.card-filtered` becomes `display: none !important`
+  (scoped under `.compact-mode` so it overrides the default 0.2
+  opacity fade). Only passing tiles render.
+- Compact state is intentionally NOT persisted — it's a transient view
+  flip, not a preference.
+- Edges / hover / pin are unavailable in compact mode by design (the
+  SVG is hidden). Users switch back to the tree view for relationship
+  tracing.
+
 The Node-types, Company, and License filters AND together — a card
 must pass ALL THREE to be shown. License buckets mirror the byLicense
 sort taxonomy: `open` = open_weights / paper / no-model_spec;

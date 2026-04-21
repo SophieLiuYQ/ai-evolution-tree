@@ -1,6 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { HIDDEN_EDGE_TYPES, edgeStyle } from "../lib/graph/constants";
+import {
+  HIDDEN_EDGE_TYPES,
+  edgeStyle,
+  fill as orgFillColor,
+  stroke as orgStrokeColor,
+} from "../lib/graph/constants";
 import { computeLayout, groupByYear } from "../lib/graph/layout";
 import type { Layout, Rel, SortMode } from "../lib/graph/types";
 import { SORT_MODES } from "../lib/graph/types";
@@ -54,6 +59,21 @@ const packLayout = (layout: Layout) => ({
   ),
 });
 
+// Flat, date-sorted list for the Compact view. Each tile carries the
+// same data-cats / data-license / data-org / data-slug attrs as the
+// SVG cards, so the existing filter chain (node-types.ts) applies to
+// compact tiles too without any fork in the filter logic.
+const compactNodes = [...nodes].sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+const fmtCompactDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short" });
+const compactLicense = (n: CollectionEntry<"nodes">) => {
+  const rt = n.data.model_spec?.release_type;
+  if (!rt || rt === "open_weights" || rt === "paper") return "open";
+  return "closed";
+};
+
 // Embedded JSON the client script reads on init. Holds all 6 layout
 // variants; client swaps by orient + sort mode without recomputing.
 const clientPayload = {
@@ -81,17 +101,47 @@ const clientPayload = {
     <div class="canvas-area min-w-0 flex-1">
       {/* 6 panes: 2 orients × 3 sort modes. Only one is visible at a time;
           orient.ts + sort.ts toggle display via data-orient + data-sort. */}
-      {(["h", "v"] as const).flatMap((orient) =>
-        sortIds.map((m) => (
-          <OrientPane
-            layout={layouts[orient][m]}
-            orient={orient}
-            sortMode={m}
-            yearsTotal={layouts[orient][m].bands.length}
-            hidden={!(orient === "h" && m === "chronological")}
-          />
-        )),
-      )}
+      <div class="panes-wrap">
+        {(["h", "v"] as const).flatMap((orient) =>
+          sortIds.map((m) => (
+            <OrientPane
+              layout={layouts[orient][m]}
+              orient={orient}
+              sortMode={m}
+              yearsTotal={layouts[orient][m].bands.length}
+              hidden={!(orient === "h" && m === "chronological")}
+            />
+          )),
+        )}
+      </div>
+
+      {/* Compact view — a flat chronological grid of tiles that replaces
+          the SVG tree when `.compact-mode` is active on the figure.
+          Shares the same data-* attribute grammar as the SVG cards so
+          node-types.ts's filter chain applies without modification:
+          filtered tiles get `.card-filtered` → `display: none` (overriding
+          the default opacity-fade so compact mode actually compacts). */}
+      <div class="compact-list" aria-label="Compact tree view">
+        {compactNodes.map((n) => {
+          const d = n.data;
+          const lic = compactLicense(n);
+          const dateLabel = fmtCompactDate(d.date);
+          return (
+            <a
+              href={`/node/${d.slug}/`}
+              class="node-link compact-tile"
+              data-slug={d.slug}
+              data-cats={d.category.join(" ")}
+              data-license={lic}
+              data-org={d.org}
+              style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}
+            >
+              <div class="compact-tile-meta">{dateLabel} · {d.org}</div>
+              <div class="compact-tile-title">{d.title}</div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   </div>
 
@@ -128,5 +178,65 @@ const clientPayload = {
   }
   @media (max-width: 720px) {
     .ai-tree-graph .graph-body { flex-direction: column; }
+  }
+
+  /* ===== Compact view — flat grid replaces the SVG tree when active.
+     Toggled via `.compact-mode` class on `.ai-tree-graph` (see
+     compact.ts). The SVG panes get hidden, the grid gets shown. Same
+     filter chain applies — .card-filtered on a tile becomes
+     display:none in compact mode so only visible tiles show. */
+  .panes-wrap { display: contents; }
+  .compact-list {
+    display: none;
+    padding: 16px;
+    overflow-y: auto;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    align-content: start;
+  }
+  .ai-tree-graph.compact-mode .panes-wrap { display: none; }
+  .ai-tree-graph.compact-mode .compact-list { display: grid; }
+  .ai-tree-graph.compact-mode .compact-list .card-filtered {
+    /* In compact view, filtered tiles are removed entirely so the grid
+       packs only the selected ones. Overrides the default fade rule
+       scoped to Card.astro (which also uses !important). */
+    display: none !important;
+  }
+
+  .compact-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px 10px 14px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--tile-stroke, #64748b);
+    border-radius: 6px;
+    text-decoration: none;
+    color: #0f172a;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    min-height: 56px;
+  }
+  .compact-tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.12);
+    border-color: var(--tile-stroke, #cbd5e1);
+  }
+  .compact-tile-meta {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--tile-stroke, #475569);
+    letter-spacing: 0.01em;
+  }
+  .compact-tile-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #1e293b;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>
