@@ -7,7 +7,7 @@ import rehypeKatex from "rehype-katex";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://ai-evolution-tree.example.com",
+  site: "https://ai-tree-five.vercel.app",
   // Hide the dev toolbar (audit runs clean; we don't need the floating UI).
   devToolbar: { enabled: false },
   integrations: [
