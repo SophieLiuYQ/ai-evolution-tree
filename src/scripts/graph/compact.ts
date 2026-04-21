@@ -8,6 +8,8 @@
 // State intentionally NOT persisted: compact view is a transient
 // "see what's selected" flip, not a sticky preference.
 
+import { scrollToMostRecent } from "./scroll-latest";
+
 const ACTIVE_CLASS = "compact-mode";
 
 export function attachCompactHandler() {
@@ -22,5 +24,9 @@ export function attachCompactHandler() {
     btn.setAttribute("aria-pressed", String(next));
     const label = btn.querySelector(".compact-toggle-label");
     if (label) label.textContent = next ? "Tree view" : "Compact view";
+    // Always anchor to the most-recent-date edge when the user flips
+    // views. The compact list's own scroll container needs its own
+    // scrollTop; scrollToMostRecent() handles the branch.
+    scrollToMostRecent();
   });
 }

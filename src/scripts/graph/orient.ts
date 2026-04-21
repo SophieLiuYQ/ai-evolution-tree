@@ -9,7 +9,7 @@ import { updateActivePane } from "./sort";
 
 const STORAGE_KEY = "ai-tree:orient";
 
-let _currentOrient: Orient = "h";
+let _currentOrient: Orient = "v";
 
 export function getOrient(): Orient {
   return _currentOrient;
@@ -37,7 +37,7 @@ export function setOrient(o: Orient, scrollEnd = true) {
 }
 
 export function attachOrientHandlers() {
-  let initial: Orient = "h";
+  let initial: Orient = "v";
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === "h" || saved === "v") initial = saved;

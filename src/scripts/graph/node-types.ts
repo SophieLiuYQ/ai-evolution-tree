@@ -8,6 +8,7 @@
 // nodes are filtered out (the arrow draws to where the hidden card
 // would have been).
 
+import { scrollToMostRecent } from "./scroll-latest";
 import {
   initLicenseState,
   initNodeTypeState,
@@ -80,6 +81,10 @@ function applyCardFilter() {
       !nodePassesOrgFilter(org);
     a.classList.toggle(FILTERED_CLASS, hide);
   });
+  // The user wants the most-recent-date edge to stay anchored as they
+  // flip filters — if they narrow to "Anthropic only", we still show
+  // Claude Opus 4.7 (2026), not drop them back at the Perceptron (1957).
+  scrollToMostRecent();
 }
 
 export function attachNodeTypeHandlers() {

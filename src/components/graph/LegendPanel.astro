@@ -73,8 +73,8 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     role="tablist"
     aria-label="Orientation"
   >
-    <button type="button" data-orient="h" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="true" title="Horizontal layout">▶ Horizontal</button>
-    <button type="button" data-orient="v" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Vertical layout">▼ Vertical</button>
+    <button type="button" data-orient="v" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="true" title="Vertical layout">▼ Vertical</button>
+    <button type="button" data-orient="h" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Horizontal layout">▶ Horizontal</button>
   </div>
 
   {/* Compact-view toggle — repack visible cards into a tight grid that
@@ -96,65 +96,10 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     <span class="compact-toggle-label">Compact view</span>
   </button>
 
-  {/* Edge legend — each row is a click toggle (eye indicator on the right).
-      Bulk Show all / Hide all controls at the bottom of the list. */}
-  <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-    Edge types
-  </h3>
-  <ul class="space-y-1">
-    {visibleEdges.map(([t, s]) => (
-      <li class="edge-type-row" data-type={t} data-on="true">
-        <button
-          type="button"
-          class="edge-type-toggle flex w-full items-center gap-2 rounded px-1 py-0.5 text-xs text-slate-700 hover:bg-slate-100"
-          data-type={t}
-          aria-pressed="true"
-          title={`Toggle ${s.label}`}
-        >
-          <svg width="32" height="10" viewBox="0 0 32 10" class="shrink-0">
-            <line x1="1" x2="25" y1="5" y2="5" stroke={s.color} stroke-width="2.2" stroke-linecap="round" stroke-dasharray={s.dash ?? "none"} />
-            <path d="M 25 1.5 L 31 5 L 25 8.5 z" fill={s.color} />
-          </svg>
-          <span class="flex-1 text-left font-medium">{s.label}</span>
-          {/* Photoshop-style eye toggle. .eye-pupil hidden when row is off,
-              .eye-slash hidden when row is on — controlled via data-on
-              attribute on the parent .edge-type-row. */}
-          <svg
-            class="edge-type-eye shrink-0"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path class="eye-outline" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle class="eye-pupil" cx="12" cy="12" r="3"/>
-            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
-          </svg>
-        </button>
-      </li>
-    ))}
-  </ul>
-  <div class="mt-2 flex gap-1.5 text-[10px]">
-    <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="all" title="Show all edge types">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-        <circle cx="12" cy="12" r="3"/>
-      </svg>
-      <span>Show all</span>
-    </button>
-    <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all edge types">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-        <line x1="3" y1="3" x2="21" y2="21"/>
-      </svg>
-      <span>Hide all</span>
-    </button>
-  </div>
+  {/* Filter sections — reordered 2026-04-21 per user request: Node
+      types → Company → License → Edge types (reading order matches
+      "what kind of model · who built it · how is it released · how
+      is it connected"). */}
 
   {/* Node-type filter — fades cards whose category[] doesn't intersect
       the enabled set. Same toggle/eye pattern as Edge types. */}
@@ -320,6 +265,64 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       </li>
     ))}
   </ul>
+
+  {/* Edge legend — each row is a click toggle (eye indicator on the
+      right). Bulk Show all / Hide all controls at the bottom of the
+      list. */}
+  <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+    Edge types
+  </h3>
+  <ul class="space-y-1">
+    {visibleEdges.map(([t, s]) => (
+      <li class="edge-type-row" data-type={t} data-on="true">
+        <button
+          type="button"
+          class="edge-type-toggle flex w-full items-center gap-2 rounded px-1 py-0.5 text-xs text-slate-700 hover:bg-slate-100"
+          data-type={t}
+          aria-pressed="true"
+          title={`Toggle ${s.label}`}
+        >
+          <svg width="32" height="10" viewBox="0 0 32 10" class="shrink-0">
+            <line x1="1" x2="25" y1="5" y2="5" stroke={s.color} stroke-width="2.2" stroke-linecap="round" stroke-dasharray={s.dash ?? "none"} />
+            <path d="M 25 1.5 L 31 5 L 25 8.5 z" fill={s.color} />
+          </svg>
+          <span class="flex-1 text-left font-medium">{s.label}</span>
+          <svg
+            class="edge-type-eye shrink-0"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path class="eye-outline" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="3"/>
+            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <div class="mt-2 flex gap-1.5 text-[10px]">
+    <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="all" title="Show all edge types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span>Show all</span>
+    </button>
+    <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all edge types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <line x1="3" y1="3" x2="21" y2="21"/>
+      </svg>
+      <span>Hide all</span>
+    </button>
+  </div>
 
   <p class="mt-5 border-t border-slate-200 pt-3 text-[10.5px] leading-relaxed text-slate-500">
     Hover a card → ancestor lineage.<br/>
