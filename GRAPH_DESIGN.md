@@ -734,13 +734,15 @@ client can match without round-tripping data.
 Node-type filter semantics:
 - A card is shown if **at least one** of its `category[]` tags is in the
   enabled set (OR semantics, "show only selected").
-- Filtered cards get `.card-filtered { display: none }` — they are
-  removed from rendering entirely (not dimmed). The earlier opacity-fade
-  approach was rejected per user feedback 2026-04-20: when the user
-  toggles a type off, they expect the cards to disappear, not linger
-  ghosted in place. The class name is generic (`card-filtered`, not
-  `node-type-filtered`) because both the Node-types and License filters
-  apply the same hide rule when their conditions fail.
+- Filtered cards get `.card-filtered { opacity: 0.2; filter: grayscale(0.7);
+  pointer-events: none }` — faded but still in place. Previously this was
+  `display: none` (per user feedback 2026-04-20 morning), but later same
+  day the user reversed: with three filter dimensions stacked (types ·
+  company · license) the all-or-nothing hide left too many empty regions
+  and broke the "you can see where everything sits" property of the tree.
+  Transparent fade keeps the spatial skeleton visible. The class name is
+  generic (`card-filtered`) because all three filter dimensions share the
+  same fade rule when any condition fails.
 - Edges are intentionally NOT touched — they only render on hover/pin,
   and hover always fires from a *visible* card, so the rendered lineage
   is always anchored to a live node. Edges that pass through a hidden

@@ -67,15 +67,16 @@ const license =
     text-decoration: none; /* kill default <a> underline that bleeds onto SVG text */
     transition: opacity 0.15s ease, filter 0.15s ease;
   }
-  /* Card filters — a card is hidden if it fails EITHER the Node-types
-     filter (category[] vs enabled set) OR the License filter
-     (open/closed vs enabled set). display:none rather than opacity-
-     fade so the user sees a clean "only the selected" view. Edges
-     drawn on hover may still reference hidden cards, but those go
-     to empty space (acceptable since hover only fires from a card
-     that IS visible, so its OWN ancestor lineage is what's drawn). */
+  /* Card filters — a card is faded (not removed) when it fails any of
+     the three filter dimensions (Node types · Company · License). The
+     card stays in place so the lineage skeleton + spatial layout are
+     preserved; users can see WHERE filtered models sit in the tree
+     instead of staring at gaps. Pointer-events off prevents accidental
+     hover/click on dim cards. */
   .node-link.card-filtered {
-    display: none;
+    opacity: 0.2;
+    filter: grayscale(0.7);
+    pointer-events: none;
   }
   /* Smooth motion when sort mode swaps card positions */
   .node {
