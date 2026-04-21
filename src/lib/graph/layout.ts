@@ -303,10 +303,14 @@ export function computeLayout(
           nodesPerSubRow,
           groupNodes.length - subRow * nodesPerSubRow,
         );
-        const subRowTotalWidth =
-          nodesInThisSubRow * NODE_W + (nodesInThisSubRow - 1) * V_NODE_H_GAP;
-        const subRowStartX = V_LEFT_PAD + (rowWidth - subRowTotalWidth) / 2;
+        // Left-align: cards flow right from the year label with no
+        // leading gap, so years with few cards don't land adrift in
+        // the middle of the row (per user feedback 2026-04-21). Years
+        // with many cards still use the full rowWidth.
+        const subRowStartX = V_LEFT_PAD;
         const x = subRowStartX + colInRow * (NODE_W + V_NODE_H_GAP) + NODE_W / 2;
+        // Silence unused-var warning for the old centered metric.
+        void nodesInThisSubRow;
         const y = yCursor + V_ROW_PAD_TOP + subRow * (NODE_H + V_NODE_H_GAP) + NODE_H / 2;
         placedNodes.push({
           slug: n.data.slug,

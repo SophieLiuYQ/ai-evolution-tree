@@ -157,6 +157,16 @@ the 6-pane SSR matrix collapses to 2 (one per orient) and the cross-
 axis code paths (crossKeyOf, licenseKey, cross-bands rendering) are
 no longer reachable from the UI.
 
+**V-orient left-align (2026-04-21):** vertical chronological used to
+center cards within the year row (`subRowStartX = V_LEFT_PAD +
+(rowWidth - subRowTotalWidth) / 2`), which left years with few cards
+adrift in the middle of the row — a big empty band between the year
+label and the first card. Switched to left-align (`subRowStartX =
+V_LEFT_PAD`) so cards flow right from the year gutter with no lead-in
+gap. Years with many cards still fill the full rowWidth, so the
+visual difference is only in sparse-year rows. Paired with a tighter
+`V_LEFT_PAD` (120 → 92) since the year label only needs ~80px.
+
 For non-chronological modes, layout is a **2D grid**: each card lands
 in cell `(year, sort-key)`. Multiple cards in the same cell stack
 (vertically in v, horizontally in h with a small offset). Cells with
