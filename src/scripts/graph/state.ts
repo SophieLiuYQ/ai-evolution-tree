@@ -145,3 +145,60 @@ export function setAllEdgeTypesEnabled(on: boolean) {
 
 export const allVisibleEdgeTypes = (): string[] =>
   _data ? Object.keys(_data.edgeStyle) : [];
+
+// ===== Node-type visibility =====
+// Per-category on/off filter for the cards themselves. Default: all
+// types enabled (no filter). A card is shown if AT LEAST ONE of its
+// category[] tags is currently enabled — same OR semantics as a
+// "show only selected" filter. Cards whose categories don't
+// intersect get dimmed via .node-type-filtered (Card.astro CSS).
+const NODE_TYPES_KEY = "ai-tree:nodeTypes";
+let _enabledNodeTypes = new Set<string>();
+let _allKnownNodeTypes: string[] = [];
+
+function persistNodeTypes() {
+  try {
+    localStorage.setItem(
+      NODE_TYPES_KEY,
+      JSON.stringify(Array.from(_enabledNodeTypes)),
+    );
+  } catch {}
+}
+
+export function initNodeTypeState(allTypes: string[]) {
+  _allKnownNodeTypes = allTypes.slice();
+  _enabledNodeTypes = new Set(allTypes);
+  try {
+    const raw = localStorage.getItem(NODE_TYPES_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (Array.isArray(saved)) {
+        _enabledNodeTypes = new Set(saved.filter((t) => allTypes.includes(t)));
+      }
+    }
+  } catch {}
+}
+
+export const isNodeTypeEnabled = (t: string) => _enabledNodeTypes.has(t);
+
+export function setNodeTypeEnabled(t: string, on: boolean) {
+  if (on) _enabledNodeTypes.add(t);
+  else _enabledNodeTypes.delete(t);
+  persistNodeTypes();
+}
+
+export function setAllNodeTypesEnabled(on: boolean) {
+  if (on) _enabledNodeTypes = new Set(_allKnownNodeTypes);
+  else _enabledNodeTypes.clear();
+  persistNodeTypes();
+}
+
+/** Returns true if the card with the given category[] passes the
+ *  current node-type filter (i.e. at least one tag is enabled). An
+ *  empty enabled set means everything is filtered out. */
+export function nodePassesFilter(cats: readonly string[]): boolean {
+  for (const c of cats) {
+    if (_enabledNodeTypes.has(c)) return true;
+  }
+  return false;
+}

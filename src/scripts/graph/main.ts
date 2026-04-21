@@ -3,6 +3,7 @@
 
 import { attachEdgeTypeHandlers } from "./edge-types";
 import { attachInteractions } from "./hover";
+import { attachNodeTypeHandlers } from "./node-types";
 import { attachOrientHandlers } from "./orient";
 import { attachSearchHandlers } from "./search";
 import { attachSortHandlers } from "./sort";
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   attachZoomHandlers();
   attachSortHandlers();
   attachEdgeTypeHandlers();
+  attachNodeTypeHandlers();
   attachStickyHeaders();
   attachSearchHandlers();
 });

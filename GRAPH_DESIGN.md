@@ -711,6 +711,28 @@ deserves vertical space, (b) the legend is reference material the
 user glances at while hovering, so keeping it visible alongside the
 graph beats forcing them to scroll down to check a color.
 
+**Filter rows below the legend (2026-04-20):** the panel now hosts two
+parallel filter sections — **Edge types** (long-standing) and **Node types**
+(new). Both use the same eye-toggle pattern; each row has a swatch +
+label + eye icon, plus bulk Show/Hide buttons. Persistence is via
+`localStorage` (`ai-tree:edgeTypes`, `ai-tree:nodeTypes`).
+
+Node-type filter semantics:
+- A card is shown if **at least one** of its `category[]` tags is in the
+  enabled set (OR semantics, "show only selected").
+- Edges are intentionally NOT touched — fading just the cards keeps the
+  lineage skeleton visible so users still see *where* filtered-out
+  models sit in the tree.
+- Filtered cards get `.node-type-filtered`: `opacity: 0.12`, `filter:
+  grayscale(0.85)`, `pointer-events: none`. Hover/zoom on them is
+  suppressed; edges through them still render.
+- The category list (NODE_TYPES in `LegendPanel.astro`) is the source
+  of truth — `node-types.ts` discovers filterable types by reading
+  `.node-type-row[data-type]` from the DOM rather than importing the
+  list. Adding a new category = one edit in NODE_TYPES.
+- Each card carries `data-cats="agents multimodal generative"` on its
+  `.node-link` so client JS can match without round-tripping data.
+
 ### Lineage rendering — knowledge-tree gating (ancestors only, V3)
 
 **V3 architecture changes the implementation** (see §Va) but preserves

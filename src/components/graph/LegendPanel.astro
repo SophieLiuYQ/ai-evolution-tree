@@ -13,6 +13,29 @@ const { nodeCount, edgeCount, yearCount } = Astro.props;
 const visibleEdges = Object.entries(edgeStyle).filter(
   ([t]) => !HIDDEN_EDGE_TYPES.has(t as Rel["type"]),
 );
+
+// Node-type filter rows. `id` matches the raw category[] tag in node
+// frontmatter (so node-types.ts can match against `data-cats`). Order
+// here is the display order — headline types (Agent / Multimodal /
+// Reasoning) first, then modality/domain, then meta. Colors mirror
+// the type-tag pills in ModelSpec so a card's filter row reads as the
+// same family as its detail-page tag.
+const NODE_TYPES: { id: string; label: string; color: string }[] = [
+  { id: "agents", label: "Agent", color: "#7c3aed" },
+  { id: "multimodal", label: "Multimodal", color: "#0e7490" },
+  { id: "reasoning", label: "Reasoning", color: "#b91c1c" },
+  { id: "generative", label: "Generative", color: "#be185d" },
+  { id: "code", label: "Code", color: "#4338ca" },
+  { id: "cv", label: "Vision", color: "#047857" },
+  { id: "audio", label: "Audio", color: "#a16207" },
+  { id: "nlp", label: "Text / NLP", color: "#1d4ed8" },
+  { id: "rl", label: "RL", color: "#475569" },
+  { id: "infrastructure", label: "Infrastructure", color: "#475569" },
+  { id: "safety", label: "Safety", color: "#64748b" },
+  { id: "training", label: "Training", color: "#64748b" },
+  { id: "architecture", label: "Architecture", color: "#64748b" },
+  { id: "theory", label: "Theory", color: "#64748b" },
+];
 ---
 
 <aside class="edge-legend overflow-y-auto border-r border-slate-200 bg-slate-50 px-4 py-4">
@@ -143,6 +166,64 @@ const visibleEdges = Object.entries(edgeStyle).filter(
     </button>
   </div>
 
+  {/* Node-type filter — fades cards whose category[] doesn't intersect
+      the enabled set. Same toggle/eye pattern as Edge types. */}
+  <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+    Node types
+  </h3>
+  <ul class="space-y-1">
+    {NODE_TYPES.map((nt) => (
+      <li class="node-type-row" data-type={nt.id} data-on="true">
+        <button
+          type="button"
+          class="node-type-toggle flex w-full items-center gap-2 rounded px-1 py-0.5 text-xs text-slate-700 hover:bg-slate-100"
+          data-type={nt.id}
+          aria-pressed="true"
+          title={`Toggle ${nt.label}`}
+        >
+          <span
+            class="node-type-swatch shrink-0"
+            style={`background:${nt.color};`}
+            aria-hidden="true"
+          />
+          <span class="flex-1 text-left font-medium">{nt.label}</span>
+          <svg
+            class="node-type-eye shrink-0"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path class="eye-outline" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="3"/>
+            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <div class="mt-2 flex gap-1.5 text-[10px]">
+    <button type="button" class="bulk-node-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="all" title="Show all node types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span>Show all</span>
+    </button>
+    <button type="button" class="bulk-node-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all node types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <line x1="3" y1="3" x2="21" y2="21"/>
+      </svg>
+      <span>Hide all</span>
+    </button>
+  </div>
+
   <p class="mt-5 border-t border-slate-200 pt-3 text-[10.5px] leading-relaxed text-slate-500">
     Hover a card → ancestor lineage.<br/>
     <strong>zoom</strong> → 1-hop modal.<br/>
@@ -234,6 +315,44 @@ const visibleEdges = Object.entries(edgeStyle).filter(
     cursor: pointer;
   }
   .edge-type-toggle:hover .edge-type-eye {
+    color: #0f172a;
+  }
+
+  /* Node-type toggle rows — same swap pattern as edge-types, but with
+     a colored swatch instead of an arrow line. Swatch color is set via
+     inline style from the NODE_TYPES table so it matches the type-tag
+     pill on the detail page. */
+  .node-type-row {
+    transition: opacity 0.12s ease, filter 0.12s ease;
+  }
+  .node-type-row[data-on="false"] {
+    opacity: 0.45;
+    filter: grayscale(0.8);
+  }
+  .node-type-toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  .node-type-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+  }
+  .node-type-row[data-on="false"] .node-type-swatch {
+    border-color: rgba(15, 23, 42, 0.06);
+  }
+  .node-type-row .node-type-eye {
+    color: #475569;
+    transition: color 0.12s ease;
+  }
+  .node-type-row[data-on="false"] .node-type-eye {
+    color: #94a3b8;
+  }
+  .node-type-row[data-on="true"] .eye-slash { display: none; }
+  .node-type-row[data-on="false"] .eye-pupil { display: none; }
+  .node-type-toggle:hover .node-type-eye {
     color: #0f172a;
   }
   @media (max-width: 720px) {
