@@ -59,15 +59,30 @@ const packLayout = (layout: Layout) => ({
   ),
 });
 
-// Flat, date-sorted list for the Compact view. Each tile carries the
-// same data-cats / data-license / data-org / data-slug attrs as the
-// SVG cards, so the existing filter chain (node-types.ts) applies to
-// compact tiles too without any fork in the filter logic.
-const compactNodes = [...nodes].sort(
-  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
-);
+// Year-grouped data for the Compact view. Each tile carries the same
+// data-cats / data-license / data-org / data-slug attrs as the SVG
+// cards, so the existing filter chain (node-types.ts) applies to
+// compact tiles too without any fork in the filter logic. Year rows
+// keep the time axis visible when the tree collapses to a grid —
+// rows whose tiles all get filtered out hide automatically via CSS
+// `:has()` so the remaining years stack tightly.
+const compactYears = (() => {
+  const sortedNodes = [...nodes].sort(
+    (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+  );
+  const map = new Map<number, CollectionEntry<"nodes">[]>();
+  for (const n of sortedNodes) {
+    const y = n.data.date.getFullYear();
+    const bucket = map.get(y) ?? [];
+    bucket.push(n);
+    map.set(y, bucket);
+  }
+  return Array.from(map.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([year, ns]) => ({ year, nodes: ns }));
+})();
 const fmtCompactDate = (d: Date) =>
-  d.toLocaleDateString("en-US", { year: "numeric", month: "short" });
+  d.toLocaleDateString("en-US", { month: "short" });
 const compactLicense = (n: CollectionEntry<"nodes">) => {
   const rt = n.data.model_spec?.release_type;
   if (!rt || rt === "open_weights" || rt === "paper") return "open";
@@ -115,32 +130,41 @@ const clientPayload = {
         )}
       </div>
 
-      {/* Compact view — a flat chronological grid of tiles that replaces
-          the SVG tree when `.compact-mode` is active on the figure.
-          Shares the same data-* attribute grammar as the SVG cards so
-          node-types.ts's filter chain applies without modification:
-          filtered tiles get `.card-filtered` → `display: none` (overriding
-          the default opacity-fade so compact mode actually compacts). */}
+      {/* Compact view — a year-grouped grid that replaces the SVG tree
+          when `.compact-mode` is active on the figure. Keeps the time
+          axis visible (year labels run down the left gutter) so the
+          chronology of the filtered set is still legible — just without
+          the tree's empty-space bands. Tiles share the same data-*
+          attribute grammar as the SVG cards so node-types.ts's filter
+          chain applies without modification. Year rows with all tiles
+          filtered out auto-hide via the CSS `:has()` rule below. */}
       <div class="compact-list" aria-label="Compact tree view">
-        {compactNodes.map((n) => {
-          const d = n.data;
-          const lic = compactLicense(n);
-          const dateLabel = fmtCompactDate(d.date);
-          return (
-            <a
-              href={`/node/${d.slug}/`}
-              class="node-link compact-tile"
-              data-slug={d.slug}
-              data-cats={d.category.join(" ")}
-              data-license={lic}
-              data-org={d.org}
-              style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}
-            >
-              <div class="compact-tile-meta">{dateLabel} · {d.org}</div>
-              <div class="compact-tile-title">{d.title}</div>
-            </a>
-          );
-        })}
+        {compactYears.map(({ year, nodes: yearNodes }) => (
+          <div class="compact-year" data-year={year}>
+            <div class="compact-year-label">{year}</div>
+            <div class="compact-year-tiles">
+              {yearNodes.map((n) => {
+                const d = n.data;
+                const lic = compactLicense(n);
+                const monthLabel = fmtCompactDate(d.date);
+                return (
+                  <a
+                    href={`/node/${d.slug}/`}
+                    class="node-link compact-tile"
+                    data-slug={d.slug}
+                    data-cats={d.category.join(" ")}
+                    data-license={lic}
+                    data-org={d.org}
+                    style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}
+                  >
+                    <div class="compact-tile-meta">{monthLabel} · {d.org}</div>
+                    <div class="compact-tile-title">{d.title}</div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </div>
@@ -180,34 +204,70 @@ const clientPayload = {
     .ai-tree-graph .graph-body { flex-direction: column; }
   }
 
-  /* ===== Compact view — flat grid replaces the SVG tree when active.
-     Toggled via `.compact-mode` class on `.ai-tree-graph` (see
-     compact.ts). The SVG panes get hidden, the grid gets shown. Same
-     filter chain applies — .card-filtered on a tile becomes
-     display:none in compact mode so only visible tiles show. */
+  /* ===== Compact view — year-grouped grid replaces the SVG tree
+     when active. Toggled via `.compact-mode` class on `.ai-tree-graph`
+     (see compact.ts). The SVG panes get hidden, the year grid gets
+     shown. Same filter chain applies — .card-filtered on a tile
+     becomes display:none in compact mode so only visible tiles show. */
   .panes-wrap { display: contents; }
   .compact-list {
     display: none;
-    padding: 16px;
+    padding: 20px 24px;
     overflow-y: auto;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 10px;
-    align-content: start;
+    flex-direction: column;
+    gap: 2px;
   }
   .ai-tree-graph.compact-mode .panes-wrap { display: none; }
-  .ai-tree-graph.compact-mode .compact-list { display: grid; }
+  .ai-tree-graph.compact-mode .compact-list { display: flex; }
   .ai-tree-graph.compact-mode .compact-list .card-filtered {
     /* In compact view, filtered tiles are removed entirely so the grid
        packs only the selected ones. Overrides the default fade rule
        scoped to Card.astro (which also uses !important). */
     display: none !important;
   }
+  /* Auto-hide year rows whose tiles are ALL filtered out. The `:has()`
+     selector checks each compact-year for at least one surviving
+     (.compact-tile that is NOT .card-filtered) — if none, the whole
+     row (year label + tiles) collapses so the timeline stacks tight. */
+  .ai-tree-graph.compact-mode .compact-year:not(:has(.compact-tile:not(.card-filtered))) {
+    display: none;
+  }
+
+  /* Each year row: fixed-width year label gutter on the left, tiles
+     flow-wrap to the right. Rows stack vertically so the time axis
+     reads top→bottom. */
+  .compact-year {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 20px;
+    padding: 10px 0;
+    border-top: 1px dashed #e2e8f0;
+  }
+  .compact-year:first-child { border-top: none; }
+  .compact-year-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: #475569;
+    letter-spacing: 0.02em;
+    padding-top: 4px;
+    text-align: right;
+    align-self: start;
+    position: sticky;
+    top: 0;
+  }
+  .compact-year-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-content: flex-start;
+  }
 
   .compact-tile {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 10px 12px 10px 14px;
+    gap: 3px;
+    padding: 8px 12px 9px 13px;
     background: white;
     border: 1px solid #e2e8f0;
     border-left: 4px solid var(--tile-stroke, #64748b);
@@ -215,7 +275,8 @@ const clientPayload = {
     text-decoration: none;
     color: #0f172a;
     transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
-    min-height: 56px;
+    width: 220px;
+    min-height: 52px;
   }
   .compact-tile:hover {
     transform: translateY(-1px);

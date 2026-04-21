@@ -721,22 +721,43 @@ buttons. Persistence is via `localStorage`
 `ai-tree:license`).
 
 **Compact view toggle (2026-04-21):** above the filter sections, a
-"Compact view" button swaps the SVG tree for a flat tile grid via a
-`.compact-mode` class on `.ai-tree-graph`. Motivation: with filters
-active, the faded cards leave large empty bands in the tree — visually
-noisy when the user just wants to see "which selected models are
-there?". Compact view re-renders the filtered set as a packed grid.
+"Compact view" button swaps the SVG tree for a year-grouped tile grid
+via a `.compact-mode` class on `.ai-tree-graph`. Motivation: with
+filters active, the faded cards leave large empty bands in the tree —
+visually noisy when the user just wants to see "which selected models
+are there?". Compact view re-renders the filtered set as a tight grid
+but KEEPS the time axis — each year is its own row with the year
+label pinned to the left gutter, tiles flow within. Reads like a
+compact tree, not a flat list.
 
 Design notes:
 - Tiles are plain HTML (not SVG), rendered server-side in Graph.astro
-  alongside the panes — one `<a class="node-link compact-tile">` per
-  node, sorted by date asc, with the same `data-cats` / `data-org` /
-  `data-license` grammar as the SVG cards. The filter chain in
-  `node-types.ts` applies unchanged — it just iterates
-  `.node-link[data-cats]`, which matches both SVG cards and HTML tiles.
+  alongside the panes. Structure:
+  ```
+  .compact-list
+    .compact-year[data-year="2024"]
+      .compact-year-label ("2024")
+      .compact-year-tiles
+        a.node-link.compact-tile  (one per node)
+        a.node-link.compact-tile
+        ...
+  ```
+- Each tile carries the same `data-cats` / `data-org` / `data-license`
+  grammar as the SVG cards. The filter chain in `node-types.ts`
+  applies unchanged — it iterates `.node-link[data-cats]`, which
+  matches both SVG cards and HTML tiles.
 - In compact mode, `.card-filtered` becomes `display: none !important`
   (scoped under `.compact-mode` so it overrides the default 0.2
   opacity fade). Only passing tiles render.
+- Year rows where ALL tiles are filtered out auto-collapse via CSS
+  `:has()`:
+  ```css
+  .compact-mode .compact-year:not(:has(.compact-tile:not(.card-filtered))) {
+    display: none;
+  }
+  ```
+  No JS needed to walk year rows — the selector handles empty-year
+  collapse and the remaining years stack tight automatically.
 - Compact state is intentionally NOT persisted — it's a transient view
   flip, not a preference.
 - Edges / hover / pin are unavailable in compact mode by design (the
