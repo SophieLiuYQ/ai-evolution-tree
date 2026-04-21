@@ -68,15 +68,16 @@ const license =
     transition: opacity 0.15s ease, filter 0.15s ease;
   }
   /* Card filters — a card is faded (not removed) when it fails any of
-     the three filter dimensions (Node types · Company · License). The
-     card stays in place so the lineage skeleton + spatial layout are
-     preserved; users can see WHERE filtered models sit in the tree
-     instead of staring at gaps. Pointer-events off prevents accidental
-     hover/click on dim cards. */
+     the three filter dimensions (Node types · Company · License).
+     `!important` is required: hover.ts writes inline `style.opacity`
+     and `style.filter` on every card during hover/clear cycles (see
+     hover.ts:77,86,87) — without !important, inline styles would win
+     and the filter would visually revert the moment the user hovers
+     any card. The filter class must always dominate. */
   .node-link.card-filtered {
-    opacity: 0.2;
-    filter: grayscale(0.6);
-    pointer-events: none;
+    opacity: 0.2 !important;
+    filter: grayscale(0.6) !important;
+    pointer-events: none !important;
   }
   /* Smooth motion when sort mode swaps card positions */
   .node {
