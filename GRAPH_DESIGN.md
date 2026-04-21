@@ -786,6 +786,18 @@ display — so future work can still differentiate a theory paper from a
 training recipe paper when it matters. Node-types count went from 14
 rows to 9.
 
+**Google/DeepMind consolidation (2026-04-21):** same display-layer
+collapse idea applied to orgs. `lib/org-display.ts` provides
+`normalizeOrg()` which rewrites `Google` / `DeepMind` / `Google
+DeepMind` to a single `Google/DeepMind` label. Applied in the
+`.node-link` `data-org` attribute and in the Company filter's
+org-count map (Graph.astro). Result: the three historical lab names
+collapse to one row with the combined model count, while frontmatter
+retains the accurate org (Word2vec stays as Google, AlphaGo stays as
+DeepMind — the 2013 and 2016 attributions are historically correct).
+The `constants.ts` color maps gain a `Google/DeepMind` entry reusing
+the Google-blue so the filter swatch matches the card borders.
+
 Node-type filter semantics:
 - A card is shown if **at least one** of its `category[]` tags is in the
   enabled set (OR semantics, "show only selected").

@@ -2,6 +2,7 @@
 import type { Placed } from "../../lib/graph/types";
 import { fill, stroke } from "../../lib/graph/constants";
 import { normalizeCategories } from "../../lib/categories";
+import { normalizeOrg } from "../../lib/org-display";
 import {
   clip,
   fmtMonth,
@@ -31,7 +32,7 @@ const license =
     : "closed";
 ---
 
-<a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug} data-cats={normalizeCategories(d.category).join(" ")} data-license={license} data-org={d.org}>
+<a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug} data-cats={normalizeCategories(d.category).join(" ")} data-license={license} data-org={normalizeOrg(d.org)}>
   <g class="node" transform={`translate(${x}, ${y})`}>
     {/* Invisible hover-bay extends the link's hit area into the right gap
         so the mouse can reach the external zoom + pin buttons without

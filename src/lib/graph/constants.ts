@@ -8,6 +8,11 @@ export const orgFill: Record<string, string> = {
   "Google DeepMind": "#dbeafe",
   "DeepMind": "#dbeafe",
   "Google Brain": "#dbeafe",
+  // Consolidated display name used by the Company filter + card
+  // data-org attribute (see lib/org-display.ts). Same color as the
+  // three underlying labs so cards whose frontmatter still reads
+  // "DeepMind" or "Google" visually match the filter row.
+  "Google/DeepMind": "#dbeafe",
   "Meta AI": "#cffafe",
   "Microsoft": "#ccfbf1",
   "Mistral AI": "#fee2e2",
@@ -41,6 +46,7 @@ export const orgStroke: Record<string, string> = {
   "Google DeepMind": "#1d4ed8",
   "DeepMind": "#1d4ed8",
   "Google Brain": "#1d4ed8",
+  "Google/DeepMind": "#1d4ed8",
   "Meta AI": "#0e7490",
   "Microsoft": "#0f766e",
   "Mistral AI": "#b91c1c",

@@ -7,6 +7,7 @@ import {
   stroke as orgStrokeColor,
 } from "../lib/graph/constants";
 import { normalizeCategories } from "../lib/categories";
+import { normalizeOrg } from "../lib/org-display";
 import { computeLayout, groupByYear } from "../lib/graph/layout";
 import type { Layout, Rel, SortMode } from "../lib/graph/types";
 import { SORT_MODES } from "../lib/graph/types";
@@ -24,9 +25,13 @@ const { byYear, years } = groupByYear(nodes);
 // Org → count for the LegendPanel "Company" filter. Sorted by count
 // desc with alphabetical tiebreaker so the high-volume labs (OpenAI,
 // Google, Anthropic, ...) sit at the top of the scrollable list.
+// `normalizeOrg` collapses the Google / DeepMind / Google DeepMind
+// triad into one "Google/DeepMind" bucket so the filter has a single
+// row per real lab.
 const orgCountMap = new Map<string, number>();
 for (const n of nodes) {
-  orgCountMap.set(n.data.org, (orgCountMap.get(n.data.org) ?? 0) + 1);
+  const o = normalizeOrg(n.data.org);
+  orgCountMap.set(o, (orgCountMap.get(o) ?? 0) + 1);
 }
 const orgs = Array.from(orgCountMap.entries())
   .map(([name, count]) => ({ name, count }))
@@ -155,7 +160,7 @@ const clientPayload = {
                     data-slug={d.slug}
                     data-cats={normalizeCategories(d.category).join(" ")}
                     data-license={lic}
-                    data-org={d.org}
+                    data-org={normalizeOrg(d.org)}
                     style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}
                   >
                     <div class="compact-tile-meta">{monthLabel} · {d.org}</div>
