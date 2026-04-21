@@ -202,3 +202,43 @@ export function nodePassesFilter(cats: readonly string[]): boolean {
   }
   return false;
 }
+
+// ===== License visibility =====
+// Two-bucket filter (open / closed) layered on top of the node-type
+// filter. A card must pass BOTH dimensions to be shown.
+const LICENSE_KEY = "ai-tree:license";
+let _enabledLicenses = new Set<string>(["open", "closed"]);
+
+function persistLicenses() {
+  try {
+    localStorage.setItem(
+      LICENSE_KEY,
+      JSON.stringify(Array.from(_enabledLicenses)),
+    );
+  } catch {}
+}
+
+export function initLicenseState(allKeys: string[]) {
+  _enabledLicenses = new Set(allKeys);
+  try {
+    const raw = localStorage.getItem(LICENSE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (Array.isArray(saved)) {
+        _enabledLicenses = new Set(saved.filter((t) => allKeys.includes(t)));
+      }
+    }
+  } catch {}
+}
+
+export const isLicenseEnabled = (k: string) => _enabledLicenses.has(k);
+
+export function setLicenseEnabled(k: string, on: boolean) {
+  if (on) _enabledLicenses.add(k);
+  else _enabledLicenses.delete(k);
+  persistLicenses();
+}
+
+export function nodePassesLicenseFilter(license: string): boolean {
+  return _enabledLicenses.has(license);
+}

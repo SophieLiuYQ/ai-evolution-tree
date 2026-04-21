@@ -711,20 +711,30 @@ deserves vertical space, (b) the legend is reference material the
 user glances at while hovering, so keeping it visible alongside the
 graph beats forcing them to scroll down to check a color.
 
-**Filter rows below the legend (2026-04-20):** the panel now hosts two
-parallel filter sections — **Edge types** (long-standing) and **Node types**
-(new). Both use the same eye-toggle pattern; each row has a swatch +
-label + eye icon, plus bulk Show/Hide buttons. Persistence is via
-`localStorage` (`ai-tree:edgeTypes`, `ai-tree:nodeTypes`).
+**Filter rows below the legend (2026-04-20):** the panel now hosts three
+parallel filter sections — **Edge types** (long-standing), **Node types**
+(new), and **License** (open vs closed, new). All use the same eye-toggle
+pattern; each row has a swatch + label + eye icon. Edge types and Node
+types also expose bulk Show/Hide buttons. Persistence is via
+`localStorage` (`ai-tree:edgeTypes`, `ai-tree:nodeTypes`,
+`ai-tree:license`).
+
+The Node-types and License filters AND together — a card must pass BOTH
+to be shown. License buckets mirror the byLicense sort taxonomy:
+`open` = open_weights / paper / no-model_spec; `closed` = api / product
+/ demo. Each `.node-link` carries `data-license="open|closed"` so the
+client can match without round-tripping data.
 
 Node-type filter semantics:
 - A card is shown if **at least one** of its `category[]` tags is in the
   enabled set (OR semantics, "show only selected").
-- Filtered cards get `.node-type-filtered { display: none }` — they are
+- Filtered cards get `.card-filtered { display: none }` — they are
   removed from rendering entirely (not dimmed). The earlier opacity-fade
   approach was rejected per user feedback 2026-04-20: when the user
   toggles a type off, they expect the cards to disappear, not linger
-  ghosted in place.
+  ghosted in place. The class name is generic (`card-filtered`, not
+  `node-type-filtered`) because both the Node-types and License filters
+  apply the same hide rule when their conditions fail.
 - Edges are intentionally NOT touched — they only render on hover/pin,
   and hover always fires from a *visible* card, so the rendered lineage
   is always anchored to a live node. Edges that pass through a hidden

@@ -224,6 +224,52 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     </button>
   </div>
 
+  {/* License filter — two buckets, AND-ed with the Node-types filter
+      above. "Open" covers open_weights / paper / no-model_spec; "Closed"
+      covers api / product / demo. Mirrors the byLicense sort taxonomy. */}
+  <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+    License
+  </h3>
+  <ul class="space-y-1">
+    {([
+      { id: "open", label: "Open source", color: "#047857" },
+      { id: "closed", label: "Closed source", color: "#94a3b8" },
+    ] as const).map((lic) => (
+      <li class="license-row" data-license={lic.id} data-on="true">
+        <button
+          type="button"
+          class="license-toggle flex w-full items-center gap-2 rounded px-1 py-0.5 text-xs text-slate-700 hover:bg-slate-100"
+          data-license={lic.id}
+          aria-pressed="true"
+          title={`Toggle ${lic.label}`}
+        >
+          <span
+            class="license-swatch shrink-0"
+            style={`background:${lic.color};`}
+            aria-hidden="true"
+          />
+          <span class="flex-1 text-left font-medium">{lic.label}</span>
+          <svg
+            class="license-eye shrink-0"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path class="eye-outline" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="3"/>
+            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </button>
+      </li>
+    ))}
+  </ul>
+
   <p class="mt-5 border-t border-slate-200 pt-3 text-[10.5px] leading-relaxed text-slate-500">
     Hover a card → ancestor lineage.<br/>
     <strong>zoom</strong> → 1-hop modal.<br/>
@@ -353,6 +399,42 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   .node-type-row[data-on="true"] .eye-slash { display: none; }
   .node-type-row[data-on="false"] .eye-pupil { display: none; }
   .node-type-toggle:hover .node-type-eye {
+    color: #0f172a;
+  }
+
+  /* License toggle rows — same pattern as node-type rows. Two buckets:
+     open (green swatch), closed (slate swatch). */
+  .license-row {
+    transition: opacity 0.12s ease, filter 0.12s ease;
+  }
+  .license-row[data-on="false"] {
+    opacity: 0.45;
+    filter: grayscale(0.8);
+  }
+  .license-toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  .license-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+  }
+  .license-row[data-on="false"] .license-swatch {
+    border-color: rgba(15, 23, 42, 0.06);
+  }
+  .license-row .license-eye {
+    color: #475569;
+    transition: color 0.12s ease;
+  }
+  .license-row[data-on="false"] .license-eye {
+    color: #94a3b8;
+  }
+  .license-row[data-on="true"] .eye-slash { display: none; }
+  .license-row[data-on="false"] .eye-pupil { display: none; }
+  .license-toggle:hover .license-eye {
     color: #0f172a;
   }
   @media (max-width: 720px) {
