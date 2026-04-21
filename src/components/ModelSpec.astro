@@ -41,8 +41,9 @@ const { spec, org, modelTitle, category } = Astro.props;
 
 // Human-readable label for each raw category tag. Order of the CATEGORY_ORDER
 // array below is the display priority: "headline" type tags (the ones a
-// reader cares about most) come first, then modality/domain tags, then
-// meta tags (training, architecture, safety, theory).
+// reader cares about most) come first, then modality/domain tags, then the
+// consolidated "paper" tag (which `normalizeCategories()` collapses the 6
+// meta tags into — theory/training/architecture/safety/rl/infrastructure).
 const CATEGORY_LABEL: Record<string, string> = {
   agents: "Agent",
   multimodal: "Multimodal",
@@ -52,12 +53,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   cv: "Vision",
   audio: "Audio",
   code: "Code",
-  rl: "Reinforcement Learning",
-  infrastructure: "Infrastructure",
-  safety: "Safety",
-  training: "Training",
-  architecture: "Architecture",
-  theory: "Theory",
+  paper: "Paper",
 };
 const CATEGORY_ORDER = [
   "agents",
@@ -68,23 +64,18 @@ const CATEGORY_ORDER = [
   "cv",
   "audio",
   "code",
-  "rl",
-  "infrastructure",
-  "safety",
-  "training",
-  "architecture",
-  "theory",
+  "paper",
 ];
-const typeTags = (category ?? [])
-  .slice()
-  .sort(
-    (a, b) =>
-      (CATEGORY_ORDER.indexOf(a) === -1 ? 99 : CATEGORY_ORDER.indexOf(a)) -
-      (CATEGORY_ORDER.indexOf(b) === -1 ? 99 : CATEGORY_ORDER.indexOf(b)),
-  );
 
 import { stroke as orgStrokeColor } from "../lib/graph/constants";
+import { normalizeCategories } from "../lib/categories";
 import { ORG_HOMEPAGE } from "../lib/org-links";
+
+const typeTags = normalizeCategories(category ?? []).slice().sort(
+  (a, b) =>
+    (CATEGORY_ORDER.indexOf(a) === -1 ? 99 : CATEGORY_ORDER.indexOf(a)) -
+    (CATEGORY_ORDER.indexOf(b) === -1 ? 99 : CATEGORY_ORDER.indexOf(b)),
+);
 // Use the model's own org color for scale-bar markers + active pills,
 // matching the search-result pulse and main-graph card border. This
 // keeps a card visually unified across pages instead of drowning in
@@ -1800,21 +1791,14 @@ if (spec.release_type)
     background: #fdf2f8;
     border-color: #fbcfe8;
   }
-  /* Specialty */
-  .type-tag-rl,
-  .type-tag-infrastructure {
+  /* Paper — the consolidated tag for foundational / meta-work nodes
+     (collapses theory/training/architecture/safety/rl/infrastructure
+     via normalizeCategories). Neutral slate so it recedes behind the
+     headline type tags without disappearing. */
+  .type-tag-paper {
     color: #475569;
     background: #f1f5f9;
     border-color: #cbd5e1;
-  }
-  /* Meta tags — dimmer so they recede behind the headline types */
-  .type-tag-safety,
-  .type-tag-training,
-  .type-tag-architecture,
-  .type-tag-theory {
-    color: #64748b;
-    background: #f8fafc;
-    border-color: #e2e8f0;
   }
 
   /* Per-benchmark leaderboard source link */

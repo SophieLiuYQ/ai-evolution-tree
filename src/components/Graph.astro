@@ -6,6 +6,7 @@ import {
   fill as orgFillColor,
   stroke as orgStrokeColor,
 } from "../lib/graph/constants";
+import { normalizeCategories } from "../lib/categories";
 import { computeLayout, groupByYear } from "../lib/graph/layout";
 import type { Layout, Rel, SortMode } from "../lib/graph/types";
 import { SORT_MODES } from "../lib/graph/types";
@@ -152,7 +153,7 @@ const clientPayload = {
                     href={`/node/${d.slug}/`}
                     class="node-link compact-tile"
                     data-slug={d.slug}
-                    data-cats={d.category.join(" ")}
+                    data-cats={normalizeCategories(d.category).join(" ")}
                     data-license={lic}
                     data-org={d.org}
                     style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}

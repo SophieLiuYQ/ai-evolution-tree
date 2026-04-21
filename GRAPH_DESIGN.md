@@ -775,6 +775,17 @@ since the list runs ~50 entries. Each `.node-link` carries
 `data-license="open|closed"` and `data-org="<org name>"` so the
 client can match without round-tripping data.
 
+**Paper consolidation (2026-04-21):** the Node-types filter shows
+**"Paper"** as a single row instead of the six fine-grained meta tags
+that exist in frontmatter (theory / training / architecture / safety /
+rl / infrastructure). `lib/categories.ts` provides a
+`normalizeCategories()` helper that rewrites those six tags to
+`"paper"` on every card's `data-cats` attribute (and in ModelSpec's
+type-tag row). Frontmatter stays fine-grained — we only collapse at
+display — so future work can still differentiate a theory paper from a
+training recipe paper when it matters. Node-types count went from 14
+rows to 9.
+
 Node-type filter semantics:
 - A card is shown if **at least one** of its `category[]` tags is in the
   enabled set (OR semantics, "show only selected").

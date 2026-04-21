@@ -36,12 +36,12 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   { id: "cv", label: "Vision", color: "#047857" },
   { id: "audio", label: "Audio", color: "#a16207" },
   { id: "nlp", label: "Text / NLP", color: "#1d4ed8" },
-  { id: "rl", label: "RL", color: "#475569" },
-  { id: "infrastructure", label: "Infrastructure", color: "#475569" },
-  { id: "safety", label: "Safety", color: "#64748b" },
-  { id: "training", label: "Training", color: "#64748b" },
-  { id: "architecture", label: "Architecture", color: "#64748b" },
-  { id: "theory", label: "Theory", color: "#64748b" },
+  // "Paper" consolidates the fine-grained meta tags (theory, training,
+  // architecture, safety, rl, infrastructure) into one filter row. The
+  // normalizer in lib/categories.ts rewrites those 6 tags to "paper" on
+  // every card's data-cats attribute, so enabling "Paper" here matches
+  // all foundational/meta nodes with a single toggle.
+  { id: "paper", label: "Paper", color: "#64748b" },
 ];
 ---
 
