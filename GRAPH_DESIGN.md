@@ -711,18 +711,24 @@ deserves vertical space, (b) the legend is reference material the
 user glances at while hovering, so keeping it visible alongside the
 graph beats forcing them to scroll down to check a color.
 
-**Filter rows below the legend (2026-04-20):** the panel now hosts three
+**Filter rows below the legend (2026-04-20):** the panel now hosts four
 parallel filter sections — **Edge types** (long-standing), **Node types**
-(new), and **License** (open vs closed, new). All use the same eye-toggle
-pattern; each row has a swatch + label + eye icon. Edge types and Node
-types also expose bulk Show/Hide buttons. Persistence is via
-`localStorage` (`ai-tree:edgeTypes`, `ai-tree:nodeTypes`,
+(new), **Company** (new), and **License** (open vs closed, new). All
+use the same eye-toggle pattern; each row has a swatch + label + eye
+icon. Edge types, Node types, and Company also expose bulk Show/Hide
+buttons. Persistence is via `localStorage`
+(`ai-tree:edgeTypes`, `ai-tree:nodeTypes`, `ai-tree:orgs`,
 `ai-tree:license`).
 
-The Node-types and License filters AND together — a card must pass BOTH
-to be shown. License buckets mirror the byLicense sort taxonomy:
-`open` = open_weights / paper / no-model_spec; `closed` = api / product
-/ demo. Each `.node-link` carries `data-license="open|closed"` so the
+The Node-types, Company, and License filters AND together — a card
+must pass ALL THREE to be shown. License buckets mirror the byLicense
+sort taxonomy: `open` = open_weights / paper / no-model_spec;
+`closed` = api / product / demo. The Company list is computed from the
+actual node corpus (`Graph.astro` builds an org→count map, sorted by
+count desc with alphabetical tiebreaker so frontier labs sit at the
+top), and the row container is scrollable with `max-height: 240px`
+since the list runs ~50 entries. Each `.node-link` carries
+`data-license="open|closed"` and `data-org="<org name>"` so the
 client can match without round-tripping data.
 
 Node-type filter semantics:

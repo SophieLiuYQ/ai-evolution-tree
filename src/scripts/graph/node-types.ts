@@ -1,6 +1,6 @@
-// Card-visibility filters: Node types + License. Both dimensions are
-// AND-ed — a card must pass BOTH to be shown. Hidden cards get
-// .card-filtered (display: none, see Card.astro CSS).
+// Card-visibility filters: Node types + License + Company. All three
+// dimensions are AND-ed — a card must pass ALL THREE to be shown.
+// Hidden cards get .card-filtered (display: none, see Card.astro CSS).
 //
 // Edges are intentionally NOT touched here — fading just the cards
 // preserves the lineage skeleton so the user can still hover a visible
@@ -11,13 +11,18 @@
 import {
   initLicenseState,
   initNodeTypeState,
+  initOrgState,
   isLicenseEnabled,
   isNodeTypeEnabled,
+  isOrgEnabled,
   nodePassesFilter,
   nodePassesLicenseFilter,
+  nodePassesOrgFilter,
   setAllNodeTypesEnabled,
+  setAllOrgsEnabled,
   setLicenseEnabled,
   setNodeTypeEnabled,
+  setOrgEnabled,
 } from "./state";
 
 const FILTERED_CLASS = "card-filtered";
@@ -31,6 +36,12 @@ function refreshTypeRow(row: HTMLElement, on: boolean) {
 function refreshLicenseRow(row: HTMLElement, on: boolean) {
   row.dataset.on = String(on);
   const btn = row.querySelector<HTMLElement>(".license-toggle");
+  if (btn) btn.setAttribute("aria-pressed", String(on));
+}
+
+function refreshOrgRow(row: HTMLElement, on: boolean) {
+  row.dataset.on = String(on);
+  const btn = row.querySelector<HTMLElement>(".org-toggle");
   if (btn) btn.setAttribute("aria-pressed", String(on));
 }
 
@@ -50,11 +61,23 @@ function refreshAllLicenseRows() {
   });
 }
 
+function refreshAllOrgRows() {
+  document.querySelectorAll<HTMLElement>(".org-row").forEach((row) => {
+    const o = row.dataset.org;
+    if (!o) return;
+    refreshOrgRow(row, isOrgEnabled(o));
+  });
+}
+
 function applyCardFilter() {
   document.querySelectorAll<HTMLElement>(".node-link[data-cats]").forEach((a) => {
     const cats = (a.dataset.cats ?? "").split(/\s+/).filter(Boolean);
     const license = a.dataset.license ?? "open";
-    const hide = !nodePassesFilter(cats) || !nodePassesLicenseFilter(license);
+    const org = a.dataset.org ?? "";
+    const hide =
+      !nodePassesFilter(cats) ||
+      !nodePassesLicenseFilter(license) ||
+      !nodePassesOrgFilter(org);
     a.classList.toggle(FILTERED_CLASS, hide);
   });
 }
@@ -120,6 +143,40 @@ export function attachNodeTypeHandlers() {
     });
   });
 
-  // Apply once both filter dimensions have initialized
+  // ===== Org / Company filter =====
+  const allOrgs = Array.from(
+    document.querySelectorAll<HTMLElement>(".org-row[data-org]"),
+  )
+    .map((row) => row.dataset.org)
+    .filter((o): o is string => typeof o === "string");
+
+  initOrgState(allOrgs);
+  refreshAllOrgRows();
+
+  document.querySelectorAll<HTMLElement>(".org-toggle").forEach((btn) => {
+    btn.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const o = btn.dataset.org;
+      if (!o) return;
+      const next = !isOrgEnabled(o);
+      setOrgEnabled(o, next);
+      const row = btn.closest<HTMLElement>(".org-row");
+      if (row) refreshOrgRow(row, next);
+      applyCardFilter();
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>(".bulk-org-toggle").forEach((btn) => {
+    btn.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const on = btn.dataset.bulk === "all";
+      setAllOrgsEnabled(on);
+      refreshAllOrgRows();
+      applyCardFilter();
+    });
+  });
+
+  // Apply once all three filter dimensions have initialized
   applyCardFilter();
 }

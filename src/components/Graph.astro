@@ -15,6 +15,17 @@ const { nodes } = Astro.props;
 
 const { byYear, years } = groupByYear(nodes);
 
+// Org → count for the LegendPanel "Company" filter. Sorted by count
+// desc with alphabetical tiebreaker so the high-volume labs (OpenAI,
+// Google, Anthropic, ...) sit at the top of the scrollable list.
+const orgCountMap = new Map<string, number>();
+for (const n of nodes) {
+  orgCountMap.set(n.data.org, (orgCountMap.get(n.data.org) ?? 0) + 1);
+}
+const orgs = Array.from(orgCountMap.entries())
+  .map(([name, count]) => ({ name, count }))
+  .sort((a, b) => (b.count - a.count) || a.name.localeCompare(b.name));
+
 // Pre-compute every (orient × sort mode) layout. Layout dimensions are
 // the same across sort modes within an orient; only intra-year card
 // positions and routed edges change. Default = chronological.
@@ -64,6 +75,7 @@ const clientPayload = {
       nodeCount={nodes.length}
       edgeCount={horizontal.edges.length}
       yearCount={years.length}
+      orgs={orgs}
     />
 
     <div class="canvas-area min-w-0 flex-1">

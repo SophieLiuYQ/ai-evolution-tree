@@ -30,7 +30,7 @@ const license =
     : "closed";
 ---
 
-<a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug} data-cats={d.category.join(" ")} data-license={license}>
+<a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug} data-cats={d.category.join(" ")} data-license={license} data-org={d.org}>
   <g class="node" transform={`translate(${x}, ${y})`}>
     {/* Invisible hover-bay extends the link's hit area into the right gap
         so the mouse can reach the external zoom + pin buttons without

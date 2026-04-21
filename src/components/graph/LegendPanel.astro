@@ -1,14 +1,21 @@
 ---
 import type { Rel } from "../../lib/graph/types";
 import { SORT_MODES } from "../../lib/graph/types";
-import { edgeStyle, HIDDEN_EDGE_TYPES } from "../../lib/graph/constants";
+import {
+  edgeStyle,
+  HIDDEN_EDGE_TYPES,
+  fill as orgFill,
+  stroke as orgStroke,
+} from "../../lib/graph/constants";
 
 interface Props {
   nodeCount: number;
   edgeCount: number;
   yearCount: number;
+  /** Sorted org → count list. Sorted desc by count, alpha tiebreaker. */
+  orgs: { name: string; count: number }[];
 }
-const { nodeCount, edgeCount, yearCount } = Astro.props;
+const { nodeCount, edgeCount, yearCount, orgs } = Astro.props;
 
 const visibleEdges = Object.entries(edgeStyle).filter(
   ([t]) => !HIDDEN_EDGE_TYPES.has(t as Rel["type"]),
@@ -216,6 +223,67 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       <span>Show all</span>
     </button>
     <button type="button" class="bulk-node-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all node types">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <line x1="3" y1="3" x2="21" y2="21"/>
+      </svg>
+      <span>Hide all</span>
+    </button>
+  </div>
+
+  {/* Company filter — long list (~50 orgs in the tree). Scrollable
+      max-height so the panel stays compact. Sorted by model count desc
+      so the high-volume frontier labs sit at the top. AND-ed with the
+      Node-types and License filters. */}
+  <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+    Company
+  </h3>
+  <ul class="org-filter-list space-y-0.5 overflow-y-auto pr-1">
+    {orgs.map((o) => (
+      <li class="org-row" data-org={o.name} data-on="true">
+        <button
+          type="button"
+          class="org-toggle flex w-full items-center gap-2 rounded px-1 py-0.5 text-xs text-slate-700 hover:bg-slate-100"
+          data-org={o.name}
+          aria-pressed="true"
+          title={`Toggle ${o.name}`}
+        >
+          <span
+            class="org-swatch shrink-0"
+            style={`background:${orgFill(o.name)};border-color:${orgStroke(o.name)};`}
+            aria-hidden="true"
+          />
+          <span class="flex-1 truncate text-left font-medium">{o.name}</span>
+          <span class="org-count font-mono text-[10px] text-slate-400">{o.count}</span>
+          <svg
+            class="org-eye shrink-0"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path class="eye-outline" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="3"/>
+            <line class="eye-slash" x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <div class="mt-2 flex gap-1.5 text-[10px]">
+    <button type="button" class="bulk-org-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="all" title="Show all companies">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      <span>Show all</span>
+    </button>
+    <button type="button" class="bulk-org-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all companies">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <line x1="3" y1="3" x2="21" y2="21"/>
@@ -435,6 +503,56 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   .license-row[data-on="true"] .eye-slash { display: none; }
   .license-row[data-on="false"] .eye-pupil { display: none; }
   .license-toggle:hover .license-eye {
+    color: #0f172a;
+  }
+
+  /* Company toggle rows — long list (~50 orgs), so the container is
+     scrollable with a fixed max-height. Org swatch uses the org's own
+     fill+stroke so it reads as the same family as the card border on
+     the canvas. */
+  .org-filter-list {
+    max-height: 240px;
+    /* Slim scrollbar — large lists feel cramped with the default. */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+  .org-filter-list::-webkit-scrollbar { width: 6px; }
+  .org-filter-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+  .org-row {
+    transition: opacity 0.12s ease, filter 0.12s ease;
+  }
+  .org-row[data-on="false"] {
+    opacity: 0.5;
+    filter: grayscale(0.7);
+  }
+  .org-toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    min-width: 0; /* lets .truncate actually clip long org names */
+  }
+  .org-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1.5px solid;
+  }
+  .org-row[data-on="false"] .org-swatch {
+    opacity: 0.55;
+  }
+  .org-row .org-eye {
+    color: #475569;
+    transition: color 0.12s ease;
+  }
+  .org-row[data-on="false"] .org-eye {
+    color: #94a3b8;
+  }
+  .org-row[data-on="true"] .eye-slash { display: none; }
+  .org-row[data-on="false"] .eye-pupil { display: none; }
+  .org-toggle:hover .org-eye {
     color: #0f172a;
   }
   @media (max-width: 720px) {

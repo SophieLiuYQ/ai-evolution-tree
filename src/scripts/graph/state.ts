@@ -242,3 +242,48 @@ export function setLicenseEnabled(k: string, on: boolean) {
 export function nodePassesLicenseFilter(license: string): boolean {
   return _enabledLicenses.has(license);
 }
+
+// ===== Org / Company visibility =====
+// Long list — 50+ orgs in the tree. Otherwise same pattern as the
+// other filters. AND-ed with node-types and license.
+const ORG_KEY = "ai-tree:orgs";
+let _enabledOrgs = new Set<string>();
+let _allKnownOrgs: string[] = [];
+
+function persistOrgs() {
+  try {
+    localStorage.setItem(ORG_KEY, JSON.stringify(Array.from(_enabledOrgs)));
+  } catch {}
+}
+
+export function initOrgState(allOrgs: string[]) {
+  _allKnownOrgs = allOrgs.slice();
+  _enabledOrgs = new Set(allOrgs);
+  try {
+    const raw = localStorage.getItem(ORG_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (Array.isArray(saved)) {
+        _enabledOrgs = new Set(saved.filter((o) => allOrgs.includes(o)));
+      }
+    }
+  } catch {}
+}
+
+export const isOrgEnabled = (o: string) => _enabledOrgs.has(o);
+
+export function setOrgEnabled(o: string, on: boolean) {
+  if (on) _enabledOrgs.add(o);
+  else _enabledOrgs.delete(o);
+  persistOrgs();
+}
+
+export function setAllOrgsEnabled(on: boolean) {
+  if (on) _enabledOrgs = new Set(_allKnownOrgs);
+  else _enabledOrgs.clear();
+  persistOrgs();
+}
+
+export function nodePassesOrgFilter(org: string): boolean {
+  return _enabledOrgs.has(org);
+}
