@@ -720,12 +720,16 @@ label + eye icon, plus bulk Show/Hide buttons. Persistence is via
 Node-type filter semantics:
 - A card is shown if **at least one** of its `category[]` tags is in the
   enabled set (OR semantics, "show only selected").
-- Edges are intentionally NOT touched — fading just the cards keeps the
-  lineage skeleton visible so users still see *where* filtered-out
-  models sit in the tree.
-- Filtered cards get `.node-type-filtered`: `opacity: 0.12`, `filter:
-  grayscale(0.85)`, `pointer-events: none`. Hover/zoom on them is
-  suppressed; edges through them still render.
+- Filtered cards get `.node-type-filtered { display: none }` — they are
+  removed from rendering entirely (not dimmed). The earlier opacity-fade
+  approach was rejected per user feedback 2026-04-20: when the user
+  toggles a type off, they expect the cards to disappear, not linger
+  ghosted in place.
+- Edges are intentionally NOT touched — they only render on hover/pin,
+  and hover always fires from a *visible* card, so the rendered lineage
+  is always anchored to a live node. Edges that pass through a hidden
+  ancestor will draw to empty space; that's acceptable and signals "the
+  ancestor exists but you've filtered its type."
 - The category list (NODE_TYPES in `LegendPanel.astro`) is the source
   of truth — `node-types.ts` discovers filterable types by reading
   `.node-type-row[data-type]` from the DOM rather than importing the
