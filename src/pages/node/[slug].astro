@@ -1,14 +1,14 @@
 ---
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
-import EraBadge from "../../components/EraBadge.astro";
-import OrgBadge from "../../components/OrgBadge.astro";
 import ViewToggle from "../../components/ViewToggle.astro";
 import PublicView from "../../components/PublicView.astro";
 import CitationsBlock from "../../components/CitationsBlock.astro";
 import ModelSpec from "../../components/ModelSpec.astro";
 import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
 import LineageZoom from "../../components/LineageZoom.astro";
+import { stroke as orgStrokeColor, fill as orgFillColor } from "../../lib/graph/constants";
+import { ORG_HOMEPAGE, ORG_GITHUB } from "../../lib/org-links";
 
 export async function getStaticPaths() {
   const nodes = await getCollection("nodes");
@@ -22,42 +22,152 @@ const { node } = Astro.props;
 const { Content } = await render(node);
 const d = node.data;
 const allNodes = await getCollection("nodes");
-const fmtMonth = d.date.toLocaleDateString("en-US", {
+
+// ===== Header data prep =====
+
+// Short date: "Apr 2025" (day precision is rarely meaningful for releases)
+const fmtShort = d.date.toLocaleDateString("en-US", {
   year: "numeric",
-  month: "long",
-  day: "numeric",
+  month: "short",
 });
+
+// Split "Claude 4.7 — Adaptive Thinking" into name + tagline
+const splitMatch = d.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+const titleName = splitMatch ? splitMatch[1] : d.title;
+const titleTagline = splitMatch ? splitMatch[2] : null;
+
+// (`breakthrough_score` is intentionally not surfaced in the UI — the
+// score is subjective and was promising precision the rubric can't
+// support. The number stays in frontmatter for future ranking work.)
+
+const STATUS_LABEL: Record<string, string> = {
+  foundational: "Foundational",
+  active: "Active",
+  superseded: "Superseded",
+  archived: "Archived",
+};
+
+const RELEASE_LABEL: Record<string, string> = {
+  open_weights: "Open weights",
+  api: "API",
+  product: "Product",
+  paper: "Paper",
+  demo: "Demo",
+};
+const releaseType = d.model_spec?.release_type;
+const releaseLabel = releaseType ? RELEASE_LABEL[releaseType] : null;
+
+const ERA_LABEL: Record<string, string> = {
+  foundations: "Foundations era",
+  "classical-ml": "Classical ML era",
+  "deep-learning-revival": "Deep-learning revival",
+  architectures: "Architectures era",
+  transformer: "Transformer era",
+  "scale-era": "Scale era",
+  alignment: "Alignment era",
+  multimodal: "Multimodal era",
+  reasoning: "Reasoning era",
+  agents: "Agents era",
+  frontier: "Frontier",
+};
+const eraLabel = ERA_LABEL[d.era] ?? d.era;
+
+// "Qwen Team" / "Anthropic Team" / etc. add nothing — hide them.
+// Real author lists (named individuals) stay.
+const hideAuthors =
+  d.authors.length <= 1 &&
+  d.authors.some((a) => /\bteam\b/i.test(a) || a === d.org);
+
+// Lead paragraph: full plain-English explanation. Schema caps it at
+// ~100 words, so it fits a header without ballooning. Earlier we
+// truncated to 28 words but that left readers staring at "Gemini…"
+// mid-sentence — bad UX, no upside.
+const summary = d.public_view.plain_english.trim().replace(/\s+/g, " ");
+
+const orgStroke = orgStrokeColor(d.org);
+const orgFill = orgFillColor(d.org);
+
+// External link pills: official site (homepage) + GitHub when relevant.
+// Official site: per-model `spec.homepage` wins, else org→homepage fallback.
+// GitHub: per-model `spec.github` wins; else, for open-weights models,
+// fall back to an org-level GitHub page. Closed-source labs intentionally
+// lack an ORG_GITHUB entry, so the pill is hidden for them by default.
+const officialUrl = d.model_spec?.homepage ?? ORG_HOMEPAGE[d.org];
+const isOpenWeights = d.model_spec?.release_type === "open_weights";
+const githubUrl =
+  d.model_spec?.github ?? (isOpenWeights ? ORG_GITHUB[d.org] : undefined);
 ---
 
 <Base title={`${d.title} · AI Evolution Tree`} description={d.public_view.plain_english}>
   <article>
-    <header class="mb-8 border-b border-[var(--border)] pb-6">
-      <div class="mb-3 flex flex-wrap items-center gap-2 text-sm">
-        <time datetime={d.date.toISOString()} class="font-mono text-[var(--fg-muted)]">
-          {fmtMonth}
-        </time>
-        <OrgBadge org={d.org} />
-        <EraBadge era={d.era} />
-        {
-          d.category.map((c) => (
-            <span class="rounded bg-[var(--bg-soft)] px-2 py-0.5 text-xs text-[var(--fg-muted)]">
-              {c}
-            </span>
-          ))
-        }
-        <span
-          class={`text-xs ${d.status === "foundational" ? "text-[var(--accent)]" : d.status === "active" ? "text-[var(--accent-2)]" : "text-[var(--fg-muted)]"}`}
-        >
-          {d.status}
-        </span>
-        <span class="text-xs text-[var(--fg-muted)]">
-          ★ {d.breakthrough_score}/10
-        </span>
+    <header class="node-header">
+      {/* Org-color accent bar — instant visual identity for the lab */}
+      <div class="org-accent-bar" style={`background: ${orgStroke};`} />
+
+      <div class="node-header-inner">
+        {/* Top meta row: date only — Tier was removed (subjective score) */}
+        <div class="header-meta">
+          <time datetime={d.date.toISOString()} class="header-date">
+            {fmtShort}
+          </time>
+        </div>
+
+        {/* Title — name big, tagline second-line smaller */}
+        <h1 class="title-name">{titleName}</h1>
+        {titleTagline && <p class="title-tagline">{titleTagline}</p>}
+
+        {/* 1-sentence summary — answers "what is this?" before specs */}
+        <p class="title-summary">{summary}</p>
+
+        {/* Unified key-fact pills: org / release / era / status.
+            All same shape, same size — the four facts a reader needs
+            to triage the model in 2 seconds. */}
+        <div class="key-pills" role="list">
+          <a
+            href="/tree/"
+            class="key-pill key-pill-org"
+            style={`--pill-stroke: ${orgStroke}; --pill-fill: ${orgFill};`}
+            title={`See models from ${d.org}`}
+          >
+            {d.org}
+          </a>
+          {releaseLabel && (
+            <span class="key-pill key-pill-release">{releaseLabel}</span>
+          )}
+          <span class="key-pill key-pill-era">{eraLabel}</span>
+          <span class={`key-pill key-pill-status status-${d.status}`}>
+            {STATUS_LABEL[d.status] ?? d.status}
+          </span>
+          {officialUrl && (
+            <a
+              href={officialUrl}
+              target="_blank"
+              rel="noopener"
+              class="key-pill key-pill-link"
+              title={`Official site for ${d.title}`}
+            >
+              Official ↗
+            </a>
+          )}
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener"
+              class="key-pill key-pill-link key-pill-github"
+              title={`GitHub for ${d.title}`}
+            >
+              GitHub ↗
+            </a>
+          )}
+        </div>
+
+        {!hideAuthors && (
+          <p class="header-authors">
+            {d.authors.join(" · ")}
+          </p>
+        )}
       </div>
-      <h1 class="mb-2 text-3xl font-bold leading-tight">{d.title}</h1>
-      <p class="text-sm text-[var(--fg-muted)]">
-        {d.authors.join(", ")}
-      </p>
     </header>
 
     <div class="mb-6">
@@ -67,7 +177,7 @@ const fmtMonth = d.date.toLocaleDateString("en-US", {
     <ViewToggle />
 
     <div data-view-section="tech" class="prose-node max-w-none">
-      {d.model_spec && <ModelSpec spec={d.model_spec} org={d.org} modelTitle={d.title} />}
+      {d.model_spec && <ModelSpec spec={d.model_spec} org={d.org} modelTitle={d.title} category={d.category} />}
       <Content />
     </div>
 
@@ -80,3 +190,146 @@ const fmtMonth = d.date.toLocaleDateString("en-US", {
     <CitationsBlock citations={d.citations} />
   </article>
 </Base>
+
+<style>
+  .node-header {
+    margin-bottom: 2.25rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--border, #e2e8f0);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  .org-accent-bar {
+    height: 5px;
+    width: 100%;
+  }
+  .node-header-inner {
+    padding: 18px 22px 22px;
+  }
+
+  /* ===== Top meta row: date + tier badge ===== */
+  .header-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .header-date {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-muted);
+    letter-spacing: 0.02em;
+  }
+  /* ===== Title hierarchy: NAME big, tagline secondary ===== */
+  .title-name {
+    font-size: clamp(2rem, 4vw, 2.75rem);   /* 32-44px */
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #0f172a;
+    margin: 0 0 6px;
+  }
+  .title-tagline {
+    font-size: 18px;        /* text-lg */
+    font-weight: 500;
+    line-height: 1.4;
+    color: #475569;
+    margin: 0 0 12px;
+  }
+  .title-summary {
+    font-size: 16px;        /* text-base */
+    line-height: 1.55;
+    color: #334155;
+    margin: 0 0 16px;
+    /* Full container width — readability cap removed per request */
+  }
+
+  /* ===== Unified key-fact pills ===== */
+  .key-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .key-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.2;
+    border: 1px solid var(--border, #e2e8f0);
+    background: white;
+    color: #475569;
+    text-decoration: none;
+    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  }
+  .key-pill:hover {
+    background: #f8fafc;
+  }
+
+  /* Org pill carries the lab's color identity */
+  .key-pill-org {
+    color: var(--pill-stroke, #475569);
+    background: var(--pill-fill, white);
+    border-color: var(--pill-stroke, #cbd5e1);
+    font-weight: 700;
+  }
+  .key-pill-org:hover {
+    background: white;
+  }
+
+  /* Status pills get a tinted background per state */
+  .status-foundational {
+    color: #b45309;
+    background: #fef3c7;
+    border-color: #fcd34d;
+  }
+  .status-active {
+    color: #047857;
+    background: #d1fae5;
+    border-color: #6ee7b7;
+  }
+  .status-superseded {
+    color: #475569;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+  .status-archived {
+    color: #64748b;
+    background: #e2e8f0;
+    border-color: #94a3b8;
+  }
+
+  /* External link pills (Official / GitHub) — visually similar to the
+     other key pills but clearly clickable + external. */
+  .key-pill-link {
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+    background: #eff6ff;
+  }
+  .key-pill-link:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+  .key-pill-github {
+    color: #24292f;
+    border-color: #d0d7de;
+    background: #f6f8fa;
+  }
+  .key-pill-github:hover {
+    background: #eaeef2;
+    border-color: #afb8c1;
+  }
+
+  .header-authors {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+</style>

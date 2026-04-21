@@ -2,7 +2,7 @@
 // Loaded once at init from the inline JSON embedded by Graph.astro.
 
 export type Orient = "h" | "v";
-export type SortMode = "chronological" | "byOrg" | "byType" | "byLicense";
+export type SortMode = "chronological" | "byOrg" | "byLicense";
 
 export type EdgeStyle = { color: string; dash?: string; label: string };
 
@@ -52,7 +52,7 @@ export function initState(): GraphData {
   _data = JSON.parse(dataNode?.textContent ?? "{}") as GraphData;
   // Pre-build adjacency for every variant so hover/zoom never blocks.
   for (const o of ["h", "v"] as Orient[]) {
-    for (const m of ["chronological", "byOrg", "byType", "byLicense"] as SortMode[]) {
+    for (const m of ["chronological", "byOrg", "byLicense"] as SortMode[]) {
       buildAdjacency(o, m);
     }
   }

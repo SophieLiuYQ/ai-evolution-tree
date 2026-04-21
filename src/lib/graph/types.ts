@@ -3,12 +3,11 @@ import type { CollectionEntry } from "astro:content";
 export type NodeEntry = CollectionEntry<"nodes">;
 export type Rel = NodeEntry["data"]["relationships"][number];
 export type Orient = "h" | "v";
-export type SortMode = "chronological" | "byOrg" | "byType" | "byLicense";
+export type SortMode = "chronological" | "byOrg" | "byLicense";
 
 export const SORT_MODES: { id: SortMode; label: string }[] = [
   { id: "chronological", label: "Date" },
   { id: "byOrg", label: "Company" },
-  { id: "byType", label: "Type" },
   { id: "byLicense", label: "License" },
 ];
 
@@ -53,7 +52,7 @@ export type Layout = {
   /** Primary axis bands (years — rows in v, columns in h). */
   bands: Band[];
   /** Secondary axis bands (sort keys — columns in v, rows in h). Only
-   *  populated when sort mode is byOrg or byType. */
+   *  populated when sort mode groups beyond year (byOrg / byLicense). */
   crossBands?: Band[];
 };
 

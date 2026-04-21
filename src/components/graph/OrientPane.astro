@@ -45,9 +45,7 @@ const crossFitted = layout.crossBands?.map((cb) => {
         ? "sorted by year"
         : sortMode === "byOrg"
           ? "grouped by company"
-          : sortMode === "byType"
-            ? "grouped by model type"
-            : "grouped by license (open vs closed)"
+          : "grouped by license (open vs closed)"
     }. ${layout.placedNodes.length} nodes, ${layout.bands.length} year groups.`}
   >
     <defs>
@@ -123,8 +121,8 @@ const crossFitted = layout.crossBands?.map((cb) => {
           ))}
     </g>
 
-    {/* Cross-axis labels (only for byOrg/byType): top strip in v with
-        company/type names; left strip in h. Rendered LAST so it draws on
+    {/* Cross-axis labels (only for byOrg/byLicense): top strip in v with
+        group names; left strip in h. Rendered LAST so it draws on
         top of everything — JS translates this group on scroll to keep
         the X-axis labels pinned to the visible viewport edge. */}
     {layout.crossBands && layout.crossBands.length > 0 && (

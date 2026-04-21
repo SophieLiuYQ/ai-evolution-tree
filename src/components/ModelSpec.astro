@@ -18,7 +18,6 @@ interface Spec {
   training_tokens?: string;
   training_compute?: string;
   release_type?: string;
-  modalities?: string[];
   benchmarks?: {
     name: string;
     score: string;
@@ -26,15 +25,66 @@ interface Spec {
     source_url?: string;
   }[];
   homepage?: string;
+  github?: string;
 }
 interface Props {
   spec: Spec;
   org?: string;
   modelTitle?: string;
+  /** Raw category array from the node frontmatter. Rendered as overlapping
+   *  type tags so readers see at a glance that e.g. a robotics VLA is both
+   *  Multimodal AND Agent. Tags intentionally overlap — this is not a single
+   *  bucket. */
+  category?: readonly string[];
 }
-const { spec, org, modelTitle } = Astro.props;
+const { spec, org, modelTitle, category } = Astro.props;
+
+// Human-readable label for each raw category tag. Order of the CATEGORY_ORDER
+// array below is the display priority: "headline" type tags (the ones a
+// reader cares about most) come first, then modality/domain tags, then
+// meta tags (training, architecture, safety, theory).
+const CATEGORY_LABEL: Record<string, string> = {
+  agents: "Agent",
+  multimodal: "Multimodal",
+  reasoning: "Reasoning",
+  generative: "Generative",
+  nlp: "Text / NLP",
+  cv: "Vision",
+  audio: "Audio",
+  code: "Code",
+  rl: "Reinforcement Learning",
+  infrastructure: "Infrastructure",
+  safety: "Safety",
+  training: "Training",
+  architecture: "Architecture",
+  theory: "Theory",
+};
+const CATEGORY_ORDER = [
+  "agents",
+  "multimodal",
+  "reasoning",
+  "generative",
+  "nlp",
+  "cv",
+  "audio",
+  "code",
+  "rl",
+  "infrastructure",
+  "safety",
+  "training",
+  "architecture",
+  "theory",
+];
+const typeTags = (category ?? [])
+  .slice()
+  .sort(
+    (a, b) =>
+      (CATEGORY_ORDER.indexOf(a) === -1 ? 99 : CATEGORY_ORDER.indexOf(a)) -
+      (CATEGORY_ORDER.indexOf(b) === -1 ? 99 : CATEGORY_ORDER.indexOf(b)),
+  );
 
 import { stroke as orgStrokeColor } from "../lib/graph/constants";
+import { ORG_HOMEPAGE } from "../lib/org-links";
 // Use the model's own org color for scale-bar markers + active pills,
 // matching the search-result pulse and main-graph card border. This
 // keeps a card visually unified across pages instead of drowning in
@@ -153,18 +203,6 @@ function archImpl(s: string): string {
   return "";
 }
 
-function modalitiesImpl(arr: string[]): string {
-  const set = new Set(arr.map((m) => m.toLowerCase()));
-  if (set.has("video") || (set.has("audio") && set.has("vision")))
-    return "Native omni-modal — text+image+audio+video";
-  if (set.has("vision") && set.has("audio"))
-    return "Reads images and listens to speech";
-  if (set.has("vision")) return "Reads images / PDFs / screenshots";
-  if (set.has("audio")) return "Speech I/O";
-  if (arr.length === 1) return `${arr[0]} only`;
-  return arr.join(" + ");
-}
-
 function trainingTokensImpl(s: string): string {
   const m = s.match(/(\d+(?:\.\d+)?)\s*([TB])/i);
   if (!m) return "";
@@ -223,11 +261,6 @@ const FIELD_HELP: Record<
     question: "Can I get the weights — and on what license?",
     body: "open_weights: download and self-host. api: rent per token. product: only inside a vendor app. paper / demo: theoretical or waitlisted. The 2026 split is regional — most Chinese frontier models are open; most US frontier models are closed.",
     link: { label: "Filter the tree by license", href: "/tree/" },
-  },
-  modalities: {
-    question: "What inputs and outputs does it handle natively?",
-    body: "Native multimodal (single backbone for text+image+audio+video) is now table stakes for frontier models like GPT-5, Gemini 3, Claude 4.x. Single-modality models are increasingly niche.",
-    link: { label: "GPT-4o (native omni-modal)", href: "/node/gpt-4o/" },
   },
   benchmarks: {
     question: "How is it actually measured — and against what baseline?",
@@ -320,86 +353,44 @@ function benchSource(b: { name: string; source_url?: string }): {
   return LB_HOME[provider ?? "artificialanalysis"];
 }
 
-// ============== Org → official homepage fallback ==============
-// Used when the node's model_spec.homepage is missing.
+// Org → official homepage fallback lives in src/lib/org-links.ts so the
+// node header and ModelSpec stay in sync.
+const officialUrl = spec.homepage ?? (org ? ORG_HOMEPAGE[org] : undefined);
 
-const ORG_HOMEPAGE: Record<string, string> = {
-  "OpenAI": "https://openai.com/",
-  "Anthropic": "https://www.anthropic.com/",
-  "Google": "https://ai.google/",
-  "Google DeepMind": "https://deepmind.google/",
-  "DeepMind": "https://deepmind.google/",
-  "Google Brain": "https://research.google/teams/brain/",
-  "Meta AI": "https://ai.meta.com/",
-  "Microsoft": "https://www.microsoft.com/en-us/research/",
-  "Mistral AI": "https://mistral.ai/",
-  "Stability AI": "https://stability.ai/",
-  "EleutherAI": "https://www.eleuther.ai/",
-  "Cohere": "https://cohere.com/",
-  "xAI": "https://x.ai/",
-  "Alibaba": "https://qwen.ai/",
-  "DeepSeek": "https://www.deepseek.com/",
-  "Tsinghua / Zhipu": "https://z.ai/",
-  "01.AI": "https://www.01.ai/",
-  "Baidu": "https://research.baidu.com/",
-  "Tencent": "https://hunyuan.tencent.com/",
-  "Moonshot AI": "https://www.moonshot.cn/",
-  "MiniMax": "https://www.minimax.io/",
-  "ByteDance": "https://www.volcengine.com/",
-  "Stepfun": "https://www.stepfun.ai/",
-  "Suno": "https://suno.com/",
-  "Runway": "https://runwayml.com/",
-  "Black Forest Labs": "https://blackforestlabs.ai/",
-  "Databricks": "https://www.databricks.com/research",
-  "Perplexity": "https://www.perplexity.ai/",
-  "Kuaishou": "https://kling.kuaishou.com/",
-  "Hugging Face": "https://huggingface.co/",
-  "BigScience": "https://bigscience.huggingface.co/",
-  "Allen AI": "https://allenai.org/",
-  "Salesforce": "https://www.salesforce.com/ai/",
-  "Nvidia": "https://www.nvidia.com/en-us/ai/",
-  "Apple": "https://machinelearning.apple.com/",
-  "IBM": "https://research.ibm.com/artificial-intelligence",
-  "Huawei": "https://www.huaweicloud.com/intl/en-us/product/pangu.html",
-  "Xiaomi": "https://www.xiaomi.com/",
-  "Ant Group": "https://www.antgroup.com/en/research",
-  "Shanghai AI Lab": "https://www.shlab.org.cn/",
-  "BAAI": "https://www.baai.ac.cn/english.html",
-  "AI21 Labs": "https://www.ai21.com/",
-  "Reka AI": "https://www.reka.ai/",
-  "Adobe": "https://research.adobe.com/",
-  "Amazon": "https://www.aboutamazon.com/news/aws/amazon-nova-foundation-models",
-  "Arc Institute": "https://arcinstitute.org/",
-  "Boston Dynamics": "https://bostondynamics.com/",
-  "Cartesia": "https://cartesia.ai/",
-  "Cognition": "https://www.cognition.ai/",
-  "ElevenLabs": "https://elevenlabs.io/",
-  "Figure AI": "https://www.figure.ai/",
-  "Ideogram": "https://ideogram.ai/",
-  "Lightricks": "https://www.lightricks.com/",
-  "Liquid AI": "https://www.liquid.ai/",
-  "Luma AI": "https://lumalabs.ai/",
-  "Midjourney": "https://www.midjourney.com/",
-  "MIT": "https://www.csail.mit.edu/",
-  "Physical Intelligence": "https://www.physicalintelligence.company/",
-  "Pika Labs": "https://pika.art/",
-  "Sesame": "https://www.sesame.com/",
-  "Snowflake": "https://www.snowflake.com/en/data-cloud/snowflake-arctic/",
-  "Synthesia": "https://www.synthesia.io/",
-  "Tesla": "https://www.tesla.com/AI",
-  "Together AI": "https://www.together.ai/",
-  "Ultralytics": "https://www.ultralytics.com/",
-  "Unitree": "https://www.unitree.com/",
-  "Voyage AI": "https://www.voyageai.com/",
-  "Wayve": "https://wayve.ai/",
-  "Writer": "https://writer.com/",
-  "Hedra": "https://www.hedra.com/",
-  "Hume AI": "https://hume.ai/",
-  "Nari Labs": "https://nari.ai/",
-  "Recraft": "https://www.recraft.ai/",
+// ============== Benchmark parsing (Direction H scale-bar rendering) ==============
+// Each benchmark row in the frontmatter stores `score` + freeform `vs_baseline`.
+// To render a prev→now scale bar we need both as 0-100 numbers. The parser
+// returns nulls for non-percentage scores (Elo, prices, ratios) so the row
+// can fall back to the old text rendering.
+
+type ParsedBench = {
+  current: number | null;
+  baseline: number | null;
+  baselineLabel: string | null;
 };
 
-const officialUrl = spec.homepage ?? (org ? ORG_HOMEPAGE[org] : undefined);
+function parseBench(scoreStr: string, baselineStr?: string): ParsedBench {
+  // Extract first "<num>%" from the score. Anything else (ratios like "107×",
+  // prices, Elo) disables the scale bar.
+  const scoreMatch = scoreStr.match(/(\d+(?:\.\d+)?)\s*%/);
+  const current = scoreMatch ? parseFloat(scoreMatch[1]) : null;
+
+  let baseline: number | null = null;
+  let baselineLabel: string | null = null;
+  if (baselineStr) {
+    // "<label> <num>%" — capture the label (non-greedy) up to the first percentage.
+    // Examples matched:
+    //   "Claude 3 Opus 86.8%, GPT-4o 88.7%" → label="Claude 3 Opus", num=86.8
+    //   "o1 83.3%, DeepSeek R1 79.8%"       → label="o1",           num=83.3
+    //   "Llama 2 70B 68.9%"                 → label="Llama 2 70B",  num=68.9
+    const m = baselineStr.match(/^\s*([^,]+?)\s+(\d+(?:\.\d+)?)\s*%/);
+    if (m) {
+      baselineLabel = m[1].trim();
+      baseline = parseFloat(m[2]);
+    }
+  }
+  return { current, baseline, baselineLabel };
+}
 
 // ============== Scale-bar references ==============
 // Each scale defines tick marks (the labeled stops) on a log axis from
@@ -540,20 +531,55 @@ function linearPos(value: number, min: number, max: number): number {
 
 // ============== Pill-group enum options ==============
 
-const RELEASE_PILLS: { id: string; label: string; note: string }[] = [
-  { id: "paper", label: "Paper", note: "Theory only" },
-  { id: "demo", label: "Demo", note: "Limited / waitlisted" },
-  { id: "open_weights", label: "Open weights", note: "Self-hostable" },
-  { id: "api", label: "API", note: "Vendor-hosted" },
-  { id: "product", label: "Product", note: "Embedded only" },
-];
+// Pill / chip tooltips — DUAL audience: ONE bullet per perspective.
+// Bullet 1 = technical / specific terms / engineer-targeted.
+// Bullet 2 = plain English / analogy / non-technical reader.
+// Audience headers are intentionally NOT printed — the contrast in
+// language between the two bullets makes the split self-evident.
+type DualTip = { tech: string; lay: string };
+type PillOptDef = { id: string; label: string; tip: DualTip };
 
-const MODALITY_PILLS: { id: string; label: string }[] = [
-  { id: "text", label: "Text" },
-  { id: "vision", label: "Vision" },
-  { id: "audio", label: "Audio" },
-  { id: "video", label: "Video" },
-  { id: "generative", label: "Generative" },
+const RELEASE_PILLS: PillOptDef[] = [
+  {
+    id: "paper",
+    label: "Paper",
+    tip: {
+      tech: "A published research paper without released model files or a hosted service.",
+      lay: "It's a research paper, not something you can use yet.",
+    },
+  },
+  {
+    id: "demo",
+    label: "Demo",
+    tip: {
+      tech: "Public demo or waitlisted preview; the company hasn't committed to keeping it stable.",
+      lay: "You can try it on a website, often after a waitlist — don't depend on it sticking around.",
+    },
+  },
+  {
+    id: "open_weights",
+    label: "Open weights",
+    tip: {
+      tech: "The model file is downloadable; you run it on your own hardware and pick the license terms.",
+      lay: "Anyone can download the model and run it on their own machines — no vendor lock-in.",
+    },
+  },
+  {
+    id: "api",
+    label: "API",
+    tip: {
+      tech: "Hosted by the lab; pay per request, behavior and pricing can change without notice.",
+      lay: "You pay each time you use it; the company runs the model and can change prices or cancel anytime.",
+    },
+  },
+  {
+    id: "product",
+    label: "Product",
+    tip: {
+      tech: "Embedded inside a finished application; only the app's surface is exposed.",
+      lay: "Baked into a finished app — you use the app, not the model directly.",
+    },
+  },
 ];
 
 // Architecture chip extraction. Splits the free-form architecture
@@ -583,6 +609,64 @@ function archChips(s: string): string[] {
   return found;
 }
 
+// Architecture chip tooltips — one bullet per audience, same as pills.
+// Tech bullet keeps essential names (MoE, diffusion) but trims internal
+// jargon and lists of specific implementations the lay reader can't use.
+const ARCH_TIPS: Record<string, DualTip> = {
+  "MoE": {
+    tech: "Many parallel sub-networks; a router activates only a few per word. Total parameters set memory; active parameters set cost and speed.",
+    lay: "Many specialist sub-networks; only a few activate per word — big knowledge at a small per-word cost.",
+  },
+  "SSM": {
+    tech: "A different sequence-modeling math than the standard transformer; memory stays constant per token instead of growing with input length.",
+    lay: "A different design from the standard transformer — faster on very long inputs (whole books, audio streams).",
+  },
+  "Sparse Attention": {
+    tech: "Each word only compares itself to a chosen subset of others rather than all of them, so very long inputs become affordable.",
+    lay: "Skips most word-pair comparisons so very long inputs (whole books, repos) become affordable.",
+  },
+  "Lightning Attention": {
+    tech: "MiniMax's speed-optimized attention; cost grows in proportion to input length instead of with its square.",
+    lay: "A speed-optimized attention design from MiniMax — used in their fast, cheap chat models.",
+  },
+  "Diffusion / Flow": {
+    tech: "Generates outputs by repeatedly cleaning up random noise over many small refinement steps.",
+    lay: "Starts from random noise and gradually refines it into the final image or video.",
+  },
+  "Diffusion": {
+    tech: "Repeatedly cleans up random noise into the final result. Standard backbone for image generation.",
+    lay: "Starts with noise, gradually turns it into a picture — the technique behind most AI image generators.",
+  },
+  "Decoder-only": {
+    tech: "Predicts one word at a time, left to right. The standard LLM topology used by GPT, Claude, Llama.",
+    lay: "The standard LLM design (GPT, Claude, Llama) — reads your message, then writes a reply word by word.",
+  },
+  "Encoder-decoder": {
+    tech: "Reads the full input first, then writes the output. Older design, mostly replaced by left-to-right models for chat.",
+    lay: "Older design that reads everything first, then writes the answer — common in translation tools.",
+  },
+  "Vision encoder": {
+    tech: "A separate component processes images and converts them into a form the language part of the model can reason over.",
+    lay: "Dedicated 'eyes' component — lets the AI describe and answer questions about images.",
+  },
+  "Reasoning": {
+    tech: "Trained to write out a chain of thought before answering. Slower per response, more accurate on hard problems.",
+    lay: "Trained to think step-by-step before answering — slower but smarter on math, code, and complex problems.",
+  },
+  "Agent": {
+    tech: "Trained to use tools (browser, terminal, file editor) and plan multi-step actions, not only generate text.",
+    lay: "Doesn't just chat — actually does things (browses, writes files, runs code) like a junior employee.",
+  },
+  "GNN": {
+    tech: "For data shaped as a network of connected items; each item learns by exchanging information with its neighbors.",
+    lay: "For data shaped like a network (molecules, friendships, maps); each node learns from its neighbors.",
+  },
+  "U-Net": {
+    tech: "An hourglass-shaped network that compresses then reconstructs detail. Standard inside image diffusion models.",
+    lay: "The image-processing engine inside many AI image generators; preserves fine detail.",
+  },
+};
+
 // ============== Per-row visualization config builders ==============
 // Extracted from the JSX scope so generic types like Set<string> don't
 // get mis-parsed as JSX tags.
@@ -596,13 +680,16 @@ type Marker = {
 };
 type ScaleCfg = { ticks: Tick[]; markers: Marker[]; min: number; max: number; isLinear?: boolean };
 
-// Stagger marker labels into 2-3 rows so adjacent markers don't collide
-// on the log axis. We assume ~28px label width and the bar is ~600px
-// wide, so anything within ~5% of an earlier marker's column gets bumped.
+// Stagger marker labels into up to 4 rows so adjacent markers don't
+// collide on the log axis. Labels are ~28px wide on a ~600px bar, so
+// anything within ~5% of an earlier marker's column gets bumped to the
+// next free row. With Qwen3-VL packing 10 markers in the 0.6B-235B
+// range, 3 rows weren't enough — 32B and 30B sit at nearly identical
+// log-x and need to escape both up AND below.
 function staggerMarkers(markers: Marker[]): Marker[] {
   const sorted = [...markers].sort((a, b) => a.pos - b.pos);
-  const STAGGER_DIST = 6; // % of bar width
-  const stackTops: number[] = [-Infinity, -Infinity, -Infinity];
+  const STAGGER_DIST = 5;
+  const stackTops: number[] = [-Infinity, -Infinity, -Infinity, -Infinity];
   for (const m of sorted) {
     let placed = false;
     for (let i = 0; i < stackTops.length; i++) {
@@ -613,7 +700,19 @@ function staggerMarkers(markers: Marker[]): Marker[] {
         break;
       }
     }
-    if (!placed) m.stack = 0; // fall back; let it overlap
+    if (!placed) {
+      // Couldn't fit cleanly — pick the row with the oldest occupant
+      let bestRow = 0;
+      let bestTop = stackTops[0];
+      for (let i = 1; i < stackTops.length; i++) {
+        if (stackTops[i] < bestTop) {
+          bestRow = i;
+          bestTop = stackTops[i];
+        }
+      }
+      m.stack = bestRow;
+      stackTops[bestRow] = m.pos;
+    }
   }
   return sorted;
 }
@@ -693,13 +792,9 @@ type PillCfg = { options: PillOpt[]; active: Set<string> };
 function buildPillCfg(
   key: string,
   releaseType: string | undefined,
-  modalities: string[] | undefined,
 ): PillCfg | null {
   if (key === "release_type" && releaseType) {
     return { options: RELEASE_PILLS, active: new Set([releaseType]) };
-  }
-  if (key === "modalities" && modalities) {
-    return { options: MODALITY_PILLS, active: new Set(modalities.map((m) => m.toLowerCase())) };
   }
   return null;
 }
@@ -756,13 +851,6 @@ if (spec.release_type)
     value: spec.release_type,
     implication: licenseImpl(spec.release_type),
   });
-if (spec.modalities && spec.modalities.length)
-  rows.push({
-    key: "modalities",
-    label: "Modalities",
-    value: spec.modalities.join(", "),
-    implication: modalitiesImpl(spec.modalities),
-  });
 ---
 
 <section class="model-spec mb-8 rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm">
@@ -783,6 +871,16 @@ if (spec.modalities && spec.modalities.length)
     )}
   </div>
 
+  {typeTags.length > 0 && (
+    <div class="type-tags" role="list" aria-label="Model type tags">
+      {typeTags.map((c) => (
+        <span class={`type-tag type-tag-${c}`} role="listitem">
+          {CATEGORY_LABEL[c] ?? c}
+        </span>
+      ))}
+    </div>
+  )}
+
 
   {
     rows.length > 0 && (
@@ -790,9 +888,21 @@ if (spec.modalities && spec.modalities.length)
         {rows.map((r) => {
           const help = FIELD_HELP[r.key];
           const scale = buildScaleCfg(r.key, r.value, spec.context_window);
-          const pillCfg = buildPillCfg(r.key, spec.release_type, spec.modalities);
+          const pillCfg = buildPillCfg(r.key, spec.release_type);
           const archTags = r.key === "architecture" ? archChips(r.value) : [];
           const hasMoEMarkers = scale ? scale.markers.some((m) => m.hollow) : false;
+          // For MoE rows, pull the largest total + active so the
+          // deployment-impact block can quote real numbers
+          let moeNums: { total: number; active: number } | null = null;
+          if (hasMoEMarkers && r.key === "parameters") {
+            const p = parseAllParams(r.value);
+            if (p && p.variants.length && p.active.length) {
+              moeNums = {
+                total: Math.max(...p.variants),
+                active: Math.max(...p.active),
+              };
+            }
+          }
           return (
             <div class="spec-row spec-row-stacked">
               {/* Header: label + tooltip on left, value text on right */}
@@ -824,7 +934,12 @@ if (spec.modalities && spec.modalities.length)
                     </span>
                   </span>
                 )}
-                <dd class="spec-value-inline">{r.value}</dd>
+                {/* Architecture's raw value duplicates the chips below —
+                    skip it; for everything else the value text on the right
+                    complements the visualization. */}
+                {!(r.key === "architecture" && archTags.length > 0) && (
+                  <dd class="spec-value-inline">{r.value}</dd>
+                )}
               </div>
 
               {/* Implication moved ABOVE the visualization — the conclusion
@@ -836,9 +951,22 @@ if (spec.modalities && spec.modalities.length)
               {/* Architecture: render canonical chips when we recognize tokens */}
               {r.key === "architecture" && archTags.length > 0 && (
                 <div class="arch-chips" role="list">
-                  {archTags.map((tag) => (
-                    <span class="arch-chip" role="listitem">{tag}</span>
-                  ))}
+                  {archTags.map((tag) => {
+                    const t = ARCH_TIPS[tag];
+                    return (
+                      <span class="arch-chip chip-with-tip" role="listitem" tabindex="0">
+                        {tag}
+                        {t && (
+                          <span class="dual-tip" role="tooltip">
+                            <ul>
+                              <li class="tip-tech">{t.tech}</li>
+                              <li class="tip-lay">{t.lay}</li>
+                            </ul>
+                          </span>
+                        )}
+                      </span>
+                    );
+                  })}
                 </div>
               )}
 
@@ -884,6 +1012,57 @@ if (spec.modalities && spec.modalities.length)
                 </div>
               )}
 
+              {/* Deployment-impact block — only for MoE parameter rows.
+                  Explains what total vs active actually mean for the four
+                  decisions that map directly to a procurement question. */}
+              {moeNums && (
+                <details
+                  class="moe-impact"
+                  open
+                  style={`--marker-color: ${markerColor};`}
+                >
+                  <summary class="moe-impact-summary">
+                    Why total vs active matters
+                  </summary>
+                  <dl class="moe-impact-grid">
+                    <div class="moe-impact-row">
+                      <dt class="moe-impact-label">Deployment</dt>
+                      <dd class="moe-impact-value">
+                        <span class="impact-marker impact-marker-filled" />
+                        <strong>{paramLabel(moeNums.total)} total</strong>
+                        {" — sets memory + load time. "}
+                        <span class="impact-impl">{paramTier(moeNums.total)}-class hardware required.</span>
+                      </dd>
+                    </div>
+                    <div class="moe-impact-row">
+                      <dt class="moe-impact-label">Inference cost</dt>
+                      <dd class="moe-impact-value">
+                        <span class="impact-marker impact-marker-hollow" />
+                        <strong>{paramLabel(moeNums.active)} active</strong>
+                        {" — drives speed + $/token. "}
+                        <span class="impact-impl">≈ a {paramTier(moeNums.active * 2)}-class dense model in latency.</span>
+                      </dd>
+                    </div>
+                    <div class="moe-impact-row">
+                      <dt class="moe-impact-label">$/token pricing</dt>
+                      <dd class="moe-impact-value">
+                        Active alone determines per-token compute, so MoE APIs typically run
+                        {" "}<strong>5–10× cheaper</strong>{" "}
+                        than equal-quality dense models.
+                      </dd>
+                    </div>
+                    <div class="moe-impact-row">
+                      <dt class="moe-impact-label">Capability ceiling</dt>
+                      <dd class="moe-impact-value">
+                        Knowledge breadth tracks <strong>total</strong> ({paramLabel(moeNums.total)}),
+                        not active. The model "knows" what its full parameter count learned;
+                        the router just picks which experts speak per token.
+                      </dd>
+                    </div>
+                  </dl>
+                </details>
+              )}
+
               {/* Pill group visualization */}
               {pillCfg && (
                 <div
@@ -893,14 +1072,23 @@ if (spec.modalities && spec.modalities.length)
                 >
                   {pillCfg.options.map((opt) => {
                     const isActive = pillCfg!.active.has(opt.id);
+                    const t = (opt as { tip?: DualTip }).tip;
                     return (
                       <span
-                        class={`pill ${isActive ? "pill-active" : ""}`}
+                        class={`pill chip-with-tip ${isActive ? "pill-active" : ""}`}
                         role="listitem"
-                        title={opt.note ?? ""}
+                        tabindex="0"
                       >
                         {isActive && <span class="pill-dot" />}
                         {opt.label}
+                        {t && (
+                          <span class="dual-tip" role="tooltip">
+                            <ul>
+                              <li class="tip-tech">{t.tech}</li>
+                              <li class="tip-lay">{t.lay}</li>
+                            </ul>
+                          </span>
+                        )}
                       </span>
                     );
                   })}
@@ -949,28 +1137,23 @@ if (spec.modalities && spec.modalities.length)
             </span>
           )}
         </div>
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-[var(--border)] text-left text-xs text-[var(--fg-muted)]">
-              <th class="py-1.5 pr-2">Benchmark</th>
-              <th class="py-1.5 pr-2">Score</th>
-              <th class="py-1.5 pr-2">Baseline</th>
-              <th class="py-1.5">Source</th>
-            </tr>
-          </thead>
-          <tbody>
-            {spec.benchmarks.map((b) => {
-              const src = benchSource(b);
-              return (
-                <tr class="border-b border-[var(--border)]/60">
-                  <td class="py-1.5 pr-2">{b.name}</td>
-                  <td class="py-1.5 pr-2 font-mono font-semibold text-[var(--accent)]">
-                    {b.score}
-                  </td>
-                  <td class="py-1.5 pr-2 text-xs text-[var(--fg-muted)]">
-                    {b.vs_baseline ?? "—"}
-                  </td>
-                  <td class="py-1.5 text-xs">
+        {/* Direction H prev→now scale-bar rendering. Each benchmark row shows
+            a baseline → current progression on a 0-100 axis with a colored
+            delta segment, so readers see the gap AND the magnitude at a glance
+            instead of parsing two numbers in a table cell. Rows that don't
+            parse as percentages (Elo, prices, ratios) fall back to text-only. */}
+        <div class="bench-list" style={`--marker-color: ${markerColor};`}>
+          {spec.benchmarks.map((b) => {
+            const src = benchSource(b);
+            const p = parseBench(b.score, b.vs_baseline);
+            const hasScale = p.current !== null;
+            const hasDelta = hasScale && p.baseline !== null;
+            const delta = hasDelta ? (p.current! - p.baseline!) : null;
+            return (
+              <div class="bench-row">
+                <div class="bench-top">
+                  <div class="bench-name">
+                    {b.name}
                     <a
                       href={src.url}
                       target="_blank"
@@ -980,12 +1163,55 @@ if (spec.modalities && spec.modalities.length)
                     >
                       {src.label} ↗
                     </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </div>
+                  <div class="bench-nums">
+                    {hasDelta && (
+                      <>
+                        <span class="bench-prev-num">{p.baseline!.toFixed(1)}%</span>
+                        <span class="bench-arrow">→</span>
+                      </>
+                    )}
+                    <span class="bench-curr-num">{b.score}</span>
+                    {delta !== null && (
+                      <span class={`bench-delta ${delta >= 0 ? "bench-delta-pos" : "bench-delta-neg"}`}>
+                        {delta >= 0 ? "+" : ""}{delta.toFixed(1)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {p.baselineLabel && hasDelta && (
+                  <div class="bench-baseline-label">
+                    vs <span class="bench-baseline-name">{p.baselineLabel}</span>
+                  </div>
+                )}
+                {hasScale ? (
+                  <div class="bench-bar">
+                    <div class="bench-track" />
+                    {[0, 25, 50, 75, 100].map((t) => (
+                      <div class="bench-tick" style={`left: ${t}%;`} />
+                    ))}
+                    {hasDelta && (
+                      <div
+                        class="bench-fill"
+                        style={`left: ${Math.min(p.baseline!, p.current!)}%; width: ${Math.abs(p.current! - p.baseline!)}%;`}
+                      />
+                    )}
+                    {hasDelta && (
+                      <div class="bench-marker-prev" style={`left: ${p.baseline}%;`} />
+                    )}
+                    <div class="bench-marker-curr" style={`left: ${p.current}%;`} />
+                    <div class="bench-endpoint bench-endpoint-0">0%</div>
+                    <div class="bench-endpoint bench-endpoint-100">100%</div>
+                  </div>
+                ) : (
+                  b.vs_baseline && (
+                    <div class="bench-baseline-text">baseline: {b.vs_baseline}</div>
+                  )
+                )}
+              </div>
+            );
+          })}
+        </div>
         <p class="mt-2 text-[10.5px] italic text-[var(--fg-muted)]">
           All ranking scores cite one of three approved leaderboards
           (Artificial Analysis, Hugging Face, LLM Stats). Click "Source"
@@ -997,16 +1223,19 @@ if (spec.modalities && spec.modalities.length)
 </section>
 
 <style>
+  /* Type scale — match the site's Tailwind defaults (xs=12, sm=14, base=16)
+     so this card doesn't read in 9-11px when everything else is 12-16px.
+     Spacing also tightened so the section is dense without feeling cramped. */
   .spec-row {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
   }
   .spec-row-stacked {
-    gap: 8px;
-    padding-bottom: 14px;
+    gap: 6px;
+    padding-bottom: 10px;
   }
   .spec-row-head {
     display: flex;
@@ -1014,7 +1243,7 @@ if (spec.modalities && spec.modalities.length)
     gap: 8px;
   }
   .spec-label {
-    font-size: 11px;
+    font-size: 12px;          /* text-xs */
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--fg-muted);
@@ -1022,19 +1251,19 @@ if (spec.modalities && spec.modalities.length)
   }
   .spec-value {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13px;
+    font-size: 14px;          /* text-sm */
     color: var(--fg);
     margin: 0;
   }
   .spec-value-inline {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13px;
+    font-size: 14px;          /* text-sm */
     color: var(--fg);
     margin: 0 0 0 auto;
     text-align: right;
   }
   .spec-implication {
-    font-size: 11.5px;
+    font-size: 14px;          /* text-sm — was 11.5, hidden as a footnote */
     color: var(--fg-muted);
     margin: 0;
     font-style: italic;
@@ -1053,7 +1282,7 @@ if (spec.modalities && spec.modalities.length)
     padding: 3px 9px;
     border-radius: 4px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 11px;
+    font-size: 12px;          /* text-xs */
     font-weight: 600;
     color: #475569;
     background: #f1f5f9;
@@ -1063,7 +1292,7 @@ if (spec.modalities && spec.modalities.length)
   /* ===== Scale bar ===== */
   .scale-bar-wrap {
     --marker-color: #2563eb;
-    padding: 60px 4px 38px;  /* top: 3-stack label room, bottom: tick + notes */
+    padding: 88px 4px 60px;  /* room for 4-stack labels + tick + notes + legend */
   }
   .scale-bar {
     position: relative;
@@ -1093,13 +1322,13 @@ if (spec.modalities && spec.modalities.length)
   }
   .scale-tick-label {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10.5px;
-    color: #64748b;
-    margin-top: 3px;
+    font-size: 12px;           /* text-xs — was 10.5, sub-system size */
+    color: #475569;
+    margin-top: 4px;
     white-space: nowrap;
   }
   .scale-tick-note {
-    font-size: 10px;
+    font-size: 12px;           /* text-xs */
     color: #64748b;
     margin-top: 1px;
     white-space: nowrap;
@@ -1115,8 +1344,8 @@ if (spec.modalities && spec.modalities.length)
     z-index: 2;
   }
   .scale-marker-dot {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     background: var(--marker-color);
     border: 2px solid white;
@@ -1125,23 +1354,25 @@ if (spec.modalities && spec.modalities.length)
   .scale-marker-label {
     position: absolute;
     bottom: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     padding: 1px 5px;
     border-radius: 3px;
     background: white;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 9.5px;
+    font-size: 11px;            /* was 9.5 — too small for monospace digits */
     font-weight: 700;
     color: var(--marker-color);
     white-space: nowrap;
   }
-  /* Stagger labels into 3 vertical rows so neighboring markers don't
-     collide on the log axis. The connector line bridges marker to label. */
-  .scale-marker.stack-0 .scale-marker-label { margin-bottom: 5px; }
-  .scale-marker.stack-1 .scale-marker-label { margin-bottom: 22px; }
-  .scale-marker.stack-2 .scale-marker-label { margin-bottom: 39px; }
+  /* Stagger labels into up to 4 vertical rows. Bumped row spacing to fit
+     the new 11px label height + comfortable connector. */
+  .scale-marker.stack-0 .scale-marker-label { margin-bottom: 6px; }
+  .scale-marker.stack-1 .scale-marker-label { margin-bottom: 26px; }
+  .scale-marker.stack-2 .scale-marker-label { margin-bottom: 46px; }
+  .scale-marker.stack-3 .scale-marker-label { margin-bottom: 66px; }
   .scale-marker.stack-1 .scale-marker-label::after,
-  .scale-marker.stack-2 .scale-marker-label::after {
+  .scale-marker.stack-2 .scale-marker-label::after,
+  .scale-marker.stack-3 .scale-marker-label::after {
     content: "";
     position: absolute;
     left: 50%;
@@ -1150,8 +1381,9 @@ if (spec.modalities && spec.modalities.length)
     background: var(--marker-color);
     opacity: 0.45;
   }
-  .scale-marker.stack-1 .scale-marker-label::after { height: 17px; }
-  .scale-marker.stack-2 .scale-marker-label::after { height: 34px; }
+  .scale-marker.stack-1 .scale-marker-label::after { height: 20px; }
+  .scale-marker.stack-2 .scale-marker-label::after { height: 40px; }
+  .scale-marker.stack-3 .scale-marker-label::after { height: 60px; }
 
   /* MoE active marker — hollow dot on white, same color border */
   .scale-marker-hollow .scale-marker-dot {
@@ -1160,11 +1392,12 @@ if (spec.modalities && spec.modalities.length)
   }
 
   .scale-legend {
-    margin-top: 18px;
+    margin-top: 42px;
     display: flex;
+    justify-content: flex-end;
     gap: 14px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 10px;
+    font-size: 12px;             /* text-xs */
     color: #64748b;
   }
   .legend-item {
@@ -1183,6 +1416,96 @@ if (spec.modalities && spec.modalities.length)
     box-shadow: 0 0 0 1px var(--marker-color, #2563eb);
   }
   .legend-hollow {
+    background: white;
+    box-shadow: 0 0 0 1.5px var(--marker-color, #2563eb);
+  }
+
+  /* ===== MoE total/active explainer block ===== */
+  .moe-impact {
+    --marker-color: var(--marker-color, #2563eb);
+    margin-top: 2px;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    background: #fafbfc;
+    padding: 0;
+  }
+  .moe-impact-summary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 12px;             /* text-xs */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #475569;
+    user-select: none;
+    border-radius: 8px;
+  }
+  .moe-impact-summary::-webkit-details-marker { display: none; }
+  .moe-impact-summary::before {
+    content: "▸";
+    font-size: 10px;
+    color: #94a3b8;
+    transition: transform 0.15s ease;
+  }
+  .moe-impact[open] .moe-impact-summary::before {
+    transform: rotate(90deg);
+  }
+  .moe-impact-summary:hover { color: #0f172a; }
+
+  .moe-impact-grid {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 4px 14px;
+    padding: 0 12px 10px;
+    margin: 0;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 8px;
+  }
+  .moe-impact-row {
+    display: contents;
+  }
+  .moe-impact-label {
+    font-size: 12px;             /* text-xs */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    align-self: start;
+    padding-top: 2px;
+  }
+  .moe-impact-value {
+    font-size: 14px;             /* text-sm — readable body copy */
+    line-height: 1.5;
+    color: #1e293b;
+    margin: 0;
+  }
+  .moe-impact-value strong {
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .impact-impl {
+    color: #64748b;
+    font-style: italic;
+  }
+
+  /* Inline ●/○ markers used in the impact value text */
+  .impact-marker {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: -1px;
+  }
+  .impact-marker-filled {
+    background: var(--marker-color, #2563eb);
+    box-shadow: 0 0 0 1px var(--marker-color, #2563eb);
+  }
+  .impact-marker-hollow {
     background: white;
     box-shadow: 0 0 0 1.5px var(--marker-color, #2563eb);
   }
@@ -1221,6 +1544,88 @@ if (spec.modalities && spec.modalities.length)
     border-radius: 50%;
     background: white;
     display: inline-block;
+  }
+
+  /* ===== Dual-audience tooltip — LIGHT theme =====
+     Two bullets per chip; no audience headers. Reader infers which
+     bullet is which from the language used (jargon vs plain). */
+  .chip-with-tip {
+    position: relative;
+    cursor: help;
+  }
+  .dual-tip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: white;
+    color: var(--fg, #0f172a);
+    border: 1px solid var(--border, #e2e8f0);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.5;
+    text-transform: none;
+    letter-spacing: 0;
+    text-align: left;
+    white-space: normal;
+    box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 60;
+  }
+  .dual-tip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 7px solid transparent;
+    border-top-color: white;
+    margin-top: -1px;
+  }
+  .dual-tip::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--border, #e2e8f0);
+  }
+  .chip-with-tip:hover .dual-tip,
+  .chip-with-tip:focus .dual-tip,
+  .chip-with-tip:focus-within .dual-tip {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .dual-tip ul {
+    margin: 0;
+    padding: 0 0 0 18px;
+    list-style: disc;
+  }
+  .dual-tip li {
+    margin: 0;
+    padding: 4px 0;
+  }
+  .dual-tip li + li {
+    border-top: 1px dashed #e2e8f0;
+    margin-top: 2px;
+    padding-top: 6px;
+  }
+  /* Mono-tinted bullet for the technical line — visual cue without a
+     spelled-out header. Lay bullet stays the default body color. */
+  .dual-tip .tip-tech {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #475569;
+  }
+  .dual-tip .tip-lay {
+    color: #1e293b;
   }
 
   /* ⓘ tooltip — pure CSS, hover or :focus-within reveal */
@@ -1330,15 +1735,242 @@ if (spec.modalities && spec.modalities.length)
     border-color: var(--accent);
   }
 
+  /* Type tags — overlapping category pills at the top of the spec card.
+     Unlike the header key-pills (which are single-purpose: org / era /
+     status), these can stack: a robotics VLA shows Agent + Multimodal +
+     Generative etc. Grouped by color family so related tags cluster
+     visually. */
+  .type-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .type-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    border: 1px solid;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  /* "Headline" types — agent / multimodal / reasoning carry the strongest
+     visual weight because they're what readers compare across models. */
+  .type-tag-agents {
+    color: #7c3aed;
+    background: #f5f3ff;
+    border-color: #c4b5fd;
+  }
+  .type-tag-multimodal {
+    color: #0e7490;
+    background: #ecfeff;
+    border-color: #67e8f9;
+  }
+  .type-tag-reasoning {
+    color: #b91c1c;
+    background: #fef2f2;
+    border-color: #fca5a5;
+  }
+  /* Modality / domain */
+  .type-tag-nlp {
+    color: #1d4ed8;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+  }
+  .type-tag-cv {
+    color: #047857;
+    background: #ecfdf5;
+    border-color: #86efac;
+  }
+  .type-tag-audio {
+    color: #a16207;
+    background: #fefce8;
+    border-color: #fde047;
+  }
+  .type-tag-code {
+    color: #4338ca;
+    background: #eef2ff;
+    border-color: #a5b4fc;
+  }
+  .type-tag-generative {
+    color: #be185d;
+    background: #fdf2f8;
+    border-color: #fbcfe8;
+  }
+  /* Specialty */
+  .type-tag-rl,
+  .type-tag-infrastructure {
+    color: #475569;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+  /* Meta tags — dimmer so they recede behind the headline types */
+  .type-tag-safety,
+  .type-tag-training,
+  .type-tag-architecture,
+  .type-tag-theory {
+    color: #64748b;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+  }
+
   /* Per-benchmark leaderboard source link */
   .bench-source-link {
     color: var(--fg-muted);
     text-decoration: none;
     border-bottom: 1px dotted var(--fg-muted);
     transition: color 0.12s ease, border-color 0.12s ease;
+    font-size: 11.5px;
+    font-weight: 400;
+    margin-left: 10px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
   }
   .bench-source-link:hover {
     color: var(--accent);
     border-bottom-color: var(--accent);
   }
+
+  /* ===== Direction H benchmark scale bars =====
+     Each row: name + source (top-left) · prev → current +delta (top-right)
+     · 0-100 axis with prev/current markers and a colored fill between.
+     Uses the node's org color (--marker-color) for the current marker and
+     fill segment so the graph-card border, search pulse, and spec scale
+     bars all read as one family on a given model page. */
+  .bench-list {
+    --marker-color: #2563eb;
+    display: flex;
+    flex-direction: column;
+  }
+  .bench-row {
+    padding: 12px 0 30px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .bench-row:last-child {
+    border-bottom: none;
+  }
+  .bench-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .bench-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+  }
+  .bench-nums {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .bench-prev-num {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  .bench-arrow {
+    color: #cbd5e1;
+    font-size: 13px;
+  }
+  .bench-curr-num {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .bench-delta {
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+  .bench-delta-pos { color: var(--marker-color); }
+  .bench-delta-neg { color: #dc2626; }
+
+  .bench-baseline-label {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 3px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .bench-baseline-name {
+    color: #64748b;
+    font-weight: 500;
+  }
+  .bench-baseline-text {
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .bench-bar {
+    position: relative;
+    height: 28px;
+    margin-top: 12px;
+  }
+  .bench-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #e2e8f0;
+    transform: translateY(-50%);
+    border-radius: 1px;
+  }
+  .bench-tick {
+    position: absolute;
+    top: 50%;
+    width: 1px;
+    height: 8px;
+    background: #cbd5e1;
+    transform: translate(-50%, -50%);
+  }
+  .bench-fill {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    background: var(--marker-color);
+    opacity: 0.35;
+    transform: translateY(-50%);
+    border-radius: 2px;
+  }
+  .bench-marker-prev {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #94a3b8;
+    background: white;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  .bench-marker-curr {
+    position: absolute;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--marker-color);
+    border: 2px solid white;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--marker-color) 20%, transparent);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  .bench-endpoint {
+    position: absolute;
+    top: 100%;
+    margin-top: 4px;
+    font-size: 10.5px;
+    color: #94a3b8;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .bench-endpoint-0 { left: 0; }
+  .bench-endpoint-100 { right: 0; }
 </style>

@@ -209,6 +209,10 @@ const modelSpec = z.object({
   // https://www.anthropic.com/news/claude-3-family). Optional —
   // ModelSpec.astro falls back to an org→homepage lookup when omitted.
   homepage: z.string().url().optional(),
+  // Per-model GitHub repo (e.g. https://github.com/meta-llama/llama3).
+  // Optional — the node header falls back to an org→github lookup when
+  // the model is open-weights and no explicit URL is given.
+  github: z.string().url().optional(),
 });
 
 const nodes = defineCollection({

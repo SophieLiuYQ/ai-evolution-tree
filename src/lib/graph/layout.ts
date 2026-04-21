@@ -7,7 +7,6 @@ import type {
   Placed,
   SortMode,
 } from "./types";
-import { modelType } from "./text";
 import {
   edgeStyle,
   HIDDEN_EDGE_TYPES,
@@ -58,7 +57,6 @@ function licenseKey(n: NodeEntry): string {
 // Cross-axis key for grid layouts. Empty string for chronological (no grid).
 function crossKeyOf(n: NodeEntry, mode: SortMode): string {
   if (mode === "byOrg") return n.data.org;
-  if (mode === "byType") return modelType(n.data.category ?? [], n.data.slug);
   if (mode === "byLicense") return licenseKey(n);
   return "";
 }
@@ -139,7 +137,7 @@ export function computeLayout(
       return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
     }
 
-    // ===== H + grid (byOrg / byType / byLicense): year cols × cross rows.
+    // ===== H + grid (byOrg / byLicense): year cols × cross rows.
     // Cards at (year, key) stack vertically inside cell. If the stack is
     // too tall, the cell wraps into sub-columns (side-by-side sub-stacks).
     // Year column width expands to fit the widest wrap required at that year.
@@ -328,7 +326,7 @@ export function computeLayout(
     return finalize(nodes, placedNodes, bands, totalWidth, totalHeight, orient);
   }
 
-  // ===== V + grid (byOrg / byType / byLicense): year rows × cross columns
+  // ===== V + grid (byOrg / byLicense): year rows × cross columns
   // Cards at (year, key) stack vertically. If a cross key's largest cell
   // exceeds WRAP_THRESHOLD, that key gets allocated multiple sub-columns
   // (max 3) so cards wrap into a sub-grid inside the cell instead of a

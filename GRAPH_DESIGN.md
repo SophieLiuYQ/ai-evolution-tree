@@ -144,8 +144,9 @@ h-orient). The sort selector controls the SECONDARY axis:
 |---|---|---|
 | chronological | year rows/cols | within-row date spread (no extra axis labels) |
 | byOrg | year rows/cols | one column/row per company (~45 keys, alphabetical) |
-| byType | year rows/cols | 15 buckets: LLM · Multimodal · Reasoning · Image · Video · Vision · Voice · Code · Agent · Robotics · Embedding · Science · World Model · RL · Theory. Derived in `modelType(cats, slug)` — categories first, slug-keyword fallback for modalities the `category` array can't disambiguate (e.g. image vs video gen both tag `[generative, multimodal]`). |
 | byLicense | year rows/cols | two keys: `Open` (open_weights / paper / no-model_spec) vs `Closed` (api / product / demo). `Open (research)` falls into Open for older nodes with no model_spec. Makes the 2026 open-vs-closed geopolitical divide visible in one axis. |
+
+**Removed `byType` (2026-04-20):** the single-bucket `modelType(cats, slug)` classifier was fundamentally lossy — a robotics VLA is *both* Agent AND Multimodal AND Generative, and forcing one bucket hid the overlap. Type is now rendered as *overlapping* tag pills in the node detail's `ModelSpec` section, not as a graph sort axis. The `slug`-keyword heuristic lists (video / robotics / world-model / science) were deleted with `modelType()` and must not be reintroduced — type now comes verbatim from the frontmatter `category[]` array.
 
 For non-chronological modes, layout is a **2D grid**: each card lands
 in cell `(year, sort-key)`. Multiple cards in the same cell stack
@@ -486,7 +487,7 @@ SVG renders in document order. Later elements draw on top. Current
 stacking:
 
 ```
-1. Cross-axis labels (byOrg/byType/byLicense only) (bottom)
+1. Cross-axis labels (byOrg/byLicense only) (bottom)
 2. Year band backgrounds
 3. Node cards
 4. Edge paths                             (ON TOP of cards in V3.4+)
@@ -635,9 +636,14 @@ Set caps based on font size and card width:
 
 | Field | Font | Cap | Reason |
 |---|---|---|---|
-| Title | 13px sans bold | 22 chars | Card 220px - stripe 14 - star badge 30 = 176px usable |
+| Title | 13px sans bold | 22 chars | Card 220px - stripe 14 - right padding ≈ 200px usable |
 | Spec | 11px monospace | 24 chars | Mono is narrower per char |
-| Meta | 11px mono bold | 26 chars | Same width but no star badge to avoid |
+| Meta | 11px mono bold | 26 chars | Date · Org line, full card width |
+
+The star/score badge in the top-right was removed — `breakthrough_score`
+is subjective and was promising more precision than the rubric supports.
+The detail page still shows the derived tier label ("Major" / "Foundational"
+/ etc.) but no card surfaces the raw number anymore.
 
 ### Audit visible width via HTML-unescape
 

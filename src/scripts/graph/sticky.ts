@@ -4,7 +4,7 @@
 // Two header strips per pane (when applicable):
 //   .bands-header  → year axis (LEFT in v / TOP in h)
 //                    sticky on the PERPENDICULAR scroll
-//   .cross-bands   → company/type axis, only in byOrg/byType modes
+//   .cross-bands   → company/license axis, only in byOrg/byLicense modes
 //                    (TOP in v / LEFT in h)
 //                    sticky on the OTHER perpendicular scroll
 //

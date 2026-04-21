@@ -59,10 +59,15 @@ export function attachSortHandlers() {
     if (
       saved === "chronological" ||
       saved === "byOrg" ||
-      saved === "byType" ||
       saved === "byLicense"
     ) {
       initial = saved;
+    } else if (saved === "byType") {
+      // Legacy value from before the "Type" sort mode was removed (2026-04-20).
+      // Migrate silently to chronological so a returning user doesn't land on
+      // an invalid mode.
+      initial = "chronological";
+      try { localStorage.setItem(STORAGE_KEY, "chronological"); } catch {}
     }
   } catch {}
 
