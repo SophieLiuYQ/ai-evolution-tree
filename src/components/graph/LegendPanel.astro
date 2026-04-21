@@ -8,13 +8,10 @@ import {
 } from "../../lib/graph/constants";
 
 interface Props {
-  nodeCount: number;
-  edgeCount: number;
-  yearCount: number;
   /** Sorted org → count list. Sorted desc by count, alpha tiebreaker. */
   orgs: { name: string; count: number }[];
 }
-const { nodeCount, edgeCount, yearCount, orgs } = Astro.props;
+const { orgs } = Astro.props;
 
 const visibleEdges = Object.entries(edgeStyle).filter(
   ([t]) => !HIDDEN_EDGE_TYPES.has(t as Rel["type"]),
@@ -80,21 +77,6 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     <button type="button" data-orient="v" class="orient-btn rounded px-2 py-1.5 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Vertical layout">▼ Vertical</button>
   </div>
 
-  {/* Stats — 3 inline columns */}
-  <dl class="mt-3 grid grid-cols-3 gap-1 text-center text-slate-500">
-    <div title={`${nodeCount} nodes`}>
-      <dd class="font-mono text-base font-semibold leading-none text-slate-700">{nodeCount}</dd>
-      <dt class="mt-0.5 text-[9px] uppercase tracking-tight">nodes</dt>
-    </div>
-    <div title={`${edgeCount} edges`}>
-      <dd class="font-mono text-base font-semibold leading-none text-slate-700">{edgeCount}</dd>
-      <dt class="mt-0.5 text-[9px] uppercase tracking-tight">edges</dt>
-    </div>
-    <div title={`${yearCount} years`}>
-      <dd class="font-mono text-base font-semibold leading-none text-slate-700">{yearCount}</dd>
-      <dt class="mt-0.5 text-[9px] uppercase tracking-tight">years</dt>
-    </div>
-  </dl>
 
   {/* Compact-view toggle — repack visible cards into a tight grid that
       drops the empty space created by filtered-out cards. Same filter

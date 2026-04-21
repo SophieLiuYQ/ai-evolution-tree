@@ -112,12 +112,7 @@ const clientPayload = {
 
 <figure class="ai-tree-graph overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
   <div class="graph-body flex">
-    <LegendPanel
-      nodeCount={nodes.length}
-      edgeCount={horizontal.edges.length}
-      yearCount={years.length}
-      orgs={orgs}
-    />
+    <LegendPanel orgs={orgs} />
 
     <div class="canvas-area min-w-0 flex-1">
       {/* 6 panes: 2 orients × 3 sort modes. Only one is visible at a time;
