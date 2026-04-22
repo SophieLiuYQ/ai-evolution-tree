@@ -26,7 +26,6 @@ function safe(name: string, fn: () => void) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("[ai-tree:init] starting — main.ts DOMContentLoaded");
   safe("initState", initState);
   safe("attachOrientHandlers", attachOrientHandlers);
   safe("attachInteractions", attachInteractions);
@@ -43,5 +42,4 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("load", () =>
     safe("scrollToMostRecent (load)", scrollToMostRecent),
   );
-  console.log("[ai-tree:init] all attach calls finished");
 });

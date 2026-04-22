@@ -37,10 +37,7 @@ export function expandAncestors(start: string, orient: Orient): Set<string> {
 
 export function renderHover(slug: string) {
   const active = getActivePane();
-  if (!active) {
-    console.warn("[ai-tree:hover] no active pane found for", slug);
-    return;
-  }
+  if (!active) return;
   const { orient, edgesGroup, labelsGroup } = active;
   clearDynamicEdges();
 
@@ -65,7 +62,6 @@ export function renderHover(slug: string) {
 
   // Render every edge whose endpoints are both in the ancestor lineage.
   // EVERY rendered edge gets its labeled pill (§VII invariant: 1:1 edge to label).
-  let drawn = 0;
   for (const e of edgesFor(orient)) {
     if (!ancestors.has(e.v) || !ancestors.has(e.w)) continue;
     if (!isEdgeTypeEnabled(e.type)) continue;
@@ -73,12 +69,7 @@ export function renderHover(slug: string) {
     if (!style) continue;
     edgesGroup.appendChild(buildPath(e.d, style, orient, e.type));
     labelsGroup.appendChild(buildLabel(e.midX, e.midY, style));
-    drawn++;
   }
-  console.log(
-    `[ai-tree:hover] ${slug} (${orient}): ${ancestors.size} ancestors, ${drawn} edges → group <g class="edges"> in pane`,
-    edgesGroup.parentElement,
-  );
 
   // Fade non-ancestor nodes
   allNodeLinks.forEach((n) => {
