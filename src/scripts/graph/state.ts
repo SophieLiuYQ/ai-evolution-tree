@@ -200,13 +200,52 @@ export function setAllNodeTypesEnabled(on: boolean) {
 }
 
 /** Returns true if the card with the given category[] passes the
- *  current node-type filter (i.e. at least one tag is enabled). An
- *  empty enabled set means everything is filtered out. */
+ *  current node-type filter. Semantics depend on `_nodeFilterMode`:
+ *  - "or"  (default): at least ONE enabled type appears in cats.
+ *    Wider net — toggling a type adds matching nodes to the view.
+ *  - "and": EVERY enabled type must appear in cats. Narrow
+ *    intersection — toggling a type removes the nodes that lack it.
+ *    Most useful when the user has 1-3 types enabled (e.g. Agent +
+ *    Multimodal → robotics VLAs only). With all 9 types enabled in
+ *    AND mode, no node matches; that's expected — the user should
+ *    Hide All then enable the few they want. */
 export function nodePassesFilter(cats: readonly string[]): boolean {
+  if (_enabledNodeTypes.size === 0) return false;
+  if (_nodeFilterMode === "and") {
+    for (const t of _enabledNodeTypes) {
+      if (!cats.includes(t)) return false;
+    }
+    return true;
+  }
+  // OR
   for (const c of cats) {
     if (_enabledNodeTypes.has(c)) return true;
   }
   return false;
+}
+
+// Filter mode: OR (any tag matches) vs AND (all enabled tags must match).
+// Persisted in localStorage so user's choice survives reload.
+type FilterMode = "or" | "and";
+const FILTER_MODE_KEY = "ai-tree:nodeFilterMode";
+let _nodeFilterMode: FilterMode = "or";
+
+function persistFilterMode() {
+  try { localStorage.setItem(FILTER_MODE_KEY, _nodeFilterMode); } catch {}
+}
+
+export function initNodeFilterMode() {
+  try {
+    const saved = localStorage.getItem(FILTER_MODE_KEY);
+    if (saved === "or" || saved === "and") _nodeFilterMode = saved;
+  } catch {}
+}
+
+export const getNodeFilterMode = (): FilterMode => _nodeFilterMode;
+
+export function setNodeFilterMode(m: FilterMode) {
+  _nodeFilterMode = m;
+  persistFilterMode();
 }
 
 // ===== License visibility =====

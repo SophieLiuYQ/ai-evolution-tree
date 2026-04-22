@@ -789,7 +789,18 @@ Design notes:
   tracing.
 
 The Node-types, Company, and License filters AND together — a card
-must pass ALL THREE to be shown. License buckets mirror the byLicense
+must pass ALL THREE to be shown.
+
+**Within Node types, an AND/OR mode toggle (2026-04-21)** changes the
+matching predicate inside that single filter:
+- `OR` (default): a node passes if AT LEAST ONE of its `category[]`
+  tags is in the enabled set. Wider net.
+- `AND`: a node passes only if EVERY enabled type appears in
+  `category[]`. Narrow intersection — useful when the user picks a
+  small set ("Agent + Multimodal" → robotics VLAs only). With all 9
+  types enabled in AND mode no node matches (expected; user is meant
+  to Hide All then enable the few they want). Persisted via
+  `localStorage` (`ai-tree:nodeFilterMode`). License buckets mirror the byLicense
 sort taxonomy: `open` = open_weights / paper / no-model_spec;
 `closed` = api / product / demo. The Company list is computed from the
 actual node corpus (`Graph.astro` builds an org→count map, sorted by

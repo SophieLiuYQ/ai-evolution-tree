@@ -10,7 +10,9 @@
 
 import { scrollToMostRecent } from "./scroll-latest";
 import {
+  getNodeFilterMode,
   initLicenseState,
+  initNodeFilterMode,
   initNodeTypeState,
   initOrgState,
   isLicenseEnabled,
@@ -22,6 +24,7 @@ import {
   setAllNodeTypesEnabled,
   setAllOrgsEnabled,
   setLicenseEnabled,
+  setNodeFilterMode,
   setNodeTypeEnabled,
   setOrgEnabled,
 } from "./state";
@@ -62,6 +65,15 @@ function refreshAllLicenseRows() {
   });
 }
 
+function refreshFilterModeButtons() {
+  const m = getNodeFilterMode();
+  document
+    .querySelectorAll<HTMLElement>(".node-filter-mode-btn")
+    .forEach((b) => {
+      b.setAttribute("aria-selected", b.dataset.mode === m ? "true" : "false");
+    });
+}
+
 function refreshAllOrgRows() {
   document.querySelectorAll<HTMLElement>(".org-row").forEach((row) => {
     const o = row.dataset.org;
@@ -98,7 +110,23 @@ export function attachNodeTypeHandlers() {
   if (allTypes.length === 0) return; // legend not present
 
   initNodeTypeState(allTypes);
+  initNodeFilterMode();
   refreshAllTypeRows();
+  refreshFilterModeButtons();
+
+  // AND/OR toggle — flips the predicate that decides whether a node
+  // passes the type filter. Re-applies the card filter on each change.
+  document
+    .querySelectorAll<HTMLElement>(".node-filter-mode-btn")
+    .forEach((btn) => {
+      btn.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        const m = btn.dataset.mode === "and" ? "and" : "or";
+        setNodeFilterMode(m);
+        refreshFilterModeButtons();
+        applyCardFilter();
+      });
+    });
 
   document.querySelectorAll<HTMLElement>(".node-type-toggle").forEach((btn) => {
     btn.addEventListener("click", (ev) => {

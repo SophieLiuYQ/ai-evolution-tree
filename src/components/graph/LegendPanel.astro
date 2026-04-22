@@ -102,10 +102,35 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       is it connected"). */}
 
   {/* Node-type filter — fades cards whose category[] doesn't intersect
-      the enabled set. Same toggle/eye pattern as Edge types. */}
-  <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-    Node types
-  </h3>
+      the enabled set. Same toggle/eye pattern as Edge types.
+      AND/OR toggle changes the matching predicate:
+        OR  → at least one enabled type matches (default; wider net)
+        AND → all enabled types must match (intersection; narrow) */}
+  <div class="mt-5 mb-2 flex items-baseline justify-between border-t border-slate-200 pt-3">
+    <h3 class="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+      Node types
+    </h3>
+    <div
+      class="node-filter-mode inline-flex rounded-md border border-slate-300 bg-white p-0.5 text-[10px] font-semibold"
+      role="tablist"
+      aria-label="Filter combination mode"
+    >
+      <button
+        type="button"
+        class="node-filter-mode-btn rounded px-2 py-0.5 text-slate-600"
+        data-mode="or"
+        aria-selected="true"
+        title="Show nodes matching ANY enabled type"
+      >OR</button>
+      <button
+        type="button"
+        class="node-filter-mode-btn rounded px-2 py-0.5 text-slate-600"
+        data-mode="and"
+        aria-selected="false"
+        title="Show nodes matching ALL enabled types (intersection)"
+      >AND</button>
+    </div>
+  </div>
   <ul class="space-y-1">
     {NODE_TYPES.map((nt) => (
       <li class="node-type-row" data-type={nt.id} data-on="true">
@@ -352,6 +377,21 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     background: var(--accent);
     border-color: var(--accent);
     color: white;
+  }
+  /* AND/OR mode toggle next to the Node types heading. Same active-fill
+     pattern as the orient toggle. */
+  .node-filter-mode-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+  .node-filter-mode-btn[aria-selected="true"] {
+    background: var(--accent);
+    color: white;
+  }
+  .node-filter-mode-btn:hover:not([aria-selected="true"]) {
+    background: #f1f5f9;
   }
 
   /* ===== Search dropdown ===== */
