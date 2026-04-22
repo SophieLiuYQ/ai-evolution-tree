@@ -52,7 +52,13 @@ export function initState(): GraphData {
   _data = JSON.parse(dataNode?.textContent ?? "{}") as GraphData;
   // Pre-build adjacency for every variant so hover/zoom never blocks.
   for (const o of ["h", "v"] as Orient[]) {
-    for (const m of ["chronological", "byOrg", "byLicense"] as SortMode[]) {
+    // Only chronological survives in clientPayload — byOrg / byLicense
+    // were retired (see GRAPH_DESIGN.md §II), so iterating them throws
+    // because `layouts[orient]["byOrg"]` is undefined. v-orient hover
+    // edges silently disappeared because the throw landed on h:byOrg
+    // *after* h:chronological was built but *before* v:chronological,
+    // leaving the v-adjacency cache empty.
+    for (const m of ["chronological"] as SortMode[]) {
       buildAdjacency(o, m);
     }
   }
