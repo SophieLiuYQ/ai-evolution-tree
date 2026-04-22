@@ -81,6 +81,17 @@ const license =
     filter: grayscale(0.6) !important;
     pointer-events: none !important;
   }
+  /* SVG attribute trumps CSS: the inner .hover-bay rect has
+     `pointer-events="all"` set as an attribute on the element, which
+     overrides any inherited CSS pointer-events. Without an explicit
+     override here, hovering a grayed-out card would still trigger
+     mouseenter (via the bay) and draw the lineage — exactly what the
+     user said shouldn't happen. Force pointer-events:none on every
+     descendant of a filtered card so the bay (and any future
+     interactive children) stop catching events. */
+  .node-link.card-filtered * {
+    pointer-events: none !important;
+  }
   /* Smooth motion when sort mode swaps card positions */
   .node {
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
