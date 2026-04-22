@@ -11,14 +11,26 @@
 // is a separate HTML grid with its own scrollbar — same rule, scroll
 // to the bottom since years are listed asc.
 
-import { getOrient } from "./orient";
-
 // Anchor-element approach: instead of computing container scrollHeight
 // (which is fragile across the .ai-tree-graph → graph-body → canvas-area
 // → orient-pane chain when display:none has just been flipped), we find
 // the LAST node card in the active view and call scrollIntoView on it.
 // The browser handles all the container math itself. Works equally for
 // SVG <a> in tree view and HTML <a> in compact view.
+//
+// Important: this module reads the current orient from the DOM (the
+// .orient-btn with aria-selected="true") rather than importing
+// `getOrient` from orient.ts. orient.ts already calls scrollToMostRecent
+// — importing the other way would create a circular module dependency,
+// which under ESM evaluation timing left some module exports undefined
+// at handler-attach time and broke every button on the page.
+
+function activeOrient(): "h" | "v" {
+  const sel = document.querySelector<HTMLButtonElement>(
+    '.orient-btn[aria-selected="true"]',
+  );
+  return sel?.dataset.orient === "h" ? "h" : "v";
+}
 
 function applyScroll() {
   const fig = document.querySelector<HTMLElement>(".ai-tree-graph");
@@ -43,7 +55,7 @@ function applyScroll() {
   // Tree view: last placed card in the active orient pane. Cards are
   // rendered in date-asc order by computeLayout, so the last DOM card
   // is the most recent year.
-  const orient = getOrient();
+  const orient = activeOrient();
   const pane = document.querySelector<HTMLElement>(
     `.orient-pane[data-orient="${orient}"]`,
   );
