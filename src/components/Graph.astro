@@ -179,6 +179,52 @@ const clientPayload = {
   <ZoomModal />
 </figure>
 
+{/* Pre-paint state restoration. Runs synchronously before the
+    browser paints, so persisted view choices (compact mode, orient)
+    are applied to the SSR HTML before the user sees it — no
+    tree→compact flash, no h→v flash. The full handler chain in
+    main.ts still runs on DOMContentLoaded; this just gets the FIRST
+    frame right. is:inline keeps Astro from bundling/deferring it. */}
+<script is:inline>
+  (function () {
+    try {
+      var fig = document.querySelector(".ai-tree-graph");
+      if (!fig) return;
+
+      // Compact mode: add the class so CSS swaps panes-wrap → compact-list
+      // before paint instead of after JS init.
+      if (localStorage.getItem("ai-tree:compactMode") === "1") {
+        fig.classList.add("compact-mode");
+        var cBtn = document.getElementById("compact-toggle");
+        if (cBtn) {
+          cBtn.setAttribute("aria-pressed", "true");
+          var cLabel = cBtn.querySelector(".compact-toggle-label");
+          if (cLabel) cLabel.textContent = "Tree view";
+        }
+      }
+
+      // Orient: SSR defaults to v-chronological visible; if user saved
+      // h, flip the panes' inline display BEFORE paint so the wrong
+      // pane never flashes.
+      var savedOrient = localStorage.getItem("ai-tree:orient");
+      if (savedOrient === "h" || savedOrient === "v") {
+        document.querySelectorAll(".orient-pane").forEach(function (p) {
+          var match = p.dataset.orient === savedOrient;
+          p.style.display = match ? "" : "none";
+        });
+        document.querySelectorAll(".orient-btn").forEach(function (b) {
+          b.setAttribute(
+            "aria-selected",
+            b.dataset.orient === savedOrient ? "true" : "false",
+          );
+        });
+      }
+    } catch (e) {
+      /* localStorage blocked / private mode — defaults are fine */
+    }
+  })();
+</script>
+
 <script>
   import "../scripts/graph/main.ts";
 </script>
