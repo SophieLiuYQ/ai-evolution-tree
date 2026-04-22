@@ -13,38 +13,65 @@
 
 import { getOrient } from "./orient";
 
+// Anchor-element approach: instead of computing container scrollHeight
+// (which is fragile across the .ai-tree-graph → graph-body → canvas-area
+// → orient-pane chain when display:none has just been flipped), we find
+// the LAST node card in the active view and call scrollIntoView on it.
+// The browser handles all the container math itself. Works equally for
+// SVG <a> in tree view and HTML <a> in compact view.
+
 function applyScroll() {
   const fig = document.querySelector<HTMLElement>(".ai-tree-graph");
   if (!fig) return;
 
-  // Compact view has its own scroll container. Defer to it when
-  // compact-mode is active.
+  // Compact view: last tile in the last year row.
   if (fig.classList.contains("compact-mode")) {
-    const list = fig.querySelector<HTMLElement>(".compact-list");
-    if (list) list.scrollTop = list.scrollHeight;
+    const tiles = fig.querySelectorAll<HTMLElement>(
+      ".compact-list .compact-tile:not(.card-filtered)",
+    );
+    const last = tiles[tiles.length - 1];
+    if (last) {
+      last.scrollIntoView({ block: "end", inline: "nearest" });
+    } else {
+      // No filter-passing tile — fall back to bottom of the list.
+      const list = fig.querySelector<HTMLElement>(".compact-list");
+      if (list) list.scrollTop = list.scrollHeight;
+    }
     return;
   }
 
-  // Tree view: walk every potentially-scrollable container along the
-  // SVG → root chain and push each one to its end. Belt-and-suspenders
-  // because depending on viewport size + CSS layout timing, EITHER
-  // the pane OR an ancestor may be the actual overflow container —
-  // setting all of them costs nothing and guarantees we land at "today".
+  // Tree view: last placed card in the active orient pane. Cards are
+  // rendered in date-asc order by computeLayout, so the last DOM card
+  // is the most recent year.
   const orient = getOrient();
-  const targets = document.querySelectorAll<HTMLElement>(
-    `.orient-pane[data-orient="${orient}"], .canvas-area, .graph-body`,
+  const pane = document.querySelector<HTMLElement>(
+    `.orient-pane[data-orient="${orient}"]`,
   );
-  targets.forEach((el) => {
-    if (orient === "h") el.scrollLeft = el.scrollWidth;
-    else el.scrollTop = el.scrollHeight;
+  if (!pane) return;
+
+  // Prefer a non-filtered card so we anchor on something the user can
+  // actually see; fall back to the last card overall.
+  const cards = pane.querySelectorAll<HTMLElement>(".node-link");
+  if (cards.length === 0) return;
+  let target: HTMLElement | null = null;
+  for (let i = cards.length - 1; i >= 0; i--) {
+    if (!cards[i].classList.contains("card-filtered")) {
+      target = cards[i];
+      break;
+    }
+  }
+  if (!target) target = cards[cards.length - 1];
+
+  target.scrollIntoView({
+    block: orient === "v" ? "end" : "nearest",
+    inline: orient === "h" ? "end" : "nearest",
   });
 }
 
 /** Scroll the active view to the most-recent-date end. Called on
- *  page load, on filter change, on compact-mode toggle. Internally
- *  fires twice — once now, once after the next paint frame — so the
- *  scroll lands correctly even if layout hasn't settled yet (which
- *  is common on the very first call after display:none flips). */
+ *  page load, on filter change, on compact-mode toggle. Fires twice
+ *  (now + RAF) so layout has a chance to settle when we're called
+ *  immediately after a display:none flip. */
 export function scrollToMostRecent() {
   applyScroll();
   requestAnimationFrame(applyScroll);

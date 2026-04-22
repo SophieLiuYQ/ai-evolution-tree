@@ -4,7 +4,8 @@
 
 import { clearDynamicEdges } from "./dom";
 import { clearPinOnOrientChange } from "./hover";
-import { getSort, type Orient } from "./state";
+import { scrollToMostRecent } from "./scroll-latest";
+import { type Orient } from "./state";
 import { updateActivePane } from "./sort";
 
 const STORAGE_KEY = "ai-tree:orient";
@@ -26,22 +27,12 @@ export function setOrient(o: Orient, scrollEnd = true) {
 
   updateActivePane(); // toggles which pane is visible
 
-  if (scrollEnd) {
-    // Defer the scroll to the next frame: updateActivePane just
-    // flipped display:none on the panes, so the browser hasn't laid
-    // the newly-visible one out yet. Reading scrollWidth/Height
-    // synchronously here returns 0 and the scroll lands at the START
-    // of the timeline (= year 1957) instead of "today". RAF gives
-    // layout one tick to settle.
-    requestAnimationFrame(() => {
-      const pane = document.querySelector<HTMLElement>(
-        `.orient-pane[data-orient="${o}"]`,
-      );
-      if (!pane) return;
-      if (o === "h") pane.scrollLeft = pane.scrollWidth;
-      else pane.scrollTop = pane.scrollHeight;
-    });
-  }
+  // Anchor to the most-recent-date end via the shared helper, which
+  // uses scrollIntoView on the last card so it doesn't depend on
+  // container math (the brittle scrollHeight/Width approach was
+  // unreliable across the figure → graph-body → canvas-area → pane
+  // chain right after a display:none flip).
+  if (scrollEnd) scrollToMostRecent();
 }
 
 export function attachOrientHandlers() {
