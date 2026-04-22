@@ -13,22 +13,35 @@ import { initState } from "./state";
 import { attachStickyHeaders } from "./sticky";
 import { attachZoomHandlers } from "./zoom";
 
+// Wrap each attach so one throw doesn't halt the whole init chain
+// (which is what bricked buttons in the past — a single broken module
+// init blocked every later attachX from running). Errors are logged
+// so DevTools console makes it obvious which one failed.
+function safe(name: string, fn: () => void) {
+  try {
+    fn();
+  } catch (err) {
+    console.error(`[ai-tree:init] ${name} threw:`, err);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  initState();
-  attachOrientHandlers();
-  attachInteractions();
-  attachZoomHandlers();
-  attachSortHandlers();
-  attachEdgeTypeHandlers();
-  attachNodeTypeHandlers();
-  attachStickyHeaders();
-  attachSearchHandlers();
-  attachCompactHandler();
-  // Anchor the initial viewport to the most recent year. setOrient
-  // already does an end-scroll on load, but at DOMContentLoaded the
-  // SVG's intrinsic scrollHeight isn't always settled (CSS / fonts
-  // still landing). Re-scroll after the next paint frame, and again
-  // on window load, to make sure we end up at "today" reliably.
-  requestAnimationFrame(scrollToMostRecent);
-  window.addEventListener("load", () => scrollToMostRecent());
+  console.log("[ai-tree:init] starting — main.ts DOMContentLoaded");
+  safe("initState", initState);
+  safe("attachOrientHandlers", attachOrientHandlers);
+  safe("attachInteractions", attachInteractions);
+  safe("attachZoomHandlers", attachZoomHandlers);
+  safe("attachSortHandlers", attachSortHandlers);
+  safe("attachEdgeTypeHandlers", attachEdgeTypeHandlers);
+  safe("attachNodeTypeHandlers", attachNodeTypeHandlers);
+  safe("attachStickyHeaders", attachStickyHeaders);
+  safe("attachSearchHandlers", attachSearchHandlers);
+  safe("attachCompactHandler", attachCompactHandler);
+  safe("scrollToMostRecent (RAF)", () =>
+    requestAnimationFrame(scrollToMostRecent),
+  );
+  window.addEventListener("load", () =>
+    safe("scrollToMostRecent (load)", scrollToMostRecent),
+  );
+  console.log("[ai-tree:init] all attach calls finished");
 });
