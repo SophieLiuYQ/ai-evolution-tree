@@ -6,6 +6,7 @@ import { attachEdgeTypeHandlers } from "./edge-types";
 import { attachInteractions } from "./hover";
 import { attachNodeTypeHandlers } from "./node-types";
 import { attachOrientHandlers } from "./orient";
+import { scrollToMostRecent } from "./scroll-latest";
 import { attachSearchHandlers } from "./search";
 import { attachSortHandlers } from "./sort";
 import { initState } from "./state";
@@ -23,4 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
   attachStickyHeaders();
   attachSearchHandlers();
   attachCompactHandler();
+  // Anchor the initial viewport to the most recent year. setOrient
+  // already does an end-scroll on load, but at DOMContentLoaded the
+  // SVG's intrinsic scrollHeight isn't always settled (CSS / fonts
+  // still landing). Re-scroll after the next paint frame, and again
+  // on window load, to make sure we end up at "today" reliably.
+  requestAnimationFrame(scrollToMostRecent);
+  window.addEventListener("load", () => scrollToMostRecent());
 });
