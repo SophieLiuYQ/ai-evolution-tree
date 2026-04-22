@@ -266,7 +266,13 @@ import Base from "../layouts/Base.astro";
   if (canvas) {
     const ctx = canvas.getContext("2d")!;
     const off = document.createElement("canvas");
-    const offCtx = off.getContext("2d")!;
+    // willReadFrequently:true tells the browser this canvas will be
+    // read via getImageData often. Critical on Safari: without this
+    // hint, Safari hardware-accelerates the canvas and getImageData
+    // throws InvalidStateError ("Unable to get image data from
+    // canvas. Requested size was 782 x 319"). With the hint, the
+    // canvas stays on the CPU and getImageData succeeds.
+    const offCtx = off.getContext("2d", { willReadFrequently: true })!;
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
     const GROW_MS = 3400;
