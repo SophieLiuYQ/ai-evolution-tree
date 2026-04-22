@@ -220,18 +220,18 @@ const clientPayload = {
   }
   .ai-tree-graph.compact-mode .panes-wrap { display: none; }
   .ai-tree-graph.compact-mode .compact-list { display: flex; }
-  .ai-tree-graph.compact-mode .compact-list .card-filtered {
-    /* In compact view, filtered tiles are removed entirely so the grid
-       packs only the selected ones. Overrides the default fade rule
-       scoped to Card.astro (which also uses !important). */
-    display: none !important;
-  }
-  /* Auto-hide year rows whose tiles are ALL filtered out. The `:has()`
-     selector checks each compact-year for at least one surviving
-     (.compact-tile that is NOT .card-filtered) — if none, the whole
-     row (year label + tiles) collapses so the timeline stacks tight. */
-  .ai-tree-graph.compact-mode .compact-year:not(:has(.compact-tile:not(.card-filtered))) {
-    display: none;
+  /* Compact view = pure chronological browser: filters do NOT apply
+     here. Per user feedback 2026-04-21, the gray/hide treatment that
+     normally goes with .card-filtered is overridden inside compact
+     mode so every tile renders normally regardless of filter state.
+     The card-filtered class still gets toggled by node-types.ts (so
+     toggling back to tree view picks up the filter again), it just
+     has no visual effect inside .compact-mode. */
+  .ai-tree-graph.compact-mode .compact-tile {
+    opacity: 1 !important;
+    filter: none !important;
+    pointer-events: auto !important;
+    display: flex !important;
   }
 
   /* Each year row: fixed-width year label gutter on the left, tiles

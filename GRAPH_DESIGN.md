@@ -765,18 +765,23 @@ Design notes:
   grammar as the SVG cards. The filter chain in `node-types.ts`
   applies unchanged — it iterates `.node-link[data-cats]`, which
   matches both SVG cards and HTML tiles.
-- In compact mode, `.card-filtered` becomes `display: none !important`
-  (scoped under `.compact-mode` so it overrides the default 0.2
-  opacity fade). Only passing tiles render.
-- Year rows where ALL tiles are filtered out auto-collapse via CSS
-  `:has()`:
+- **Filters do NOT apply in compact mode** (per user feedback
+  2026-04-21). The `.card-filtered` class still gets toggled by
+  node-types.ts on every filter change, but its visual effect is
+  overridden inside `.compact-mode`:
   ```css
-  .compact-mode .compact-year:not(:has(.compact-tile:not(.card-filtered))) {
-    display: none;
+  .ai-tree-graph.compact-mode .compact-tile {
+    opacity: 1 !important;
+    filter: none !important;
+    pointer-events: auto !important;
+    display: flex !important;
   }
   ```
-  No JS needed to walk year rows — the selector handles empty-year
-  collapse and the remaining years stack tight automatically.
+  So compact view is a pure chronological browser of the full corpus.
+  Earlier we hid filtered tiles via `display: none` and used `:has()`
+  to collapse all-filtered year rows, but the user wanted the compact
+  grid to stay full so they can scan the whole tree without losing
+  context to filters set in the other view.
 - Compact state is intentionally NOT persisted — it's a transient view
   flip, not a preference.
 - Edges / hover / pin are unavailable in compact mode by design (the
