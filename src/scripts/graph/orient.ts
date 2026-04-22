@@ -24,15 +24,23 @@ export function setOrient(o: Orient, scrollEnd = true) {
     localStorage.setItem(STORAGE_KEY, o);
   } catch {}
 
-  updateActivePane(); // toggles which of the 6 panes is visible
+  updateActivePane(); // toggles which pane is visible
 
   if (scrollEnd) {
-    const pane = document.querySelector<HTMLElement>(
-      `.orient-pane[data-orient="${o}"][data-sort="${getSort()}"]`,
-    );
-    if (!pane) return;
-    if (o === "h") pane.scrollLeft = pane.scrollWidth;
-    else pane.scrollTop = pane.scrollHeight;
+    // Defer the scroll to the next frame: updateActivePane just
+    // flipped display:none on the panes, so the browser hasn't laid
+    // the newly-visible one out yet. Reading scrollWidth/Height
+    // synchronously here returns 0 and the scroll lands at the START
+    // of the timeline (= year 1957) instead of "today". RAF gives
+    // layout one tick to settle.
+    requestAnimationFrame(() => {
+      const pane = document.querySelector<HTMLElement>(
+        `.orient-pane[data-orient="${o}"]`,
+      );
+      if (!pane) return;
+      if (o === "h") pane.scrollLeft = pane.scrollWidth;
+      else pane.scrollTop = pane.scrollHeight;
+    });
   }
 }
 

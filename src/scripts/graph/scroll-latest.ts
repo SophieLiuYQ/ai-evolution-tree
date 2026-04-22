@@ -13,7 +13,7 @@
 
 import { getOrient } from "./orient";
 
-export function scrollToMostRecent() {
+function applyScroll() {
   const fig = document.querySelector<HTMLElement>(".ai-tree-graph");
   if (!fig) return;
 
@@ -25,12 +25,27 @@ export function scrollToMostRecent() {
     return;
   }
 
-  // Otherwise scroll the currently-visible orient pane.
+  // Tree view: walk every potentially-scrollable container along the
+  // SVG → root chain and push each one to its end. Belt-and-suspenders
+  // because depending on viewport size + CSS layout timing, EITHER
+  // the pane OR an ancestor may be the actual overflow container —
+  // setting all of them costs nothing and guarantees we land at "today".
   const orient = getOrient();
-  const pane = document.querySelector<HTMLElement>(
-    `.orient-pane[data-orient="${orient}"]`,
+  const targets = document.querySelectorAll<HTMLElement>(
+    `.orient-pane[data-orient="${orient}"], .canvas-area, .graph-body`,
   );
-  if (!pane) return;
-  if (orient === "h") pane.scrollLeft = pane.scrollWidth;
-  else pane.scrollTop = pane.scrollHeight;
+  targets.forEach((el) => {
+    if (orient === "h") el.scrollLeft = el.scrollWidth;
+    else el.scrollTop = el.scrollHeight;
+  });
+}
+
+/** Scroll the active view to the most-recent-date end. Called on
+ *  page load, on filter change, on compact-mode toggle. Internally
+ *  fires twice — once now, once after the next paint frame — so the
+ *  scroll lands correctly even if layout hasn't settled yet (which
+ *  is common on the very first call after display:none flips). */
+export function scrollToMostRecent() {
+  applyScroll();
+  requestAnimationFrame(applyScroll);
 }
