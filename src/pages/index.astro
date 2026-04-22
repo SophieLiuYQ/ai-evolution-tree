@@ -39,33 +39,31 @@ import Base from "../layouts/Base.astro";
 </Base>
 
 <style is:global>
-  body:has(.landing-fullbleed),
-  html:has(.landing-fullbleed) {
-    overflow: hidden;
-    height: 100vh;
-    background: #f8fafc;
-  }
+  /* `:has()` is nice-to-have polish (header transparency, footer
+     hiding). On browsers without :has() support these rules are
+     skipped — page still works. The load-bearing fullscreen layout
+     is on .landing-fullbleed itself via position:fixed (no parent-
+     height dependency) so a missing :has() can't blank the page. */
   body:has(.landing-fullbleed) > footer { display: none; }
-  /* Sticky nav over the light canvas */
   body:has(.landing-fullbleed) > header {
     background: rgba(255, 255, 255, 0.7) !important;
     border-bottom: 1px solid rgba(15, 23, 42, 0.06);
     backdrop-filter: blur(10px);
   }
-
-  main:has(> .landing-fullbleed) {
-    max-width: none !important;
-    padding: 0 !important;
-    height: calc(100vh - 53px);
-    overflow: hidden;
-  }
 </style>
 
 <style>
   .landing-fullbleed {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    /* Fixed-position fullscreen below the 53px header. Switched from
+       width/height: 100% (which depended on `:has()` rules sizing
+       <body>/<main>) to position:fixed so the layout is robust even
+       on browsers without :has() — the missing parent-height chain
+       was causing a visible body scrollbar + 0-height content. */
+    position: fixed;
+    top: 53px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     overflow: hidden;
     display: flex;
     align-items: stretch;
