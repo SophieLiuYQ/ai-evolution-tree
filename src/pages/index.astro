@@ -294,10 +294,21 @@ import Base from "../layouts/Base.astro";
   // → no drift, the tree is deterministic in shape per cycle. Per-cycle
   // randomization of (leftAngle, rightAngle, ratio) gives variety.
   //
-  // Pipeline:
-  //   1. Render fractal to off-screen canvas as stroked lines + light blur
-  //   2. Sample brightness per ~7×12 cell → ASCII glyph
-  //   3. bottom→top reveal of cells, brief hold, fade, repeat
+  // Pipeline (rewritten 2026-04-23 to kill the Safari canvas bug):
+  //   1. Recurse the fractal; for each branch segment, walk the line
+  //      analytically and accumulate brightness into a cell grid.
+  //   2. Same for leaf puffs (2D Gaussian splat into nearby cells).
+  //   3. Convert the brightness grid → ASCII glyph per cell.
+  //   4. bottom→top reveal of cells, brief hold, fade, repeat.
+  //
+  // This used to render to an offscreen canvas then call getImageData
+  // to sample — but Safari's canvas implementation repeatedly threw
+  // InvalidStateError on getImageData (even with willReadFrequently
+  // and no canvas filter). Going fully analytic means NO offscreen
+  // canvas exists; the visible canvas is write-only and no browser
+  // ever has to satisfy a pixel-readback call. The visual is
+  // near-identical (grid is coarse enough that the raster blur from
+  // the old path was barely distinguishable).
 
   type Cell = { col: number; row: number; ch: string; b: number };
 
@@ -311,14 +322,6 @@ import Base from "../layouts/Base.astro";
   const canvas = document.querySelector<HTMLCanvasElement>(".binary-tree");
   if (canvas) {
     const ctx = canvas.getContext("2d")!;
-    const off = document.createElement("canvas");
-    // willReadFrequently:true tells the browser this canvas will be
-    // read via getImageData often. Critical on Safari: without this
-    // hint, Safari hardware-accelerates the canvas and getImageData
-    // throws InvalidStateError ("Unable to get image data from
-    // canvas. Requested size was 782 x 319"). With the hint, the
-    // canvas stays on the CPU and getImageData succeeds.
-    const offCtx = off.getContext("2d", { willReadFrequently: true })!;
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
     const GROW_MS = 3400;
@@ -329,6 +332,9 @@ import Base from "../layouts/Base.astro";
     let W = 0, H = 0, COLS = 0, ROWS = 0;
     let cells: Cell[] = [];
     let cycleStart = performance.now();
+    // Reusable brightness grid (Float32, COLS*ROWS). Indexed as
+    // bright[row * COLS + col]. Cleared before each rebuild.
+    let bright = new Float32Array(0);
 
     function resize() {
       const rect = canvas.getBoundingClientRect();
@@ -339,84 +345,88 @@ import Base from "../layouts/Base.astro";
       canvas.style.width = `${W}px`;
       canvas.style.height = `${H}px`;
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      off.width = W;
-      off.height = H;
-      offCtx.setTransform(1, 0, 0, 1, 0, 0);
       COLS = Math.floor(W / CELL_W);
       ROWS = Math.floor(H / CELL_H);
+      bright = new Float32Array(COLS * ROWS);
       rebuild();
       cycleStart = performance.now();
     }
 
+    function clampCol(c: number) { return c < 0 ? 0 : c >= COLS ? COLS - 1 : c; }
+    function clampRow(r: number) { return r < 0 ? 0 : r >= ROWS ? ROWS - 1 : r; }
+
+    // Stamp a Gaussian-ish splat into the brightness grid at (x,y)
+    // with radius r (pixels) and peak intensity `weight`. Used for
+    // leaf puffs + also (repeatedly, stepping along the line) for
+    // tapered branch segments.
+    function splat(x: number, y: number, r: number, weight: number) {
+      const cellR = Math.ceil(r / Math.min(CELL_W, CELL_H));
+      const cx = x / CELL_W, cy = y / CELL_H;
+      const c0 = clampCol(Math.floor(cx - cellR));
+      const c1 = clampCol(Math.ceil(cx + cellR));
+      const r0 = clampRow(Math.floor(cy - cellR));
+      const r1 = clampRow(Math.ceil(cy + cellR));
+      const rPx = Math.max(0.001, r);
+      for (let rr = r0; rr <= r1; rr++) {
+        for (let cc = c0; cc <= c1; cc++) {
+          const pxX = (cc + 0.5) * CELL_W;
+          const pxY = (rr + 0.5) * CELL_H;
+          const d = Math.hypot(pxX - x, pxY - y);
+          if (d > rPx * 1.5) continue;
+          // Falloff: 1 at center, ~0 at 1.5r
+          const f = Math.max(0, 1 - d / (rPx * 1.5));
+          const v = f * f * weight;
+          bright[rr * COLS + cc] += v;
+        }
+      }
+    }
+
     function rebuild() {
-      offCtx.clearRect(0, 0, W, H);
-      offCtx.fillStyle = "#000";
-      offCtx.strokeStyle = "#000";
-      offCtx.lineCap = "round";
-      offCtx.lineJoin = "round";
-      // Removed `offCtx.filter = "blur(0.7px)"` — Safari's canvas
-      // filter implementation puts the buffer in a state where
-      // getImageData throws InvalidStateError. Visual difference is
-      // negligible (the ASCII sampling already smooths edges).
+      bright.fill(0);
 
       // Higher ratio + tighter angles → taller tree, canopy reaches near top
       const ratio = 0.79 + Math.random() * 0.04;        // 0.79–0.83
       const leftA = 0.28 + Math.random() * 0.14;        // 16°–24°
       const rightA = 0.28 + Math.random() * 0.14;
-      // Bumped trunkLen — total tree H ≈ trunkLen·5 (ratio 0.81),
-      // so 0.21·H trunk → tree fills ~95% of viewport.
       const trunkLen = Math.min(H * 0.21, W * 0.20);
       const baseW = Math.max(24, Math.min(W, H) * 0.045);
 
-      // Tapered trapezoid renderer: each segment narrows w1→w2 along
-      // its length, with round end-caps so adjacent segments join
-      // smoothly. This is what gives the visible bottom-to-top trunk
-      // taper inside a single trunk segment (a uniform stroke can't).
+      // Walk a tapered segment (thick w1 → w2) by stamping splats
+      // every ~CELL_W/2 px along its length. Each splat's radius
+      // linearly interpolates between w1/2 and w2/2 so the segment
+      // reads as a tapering shape in the cell grid, same visual as
+      // the old trapezoid draw.
       function taperedSeg(x1: number, y1: number, x2: number, y2: number, w1: number, w2: number) {
         const dx = x2 - x1, dy = y2 - y1;
         const len = Math.hypot(dx, dy);
         if (len < 0.3) return;
-        const nx = -dy / len, ny = dx / len;
-        const hw1 = w1 / 2, hw2 = w2 / 2;
-        offCtx.beginPath();
-        offCtx.moveTo(x1 + nx * hw1, y1 + ny * hw1);
-        offCtx.lineTo(x2 + nx * hw2, y2 + ny * hw2);
-        offCtx.lineTo(x2 - nx * hw2, y2 - ny * hw2);
-        offCtx.lineTo(x1 - nx * hw1, y1 - ny * hw1);
-        offCtx.closePath();
-        offCtx.fill();
-        offCtx.beginPath();
-        offCtx.arc(x1, y1, hw1, 0, Math.PI * 2);
-        offCtx.fill();
-        offCtx.beginPath();
-        offCtx.arc(x2, y2, hw2, 0, Math.PI * 2);
-        offCtx.fill();
+        const step = Math.max(1, Math.min(CELL_W, CELL_H) / 2);
+        const n = Math.max(1, Math.ceil(len / step));
+        for (let i = 0; i <= n; i++) {
+          const t = i / n;
+          const x = x1 + dx * t;
+          const y = y1 + dy * t;
+          const w = (w1 * (1 - t) + w2 * t) / 2; // radius
+          splat(x, y, w, 1);
+        }
       }
 
       function branch(x: number, y: number, angle: number, length: number, thick: number, depth: number) {
         if (depth > MAX_DEPTH || length < 1.0) {
-          // Bigger puffs + 3 per terminal + bigger jitter → fills the
-          // empty space between branches with leaf mass.
           if (depth >= 5) {
             const N = 3;
             for (let p = 0; p < N; p++) {
               const lr = 6.5 + Math.random() * 4.0;
               const jx = (Math.random() - 0.5) * 9;
               const jy = (Math.random() - 0.5) * 9;
-              offCtx.globalAlpha = 0.65 + Math.random() * 0.28;
-              offCtx.beginPath();
-              offCtx.arc(x + jx, y + jy, lr, 0, Math.PI * 2);
-              offCtx.fill();
+              const alpha = 0.65 + Math.random() * 0.28;
+              splat(x + jx, y + jy, lr, alpha);
             }
-            offCtx.globalAlpha = 1;
           }
           return;
         }
         const x2 = x + Math.cos(angle) * length;
         const y2 = y + Math.sin(angle) * length;
-        // Each segment tapers within itself: thick → thick·0.78
-        // Children inherit the segment's END thickness so joints are
-        // continuous (no width jumps at branching points).
         const endThick = Math.max(1.4, thick * 0.78);
         taperedSeg(x, y, x2, y2, thick, endThick);
         const newLen = length * ratio;
@@ -428,45 +438,31 @@ import Base from "../layouts/Base.astro";
       const baseY = H - 24;
       branch(baseX, baseY, -Math.PI / 2, trunkLen, baseW, 0);
 
-      sampleCells();
+      buildCells();
     }
 
-    function sampleCells() {
-      // Safari throws InvalidStateError from getImageData when the
-      // canvas filter (blur) interacts with its security/buffer state
-      // — observed 2026-04-22 on the live site. Wrap so a single
-      // failed sample doesn't break the requestAnimationFrame loop
-      // (which previously cascaded into a torrent of console errors).
-      let data: Uint8ClampedArray;
-      try {
-        data = offCtx.getImageData(0, 0, W, H).data;
-      } catch {
-        cells = [];
-        return;
-      }
+    // Walk the brightness grid and emit one Cell per non-empty cell,
+    // normalized to 0..1. Sorted bottom → top for the grow reveal.
+    function buildCells() {
+      if (bright.length === 0) { cells = []; return; }
+      let max = 0;
+      for (let i = 0; i < bright.length; i++) if (bright[i] > max) max = bright[i];
+      if (max <= 0) { cells = []; return; }
       const out: Cell[] = [];
+      const inv = 1 / max;
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
-          const x0 = c * CELL_W, y0 = r * CELL_H;
-          let sum = 0, cnt = 0;
-          for (let sy = 1; sy < CELL_H; sy += 2) {
-            for (let sx = 1; sx < CELL_W; sx += 2) {
-              const xi = x0 + sx, yi = y0 + sy;
-              if (xi >= W || yi >= H) continue;
-              sum += data[(yi * W + xi) * 4 + 3];
-              cnt++;
-            }
-          }
-          const b = cnt ? sum / (cnt * 255) : 0;
-          if (b < 0.05) continue;
-          const idx = Math.min(RAMP.length - 1,
-            Math.max(1, Math.floor(b * RAMP.length)));
+          const v = bright[r * COLS + c] * inv;
+          if (v < 0.05) continue;
+          const idx = Math.min(
+            RAMP.length - 1,
+            Math.max(1, Math.floor(v * RAMP.length)),
+          );
           const ch = RAMP[idx];
           if (ch === " ") continue;
-          out.push({ col: c, row: r, ch, b });
+          out.push({ col: c, row: r, ch, b: v });
         }
       }
-      // Bottom → Top reveal
       out.sort((a, b) => b.row - a.row);
       cells = out;
     }
