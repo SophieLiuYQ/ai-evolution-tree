@@ -1868,27 +1868,37 @@ if (spec.release_type)
     background: var(--accent-soft, rgba(37, 99, 235, 0.08));
     outline: none;
   }
+  /* ⓘ tooltip — light theme (matches the rest of the page card
+     surface). Unified typography:
+       - single body font-size (13px)
+       - single section-header font-size (11px uppercase)
+       - same family (ui-sans-serif) throughout, no italics
+       - consistent line-height (1.55) so CJK and Latin read at the
+         same rhythm */
   .spec-tooltip {
     position: absolute;
     bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
-    width: 280px;
-    background: #0f172a;
-    color: #f1f5f9;
-    padding: 10px 12px;
+    width: 300px;
+    background: #ffffff;
+    color: #0f172a;
+    padding: 12px 14px;
+    border: 1px solid var(--border, #e2e8f0);
     border-radius: 8px;
-    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.4);
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size: 12px;
-    line-height: 1.45;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.18);
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
     z-index: 50;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.15s ease, transform 0.15s ease;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
+    text-transform: none;
+    letter-spacing: normal;
   }
   .spec-tooltip::after {
     content: "";
@@ -1897,45 +1907,59 @@ if (spec.release_type)
     left: 50%;
     transform: translateX(-50%);
     border: 6px solid transparent;
-    border-top-color: #0f172a;
+    border-top-color: #ffffff;
+    filter: drop-shadow(0 1px 0 var(--border, #e2e8f0));
   }
   .spec-info-wrap:hover .spec-tooltip,
   .spec-info-wrap:focus-within .spec-tooltip {
     opacity: 1;
     pointer-events: auto;
   }
+  /* Section header: same size + case across all 3 tooltip sections.
+     The first-section title used to be bold italic yellow — collapsed
+     into the same shared style as the sub-headers so '什么是 / 有哪些
+     种类 / 本模型用的是' read as a parallel trio. */
   .spec-tooltip-q {
     font-weight: 700;
-    font-style: italic;
-    color: #fde68a;
-    font-size: 12.5px;
+    font-style: normal;
+    color: var(--accent, #0f7a4a);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
-  /* Sub-section headers inside the tooltip — slightly less emphatic
-     than the lead title, with top-margin to separate the three
-     "什么是 / 有哪些种类 / 本模型用的是" blocks. */
   .spec-tooltip-q-sub {
     margin-top: 8px;
+    font-weight: 700;
     font-style: normal;
-    color: #bfdbfe;
-    font-size: 11.5px;
+    color: var(--accent, #0f7a4a);
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
   .spec-tooltip-body {
-    color: #e2e8f0;
+    color: #334155;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height: 1.55;
   }
+  /* "This model" value line — subtle accent tint to distinguish
+     from the generic explanatory body text. Same size / family so
+     it doesn't feel like a different typographic register. */
   .spec-tooltip-this {
-    color: #fef3c7;
+    color: #0f172a;
+    font-weight: 500;
   }
   .spec-tooltip-link {
-    color: #93c5fd;
+    color: var(--accent, #0f7a4a);
     text-decoration: none;
     font-weight: 600;
-    margin-top: 2px;
+    margin-top: 4px;
+    font-size: 12px;
   }
   .spec-tooltip-link:hover {
     text-decoration: underline;
-    color: #bfdbfe;
   }
 
   /* Official-site button (top right of spec card) */
