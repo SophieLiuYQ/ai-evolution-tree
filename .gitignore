@@ -32,3 +32,8 @@ Thumbs.db
 # pagefind
 public/pagefind/
 .vercel
+
+# User scratch notes (not part of site)
+/CLAUDE_Karpathy.md
+/ascii-art.txt
+/compass_artifact_*.md
