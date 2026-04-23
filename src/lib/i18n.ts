@@ -105,8 +105,6 @@ export const DICT: Record<Lang, Record<string, string>> = {
     "detail.benchmarks": "Benchmarks",
     "detail.references": "References",
     "detail.relationships": "Relationships",
-    "detail.view.tech": "Tech",
-    "detail.view.public": "Public",
     "detail.body.englishNotice": "Technical body is currently available in English only.",
 
     "spec.parameters": "Parameters",
@@ -237,8 +235,6 @@ export const DICT: Record<Lang, Record<string, string>> = {
     "detail.benchmarks": "基准测试",
     "detail.references": "参考资料",
     "detail.relationships": "上下游关系",
-    "detail.view.tech": "技术",
-    "detail.view.public": "通俗",
     "detail.body.englishNotice": "技术正文暂只有英文版本。",
 
     "spec.parameters": "参数规模",

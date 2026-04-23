@@ -1,8 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
-import ViewToggle from "../../components/ViewToggle.astro";
-import PublicView from "../../components/PublicView.astro";
 import CitationsBlock from "../../components/CitationsBlock.astro";
 import ModelSpec from "../../components/ModelSpec.astro";
 import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
@@ -193,15 +191,9 @@ const githubUrl =
       <LineageZoom nodes={allNodes} currentSlug={d.slug} />
     </div>
 
-    <ViewToggle />
-
-    <div data-view-section="tech" class="prose-node max-w-none">
+    <div class="prose-node max-w-none">
       {d.model_spec && <ModelSpec spec={d.model_spec} org={normalizeOrg(d.org)} modelTitle={d.title} category={d.category} />}
       <Content />
-    </div>
-
-    <div data-view-section="public" style="display:none">
-      <PublicView pv={d.public_view} pvZh={d.public_view_zh} />
     </div>
 
     <RelationshipsBlock current={node} all={allNodes} />
