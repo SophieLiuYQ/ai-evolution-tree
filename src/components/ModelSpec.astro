@@ -319,7 +319,15 @@ const HELP_TITLE_THIS = { en: "This model:", zh: "本模型用的是：" };
 type Bilingual = { en: string; zh: string };
 const FIELD_HELP: Record<
   string,
-  { title: Bilingual; what: Bilingual; kinds: Bilingual }
+  {
+    title: Bilingual;
+    what: Bilingual;
+    kinds: Bilingual;
+    /** Optional free-form extra section rendered between Kinds and
+     *  'This model:'. Used today for the MoE special case under
+     *  Parameters; reusable for any field that needs a callout. */
+    special?: { title: Bilingual; body: Bilingual };
+  }
 > = {
   parameters: {
     title: {
@@ -327,12 +335,22 @@ const FIELD_HELP: Record<
       zh: "什么是参数规模？",
     },
     what: {
-      en: "The count of learned weights in the neural network. More parameters = more capacity to memorize patterns, but also more memory and compute to actually serve the model.",
-      zh: "神经网络里的可学习权重数量。参数越多，模型能记住的模式越多，但推理时所需的显存和算力也越高。",
+      en: "Parameters are the values an AI model learns during training. They are one rough measure of model size. More parameters usually mean more capacity to recognize patterns and solve complex tasks — but also higher memory use, slower speed, and more compute cost.",
+      zh: "参数是 AI 模型在训练过程中学到的数值，是衡量模型规模的一个粗略指标。参数越多，模型识别模式、解决复杂任务的能力通常越强——但相应地显存占用更高、推理更慢、算力成本也更贵。",
     },
     kinds: {
-      en: "Edge (1–3B, runs on phones). Single GPU (7–15B, fits a 4090). Workstation (30–80B, needs an A100 or 2× RTX 6000). Datacenter (300B+, multi-node). Mixture-of-Experts cheats the cost curve — total params set RAM but only the active params drive inference.",
-      zh: "边缘端（1–3B，手机能跑）。单卡（7–15B，一张 4090 装得下）。工作站（30–80B，需 A100 或两张 RTX 6000）。数据中心（300B+，多机分布式）。MoE 是成本曲线的'作弊器'：总参数决定显存，但真正驱动推理成本的只有激活参数。",
+      en: "Small (1–3B): Can run on phones or lightweight devices\nMedium (7–15B): Can run on a single high-end GPU (like RTX 4090)\nLarge (30–80B): Workstation / server class hardware\nVery Large (300B+): Datacenter-scale systems across many GPUs",
+      zh: "小型（1–3B）：手机或轻量设备就能跑\n中型（7–15B）：单张高端显卡（如 RTX 4090）即可\n大型（30–80B）：工作站 / 服务器级硬件\n超大型（300B+）：数据中心级多 GPU 集群",
+    },
+    special: {
+      title: {
+        en: "Special case: Mixture of Experts (MoE)",
+        zh: "特别情况：混合专家（MoE）",
+      },
+      body: {
+        en: "These models contain many total parameters, but only part of the model activates for each request — improving efficiency.",
+        zh: "这类模型总参数很多，但每次调用只激活其中一部分——以此提升效率。",
+      },
     },
   },
   architecture: {
@@ -1111,10 +1129,23 @@ if (spec.release_type)
                         <span class="lang-en has-zh">{HELP_TITLE_KINDS.en}</span>
                         <span class="lang-zh">{HELP_TITLE_KINDS.zh}</span>
                       </strong>
-                      <span class="spec-tooltip-body">
+                      <span class="spec-tooltip-body spec-tooltip-list">
                         <span class="lang-en has-zh">{help.kinds.en}</span>
                         <span class="lang-zh">{help.kinds.zh}</span>
                       </span>
+
+                      {help.special && (
+                        <>
+                          <strong class="spec-tooltip-q spec-tooltip-q-sub">
+                            <span class="lang-en has-zh">{help.special.title.en}</span>
+                            <span class="lang-zh">{help.special.title.zh}</span>
+                          </strong>
+                          <span class="spec-tooltip-body">
+                            <span class="lang-en has-zh">{help.special.body.en}</span>
+                            <span class="lang-zh">{help.special.body.zh}</span>
+                          </span>
+                        </>
+                      )}
 
                       <strong class="spec-tooltip-q spec-tooltip-q-sub">
                         <span class="lang-en has-zh">{HELP_TITLE_THIS.en}</span>
@@ -1943,6 +1974,12 @@ if (spec.release_type)
     font-size: 13px;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
     line-height: 1.55;
+  }
+  /* Used when body content is a newline-separated list (e.g. the
+     Kinds section). `pre-line` preserves the \n breaks from the
+     data so each bullet lands on its own line. */
+  .spec-tooltip-list {
+    white-space: pre-line;
   }
   /* "This model" value line — subtle accent tint to distinguish
      from the generic explanatory body text. Same size / family so
