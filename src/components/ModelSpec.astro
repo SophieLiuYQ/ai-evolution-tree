@@ -3,9 +3,10 @@
 //
 // Sourcing rules (per project policy):
 //   • Every benchmark / ranking score MUST link to one of:
-//       llm-stats.com · huggingface.co · artificialanalysis.ai
+//       llm-stats.com · huggingface.co · artificialanalysis.ai ·
+//       arena.ai · openrouter.ai
 //     (per-benchmark `source_url` overrides; otherwise default lookup
-//     resolves to one of the three).
+//     resolves to one of the five).
 //   • Every model spec block MUST link to the model's official
 //     homepage (`spec.homepage` overrides; otherwise org → homepage
 //     fallback applies). Both ensure no number on this page is
@@ -353,11 +354,18 @@ const FIELD_HELP: Record<
 // huggingface.co (open-weight evals), llm-stats.com (cross-model
 // comparison). A node's per-benchmark `source_url` overrides this.
 
-type LBProvider = "artificialanalysis" | "huggingface" | "llm-stats";
+type LBProvider =
+  | "artificialanalysis"
+  | "huggingface"
+  | "llm-stats"
+  | "arena"
+  | "openrouter";
 const LB_HOME: Record<LBProvider, { label: string; url: string }> = {
   "artificialanalysis": { label: "Artificial Analysis", url: "https://artificialanalysis.ai/" },
   "huggingface": { label: "Hugging Face", url: "https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" },
   "llm-stats": { label: "LLM Stats", url: "https://llm-stats.com/" },
+  "arena": { label: "LMArena", url: "https://arena.ai/about" },
+  "openrouter": { label: "OpenRouter Rankings", url: "https://openrouter.ai/rankings" },
 };
 
 const BENCHMARK_PROVIDER: Record<string, LBProvider> = {
@@ -389,10 +397,14 @@ const BENCHMARK_PROVIDER: Record<string, LBProvider> = {
   "MMMU-Pro": "artificialanalysis",
   // Image / video (artificialanalysis covers image + video arenas)
   "VBench": "artificialanalysis",
-  // Cross-comparison (llm-stats)
-  "ChatBot Arena": "llm-stats",
-  "ChatBot Arena Elo": "llm-stats",
-  "LMArena": "llm-stats",
+  // Cross-comparison — Arena is the canonical source for human-pref
+  // Elo rankings; OpenRouter exposes traffic-weighted live rankings.
+  "ChatBot Arena": "arena",
+  "ChatBot Arena Elo": "arena",
+  "LMArena": "arena",
+  "Arena Elo": "arena",
+  "OpenRouter Rankings": "openrouter",
+  "Traffic share": "openrouter",
   "ARC-AGI": "artificialanalysis",
   // Hallucination (artificialanalysis tracks FACTS Grounding)
   "FACTS Grounding": "artificialanalysis",
@@ -417,6 +429,10 @@ function benchSource(b: { name: string; source_url?: string }): {
     if (/huggingface\.co/.test(b.source_url)) return { label: "Hugging Face", url: b.source_url };
     if (/artificialanalysis\.ai/.test(b.source_url))
       return { label: "Artificial Analysis", url: b.source_url };
+    if (/arena\.ai|lmarena\.ai/.test(b.source_url))
+      return { label: "LMArena", url: b.source_url };
+    if (/openrouter\.ai/.test(b.source_url))
+      return { label: "OpenRouter Rankings", url: b.source_url };
     return { label: "Source", url: b.source_url };
   }
   let provider: LBProvider | undefined = BENCHMARK_PROVIDER[b.name];

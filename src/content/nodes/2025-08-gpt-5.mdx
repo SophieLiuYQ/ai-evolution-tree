@@ -63,17 +63,16 @@ public_view_zh:
 
 public_view:
   plain_english: |
-    OpenAI's August 2025 successor — the model that finally consolidated
-    OpenAI's confusing product matrix (GPT-4o, GPT-4o-mini, o1, o1-pro,
-    o3, o3-mini, o4-mini) into a single "GPT-5" surface with internal
-    routing between fast and reasoning modes. The technical
-    contribution beyond benchmarks: the routing layer that decides,
-    per-query, whether deep reasoning is needed.
+    OpenAI stopped making users pick the right model. GPT-5 is one
+    endpoint that routes each query to the right compute path — fast
+    for easy questions, deep reasoning for hard ones. Shipped August
+    2025, it replaced the GPT-4o / o1 / o3-mini / o4-mini mess that
+    had accumulated over the previous year. The router is the
+    interesting technical piece; the raw capability bump is modest.
   analogy: |
-    Apple's "we just made it work" approach to product complexity.
-    Where Anthropic's hybrid Claude 3.7 toggled reasoning per-request
-    by user choice, GPT-5 decided automatically. Friction went down;
-    user-facing simplicity went up.
+    Apple's product-naming playbook applied to AI. Claude 3.7 also
+    has a reasoning toggle but makes you flip it; GPT-5 just decides.
+    Fewer buttons, same output.
   applications:
     - product: "ChatGPT (default tier)"
       company: "OpenAI"
@@ -85,22 +84,22 @@ public_view:
       company: "Apple + OpenAI"
       year_deployed: 2025
   investment_angle: |
-    GPT-5's launch coincided with OpenAI's revenue crossing
-    ~$15B annualized — by far the largest AI-product company
-    by revenue at the time. The product consolidation was as
-    important commercially as the capability gain: having to
-    explain "use GPT-4o for X, o1 for Y, o3 for Z" was
-    procurement-hostile. GPT-5 simplified the buy decision
-    and reportedly drove a noticeable bump in enterprise
-    seat growth in Q3-Q4 2025. The 400k context expansion
-    was the third-most-cited feature, after unified routing
-    and reasoning quality.
+    OpenAI's annualized revenue hit ~$15B right around this launch
+    — bigger than any other AI-product company at the time. The
+    consolidation mattered commercially as much as the capability
+    bump, if not more. Try explaining to a CIO why seat deployments
+    need three different model SKUs. GPT-5 collapsed that into one
+    line item. Enterprise seats jumped through Q3–Q4 2025. The 400k
+    context was in every vendor deck but was probably the third
+    reason anyone actually switched — after the single surface and
+    the better reasoning.
   why_it_matters: |
-    GPT-5 is the model behind most major-news AI deployments
-    in late 2025 — from new browser AI features to enterprise
-    agentic workflows to consumer chat. Whether it represents
-    a "step change" or "incremental" depends on the dimension
-    you measure; the product story was the bigger contribution.
+    Almost every AI-product headline from August 2025 through Q1
+    2026 traced back to GPT-5 — consumer chat, Copilot-everywhere,
+    enterprise agents. People still argue whether the capability
+    jump was a step change or just incremental. That argument
+    misses the point. The real shift was that OpenAI stopped
+    shipping seven models and started shipping one.
 
 citations:
   - type: release
@@ -122,9 +121,9 @@ citations:
 
 ## What it is
 
-OpenAI's August 7, 2025 unified frontier release. The model architecturally consists of multiple specialized subnetworks (fast / reasoning / multimodal pathways) with a learned router that selects the appropriate compute path per query. Users see one "GPT-5" — the routing is invisible.
+GPT-5 shipped on August 7, 2025. Under the hood it's not one network — it's several specialized subnetworks (fast lane, reasoning lane, multimodal lane) with a trained router that picks one per query. The user never sees which lane fired; they just send a prompt and get an answer.
 
-This is the productization answer to the post-o1 confusion that had developed in the OpenAI lineup, where users had to know the right model for each task type.
+The point: OpenAI's lineup had bloated into seven user-facing models (GPT-4o, GPT-4o-mini, o1, o1-pro, o3, o3-mini, o4-mini), each with a narrow task where it was "best." Nobody wanted that in procurement. GPT-5 is OpenAI's Apple-style consolidation — one thing to buy, let the router figure it out.
 
 ## GPT-5 vs late-2025 frontier
 
