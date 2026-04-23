@@ -215,6 +215,93 @@ function computeImpl(s: string): string {
   return "Pre-frontier compute";
 }
 
+// ============== Chinese impl helpers ==============
+// Parallel Chinese versions of the six implication helpers. Same
+// branching thresholds, Chinese phrasing. Kept as separate fns rather
+// than dict keys because the text inlines computed values (sizes,
+// ranges) that dict-lookup can't easily template.
+
+function paramTierZh(b: number): string {
+  if (b < 3) return "边缘端";
+  if (b < 15) return "单卡";
+  if (b < 80) return "工作站";
+  if (b < 300) return "多卡";
+  return "数据中心";
+}
+
+function paramImplZh(s: string): string {
+  const p = parseAllParamsLite(s);
+  if (!p) return /\b(MoE|active|experts?)\b/i.test(s) ? "MoE — 总参数 ≠ 激活参数" : "";
+  const max = Math.max(...p.variants, ...p.active, 0);
+  const min = p.variants.length ? Math.min(...p.variants) : max;
+  const isMoE = p.active.length > 0 || /\bMoE\b/i.test(s);
+  if (p.variants.length <= 1) {
+    const flagship = paramTierZh(max);
+    return isMoE ? `${flagship} · MoE（激活参数决定成本）` : flagship;
+  }
+  const lo = paramTierZh(min);
+  const hi = paramTierZh(max);
+  const range = lo === hi ? lo : `${lo} → ${hi}`;
+  return `${p.variants.length} 个规格 · ${range}${isMoE ? " · 含 MoE" : ""}`;
+}
+
+function contextImplZh(n: number): string {
+  if (n < 16_000) return "单轮聊天 / 短提示";
+  if (n < 64_000) return "长文档 / 一章完整装下";
+  if (n < 256_000) return "整本书 / 长 PDF 装得下";
+  if (n < 1_000_000) return "多文档 RAG，整个代码库可行";
+  return "整个代码库 / 语料都能装";
+}
+
+function licenseImplZh(t: string): string {
+  switch (t) {
+    case "open_weights":
+      return "可自托管 —— 不被厂商绑架";
+    case "api":
+      return "只能厂商托管 —— 按 token 计费";
+    case "product":
+      return "内嵌在产品里 —— 拿不到原始接口";
+    case "paper":
+      return "研究成果 —— 无公开权重";
+    case "demo":
+      return "限量 / 排队试用";
+    default:
+      return "";
+  }
+}
+
+function archImplZh(s: string): string {
+  const x = s.toLowerCase();
+  if (/\bmoe\b|mixture/.test(x)) return "MoE —— 每 token 只激活部分专家（推理便宜）";
+  if (/mamba|ssm|state[- ]?space/.test(x)) return "注意力的线性时间替代方案";
+  if (/diffusion|rectified[- ]?flow/.test(x)) return "迭代精炼式生成";
+  if (/sparse[- ]?attention/.test(x)) return "亚二次注意力 —— 长上下文更便宜";
+  if (/decoder[- ]?only|gpt[- ]?style/.test(x)) return "标准 LLM 拓扑";
+  if (/encoder[- ]?decoder|seq2seq/.test(x)) return "Encoder-decoder（seq2seq 血统）";
+  return "";
+}
+
+function trainingTokensImplZh(s: string): string {
+  const m = s.match(/(\d+(?:\.\d+)?)\s*([TB])/i);
+  if (!m) return "";
+  const n = parseFloat(m[1]);
+  const t = m[2].toUpperCase() === "T" ? n : n / 1000;
+  if (t >= 15) return "高强度训练 —— 现代前沿规模";
+  if (t >= 5) return "现代规模（Chinchilla 最优之后）";
+  if (t >= 1) return "轻量训练 —— 很可能欠训练";
+  return "小规模训练语料";
+}
+
+function computeImplZh(s: string): string {
+  const m = s.match(/(\d+(?:\.\d+)?)e(\+?)(\d+)/i);
+  if (!m) return "";
+  const exp = parseInt(m[3], 10);
+  if (exp >= 26) return "前沿级 —— 数据中心月级算力";
+  if (exp >= 25) return "GPT-4 时代（训练成本约 5000 万–1 亿美元）";
+  if (exp >= 24) return "GPT-3 时代（训练成本约 500–1500 万美元）";
+  return "前沿之前的算力档";
+}
+
 // ============== "Why this matters" tooltip help text ==============
 // One concise paragraph + a "Learn more" link to the most relevant
 // internal node or external resource.
@@ -797,6 +884,7 @@ type Row = {
   label: string;
   value: string;
   implication: string;
+  implicationZh: string;
 };
 
 const rows: Row[] = [];
@@ -806,6 +894,7 @@ if (spec.parameters)
     label: "Parameters",
     value: spec.parameters,
     implication: paramImpl(spec.parameters),
+    implicationZh: paramImplZh(spec.parameters),
   });
 if (spec.architecture)
   rows.push({
@@ -813,6 +902,7 @@ if (spec.architecture)
     label: "Architecture",
     value: spec.architecture,
     implication: archImpl(spec.architecture),
+    implicationZh: archImplZh(spec.architecture),
   });
 if (spec.context_window)
   rows.push({
@@ -820,6 +910,7 @@ if (spec.context_window)
     label: "Context window",
     value: fmtCtx(spec.context_window) ?? "",
     implication: contextImpl(spec.context_window),
+    implicationZh: contextImplZh(spec.context_window),
   });
 if (spec.training_tokens)
   rows.push({
@@ -827,6 +918,7 @@ if (spec.training_tokens)
     label: "Training tokens",
     value: spec.training_tokens,
     implication: trainingTokensImpl(spec.training_tokens),
+    implicationZh: trainingTokensImplZh(spec.training_tokens),
   });
 if (spec.training_compute)
   rows.push({
@@ -834,6 +926,7 @@ if (spec.training_compute)
     label: "Training compute",
     value: spec.training_compute,
     implication: computeImpl(spec.training_compute),
+    implicationZh: computeImplZh(spec.training_compute),
   });
 if (spec.release_type)
   rows.push({
@@ -841,6 +934,7 @@ if (spec.release_type)
     label: "Release type",
     value: spec.release_type,
     implication: licenseImpl(spec.release_type),
+    implicationZh: licenseImplZh(spec.release_type),
   });
 ---
 
@@ -937,7 +1031,10 @@ if (spec.release_type)
               {/* Implication moved ABOVE the visualization — the conclusion
                   is the most useful line; bury it below and people skip it. */}
               {r.implication && (
-                <p class="spec-implication">▸ {r.implication}</p>
+                <p class="spec-implication">
+                  ▸ <span class={r.implicationZh ? "lang-en has-zh" : "lang-en"}>{r.implication}</span>
+                  {r.implicationZh && <span class="lang-zh">{r.implicationZh}</span>}
+                </p>
               )}
 
               {/* Architecture: render canonical chips when we recognize tokens */}
@@ -974,7 +1071,7 @@ if (spec.release_type)
                       <div class="scale-tick" style={`left: ${tickPos(t, scale)}%;`}>
                         <span class="scale-tick-mark" />
                         <span class="scale-tick-label">{t.label}</span>
-                        {t.note && <span class="scale-tick-note">{t.note}</span>}
+                        {t.note && <span class="scale-tick-note" data-i18n={`tick.${t.note}`}>{t.note}</span>}
                       </div>
                     ))}
                     {scale.markers.map((m) => (
@@ -986,7 +1083,10 @@ if (spec.release_type)
                       >
                         <span class="scale-marker-dot" />
                         {m.label && (
-                          <span class="scale-marker-label">{m.label}</span>
+                          <span
+                            class="scale-marker-label"
+                            data-i18n={m.label === "this model" ? "spec.thisModel" : undefined}
+                          >{m.label}</span>
                         )}
                       </div>
                     ))}
@@ -1072,7 +1172,7 @@ if (spec.release_type)
                         tabindex="0"
                       >
                         {isActive && <span class="pill-dot" />}
-                        {opt.label}
+                        <span data-i18n={`release.${opt.id}`}>{opt.label}</span>
                         {t && (
                           <span class="dual-tip" role="tooltip">
                             <ul>
