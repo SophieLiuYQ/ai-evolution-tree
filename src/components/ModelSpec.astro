@@ -307,44 +307,117 @@ function computeImplZh(s: string): string {
 // One concise paragraph + a "Learn more" link to the most relevant
 // internal node or external resource.
 
+// ⓘ tooltip content — 3-part structure per user request:
+//   1. 什么是 XXXX   · What is XXXX (definition)
+//   2. 有哪些种类      · What kinds exist (taxonomy)
+//   3. 本模型用的是 XXX · This model (dynamic — read from r.value / r.implication at render time)
+// Entries are bilingual. Headers below are shared across all fields;
+// per-field `title` names the specific noun in the question.
+const HELP_TITLE_KINDS = { en: "What kinds exist?", zh: "有哪些种类？" };
+const HELP_TITLE_THIS = { en: "This model:", zh: "本模型用的是：" };
+
+type Bilingual = { en: string; zh: string };
 const FIELD_HELP: Record<
   string,
-  { question: string; body: string; link?: { label: string; href: string } }
+  { title: Bilingual; what: Bilingual; kinds: Bilingual }
 > = {
   parameters: {
-    question: "How many GPUs do I need to run this?",
-    body: "7B fits a single RTX 4090. 70B needs an A100 80GB or 4× consumer GPUs. 700B+ needs a datacenter. For Mixture-of-Experts, total parameters set RAM but only the active parameters drive inference cost — MoE wins on cost-per-token.",
-    link: { label: "Scaling laws (Kaplan 2020)", href: "/node/scaling-laws/" },
+    title: {
+      en: "What are parameters?",
+      zh: "什么是参数规模？",
+    },
+    what: {
+      en: "The count of learned weights in the neural network. More parameters = more capacity to memorize patterns, but also more memory and compute to actually serve the model.",
+      zh: "神经网络里的可学习权重数量。参数越多，模型能记住的模式越多，但推理时所需的显存和算力也越高。",
+    },
+    kinds: {
+      en: "Edge (1–3B, runs on phones). Single GPU (7–15B, fits a 4090). Workstation (30–80B, needs an A100 or 2× RTX 6000). Datacenter (300B+, multi-node). Mixture-of-Experts cheats the cost curve — total params set RAM but only the active params drive inference.",
+      zh: "边缘端（1–3B，手机能跑）。单卡（7–15B，一张 4090 装得下）。工作站（30–80B，需 A100 或两张 RTX 6000）。数据中心（300B+，多机分布式）。MoE 是成本曲线的'作弊器'：总参数决定显存，但真正驱动推理成本的只有激活参数。",
+    },
   },
   architecture: {
-    question: "What's the topology — and what does that imply about cost?",
-    body: "Decoder-only transformers are the default since GPT-3. Mixture-of-Experts (MoE) cuts inference cost by activating a fraction of params per token. State-space models (Mamba) and sparse attention dodge attention's n² scaling for long context.",
-    link: { label: "Transformer (Vaswani 2017)", href: "/node/transformer/" },
+    title: {
+      en: "What is the architecture?",
+      zh: "什么是架构？",
+    },
+    what: {
+      en: "The neural network's structural blueprint — how layers connect, what the attention looks like, whether the compute per token is dense or sparse.",
+      zh: "神经网络的结构蓝图——层怎么连、注意力是什么形态、每 token 的算力是稠密还是稀疏。",
+    },
+    kinds: {
+      en: "Decoder-only Transformer: the default since GPT-3 (GPT / Claude / Gemini all take this route). Encoder-decoder: older seq2seq (T5, Flan). MoE: sparse routing, only some experts fire per token. State-space / Mamba: a linear-time alternative to attention. Diffusion: iterative refinement, mostly for image / video.",
+      zh: "Decoder-only Transformer：GPT-3 后的默认方案，GPT / Claude / Gemini 全走这条。Encoder-decoder：老式 seq2seq（T5、Flan）。MoE：稀疏路由，每 token 只激活部分专家。State-space / Mamba：注意力的线性时间替代方案。Diffusion：迭代精炼式生成，主要用在图像 / 视频。",
+    },
   },
   context_window: {
-    question: "How much can I shove into a single prompt?",
-    body: "8k = single chat. 32–128k = long documents. 1M+ = whole codebases. The context window directly determines whether the model fits your RAG / agent / long-doc workflow without chunking gymnastics.",
-    link: { label: "DeepSeek V3.2 (sparse attention)", href: "/node/deepseek-v3-2/" },
+    title: {
+      en: "What is the context window?",
+      zh: "什么是上下文窗口？",
+    },
+    what: {
+      en: "The maximum number of tokens (each roughly ¾ of a word) the model can read in a single call before it starts dropping or forgetting content.",
+      zh: "模型一次调用能读进来的最多 token 数（一个 token 约 0.75 个英文词）。超过这个上限就要分块或丢内容。",
+    },
+    kinds: {
+      en: "4–8k: one chat turn. 32–128k: long document or a chapter. 200k–1M: a book, a full repo, or multi-doc RAG. 1M+: entire codebases. Longer isn't automatically better — attention quality drops with distance, and 'needle in a haystack' tests show where recall collapses.",
+      zh: "4–8k：单轮聊天。32–128k：长文档或一个章节。200k–1M：整本书、完整代码库、多文档 RAG。1M+：整套代码仓库。不是越长越好——注意力对远距离会退化，'大海捞针'测试会暴露模型在哪里开始记不住。",
+    },
   },
   training_tokens: {
-    question: "Was it trained on enough data?",
-    body: "Chinchilla showed that compute-optimal training pairs ~20 tokens per parameter. 15T+ tokens at frontier scale is heavily trained; 1T at 70B is undertrained and explains weak performance even before benchmarks.",
-    link: { label: "Chinchilla scaling laws", href: "/node/chinchilla/" },
+    title: {
+      en: "What are training tokens?",
+      zh: "什么是训练 token？",
+    },
+    what: {
+      en: "How many tokens the model saw during pre-training. Combined with parameter count, it tells you whether the model was 'trained enough' to hit its capability ceiling.",
+      zh: "预训练阶段模型见过的 token 总量。结合参数规模，就能判断模型到底训得够不够、能力榨没榨干。",
+    },
+    kinds: {
+      en: "Under-trained: under 10 tokens per param (leaves capability on the table). Chinchilla-optimal: ~20 tokens per param. Modern frontier: 5–15T total, often 100–300× tokens per param (Llama 3 used 15T).",
+      zh: "欠训练：每参数不到 10 tokens（能力还没榨出来）。Chinchilla 最优：约 20 tokens / 参数。现代前沿：总量 5–15T，每参数常到 100–300 倍（Llama 3 用了 15T tokens）。",
+    },
   },
   training_compute: {
-    question: "How much did it cost to train — and who can replicate it?",
-    body: "Total FLOPs is the rough cost proxy. GPT-4 ≈ 2×10²⁵ FLOPs ≈ $50–100M. DeepSeek V3 reported ~$5.6M via algorithmic efficiency. Lower compute = more replicable = thinner moat.",
-    link: { label: "Epoch AI compute trends", href: "https://epoch.ai/data/notable-ai-models" },
+    title: {
+      en: "What is training compute?",
+      zh: "什么是训练算力？",
+    },
+    what: {
+      en: "Total floating-point operations burned during pre-training, usually reported in FLOPs. A rough proxy for 'how hard was this to build?' — and therefore for how replicable it is.",
+      zh: "预训练过程烧掉的浮点运算总量，通常以 FLOPs 计。粗略代表'这玩意儿造出来有多难'，也就间接代表多难被复刻。",
+    },
+    kinds: {
+      en: "Pre-frontier: under 1e24 FLOPs. GPT-3 era: ~1e24, ~$5M. GPT-4 era: ~2e25, ~$50–100M. Frontier: 1e26+, datacenter-months. DeepSeek V3 hit GPT-4-class quality at ~1e24 via algorithmic efficiency — compute alone isn't the moat.",
+      zh: "前沿之前：<1e24 FLOPs。GPT-3 时代：约 1e24，成本约 500 万美元。GPT-4 时代：约 2e25，成本约 5000 万–1 亿美元。前沿：1e26+，数据中心月级算力。DeepSeek V3 靠算法优化在 1e24 FLOPs 就摸到 GPT-4 质量——算力不是唯一护城河。",
+    },
   },
   release_type: {
-    question: "Can I get the weights — and on what license?",
-    body: "open_weights: download and self-host. api: rent per token. product: only inside a vendor app. paper / demo: theoretical or waitlisted. The 2026 split is regional — most Chinese frontier models are open; most US frontier models are closed.",
-    link: { label: "Filter the tree by license", href: "/tree/" },
+    title: {
+      en: "What is release type?",
+      zh: "什么是发布方式？",
+    },
+    what: {
+      en: "How you actually get to use the model — downloadable weights, a rented API, a packaged product only, or an unreleased research artifact.",
+      zh: "你实际能怎么用到这个模型——下载权重自己部署、租 API、只能在某个 app 里用，还是根本没放出来。",
+    },
+    kinds: {
+      en: "Open weights: download and self-host (Llama, Qwen, DeepSeek). API: pay per token, vendor-hosted (GPT-5, Claude, Gemini). Product: baked into an app only (Sora, Midjourney). Paper: research artifact, no weights. Demo: limited or waitlisted access.",
+      zh: "开放权重：下载自托管（Llama、Qwen、DeepSeek）。API：按 token 付费、厂商托管（GPT-5、Claude、Gemini）。产品：只嵌在某个 app 里、没有裸模型接口（Sora、Midjourney）。论文：研究成果，不开放权重。演示：限量 / 排队。",
+    },
   },
   benchmarks: {
-    question: "How is it actually measured — and against what baseline?",
-    body: "Absolute scores mean little without context. Always read the baseline column: a 70% on SWE-bench is mediocre against a 72% Claude baseline, frontier against a 49% one. Benchmark hill-climbing also drifts (training contamination), so trust deltas more than absolute peaks.",
-    link: { label: "Open LLM Leaderboard", href: "https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" },
+    title: {
+      en: "What are benchmarks?",
+      zh: "什么是基准测试？",
+    },
+    what: {
+      en: "Standardized tests that compare models on specific skills — reasoning, coding, math, multimodal. Each score on this page links to the leaderboard it came from.",
+      zh: "在特定能力上（推理、编程、数学、多模态）比较模型的标准化测试。本页每个分数都附了原始榜单的链接。",
+    },
+    kinds: {
+      en: "Reasoning: MMLU, MMLU-Pro, GPQA, Humanity's Last Exam. Coding: SWE-bench, HumanEval, Codeforces. Math: MATH, AIME, GSM8K. Multimodal: MMMU, MathVista, VBench. Human preference: LMArena, Chatbot Arena Elo. Real-world traffic: OpenRouter Rankings.",
+      zh: "推理：MMLU、MMLU-Pro、GPQA、Humanity's Last Exam。编程：SWE-bench、HumanEval、Codeforces。数学：MATH、AIME、GSM8K。多模态：MMMU、MathVista、VBench。人类偏好：LMArena、Chatbot Arena Elo。真实流量：OpenRouter Rankings。",
+    },
   },
 };
 
@@ -1021,18 +1094,42 @@ if (spec.release_type)
                       ⓘ
                     </button>
                     <span class="spec-tooltip" role="tooltip">
-                      <strong class="spec-tooltip-q">{help.question}</strong>
-                      <span class="spec-tooltip-body">{help.body}</span>
-                      {help.link && (
-                        <a
-                          href={help.link.href}
-                          class="spec-tooltip-link"
-                          target={help.link.href.startsWith("http") ? "_blank" : undefined}
-                          rel={help.link.href.startsWith("http") ? "noopener" : undefined}
-                        >
-                          {help.link.label} →
-                        </a>
-                      )}
+                      {/* 3-section tooltip: 什么是 X / 有哪些种类 /
+                          本模型用的是. Dual-language via .lang-en /
+                          .lang-zh sibling spans — CSS picks the right
+                          one based on <html lang>. */}
+                      <strong class="spec-tooltip-q">
+                        <span class="lang-en has-zh">{help.title.en}</span>
+                        <span class="lang-zh">{help.title.zh}</span>
+                      </strong>
+                      <span class="spec-tooltip-body">
+                        <span class="lang-en has-zh">{help.what.en}</span>
+                        <span class="lang-zh">{help.what.zh}</span>
+                      </span>
+
+                      <strong class="spec-tooltip-q spec-tooltip-q-sub">
+                        <span class="lang-en has-zh">{HELP_TITLE_KINDS.en}</span>
+                        <span class="lang-zh">{HELP_TITLE_KINDS.zh}</span>
+                      </strong>
+                      <span class="spec-tooltip-body">
+                        <span class="lang-en has-zh">{help.kinds.en}</span>
+                        <span class="lang-zh">{help.kinds.zh}</span>
+                      </span>
+
+                      <strong class="spec-tooltip-q spec-tooltip-q-sub">
+                        <span class="lang-en has-zh">{HELP_TITLE_THIS.en}</span>
+                        <span class="lang-zh">{HELP_TITLE_THIS.zh}</span>
+                      </strong>
+                      <span class="spec-tooltip-body spec-tooltip-this">
+                        {r.value}
+                        {r.implication && (
+                          <>
+                            {" — "}
+                            <span class={r.implicationZh ? "lang-en has-zh" : "lang-en"}>{r.implication}</span>
+                            {r.implicationZh && <span class="lang-zh">{r.implicationZh}</span>}
+                          </>
+                        )}
+                      </span>
                     </span>
                   </span>
                 )}
@@ -1227,20 +1324,26 @@ if (spec.release_type)
                 ⓘ
               </button>
               <span class="spec-tooltip" role="tooltip">
+                {/* Same 2-section structure as spec rows, minus the
+                    per-model "this model" chunk since benchmarks is
+                    many rows, not a single value. */}
                 <strong class="spec-tooltip-q">
-                  {FIELD_HELP.benchmarks.question}
+                  <span class="lang-en has-zh">{FIELD_HELP.benchmarks.title.en}</span>
+                  <span class="lang-zh">{FIELD_HELP.benchmarks.title.zh}</span>
                 </strong>
                 <span class="spec-tooltip-body">
-                  {FIELD_HELP.benchmarks.body}
+                  <span class="lang-en has-zh">{FIELD_HELP.benchmarks.what.en}</span>
+                  <span class="lang-zh">{FIELD_HELP.benchmarks.what.zh}</span>
                 </span>
-                <a
-                  href={FIELD_HELP.benchmarks.link!.href}
-                  class="spec-tooltip-link"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {FIELD_HELP.benchmarks.link!.label} →
-                </a>
+
+                <strong class="spec-tooltip-q spec-tooltip-q-sub">
+                  <span class="lang-en has-zh">{HELP_TITLE_KINDS.en}</span>
+                  <span class="lang-zh">{HELP_TITLE_KINDS.zh}</span>
+                </strong>
+                <span class="spec-tooltip-body">
+                  <span class="lang-en has-zh">{FIELD_HELP.benchmarks.kinds.en}</span>
+                  <span class="lang-zh">{FIELD_HELP.benchmarks.kinds.zh}</span>
+                </span>
               </span>
             </span>
           )}
@@ -1807,8 +1910,22 @@ if (spec.release_type)
     color: #fde68a;
     font-size: 12.5px;
   }
+  /* Sub-section headers inside the tooltip — slightly less emphatic
+     than the lead title, with top-margin to separate the three
+     "什么是 / 有哪些种类 / 本模型用的是" blocks. */
+  .spec-tooltip-q-sub {
+    margin-top: 8px;
+    font-style: normal;
+    color: #bfdbfe;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
   .spec-tooltip-body {
     color: #e2e8f0;
+  }
+  .spec-tooltip-this {
+    color: #fef3c7;
   }
   .spec-tooltip-link {
     color: #93c5fd;
