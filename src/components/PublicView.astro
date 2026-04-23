@@ -8,8 +8,17 @@ interface Props {
     market_size_usd?: number;
     why_it_matters: string;
   };
+  /** Optional Chinese translations of the prose fields. Each field
+   *  independently optional — missing fields fall back to English via
+   *  the `.has-zh` CSS rule pattern. */
+  pvZh?: {
+    plain_english?: string;
+    analogy?: string;
+    investment_angle?: string;
+    why_it_matters?: string;
+  };
 }
-const { pv } = Astro.props;
+const { pv, pvZh } = Astro.props;
 
 const formatUSD = (n?: number) => {
   if (!n) return null;
@@ -17,23 +26,41 @@ const formatUSD = (n?: number) => {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(0)}M`;
   return `$${n}`;
 };
+
+// Shorthand for "class name on the English span so it hides in zh
+// mode when a Chinese sibling is present".
+const hasZh = (k: keyof NonNullable<typeof pvZh>) =>
+  pvZh && pvZh[k] ? "lang-en has-zh" : "lang-en";
 ---
 
 <section class="prose-node space-y-8">
   <div>
-    <h2>What it is, plainly</h2>
-    <p class="text-lg leading-relaxed">{pv.plain_english}</p>
+    <h2>
+      <span class={hasZh("plain_english")} data-i18n="pv.heading.plainly">What it is, plainly</span>
+      {pvZh?.plain_english && <span class="lang-zh">简介</span>}
+    </h2>
+    <p class="text-lg leading-relaxed">
+      <span class={hasZh("plain_english")}>{pv.plain_english}</span>
+      {pvZh?.plain_english && <span class="lang-zh">{pvZh.plain_english}</span>}
+    </p>
   </div>
 
   <div class="rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm">
     <div class="mb-2 text-xs uppercase tracking-wider text-[var(--fg-muted)]">
-      Analogy
+      <span class={hasZh("analogy")}>Analogy</span>
+      {pvZh?.analogy && <span class="lang-zh">类比</span>}
     </div>
-    <p class="italic text-[var(--fg)]">{pv.analogy}</p>
+    <p class="italic text-[var(--fg)]">
+      <span class={hasZh("analogy")}>{pv.analogy}</span>
+      {pvZh?.analogy && <span class="lang-zh">{pvZh.analogy}</span>}
+    </p>
   </div>
 
   <div>
-    <h2>Where you encounter it</h2>
+    <h2>
+      <span class="lang-en has-zh">Where you encounter it</span>
+      <span class="lang-zh">它在哪里被用</span>
+    </h2>
     <ul class="space-y-2">
       {
         pv.applications.map((a) => (
@@ -52,12 +79,20 @@ const formatUSD = (n?: number) => {
   </div>
 
   <div>
-    <h2>Investment angle</h2>
-    <p>{pv.investment_angle}</p>
+    <h2>
+      <span class={hasZh("investment_angle")}>Investment angle</span>
+      {pvZh?.investment_angle && <span class="lang-zh">商业视角</span>}
+    </h2>
+    <p>
+      <span class={hasZh("investment_angle")}>{pv.investment_angle}</span>
+      {pvZh?.investment_angle && <span class="lang-zh">{pvZh.investment_angle}</span>}
+    </p>
     {
       pv.market_size_usd && (
         <p class="mt-3 inline-block rounded-md border border-[var(--border)] bg-white px-3 py-1.5 text-sm shadow-sm">
-          Implied market scale:{" "}
+          <span class="lang-en has-zh">Implied market scale:</span>
+          <span class="lang-zh">市场规模参考：</span>
+          {" "}
           <strong class="text-[var(--accent)]">
             {formatUSD(pv.market_size_usd)}
           </strong>
@@ -67,7 +102,13 @@ const formatUSD = (n?: number) => {
   </div>
 
   <div>
-    <h2>Why it matters</h2>
-    <p>{pv.why_it_matters}</p>
+    <h2>
+      <span class={hasZh("why_it_matters")}>Why it matters</span>
+      {pvZh?.why_it_matters && <span class="lang-zh">为什么重要</span>}
+    </h2>
+    <p>
+      <span class={hasZh("why_it_matters")}>{pv.why_it_matters}</span>
+      {pvZh?.why_it_matters && <span class="lang-zh">{pvZh.why_it_matters}</span>}
+    </p>
   </div>
 </section>

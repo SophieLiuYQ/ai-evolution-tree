@@ -37,6 +37,13 @@ const splitMatch = d.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
 const titleName = splitMatch ? splitMatch[1] : d.title;
 const titleTagline = splitMatch ? splitMatch[2] : null;
 
+// Same split on the Chinese title (if any). Model name stays English
+// (industry convention — "Claude 4" doesn't become "克劳德4"), only
+// the tagline side translates.
+const splitZh = d.title_zh?.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+const titleNameZh = splitZh ? splitZh[1] : d.title_zh ?? null;
+const titleTaglineZh = splitZh ? splitZh[2] : null;
+
 // (`breakthrough_score` is intentionally not surfaced in the UI — the
 // score is subjective and was promising precision the rubric can't
 // support. The number stays in frontmatter for future ranking work.)
@@ -115,7 +122,12 @@ const githubUrl =
 
         {/* Title — name big, tagline second-line smaller */}
         <h1 class="title-name">{titleName}</h1>
-        {titleTagline && <p class="title-tagline">{titleTagline}</p>}
+        {titleTagline && (
+          <p class="title-tagline">
+            <span class={titleTaglineZh ? "lang-en has-zh" : "lang-en"}>{titleTagline}</span>
+            {titleTaglineZh && <span class="lang-zh">{titleTaglineZh}</span>}
+          </p>
+        )}
 
         {/* 1-sentence summary — answers "what is this?" before specs */}
         <p class="title-summary">{summary}</p>
@@ -183,7 +195,7 @@ const githubUrl =
     </div>
 
     <div data-view-section="public" style="display:none">
-      <PublicView pv={d.public_view} />
+      <PublicView pv={d.public_view} pvZh={d.public_view_zh} />
     </div>
 
     <RelationshipsBlock current={node} all={allNodes} />

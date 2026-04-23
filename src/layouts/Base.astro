@@ -199,6 +199,16 @@ const isActive = (p: string) =>
           "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
           sans-serif;
       }
+
+      /* Per-node dual-language content: when a field has a Chinese
+         translation, it's emitted alongside the English as two sibling
+         spans. The parent English span gets `.has-zh` so the rules
+         below can pick the right one based on <html lang>. When no
+         Chinese is available the English span lacks .has-zh, so it
+         stays visible even in zh mode (graceful fallback until the
+         translation lands). */
+      html[lang="en"] .lang-zh { display: none; }
+      html[lang="zh"] .lang-en.has-zh { display: none; }
     </style>
   </body>
 </html>

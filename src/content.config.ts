@@ -176,6 +176,23 @@ const publicView = z.object({
     }),
 });
 
+// Chinese translations of the public_view prose fields. All optional
+// so a node can translate just what's ready and fall back to English
+// for the rest. Word-count caps removed — Chinese is denser than
+// English and a hand-crafted translation shouldn't be force-fit to
+// the English limit. Tone goal: idiomatic 中文, sourced from the
+// lab's official Chinese site when possible (Qwen / DeepSeek /
+// Alibaba / Tencent docs have native zh content); Chinese tech
+// media (机器之心, 量子位, InfoQ) for Western models.
+const publicViewZh = z
+  .object({
+    plain_english: z.string().optional(),
+    analogy: z.string().optional(),
+    investment_angle: z.string().optional(),
+    why_it_matters: z.string().optional(),
+  })
+  .optional();
+
 const relationship = z.object({
   to: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
   type: z.enum(RELATIONSHIP_TYPES),
@@ -234,6 +251,12 @@ const nodes = defineCollection({
       status: z.enum(STATUSES),
       model_spec: modelSpec.optional(),
       public_view: publicView,
+      // Optional Chinese frontmatter (idiomatic translations — not
+      // machine-stiff; sourced from official Chinese docs or Chinese
+      // tech press for quality). Per-field optional so partial
+      // translations are legal.
+      title_zh: z.string().optional(),
+      public_view_zh: publicViewZh,
       citations: z.array(citation).min(1),
     })
     .strict(),
