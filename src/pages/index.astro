@@ -17,20 +17,46 @@ import Base from "../layouts/Base.astro";
         <span class="title-line title-line--big">AI&nbsp;Evolution&nbsp;Tree</span>
       </h1>
       <ul class="landing-bullets">
-        <li>Observe AI's evolution in a tree structure</li>
-        <li>Understand AI's ancestry and descendants</li>
-        <li>Branch, iterate, and compare model-to-model</li>
+        <li data-i18n="landing.bullet1">Observe AI's evolution in a tree structure</li>
+        <li data-i18n="landing.bullet2">Understand AI's ancestry and descendants</li>
+        <li data-i18n="landing.bullet3">Branch, iterate, and compare model-to-model</li>
       </ul>
+
+      {/* Prominent language toggle — lives here per user request so
+          visitors choose their reading language before entering the
+          tree. Uses the same global __i18nSet() as the nav-corner
+          toggle, so the two stay in sync via the langchange event. */}
+      <div
+        class="landing-lang-toggle lang-toggle"
+        role="tablist"
+        aria-label="Language"
+      >
+        <button
+          type="button"
+          class="lang-toggle-btn"
+          data-lang="en"
+          aria-selected="true"
+          onclick="window.__i18nSet('en')"
+        >EN</button>
+        <button
+          type="button"
+          class="lang-toggle-btn"
+          data-lang="zh"
+          aria-selected="false"
+          onclick="window.__i18nSet('zh')"
+        >中</button>
+      </div>
+
       <a href="/tree/" class="landing-cta">
-        Explore the tree
+        <span data-i18n="landing.cta">Explore the tree</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
       </a>
       <div class="landing-meta">
-        <a href="/about/">How this works</a>
+        <a href="/about/" data-i18n="landing.meta.how">How this works</a>
         <span class="dot">·</span>
-        <a href="/timeline/">Timeline</a>
+        <a href="/timeline/" data-i18n="landing.meta.timeline">Timeline</a>
         <span class="dot">·</span>
         <a href="https://github.com/SophieLiuYQ/ai-evolution-tree" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
@@ -169,6 +195,26 @@ import Base from "../layouts/Base.astro";
     border-radius: 2px;
     background: #0f172a;
     transform: rotate(45deg);
+  }
+
+  /* Prominent language toggle above the CTA — same look as the nav
+     toggle but larger (readable from across the room). */
+  .landing-lang-toggle {
+    display: inline-flex;
+    gap: 0;
+    padding: 4px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    animation: fade-up 1.1s 1.2s ease-out forwards;
+  }
+  .landing-lang-toggle .lang-toggle-btn {
+    padding: 6px 14px;
+    border-radius: 5px;
+    min-width: 48px;
   }
 
   .landing-cta {

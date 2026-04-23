@@ -45,7 +45,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   <a href="/tree/" class="block text-base font-bold leading-tight text-slate-900" title="AI Evolution Tree — back to graph">
     🌳 <span class="text-[var(--accent)]">AI Tree</span>
   </a>
-  <p class="mt-1 text-[10.5px] leading-snug text-slate-500">
+  <p class="mt-1 text-[10.5px] leading-snug text-slate-500" data-i18n="tree.brandSub">
     Tech tree of ML/AI breakthroughs. Time → right.
   </p>
 
@@ -55,6 +55,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       id="tree-search-input"
       type="search"
       placeholder="Search a model…"
+      data-i18n-placeholder="tree.search.placeholder"
       autocomplete="off"
       spellcheck="false"
       class="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-xs leading-none text-slate-700 placeholder-slate-400 shadow-sm focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
@@ -73,8 +74,8 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     role="tablist"
     aria-label="Orientation"
   >
-    <button type="button" data-orient="v" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="true" title="Vertical layout">▼ Vertical</button>
-    <button type="button" data-orient="h" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Horizontal layout">▶ Horizontal</button>
+    <button type="button" data-orient="v" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="true" title="Vertical layout" data-i18n="tree.orient.vertical">▼ Vertical</button>
+    <button type="button" data-orient="h" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Horizontal layout" data-i18n="tree.orient.horizontal">▶ Horizontal</button>
   </div>
 
   {/* Compact-view toggle — repack visible cards into a tight grid that
@@ -93,7 +94,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       <rect x="3" y="14" width="7" height="7" rx="1"/>
       <rect x="14" y="14" width="7" height="7" rx="1"/>
     </svg>
-    <span class="compact-toggle-label">Compact view</span>
+    <span class="compact-toggle-label" data-i18n="tree.compact.on">Compact view</span>
   </button>
 
   {/* Filter sections — reordered 2026-04-21 per user request: Node
@@ -107,7 +108,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
         OR  → at least one enabled type matches (default; wider net)
         AND → all enabled types must match (intersection; narrow) */}
   <div class="mt-5 mb-2 flex items-baseline justify-between border-t border-slate-200 pt-3">
-    <h3 class="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+    <h3 class="text-[10px] font-semibold uppercase tracking-wider text-slate-500" data-i18n="filter.nodeTypes">
       Node types
     </h3>
     <div
@@ -121,6 +122,8 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
         data-mode="or"
         aria-selected="true"
         title="Show nodes matching ANY enabled type"
+        data-i18n="filter.mode.or"
+        data-i18n-title="filter.mode.or.title"
       >OR</button>
       <button
         type="button"
@@ -128,6 +131,8 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
         data-mode="and"
         aria-selected="false"
         title="Show nodes matching ALL enabled types (intersection)"
+        data-i18n="filter.mode.and"
+        data-i18n-title="filter.mode.and.title"
       >AND</button>
     </div>
   </div>
@@ -146,7 +151,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
             style={`background:${nt.color};`}
             aria-hidden="true"
           />
-          <span class="flex-1 text-left font-medium">{nt.label}</span>
+          <span class="flex-1 text-left font-medium" data-i18n={`nodeType.${nt.id}`}>{nt.label}</span>
           <svg
             class="node-type-eye shrink-0"
             width="16"
@@ -173,14 +178,14 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <circle cx="12" cy="12" r="3"/>
       </svg>
-      <span>Show all</span>
+      <span data-i18n="filter.showAll">Show all</span>
     </button>
     <button type="button" class="bulk-node-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all node types">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <line x1="3" y1="3" x2="21" y2="21"/>
       </svg>
-      <span>Hide all</span>
+      <span data-i18n="filter.hideAll">Hide all</span>
     </button>
   </div>
 
@@ -189,7 +194,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       so the high-volume frontier labs sit at the top. AND-ed with the
       Node-types and License filters. */}
   <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-    Company
+    <span data-i18n="filter.company">Company</span>
   </h3>
   <ul class="org-filter-list space-y-0.5 overflow-y-auto pr-1">
     {orgs.map((o) => (
@@ -234,14 +239,14 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <circle cx="12" cy="12" r="3"/>
       </svg>
-      <span>Show all</span>
+      <span data-i18n="filter.showAll">Show all</span>
     </button>
     <button type="button" class="bulk-org-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all companies">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <line x1="3" y1="3" x2="21" y2="21"/>
       </svg>
-      <span>Hide all</span>
+      <span data-i18n="filter.hideAll">Hide all</span>
     </button>
   </div>
 
@@ -249,7 +254,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       above. "Open" covers open_weights / paper / no-model_spec; "Closed"
       covers api / product / demo. Mirrors the byLicense sort taxonomy. */}
   <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-    License
+    <span data-i18n="filter.license">License</span>
   </h3>
   <ul class="space-y-1">
     {([
@@ -269,7 +274,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
             style={`background:${lic.color};`}
             aria-hidden="true"
           />
-          <span class="flex-1 text-left font-medium">{lic.label}</span>
+          <span class="flex-1 text-left font-medium" data-i18n={`license.${lic.id}`}>{lic.label}</span>
           <svg
             class="license-eye shrink-0"
             width="16"
@@ -295,7 +300,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       right). Bulk Show all / Hide all controls at the bottom of the
       list. */}
   <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-    Edge types
+    <span data-i18n="filter.edgeTypes">Edge types</span>
   </h3>
   <ul class="space-y-1">
     {visibleEdges.map(([t, s]) => (
@@ -338,14 +343,14 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <circle cx="12" cy="12" r="3"/>
       </svg>
-      <span>Show all</span>
+      <span data-i18n="filter.showAll">Show all</span>
     </button>
     <button type="button" class="bulk-edge-toggle flex flex-1 items-center justify-center gap-1.5 rounded border border-slate-300 bg-white px-2 py-1 font-medium text-slate-600 hover:border-[var(--accent)] hover:text-[var(--accent)]" data-bulk="none" title="Hide all edge types">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
         <line x1="3" y1="3" x2="21" y2="21"/>
       </svg>
-      <span>Hide all</span>
+      <span data-i18n="filter.hideAll">Hide all</span>
     </button>
   </div>
 
