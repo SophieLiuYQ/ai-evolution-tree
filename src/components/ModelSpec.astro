@@ -846,7 +846,7 @@ if (spec.release_type)
 
 <section class="model-spec mb-8 rounded-lg border border-[var(--border)] bg-white p-5 shadow-sm">
   <div class="mb-4 flex items-baseline justify-between gap-3">
-    <h2 class="text-sm uppercase tracking-wider text-[var(--accent)]">
+    <h2 class="text-sm uppercase tracking-wider text-[var(--accent)]" data-i18n="detail.modelSpec">
       Model spec
     </h2>
     {officialUrl && (
@@ -856,6 +856,7 @@ if (spec.release_type)
         rel="noopener"
         class="official-link"
         title={`Official site for ${modelTitle ?? "this model"}`}
+        data-i18n="detail.officialSite"
       >
         Official site ↗
       </a>
@@ -865,7 +866,7 @@ if (spec.release_type)
   {typeTags.length > 0 && (
     <div class="type-tags" role="list" aria-label="Model type tags">
       {typeTags.map((c) => (
-        <span class={`type-tag type-tag-${c}`} role="listitem">
+        <span class={`type-tag type-tag-${c}`} role="listitem" data-i18n={`nodeType.${c}`}>
           {CATEGORY_LABEL[c] ?? c}
         </span>
       ))}
@@ -898,7 +899,7 @@ if (spec.release_type)
             <div class="spec-row spec-row-stacked">
               {/* Header: label + tooltip on left, value text on right */}
               <div class="spec-row-head">
-                <dt class="spec-label">{r.label}</dt>
+                <dt class="spec-label" data-i18n={`spec.${r.key}`}>{r.label}</dt>
                 {help && (
                   <span class="spec-info-wrap">
                     <button
@@ -1096,7 +1097,7 @@ if (spec.release_type)
     spec.benchmarks && spec.benchmarks.length > 0 && (
       <div>
         <div class="mb-2 flex items-center gap-1.5">
-          <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+          <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)]" data-i18n="detail.benchmarks">
             Benchmarks
           </h3>
           {FIELD_HELP.benchmarks && (
