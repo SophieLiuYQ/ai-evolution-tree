@@ -4,6 +4,12 @@ This file is loaded by Claude Code when working in this repository. It
 encodes load-bearing project conventions that aren't obvious from the
 code alone.
 
+> **Also read [`CLAUDE_Karpathy.md`](./CLAUDE_Karpathy.md)** — 4 generic
+> LLM-behavior rules (Think Before Coding · Simplicity First · Surgical
+> Changes · Goal-Driven Execution). Not project-specific; they apply
+> across every task. This project's rules below are the *delta* on top
+> of those.
+
 ---
 
 ## 🚨 Rule #1: Graph code change → GRAPH_DESIGN.md update — same commit
