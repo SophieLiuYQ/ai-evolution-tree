@@ -159,7 +159,7 @@ function contextImpl(n: number): string {
   if (n < 64_000) return "Long doc / chapter fits";
   if (n < 256_000) return "Whole book / long PDF fits";
   if (n < 1_000_000) return "Multi-doc RAG, full repo possible";
-  return "Whole codebase / corpus fits";
+  return "Can handle very large documents, long conversations, and substantial codebases in one session";
 }
 
 function licenseImpl(t: string): string {
@@ -251,7 +251,7 @@ function contextImplZh(n: number): string {
   if (n < 64_000) return "长文档 / 一章完整装下";
   if (n < 256_000) return "整本书 / 长 PDF 装得下";
   if (n < 1_000_000) return "多文档 RAG，整个代码库可行";
-  return "整个代码库 / 语料都能装";
+  return "能在单次会话中处理超大文档、长对话和相当规模的代码库";
 }
 
 function licenseImplZh(t: string): string {
@@ -343,8 +343,8 @@ const FIELD_HELP: Record<
       zh: "参数是 AI 模型在训练过程中学到的数值，是衡量模型规模的一个粗略指标。参数越多，模型识别模式、解决复杂任务的能力通常越强——但相应地显存占用更高、推理更慢、算力成本也更贵。",
     },
     kinds: {
-      en: "Small (1–3B): Can run on phones or lightweight devices\nMedium (7–15B): Can run on a single high-end GPU (like RTX 4090)\nLarge (30–80B): Workstation / server class hardware\nVery Large (300B+): Datacenter-scale systems across many GPUs",
-      zh: "小型（1–3B）：手机或轻量设备就能跑\n中型（7–15B）：单张高端显卡（如 RTX 4090）即可\n大型（30–80B）：工作站 / 服务器级硬件\n超大型（300B+）：数据中心级多 GPU 集群",
+      en: "• Small (1–3B): Can run on phones or lightweight devices\n• Medium (7–15B): Can run on a single high-end GPU (like RTX 4090)\n• Large (30–80B): Workstation / server class hardware\n• Very Large (300B+): Datacenter-scale systems across many GPUs",
+      zh: "• 小型（1–3B）：手机或轻量设备就能跑\n• 中型（7–15B）：单张高端显卡（如 RTX 4090）即可\n• 大型（30–80B）：工作站 / 服务器级硬件\n• 超大型（300B+）：数据中心级多 GPU 集群",
     },
     special: {
       title: {
@@ -371,8 +371,8 @@ const FIELD_HELP: Record<
       zh: "有哪些种类？（常见几种）",
     },
     kinds: {
-      en: "Transformer — the standard design for most modern chat and text AI\nMoE Transformer — uses specialized sub-models for greater efficiency at scale\nState-space / Hybrid — newer designs optimized for long context and speed\nEncoder models — commonly used for search, embeddings, and classification\nDiffusion — primarily used for image and video generation\nMultimodal — combines text, image, audio, or other input types",
-      zh: "Transformer —— 大多数现代聊天和文本 AI 的标准方案\nMoE Transformer —— 用专用子模型在大规模下拿到更高效率\nState-space / 混合架构 —— 为长上下文和速度优化的新型设计\nEncoder 模型 —— 常用于搜索、向量化、分类\nDiffusion —— 主要用于图像和视频生成\n多模态架构 —— 把文本、图像、音频等不同输入组合在一起",
+      en: "• Transformer — the standard design for most modern chat and text AI\n• MoE Transformer — uses specialized sub-models for greater efficiency at scale\n• State-space / Hybrid — newer designs optimized for long context and speed\n• Encoder models — commonly used for search, embeddings, and classification\n• Diffusion — primarily used for image and video generation\n• Multimodal — combines text, image, audio, or other input types",
+      zh: "• Transformer —— 大多数现代聊天和文本 AI 的标准方案\n• MoE Transformer —— 用专用子模型在大规模下拿到更高效率\n• State-space / 混合架构 —— 为长上下文和速度优化的新型设计\n• Encoder 模型 —— 常用于搜索、向量化、分类\n• Diffusion —— 主要用于图像和视频生成\n• 多模态架构 —— 把文本、图像、音频等不同输入组合在一起",
     },
   },
   context_window: {
@@ -381,12 +381,16 @@ const FIELD_HELP: Record<
       zh: "什么是上下文窗口？",
     },
     what: {
-      en: "The maximum number of tokens (each roughly ¾ of a word) the model can read in a single call before it starts dropping or forgetting content.",
-      zh: "模型一次调用能读进来的最多 token 数（一个 token 约 0.75 个英文词）。超过这个上限就要分块或丢内容。",
+      en: "The context window is how much text an AI model can consider at one time in a single request. It affects how much conversation, code, or documents the model can read and remember while responding.",
+      zh: "上下文窗口是指一次请求里，AI 模型能同时考虑的文本量。它决定了模型在一次回答过程中能读进来、能记住多少对话、代码或文档。",
+    },
+    kinds_title: {
+      en: "What kinds exist? (selected)",
+      zh: "有哪些种类？（常见几种）",
     },
     kinds: {
-      en: "4–8k: one chat turn. 32–128k: long document or a chapter. 200k–1M: a book, a full repo, or multi-doc RAG. 1M+: entire codebases. Longer isn't automatically better — attention quality drops with distance, and 'needle in a haystack' tests show where recall collapses.",
-      zh: "4–8k：单轮聊天。32–128k：长文档或一个章节。200k–1M：整本书、完整代码库、多文档 RAG。1M+：整套代码仓库。不是越长越好——注意力对远距离会退化，'大海捞针'测试会暴露模型在哪里开始记不住。",
+      en: "• 4k–8k — short chats and brief documents\n• 32k–128k — long articles, reports, or chapters\n• 200k–1M — books, large document sets, or repositories\n• 1M+ — very large codebases or multi-file analysis\n\nLarger context windows allow more input, but quality may vary across very long text.",
+      zh: "• 4k–8k —— 简短对话和小段文档\n• 32k–128k —— 长文、报告或单个章节\n• 200k–1M —— 整本书、大型文档集或代码仓库\n• 1M+ —— 超大规模代码库或多文件分析\n\n上下文窗口越大，能喂的输入越多，但在非常长的文本上质量可能波动。",
     },
   },
   training_tokens: {
@@ -1907,47 +1911,49 @@ if (spec.release_type)
     background: var(--accent-soft, rgba(37, 99, 235, 0.08));
     outline: none;
   }
-  /* ⓘ tooltip — light theme (matches the rest of the page card
-     surface). Unified typography:
-       - single body font-size (13px)
-       - single section-header font-size (11px uppercase)
+  /* ⓘ tooltip — light theme, opens to the RIGHT of the ⓘ button.
+     Per user request 2026-04-20: 2× width, right-side expansion, bigger
+     fonts, bulleted lists. Unified typography:
+       - body font-size 15px
+       - section-header font-size 13px uppercase
        - same family (ui-sans-serif) throughout, no italics
-       - consistent line-height (1.55) so CJK and Latin read at the
+       - consistent line-height (1.6) so CJK and Latin read at the
          same rhythm */
   .spec-tooltip {
     position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
+    top: 50%;
+    left: calc(100% + 10px);
+    transform: translateY(-50%);
+    width: 600px;
+    max-width: min(600px, calc(100vw - 48px));
     background: #ffffff;
     color: #0f172a;
-    padding: 12px 14px;
+    padding: 16px 18px;
     border: 1px solid var(--border, #e2e8f0);
-    border-radius: 8px;
-    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.18);
+    border-radius: 10px;
+    box-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.2);
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    line-height: 1.55;
+    font-size: 15px;
+    line-height: 1.6;
     z-index: 50;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.15s ease, transform 0.15s ease;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     text-transform: none;
     letter-spacing: normal;
   }
   .spec-tooltip::after {
     content: "";
     position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%);
     border: 6px solid transparent;
-    border-top-color: #ffffff;
-    filter: drop-shadow(0 1px 0 var(--border, #e2e8f0));
+    border-right-color: #ffffff;
+    filter: drop-shadow(-1px 0 0 var(--border, #e2e8f0));
   }
   .spec-info-wrap:hover .spec-tooltip,
   .spec-info-wrap:focus-within .spec-tooltip {
@@ -1962,26 +1968,26 @@ if (spec.release_type)
     font-weight: 700;
     font-style: normal;
     color: var(--accent, #0f7a4a);
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
   .spec-tooltip-q-sub {
-    margin-top: 8px;
+    margin-top: 10px;
     font-weight: 700;
     font-style: normal;
     color: var(--accent, #0f7a4a);
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
   }
   .spec-tooltip-body {
     color: #334155;
-    font-size: 13px;
+    font-size: 15px;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-    line-height: 1.55;
+    line-height: 1.6;
   }
   /* Used when body content is a newline-separated list (e.g. the
      Kinds section). `pre-line` preserves the \n breaks from the
@@ -2000,8 +2006,8 @@ if (spec.release_type)
     color: var(--accent, #0f7a4a);
     text-decoration: none;
     font-weight: 600;
-    margin-top: 4px;
-    font-size: 12px;
+    margin-top: 6px;
+    font-size: 14px;
   }
   .spec-tooltip-link:hover {
     text-decoration: underline;
