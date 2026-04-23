@@ -323,6 +323,10 @@ const FIELD_HELP: Record<
     title: Bilingual;
     what: Bilingual;
     kinds: Bilingual;
+    /** Optional override for the 'What kinds exist?' section header
+     *  when the field needs qualification — e.g. Architecture uses
+     *  'What kinds exist? (selected)' since the taxonomy is open. */
+    kinds_title?: Bilingual;
     /** Optional free-form extra section rendered between Kinds and
      *  'This model:'. Used today for the MoE special case under
      *  Parameters; reusable for any field that needs a callout. */
@@ -355,16 +359,20 @@ const FIELD_HELP: Record<
   },
   architecture: {
     title: {
-      en: "What is the architecture?",
+      en: "What is architecture?",
       zh: "什么是架构？",
     },
     what: {
-      en: "The neural network's structural blueprint — how layers connect, what the attention looks like, whether the compute per token is dense or sparse.",
-      zh: "神经网络的结构蓝图——层怎么连、注意力是什么形态、每 token 的算力是稠密还是稀疏。",
+      en: "Architecture is the internal design of an AI model — how it is built and how information moves through it. It shapes speed, reasoning ability, memory, efficiency, and what kinds of tasks the model performs best.",
+      zh: "架构是 AI 模型的内部设计——它是怎么搭起来的，信息又是怎么在里面流动的。它决定了模型的速度、推理能力、记忆、效率，以及它最擅长的任务类型。",
+    },
+    kinds_title: {
+      en: "What kinds exist? (selected)",
+      zh: "有哪些种类？（常见几种）",
     },
     kinds: {
-      en: "Decoder-only Transformer: the default since GPT-3 (GPT / Claude / Gemini all take this route). Encoder-decoder: older seq2seq (T5, Flan). MoE: sparse routing, only some experts fire per token. State-space / Mamba: a linear-time alternative to attention. Diffusion: iterative refinement, mostly for image / video.",
-      zh: "Decoder-only Transformer：GPT-3 后的默认方案，GPT / Claude / Gemini 全走这条。Encoder-decoder：老式 seq2seq（T5、Flan）。MoE：稀疏路由，每 token 只激活部分专家。State-space / Mamba：注意力的线性时间替代方案。Diffusion：迭代精炼式生成，主要用在图像 / 视频。",
+      en: "Transformer — the standard design for most modern chat and text AI\nMoE Transformer — uses specialized sub-models for greater efficiency at scale\nState-space / Hybrid — newer designs optimized for long context and speed\nEncoder models — commonly used for search, embeddings, and classification\nDiffusion — primarily used for image and video generation\nMultimodal — combines text, image, audio, or other input types",
+      zh: "Transformer —— 大多数现代聊天和文本 AI 的标准方案\nMoE Transformer —— 用专用子模型在大规模下拿到更高效率\nState-space / 混合架构 —— 为长上下文和速度优化的新型设计\nEncoder 模型 —— 常用于搜索、向量化、分类\nDiffusion —— 主要用于图像和视频生成\n多模态架构 —— 把文本、图像、音频等不同输入组合在一起",
     },
   },
   context_window: {
@@ -1126,8 +1134,8 @@ if (spec.release_type)
                       </span>
 
                       <strong class="spec-tooltip-q spec-tooltip-q-sub">
-                        <span class="lang-en has-zh">{HELP_TITLE_KINDS.en}</span>
-                        <span class="lang-zh">{HELP_TITLE_KINDS.zh}</span>
+                        <span class="lang-en has-zh">{help.kinds_title?.en ?? HELP_TITLE_KINDS.en}</span>
+                        <span class="lang-zh">{help.kinds_title?.zh ?? HELP_TITLE_KINDS.zh}</span>
                       </strong>
                       <span class="spec-tooltip-body spec-tooltip-list">
                         <span class="lang-en has-zh">{help.kinds.en}</span>
@@ -1368,8 +1376,8 @@ if (spec.release_type)
                 </span>
 
                 <strong class="spec-tooltip-q spec-tooltip-q-sub">
-                  <span class="lang-en has-zh">{HELP_TITLE_KINDS.en}</span>
-                  <span class="lang-zh">{HELP_TITLE_KINDS.zh}</span>
+                  <span class="lang-en has-zh">{FIELD_HELP.benchmarks.kinds_title?.en ?? HELP_TITLE_KINDS.en}</span>
+                  <span class="lang-zh">{FIELD_HELP.benchmarks.kinds_title?.zh ?? HELP_TITLE_KINDS.zh}</span>
                 </strong>
                 <span class="spec-tooltip-body">
                   <span class="lang-en has-zh">{FIELD_HELP.benchmarks.kinds.en}</span>
