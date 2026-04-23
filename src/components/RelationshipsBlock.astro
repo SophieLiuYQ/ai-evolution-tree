@@ -50,13 +50,13 @@ const incoming = all
 {
   (outgoing.length > 0 || incoming.length > 0) && (
     <section class="mt-12">
-      <h2 class="mb-4 text-xl font-semibold text-[var(--accent)]">
+      <h2 class="mb-4 text-xl font-semibold text-[var(--accent)]" data-i18n="rel.heading">
         Lineage & relationships
       </h2>
       <div class="grid gap-6 md:grid-cols-2">
         {outgoing.length > 0 && (
           <div>
-            <h3 class="mb-3 text-xs uppercase tracking-wider text-[var(--fg-muted)]">
+            <h3 class="mb-3 text-xs uppercase tracking-wider text-[var(--fg-muted)]" data-i18n="rel.dependsOn">
               ↑ This node depends on
             </h3>
             <ul class="space-y-3">
@@ -68,7 +68,7 @@ const incoming = all
                     <span
                       class={`rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${relColors[r.type] ?? "border-slate-300 bg-slate-50 text-slate-700"}`}
                     >
-                      {relTypeLabels[r.type] ?? r.type}
+                      <span data-i18n={`rel.${r.type}`}>{relTypeLabels[r.type] ?? r.type}</span>
                     </span>
                     {r.target ? (
                       <a
@@ -79,7 +79,7 @@ const incoming = all
                       </a>
                     ) : (
                       <span class="text-sm font-medium text-[var(--fg-muted)] italic">
-                        {r.to} (not yet in tree)
+                        {r.to} <span data-i18n="rel.notYet">(not yet in tree)</span>
                       </span>
                     )}
                   </div>
@@ -96,7 +96,7 @@ const incoming = all
         {incoming.length > 0 && (
           <div>
             <h3 class="mb-3 text-xs uppercase tracking-wider text-[var(--fg-muted)]">
-              ↓ Depends on this node
+<span data-i18n="rel.dependedOnBy">↓ Depends on this node</span>
             </h3>
             <ul class="space-y-3">
               {incoming.map((r) => (
@@ -107,7 +107,7 @@ const incoming = all
                     <span
                       class={`rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${relColors[r.type] ?? "border-slate-300 bg-slate-50 text-slate-700"}`}
                     >
-                      {relTypeLabels[r.type] ?? r.type}
+                      <span data-i18n={`rel.${r.type}`}>{relTypeLabels[r.type] ?? r.type}</span>
                     </span>
                     <a
                       href={`/node/${r.from.data.slug}/`}

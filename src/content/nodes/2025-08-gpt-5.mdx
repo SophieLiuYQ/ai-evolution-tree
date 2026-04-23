@@ -111,6 +111,15 @@ citations:
     url: "https://openai.com/index/introducing-gpt-5/"
 ---
 
+{/* Dual-language MDX body.
+    English content wrapped in <div class="lang-en has-zh">;
+    Chinese content in <div class="lang-zh">. The global Base.astro
+    CSS rules hide whichever doesn't match html[lang]. Writing zh
+    once the user toggles, tree view stays as-is. Use this pattern
+    when extending to other model pages. */}
+
+<div class="lang-en has-zh">
+
 ## What it is
 
 OpenAI's August 7, 2025 unified frontier release. The model architecturally consists of multiple specialized subnetworks (fast / reasoning / multimodal pathways) with a learned router that selects the appropriate compute path per query. Users see one "GPT-5" — the routing is invisible.
@@ -134,3 +143,33 @@ Each frontier lab landed on a slightly different productization choice for "fast
 - **DeepSeek**: separate models (V3 vs R-series)
 
 The market hasn't converged — different developers prefer different tradeoffs.
+
+</div>
+
+<div class="lang-zh">
+
+## 这是什么
+
+OpenAI 在 2025 年 8 月 7 日放出的「大一统」前沿版本。模型内部由几条专用子网络拼起来（快速通道 / 推理通道 / 多模态通道），上面挂一个学出来的路由器——每收到一个问题就自动选走哪条通道。用户只看到一个「GPT-5」入口，路由是藏起来的。
+
+这是 OpenAI 给 o1 之后产品线混乱问题开的「产品化」药方——以前用户得先知道「X 任务要用 GPT-4o、Y 任务用 o1、Z 任务用 o3」才能用好，现在不用了。
+
+## GPT-5 对比 2025 年末的前沿阵营
+
+| 模型 | 发布 | 厂商 | 推理模式 | 上下文 | 落地方式 |
+|---|---|---|---|---|---|
+| Claude 4 Opus | 2025-05 | Anthropic | 混合（可切换） | 200k | 按请求打开推理标志 |
+| Gemini 2.5 Pro | 2025-03 | Google | 内建 | 1M | 常开推理 + 预算控制 |
+| **GPT-5** | **2025-08** | **OpenAI** | **自动路由** | **400k** | **路由器自行判断** |
+| Llama 4 Maverick | 2025-04 | Meta | 无 | 1M | 开源非推理 |
+| DeepSeek R2 | 2025-Q3 | DeepSeek | 专用推理模型 | 128k | 开源推理 |
+
+前沿各家在「快速 vs 推理」的产品化路线上走出不同选择：
+- **OpenAI**：自动路由（单一模型入口）
+- **Anthropic**：按请求标记（让开发者自己决定）
+- **Google**：内置推理预算（始终推理，靠预算控制投入）
+- **DeepSeek**：分家两套模型（V3 通用 / R 系推理）
+
+市场还没有收敛——不同开发者偏好不同取舍。
+
+</div>
