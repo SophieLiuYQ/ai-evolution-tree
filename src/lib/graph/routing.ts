@@ -60,6 +60,39 @@ export function bezierAt(
   };
 }
 
+// Side-bulge fan-out: alternate sign by srcIdx parity so siblings of one
+// hub split into two fans (left+right or up+down) instead of all bulging
+// the same way and clustering. Radius grows with srcIdx but is capped so
+// hub nodes (e.g. GPT-5.5 with 42 outgoing) don't push curves into the
+// next half of the layout.
+const SIDE_FAN_BASE = 70;
+const SIDE_FAN_STEP = 22;
+const SIDE_FAN_MAX = 200;
+function sideFanArc(srcIdx: number): number {
+  const sign = srcIdx % 2 === 0 ? 1 : -1;
+  const radius = Math.min(
+    SIDE_FAN_MAX,
+    SIDE_FAN_BASE + Math.floor(srcIdx / 2) * SIDE_FAN_STEP,
+  );
+  return sign * radius;
+}
+
+// Standard 9-anchor menu, but the entries near the curve's lateral peak
+// (t=0.5) sit at the FRONT for side-bulged curves — that's where the
+// curve is farthest from card geometry, so labels there clear cards.
+const ANCHOR_TS_DEFAULT = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75];
+
+function buildBezier(
+  x1: number, y1: number,
+  x2: number, y2: number,
+  x3: number, y3: number,
+  x4: number, y4: number,
+) {
+  const d = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${x2.toFixed(1)} ${y2.toFixed(1)}, ${x3.toFixed(1)} ${y3.toFixed(1)}, ${x4.toFixed(1)} ${y4.toFixed(1)}`;
+  const anchors = ANCHOR_TS_DEFAULT.map((t) => bezierAt(x1, y1, x2, y2, x3, y3, x4, y4, t));
+  return { d, mid: anchors[0], anchors };
+}
+
 export function directPath(
   src: Placed,
   tgt: Placed,
@@ -74,59 +107,88 @@ export function directPath(
   const tOff = perpOffset(stagger.tgtIdx, stagger.tgtTotal);
 
   if (orient === "h") {
-    const sxR = src.x + src.width / 2;
-    const sy = src.y + sOff;
-    const txL = tgt.x - tgt.width / 2;
-    const ty = tgt.y + tOff;
-    const dx = txL - sxR;
-
-    if (dx > 4) {
-      // Forward edge: tug control points horizontally for a clean S-curve
-      const c1x = sxR + dx * 0.5;
-      const c2x = txL - dx * 0.5;
-      const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
-      const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
-        bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
-      );
-      return { d, mid: anchors[0], anchors };
+    // Inter-year: cards in different year columns. Edge runs LR
+    // (src.right → tgt.left). Direct cubic S — label in column gap.
+    if (!stagger.sameBlock) {
+      const sxR = src.x + src.width / 2;
+      const sy = src.y + sOff;
+      const txL = tgt.x - tgt.width / 2;
+      const ty = tgt.y + tOff;
+      const dx = txL - sxR;
+      if (dx > 4) {
+        const c1x = sxR + dx * 0.5;
+        const c2x = txL - dx * 0.5;
+        return buildBezier(sxR, sy, c1x, sy, c2x, ty, txL, ty);
+      }
+      // True backward in time (older target): wide vertical loop above
+      // or below the column stack. Rare. Fall through to the same
+      // vertical-route logic intra-year edges use.
     }
 
-    // Same-column / backward (rare): wide arc loop OUTSIDE the column
-    const arc = 60 + Math.abs(stagger.srcIdx) * 8;
-    const c1x = sxR + arc;
-    const c2x = txL + arc;
-    const d = `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`;
-    const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
-      bezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, t),
-    );
-    return { d, mid: anchors[0], anchors };
+    // Intra-year (same column): cards stacked vertically. Route
+    // vertically (src.bottom → tgt.top, or src.top → tgt.bottom for
+    // target-above-source) with a horizontal side-bulge so the label
+    // lands in the inter-card gap, NOT on a card.
+    const tgtAboveH = tgt.y < src.y;
+    const sxC = src.x + sOff;
+    const txC = tgt.x + tOff;
+    const sy0H = tgtAboveH ? src.y - src.height / 2 : src.y + src.height / 2;
+    const ty0H = tgtAboveH ? tgt.y + tgt.height / 2 : tgt.y - tgt.height / 2;
+    const xPushH = sideFanArc(stagger.srcIdx);
+    const c1xH = sxC + xPushH;
+    const c2xH = txC + xPushH;
+    return buildBezier(sxC, sy0H, c1xH, sy0H, c2xH, ty0H, txC, ty0H);
   }
 
-  // Vertical orient: src.bottom → tgt.top
-  const sx = src.x + sOff;
-  const syB = src.y + src.height / 2;
-  const tx = tgt.x + tOff;
-  const tyT = tgt.y - tgt.height / 2;
-  const dy = tyT - syB;
-
-  if (dy > 4) {
-    const c1y = syB + dy * 0.5;
-    const c2y = tyT - dy * 0.5;
-    const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
-    const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
-      bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
-    );
-    return { d, mid: anchors[0], anchors };
+  // Vertical orient
+  if (!stagger.sameBlock) {
+    // Inter-year: cards in different year rows. Edge runs TB
+    // (src.bottom → tgt.top). Direct cubic.
+    const sx = src.x + sOff;
+    const tx = tgt.x + tOff;
+    const syB = src.y + src.height / 2;
+    const tyT = tgt.y - tgt.height / 2;
+    const dy = tyT - syB;
+    if (dy > 4) {
+      const c1y = syB + dy * 0.5;
+      const c2y = tyT - dy * 0.5;
+      return buildBezier(sx, syB, sx, c1y, tx, c2y, tx, tyT);
+    }
+    // True backward in time (older target above): fall through to
+    // intra-block-style vertical-loop routing.
   }
 
-  const arc = 60 + Math.abs(stagger.srcIdx) * 8;
-  const c1y = syB + arc;
-  const c2y = tyT + arc;
-  const d = `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`;
-  const anchors = [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55, 0.25, 0.75].map((t) =>
-    bezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, t),
-  );
-  return { d, mid: anchors[0], anchors };
+  // Intra-year (same row, possibly different sub-rows): cards densely
+  // packed laterally. Routing strategy depends on src/tgt sub-row:
+  //   • same sub-row (src.y == tgt.y): bulge ABOVE or BELOW the row by
+  //     enough to clear card y-extent. Side alternates by srcIdx.
+  //   • src above tgt: src.bottom → tgt.top (forward, may span sub-rows)
+  //   • src below tgt: src.top → tgt.bottom (backward)
+  // In all three the curve also gets a horizontal side-fan so siblings
+  // from one hub spread laterally instead of stacking.
+  const sxV = src.x + sOff;
+  const txV = tgt.x + tOff;
+  const xPushV = sideFanArc(stagger.srcIdx);
+  let sy0V: number, ty0V: number, c1yV: number, c2yV: number;
+  if (Math.abs(tgt.y - src.y) < 4) {
+    // Same sub-row. Pick bulge side by srcIdx parity so siblings split.
+    const upSide = stagger.srcIdx % 2 === 0;
+    const sideY = upSide ? -src.height / 2 : src.height / 2;
+    sy0V = src.y + sideY;
+    ty0V = tgt.y + sideY;
+    const yBulge = (upSide ? -1 : 1) * (45 + Math.floor(stagger.srcIdx / 2) * 12);
+    c1yV = sy0V + yBulge;
+    c2yV = ty0V + yBulge;
+  } else {
+    const tgtAboveV = tgt.y < src.y;
+    sy0V = tgtAboveV ? src.y - src.height / 2 : src.y + src.height / 2;
+    ty0V = tgtAboveV ? tgt.y + tgt.height / 2 : tgt.y - tgt.height / 2;
+    c1yV = sy0V;
+    c2yV = ty0V;
+  }
+  const c1xV = sxV + xPushV;
+  const c2xV = txV + xPushV;
+  return buildBezier(sxV, sy0V, c1xV, c1yV, c2xV, c2yV, txV, ty0V);
 }
 
 // Pick a label position that doesn't overlap (a) already-placed labels OR

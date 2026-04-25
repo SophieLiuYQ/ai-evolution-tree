@@ -9,10 +9,11 @@ export type Orient = "h" | "v";
 // layout engine, but SORT_MODES below is the single source of truth
 // for the UI: trim it and the whole system (panes, payload, filters)
 // shrinks to match.
-export type SortMode = "chronological" | "byOrg" | "byLicense";
+export type SortMode = "chronological" | "byFamily" | "byOrg" | "byLicense";
 
 export const SORT_MODES: { id: SortMode; label: string }[] = [
   { id: "chronological", label: "Date" },
+  { id: "byFamily", label: "Family" },
 ];
 
 export type Placed = {
@@ -63,6 +64,11 @@ export type EdgeStagger = {
   srcTotal: number;
   tgtIdx: number;
   tgtTotal: number;
+  /** True when source and target share the same year-block (same year
+   *  row in v-orient, same year column in h-orient). Triggers side-bulge
+   *  routing so the curve loops past the block instead of passing
+   *  through intermediate sub-row cards. */
+  sameBlock?: boolean;
 };
 
 export type EdgeStyle = {

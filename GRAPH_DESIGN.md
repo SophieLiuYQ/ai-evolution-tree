@@ -29,7 +29,7 @@ src/
 │  ├─ types.ts                    ← Placed, Edge, Layout, EdgeStagger
 │  ├─ constants.ts                ← colors, edgeStyle, sizes, hidden types
 │  ├─ text.ts                     ← clip, fmtSpec, fmtCtx, fmtMonth
-│  ├─ bands.ts                    ← year band gradient
+│  ├─ bands.ts                    ← year band stripes + frontier highlight
 │  ├─ routing.ts                  ← directPath, perpOffset, bezierAt, label collision
 │  └─ layout.ts                   ← computeLayout + finalize (stagger, edge build)
 └─ scripts/graph/                 ← CLIENT-time TypeScript (bundled by Vite)
@@ -143,6 +143,7 @@ h-orient). The sort selector controls the SECONDARY axis:
 | Sort | Primary axis (always year) | Secondary axis (cards positioned along) |
 |---|---|---|
 | chronological | year rows/cols | within-row date spread (no extra axis labels) |
+| byFamily | year rows/cols | model-family lanes (evolution swimlanes) |
 
 **Removed `byType` (2026-04-20):** the single-bucket `modelType(cats, slug)` classifier was fundamentally lossy — a robotics VLA is *both* Agent AND Multimodal AND Generative, and forcing one bucket hid the overlap. Type is now rendered as *overlapping* tag pills in the node detail's `ModelSpec` section, not as a graph sort axis.
 
@@ -156,6 +157,18 @@ compat in `layout.ts`, but `SORT_MODES` exposes only chronological so
 the 6-pane SSR matrix collapses to 2 (one per orient) and the cross-
 axis code paths (crossKeyOf, licenseKey, cross-bands rendering) are
 no longer reachable from the UI.
+
+**Reintroduced `byFamily` (2026-04-24):** fast-moving model lines (GPT,
+Claude, Gemini, etc.) evolve as *series* (versions + tiers + modes).
+`byFamily` makes that evolution legible by grouping nodes into stable
+lanes. Implementation contract:
+
+- Prefer `model_spec.family` when present (explicit, stable).
+- Otherwise fall back to a heuristic by (org, slug) for common families.
+- Non-product research nodes land in `Research / Methods`.
+
+This view is meant to answer: “what replaced what inside a product line?”
+while the default chronological view answers: “what happened in the field?”
 
 **V-orient left-align (2026-04-21):** vertical chronological used to
 center cards within the year row (`subRowStartX = V_LEFT_PAD +
@@ -249,8 +262,52 @@ const d = `M ${sxR} ${sy} C ${c1x} ${sy}, ${c2x} ${ty}, ${txL} ${ty}`;
 
 | Case | Routing |
 |---|---|
-| Forward edge (any column distance) | Direct cubic Bezier |
-| Same-column / backward (rare) | Wide-arc Bezier looping outside via `c1x = sxR + 60` |
+| Cross-year forward edge (different year column/row) | Direct cubic Bezier |
+| Intra-year edge (src.year == tgt.year) | Side-bulged loop, see §IIa |
+
+### IIa. Intra-year side-bulge routing (V3.5, 2026-04-24)
+
+Year blocks (a year's column in h-orient or row in v-orient) are dense:
+they wrap into multiple sub-rows / sub-columns once the count exceeds
+~5 cards. The V3.1 direct cubic from src.bottom → tgt.top routes the
+midpoint **straight through intermediate sub-row cards** — labels land
+on those cards and the curve plows through their bodies.
+
+**Failure mode (image 3 in the 2026-04-24 ticket):** GPT-5.5 → ~18
+intra-year siblings; labels for the multi-sub-row edges sat directly
+on Gemini 3.1, Granite 4.0, etc. Label-on-card overlap rate in v-orient
+= 33+ before fix.
+
+**V3.5 rule:** if `src.year == tgt.year`, route via a side-bulged
+cubic that flips the entry/exit edges according to the relative
+position of source and target:
+
+| Sub-case (v-orient) | Endpoints | Bulge |
+|---|---|---|
+| `tgt.y < src.y` (target above) | src.top → tgt.bottom | lateral side-fan |
+| `tgt.y > src.y` (target below) | src.bottom → tgt.top | lateral side-fan |
+| `tgt.y == src.y` (same sub-row) | both top OR both bottom | up or down by srcIdx parity |
+
+The lateral side-fan (`xPush` for v-orient, `yPush` for h-orient) is
+keyed off `srcIdx` with **alternating sign by parity** so siblings of
+one hub split into two opposite-side fans instead of stacking. Radius
+is capped at `SIDE_FAN_MAX = 200px` so a 40-edge hub doesn't blow the
+arc into the next half of the canvas.
+
+```typescript
+const SIDE_FAN_BASE = 70;
+const SIDE_FAN_STEP = 22;
+const SIDE_FAN_MAX  = 200;
+function sideFanArc(srcIdx) {
+  const sign = srcIdx % 2 === 0 ? 1 : -1;
+  return sign * Math.min(SIDE_FAN_MAX, SIDE_FAN_BASE + Math.floor(srcIdx / 2) * SIDE_FAN_STEP);
+}
+```
+
+**`srcIdx` is bucketed by routing class** (sameBlock vs crossBlock) in
+`finalize()` so a 42-edge hub whose 24 same-year edges share the
+side-fan doesn't end up with srcIdx values up to 41 in the side-fan
+formula. Each routing class gets its own 0..N index.
 
 ### Why direct curves beat Manhattan in V3
 
@@ -271,13 +328,15 @@ as foreground edges. The visual hierarchy still reads: hovered node
 (bold) > ancestors (full opacity, with edges between them) > everything
 else (faded background).
 
-### Routing constants for V3.1
+### Routing constants for V3.1 / V3.5
 
 | Constant | Value | Why |
 |---|---|---|
-| Bezier control offset | `dx * 0.5` | Tug control points to half the horizontal distance — tight S without overshoot |
-| Backward-edge arc | `60 + srcIdx * 8` | Loop outside the source column; per-srcIdx widening prevents overlap of multiple backward edges |
-| Source/target perpendicular pitch | adaptive (see §IV) | The ONLY stagger needed in V3.1 since there's no bend to stagger |
+| Bezier control offset (cross-year) | `dx * 0.5` (h) / `dy * 0.5` (v) | Tug control points to half the cross-axis distance — tight S without overshoot |
+| Side-fan base radius | `70px` | First sibling's lateral push (intra-year) |
+| Side-fan step | `22px` per pair | Each sibling pair adds this to the radius |
+| Side-fan max | `200px` | Cap so 40-edge hubs don't blow into the next half-canvas |
+| Source/target perpendicular pitch | adaptive (see §IV) | Stagger of entry/exit points on the card edge |
 
 ### Year-bin spacing
 
@@ -548,19 +607,22 @@ the user couldn't visually parse.
 **V3**: edges DON'T exist in the DOM at build time. Empty
 `<g class="edges">` and `<g class="edge-labels">` groups are placeholders.
 JavaScript reads embedded JSON edge data and dynamically creates SVG
-elements ONLY for the hovered node's ancestor lineage. On mouseleave,
-they're removed.
+elements ONLY for the hovered node’s **1-hop neighborhood** (direct
+parents + direct children). To keep hubs readable, the hover renderer
+caps the display to **at most 6 incident edges**, prioritizing:
+`builds_on` → `open_alt_to` → `competes_with` (“alternative”).
+On mouseleave, they’re removed.
 
 ### Default state: ZERO edges visible
 
 The graph is just nodes. No clutter. No background lines. The user sees
 a clean Civ-tech-tree of cards and is invited to hover.
 
-### Hover state: ~5-10 edges, no overlap with anything else
+### Hover state: ≤ 6 edges, no overlap with anything else
 
 When hovering node N, the JS renders edges only for N's ancestor lineage
-(BFS up the `incoming` adjacency map). Typical hub like Transformer:
-~10 ancestor edges drawn, all the rest of the graph stays clean.
+(direct parents + direct children). The renderer picks only incident
+edges and caps to 6 so even high-degree hubs stay legible.
 
 This is the load-bearing UX choice: the graph **acts as a study tool,
 not a wall map**. The user explores by hover; the visual focus is one
@@ -731,13 +793,19 @@ user glances at while hovering, so keeping it visible alongside the
 graph beats forcing them to scroll down to check a color.
 
 **Filter rows below the legend (2026-04-20):** the panel now hosts four
-parallel filter sections — **Edge types** (long-standing), **Node types**
-(new), **Company** (new), and **License** (open vs closed, new). All
+parallel filter sections — **Edge types** (long-standing), **Capabilities**
+(was “Node types”), **Company** (new), and **License** (open vs closed, new). All
 use the same eye-toggle pattern; each row has a swatch + label + eye
-icon. Edge types, Node types, and Company also expose bulk Show/Hide
+icon. Edge types, Capabilities, and Company also expose bulk Show/Hide
 buttons. Persistence is via `localStorage`
 (`ai-tree:edgeTypes`, `ai-tree:nodeTypes`, `ai-tree:orgs`,
 `ai-tree:license`).
+
+Capabilities are driven by `category[]` tags. Some are inferred from
+`model_spec.modalities` (mapped into tags like `audio`, `cv`, `video`,
+`multimodal`, `nlp`), while others are hand-authored or migrated
+(`code`, `reasoning`, `agents`, `world_model`). This keeps the filter
+useful for both “what channel is this model” and “what is it good for”.
 
 **Compact view toggle (2026-04-21):** above the filter sections, a
 "Compact view" button swaps the SVG tree for a year-grouped tile grid
@@ -983,10 +1051,35 @@ that drives a 3-cycle `search-pulse` keyframe — needed because after
 a smooth scroll lands, eye attention has nothing to anchor to without
 a flash.
 
-Why DOM-based indexing: the inline `clientPayload` JSON only carries
-edges and `nodePos`, no titles. We could embed titles too, but pulling
-them from rendered cards keeps the JSON smaller and means the index
-auto-updates if Card.astro changes how titles render.
+Why DOM-based indexing: the inline `clientPayload` JSON is optimized
+for layout (edges + `nodePos`). As of 2026-04-24 it ALSO embeds a
+minimal per-node metadata map for the right-side inspector panel, but
+the search index intentionally stays DOM-derived so it automatically
+tracks any future changes to `Card.astro` text rendering.
+
+Search selection also dispatches a `CustomEvent("ai-tree:select")` so
+the inspector panel can open on the searched node without requiring a
+second click.
+
+### Graph-page inspector (click-to-inspect)
+
+On `/tree/`, clicking a node selects it and populates the **right-side
+inspector panel** (summary, key benchmarks, and lineage) without
+navigating away from the graph. Navigation to the full detail page is
+still available via:
+- The inspector “Open full page” button, or
+- Normal browser modifier clicks (`cmd/ctrl` click, middle-click, etc.)
+
+This is intentional: the graph is the primary exploration surface; the
+detail page is the deep-dive surface. The inspector reduces context
+switching when scanning multiple models in a year band.
+
+### No minimap overlay (intentional)
+
+We intentionally do **not** render a minimap overlay on `/tree/` by
+default. With a paper-like background and dense year bands, the minimap
+adds more visual clutter than information. If reintroduced, it must be
+behind an explicit toggle and must not compete with the inspector panel.
 
 ### Detail-page lineage view (server-rendered zoom)
 
@@ -1085,85 +1178,60 @@ frontmatter helpers.
 
 | Channel | What it encodes | Visual treatment |
 |---|---|---|
-| Edge color | Relationship type (builds_on, scales, etc.) | Stroke color (solid lines) |
+| Edge color | Relationship type (builds_on / competes_with / open_alt_to) | Stroke color (solid lines) |
 | Card stripe | Source organization (org) | 6px left stripe on card |
-| Background band | Year of release | Subtle warm→cool HSL gradient |
+| Background band | Year of release | Ultra-light neutral stripes + one “frontier year” highlight band |
 
 Each channel is independent. A user can scan by org (stripe color), by
-era (background), or by relationship pattern (edge color), without these
-encodings interfering.
+time (background bands), or by relationship pattern (edge color),
+without these encodings interfering.
 
-### Color the 3 most-frequent types as a hue triangle (120° apart)
+**Year band rule (match reference UI)**: do not use a rainbow / warm→cool
+gradient for year backgrounds. Keep almost all bands neutral (barely
+visible alternating stripes) and use ONE softly tinted “frontier” band
+(latest full year: max year strictly less than the current year) so the
+user’s eye has an anchor near the present.
 
-**Don't pick edge colors by intuition.** Untrained color-picking
-clusters in the blue-purple-pink hue range (220°-330°), making 4-6
-"different" colors mutually indistinguishable on screen.
+### Three types, three primary hues
 
-**Two failure modes seen in this project:**
-1. v0.18: initial palette had blue (#3B82F6), violet (#8B5CF6), and
-   indigo (#6366F1) within 40° of each other.
-2. v0.19a (Tableau 10 attempt): even Tableau's tested palette put the
-   three most-common edge types in cool tones — blue (#1F77B4 207°),
-   purple (#9467BD 273°), cyan (#17BECF 184°) — all within 90° hue
-   range. User couldn't distinguish them.
+**Edge types simplified to 3** (2026-04-24): the project shrank from
+9 types (builds_on / scales / fine_tunes / distills / applies /
+replaces / surpasses / competes_with / open_alt_to) to **3**
+(`builds_on` / `competes_with` / `open_alt_to`). Reason: edge type
+carries narrative load — readers can hold three meanings, not nine.
+Legacy sub-distinctions are preserved as `[tag]` prefixes inside
+relationship `note` for richer detail pages, never as graph color.
 
-**Lesson**: a 6-color palette being "mathematically distinguishable"
-isn't enough if your **3 most frequent uses cluster on the same side
-of the wheel**. The eye doesn't process 6 colors equally — it processes
-the most common ones first and gets confused there.
+**Current palette** (v0.20):
 
-**Iteration log** (illustrating the difficulty of choosing 6 distinct colors):
-
-- v0.18: blue/violet/indigo all within 40° — confused user
-- v0.19a: Tableau 10 — top 3 still in cool zone
-- v0.19b: surpasses crimson 0° too close to scales orange 22°
-- v0.19c: fine_tunes teal 175° too close to competes green 140°
-- **v0.19d (current)**: fine_tunes moved to gold 50°. Now in orange
-  family but lightness gap means it reads as "yellow" not "orange"
-
-Lesson: a 6-color categorical palette has ~6 useful hue zones on the
-wheel. When you assign top types to primaries (blue/orange/green) and
-top secondary to magenta, the remaining 2 slots (fine_tunes / distills
-in our case) MUST use lightness differentiation within an existing
-primary's hue zone — there's no spare hue zone left.
-
-The **top 4 most-frequent edge types** must all have ≥70° hue separation.
-The remaining 2 can share hue zones with primaries IF lightness/saturation
-differ enough to read as visually distinct at typical 1.6px stroke width.
-
-**Current palette** (v0.19c) — top 4 mutually-distant + 2 fillers:
-
-| Type | Frequency | Color | Hex | Hue | Role |
-|---|---|---|---|---|---|
-| `builds_on` | 39 | Royal blue | `#2563EB` | 220° | primary 1 |
-| `scales` | 22 | Bold orange | `#EA580C` | 22° | primary 2 (158° from blue) |
-| `competes_with` | 17 | Forest green | `#16A34A` | 140° | primary 3 (100°+ from both) |
-| `surpasses` | 13 | Magenta | `#C026D3` | 290° | primary 4 (92° from orange, 70° from blue) |
-| `fine_tunes` | 5 | Gold | `#EAB308` | 50° | filler (warm-yellow; in orange family but much lighter so reads as "yellow not orange") |
-| `distills` | few | Dark brown | `#78350F` | 25° | filler (same hue as orange, distinguished by 30% lower lightness) |
-
-Pairwise hue gaps for the top 4:
-| | blue | orange | green | magenta |
+| Type | Frequency | Color | Hex | Hue |
 |---|---|---|---|---|
-| blue (220°) | — | 158° | 80° | 70° |
-| orange (22°) | 158° | — | 118° | 92° |
-| green (140°) | 80° | 118° | — | 150° |
-| magenta (290°) | 70° | 92° | 150° | — |
+| `builds_on` | ~159 | Royal blue | `#2563EB` | 220° |
+| `competes_with` | ~142 | Crimson red | `#DC2626` | 0° |
+| `open_alt_to` | ~55 | Forest green | `#16A34A` | 140° |
 
-Minimum gap among the top 4 is 70° (blue/magenta) — meaningfully
-distinguishable. The 2 filler types use hues that overlap top-4 zones
-but differ in lightness by enough to read distinctly at 1.6px stroke
-width.
+Adjacent-pair gaps: blue↔red 140°, blue↔green 80°, red↔green 140°.
+All ≥80°, well above the ~60° threshold where the eye stops fusing
+hues. With only 3 types we no longer need filler hues, lightness
+differentiation, or dash patterns — solid lines + bold hue is enough.
 
 **Generalize the rule**:
 1. Count edge type frequency.
-2. Assign top 3 to the color-wheel triangle: 0° (warm), 120° (green),
-   240° (blue). Or rotate to taste (e.g., orange/green/blue).
-3. Fill remaining types into hues that DON'T fall between the primary
-   triangle. If you must place a 4th color near a primary, separate by
-   lightness (darker brown vs orange) or saturation (crimson vs orange).
-4. Test at the actual viewing scale on actual data. The screenshot you
-   show a user is the only ground truth.
+2. If 3 or fewer types: assign primaries on the color-wheel triangle
+   (0° / 120° / 240°, rotated to taste). Done.
+3. If more types: ask whether the additional types are **carrying
+   their narrative weight** before adding hues. v0.18→v0.20 history
+   below — we tried 9 / 6 / 4 types and found 3 most readable.
+
+**Legacy iteration log** (kept for "we tried it" reference):
+
+- v0.18 (9 types, blue/violet/indigo all within 40°): confused user
+- v0.19a (Tableau 10, top 3 still in cool zone): user couldn't tell
+  the most-common edge types apart
+- v0.19c (6 types: blue/orange/green/magenta + gold/brown filler):
+  workable but legend was overwhelming, fillers needed lightness
+  differentiation tricks
+- **v0.20 (current — 3 types, RGB triangle)**: cleanest read.
 
 **Why this matters more than it seems**: edge color is the user's
 PRIMARY way to identify what type a relationship is. If colors confuse,
@@ -1184,6 +1252,19 @@ Pastels for backgrounds (org tints, year bands) at ~96% lightness; bold
 gives 7:1+ contrast ratio for text legibility while keeping decoration
 soft.
 
+**Theme tokens**: all graph *surfaces* (legend panel, canvas, cards,
+modals) must take their colors from the site CSS variables:
+`--bg`, `--bg-soft`, `--bg-sunk`, `--border`, `--border-strong`,
+`--fg`, `--fg-muted`, `--fg-faint`, `--accent`, `--accent-soft`
+(see `src/styles/global.css`). The `/tree/` page may override those
+variables locally to achieve a “paper” palette without changing the
+global theme.
+
+Avoid hard-coding Slate hex values (e.g. `#f8fafc`, `#1e293b`) for UI
+surfaces. If you must keep Tailwind utility classes for spacing /
+density, bridge their *colors* back to the CSS variables in the same
+component so palette overrides remain consistent.
+
 Never use 50/50 colors (medium saturation, medium lightness) — they
 neither pop nor recede. Either go light (decoration) or dark (text/edges).
 
@@ -1203,15 +1284,25 @@ document the migration in the change log so users know what shifted.
 State the rules explicitly. Verify after every change:
 
 1. **1:1 edge-to-label**: every drawn edge has exactly one visible label.
-2. **Strict chronological within bin**: within each year column/row,
+2. **Graph-hidden nodes stay out of the tree**: nodes with
+   `graph_hidden: true` must not render in `/tree/` (nor influence edge
+   routing or compact-mode tile counts). Use this to collapse SKU-level
+   variants into a single “series” node without making the graph
+   unreadable.
+3. **Featured-only mode stays consistent**: if ANY node sets
+   `graph_featured: true`, `/tree/` must render ONLY featured nodes (and
+   still exclude `graph_hidden: true`). This enables “one model-line per
+   company per year” compaction without losing detail pages (distinct
+   names like Sonnet vs Haiku remain separate).
+4. **Strict chronological within bin**: within each year column/row,
    nodes sort by `date.getTime()` ascending.
-3. **No two labels overlap** (X-PAD 43, Y-PAD 21): collision avoidance
+5. **No two labels overlap** (X-PAD 43, Y-PAD 21): collision avoidance
    via anchor selection from edge-geometry candidates.
-4. **No two edges share start point**: per-source perpendicular stagger
+6. **No two edges share start point**: per-source perpendicular stagger
    places each outgoing edge at distinct Y/X.
-5. **Labels stay on edges**: the (midX, midY) of each label MUST be a
+7. **Labels stay on edges**: the (midX, midY) of each label MUST be a
    point on the edge's `d` path.
-6. **No text overflow**: every rendered string fits its container's
+8. **No text overflow**: every rendered string fits its container's
    visible width with the chosen font.
 
 ### Build a Python audit script
@@ -1314,6 +1405,32 @@ the visual the stagger system was supposed to prevent.
 Always sort each target's incoming edges by source perp position before
 assigning `tgtIdx`. Mirror on the source side. See §IV "Spatial-order
 stagger" for the rule.
+
+### ❌ Don't route intra-year edges with the same cubic as cross-year (V3.5 fix)
+
+A direct cubic from `src.bottom` → `tgt.top` works for cross-year edges
+because the gap between year rows is empty space — the curve mid-point
+lands cleanly. Inside a year-row block, sub-rows wrap densely (5+ cards
+per sub-row, 3+ sub-rows in busy years like 2026). The cubic mid-point
+then lands DIRECTLY on intermediate sub-row cards, and the label sits on
+their titles.
+
+Detect intra-year edges (`src.year == tgt.year`) and switch to a
+**side-bulged cubic with flipped entry/exit edges** — see §IIa. The
+flip is critical: a backward intra-year edge (target above source) must
+exit `src.top` and enter `tgt.bottom`, NOT `src.bottom → tgt.top`,
+otherwise the curve plows back through the source body before reaching
+the target.
+
+### ❌ Don't fan a hub by its full-edge `srcIdx`
+
+A hub like GPT-5.5 with 42 outgoing edges, indexed `srcIdx = 0..41`,
+will blow the side-fan radius to 800+ px if the formula scales with
+`srcIdx`. Bucket `srcIdx` per **routing class** (sameBlock vs
+crossBlock) so each class gets its own 0..N counter, AND cap the
+side-fan radius at a sane max (200px in this project). Different hubs
+will share radii past the cap — that's fine, the lateral spread is
+already past the "obviously different curves" threshold.
 
 ### ❌ Don't auto-fit-to-screen on first load
 

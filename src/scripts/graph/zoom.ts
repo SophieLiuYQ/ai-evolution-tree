@@ -112,7 +112,17 @@ function zBezierAt(
   };
 }
 
-// Direct cubic-Bezier route — JS port of the frontmatter directPath (V3.1).
+// Side-bulge fan-out (mirrors lib/graph/routing.ts sideFanArc).
+function zSideFanArc(srcIdx: number): number {
+  const sign = srcIdx % 2 === 0 ? 1 : -1;
+  return sign * Math.min(200, 70 + Math.floor(srcIdx / 2) * 22);
+}
+
+// Direct cubic-Bezier route — JS port of frontmatter directPath. Modal
+// node positions are re-computed depth-first (no year axis in the
+// 1-hop view), so the side-bulge branch is taken whenever the edge is
+// "short" (dx/dy ≤ 4) — the modal has no year-block concept to anchor
+// sameBlock against.
 function zRoute(
   src: NodePos,
   tgt: NodePos,
@@ -137,11 +147,15 @@ function zRoute(
         midX: mid.x, midY: mid.y,
       };
     }
-    const arc = 60 + Math.abs(srcIdx) * 8;
-    const c1x = sxR + arc, c2x = txL + arc;
-    const mid = zBezierAt(sxR, sy, c1x, sy, c2x, ty, txL, ty, 0.5);
+    const yPush = zSideFanArc(srcIdx);
+    const xPad = Math.sign(yPush) * 30;
+    const c1x = sxR + Math.max(20, Math.abs(dx) * 0.4) + xPad;
+    const c2x = txL - Math.max(20, Math.abs(dx) * 0.4) + xPad;
+    const c1y = sy + yPush;
+    const c2y = ty + yPush;
+    const mid = zBezierAt(sxR, sy, c1x, c1y, c2x, c2y, txL, ty, 0.5);
     return {
-      d: `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${sy.toFixed(1)}, ${c2x.toFixed(1)} ${ty.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`,
+      d: `M ${sxR.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${txL.toFixed(1)} ${ty.toFixed(1)}`,
       midX: mid.x, midY: mid.y,
     };
   }
@@ -159,11 +173,15 @@ function zRoute(
       midX: mid.x, midY: mid.y,
     };
   }
-  const arc = 60 + Math.abs(srcIdx) * 8;
-  const c1y = syB + arc, c2y = tyT + arc;
-  const mid = zBezierAt(sx, syB, sx, c1y, tx, c2y, tx, tyT, 0.5);
+  const xPush = zSideFanArc(srcIdx);
+  const yPad = Math.sign(xPush) * 30;
+  const c1y = syB + Math.max(20, Math.abs(dy) * 0.4) + yPad;
+  const c2y = tyT - Math.max(20, Math.abs(dy) * 0.4) + yPad;
+  const c1x = sx + xPush;
+  const c2x = tx + xPush;
+  const mid = zBezierAt(sx, syB, c1x, c1y, c2x, c2y, tx, tyT, 0.5);
   return {
-    d: `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${sx.toFixed(1)} ${c1y.toFixed(1)}, ${tx.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`,
+    d: `M ${sx.toFixed(1)} ${syB.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${tx.toFixed(1)} ${tyT.toFixed(1)}`,
     midX: mid.x, midY: mid.y,
   };
 }

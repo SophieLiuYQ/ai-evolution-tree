@@ -29,6 +29,7 @@ import {
   V_TOP_PAD,
 } from "./constants";
 import { avoidLabelOverlaps, directPath } from "./routing";
+import { normalizeOrg } from "../org-display";
 
 export function groupByYear(nodes: NodeEntry[]) {
   const byYear = new Map<number, NodeEntry[]>();
@@ -54,8 +55,38 @@ function licenseKey(n: NodeEntry): string {
   return "Closed";
 }
 
+function familyKey(n: NodeEntry): string {
+  const explicit = n.data.model_spec?.family;
+  if (explicit) return explicit;
+
+  const slug = n.data.slug;
+  const org = normalizeOrg(n.data.org);
+
+  // Heuristic families for fast-moving model lines.
+  if (org === "OpenAI") {
+    if (/^gpt-/.test(slug)) return "OpenAI GPT";
+    if (/^o\d/.test(slug) || /^o-/.test(slug) || slug === "o1" || slug === "o3") return "OpenAI o-series";
+    if (/^sora/.test(slug)) return "OpenAI Sora";
+  }
+  if (org === "Anthropic" && /^claude/.test(slug)) return "Anthropic Claude";
+  if ((org === "Google/DeepMind" || org === "Google DeepMind" || org === "Google") && /^gemini/.test(slug)) return "Google Gemini";
+  if (/^qwen-/.test(slug)) return "Qwen";
+  if (/^deepseek-/.test(slug)) return "DeepSeek";
+  if (/^grok-/.test(slug)) return "xAI Grok";
+  if (/^kimi-/.test(slug)) return "Moonshot Kimi";
+  if (/^minimax-/.test(slug) || /^hailuo-/.test(slug)) return "MiniMax";
+  if (/^flux-/.test(slug) || org === "Black Forest Labs") return "FLUX";
+  if (/^runway-/.test(slug) || org === "Runway") return "Runway";
+
+  // Default: group by lab for models; keep research/papers in one lane.
+  const rt = n.data.model_spec?.release_type;
+  if (!rt || rt === "paper") return "Research / Methods";
+  return org;
+}
+
 // Cross-axis key for grid layouts. Empty string for chronological (no grid).
 function crossKeyOf(n: NodeEntry, mode: SortMode): string {
+  if (mode === "byFamily") return familyKey(n);
   if (mode === "byOrg") return n.data.org;
   if (mode === "byLicense") return licenseKey(n);
   return "";
@@ -497,6 +528,12 @@ function finalize(
     }
   }
 
+  // Year-block detection: edges whose source and target share a year
+  // route via side-bulge so labels sit OUTSIDE the year block (intra-
+  // year cards are dense, the curve mid-point would otherwise land on
+  // an intermediate sub-row card).
+  const yearOf = (p: Placed) => p.node.data.date.getFullYear();
+
   const srcPerp = (e: RawEdge) => (orient === "h" ? e.src.y : e.src.x);
   const tgtPerp = (e: RawEdge) => (orient === "h" ? e.tgt.y : e.tgt.x);
   const srcOrth = (e: RawEdge) => (orient === "h" ? e.src.x : e.src.y);
@@ -523,14 +560,22 @@ function finalize(
     });
   }
 
+  // Source-side stagger is bucketed by routing class: edges that route
+  // via side-bulge (sameBlock) get their own 0..N index, edges that
+  // route via direct cubic (crossBlock) get a separate 0..M index. This
+  // keeps a hub like GPT-5.5 (42 outgoing) from blowing the side-fan
+  // arc to 800px just because the SAMEBLOCK fan has 42 distinct slots —
+  // most of those 42 are cross-year edges that don't side-bulge at all.
   const srcIdxOf = new Map<RawEdge, number>();
   const srcTotalOf = new Map<RawEdge, number>();
-  const bySource = new Map<string, RawEdge[]>();
+  const isSameBlock = (e: RawEdge) => yearOf(e.src) === yearOf(e.tgt);
+  const bySourceClass = new Map<string, RawEdge[]>();
   for (const e of raw) {
-    if (!bySource.has(e.v)) bySource.set(e.v, []);
-    bySource.get(e.v)!.push(e);
+    const key = `${e.v}|${isSameBlock(e) ? "B" : "X"}`;
+    if (!bySourceClass.has(key)) bySourceClass.set(key, []);
+    bySourceClass.get(key)!.push(e);
   }
-  for (const group of bySource.values()) {
+  for (const group of bySourceClass.values()) {
     group.sort((a, b) => {
       const p = tgtPerp(a) - tgtPerp(b);
       if (p !== 0) return p;
@@ -551,6 +596,7 @@ function finalize(
       srcTotal: srcTotalOf.get(e)!,
       tgtIdx: tgtIdxOf.get(e)!,
       tgtTotal: tgtTotalOf.get(e)!,
+      sameBlock: yearOf(e.src) === yearOf(e.tgt),
     });
     edges.push({
       v: e.v,
