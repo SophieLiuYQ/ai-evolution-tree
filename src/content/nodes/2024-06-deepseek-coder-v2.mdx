@@ -1,32 +1,63 @@
 ---
 slug: deepseek-coder-v2
-title: "DeepSeek-Coder V2 — Open Coding Frontier"
-date: 2024-06-17
+title: DeepSeek-Coder V2 — Open Coding Frontier
+date: '2024-06-17'
 era: scale-era
-category: [generative, code, nlp]
+category:
+  - generative
+  - code
+  - nlp
+  - multimodal
 relationships:
   - to: deepseek-v2
-    type: fine_tunes
-    note: "Coding-specialized variant of DeepSeek-V2 MoE; 338 languages, beats Codestral and CodeLlama at release"
+    type: builds_on
+    note: >-
+      [fine_tunes] Coding-specialized variant of DeepSeek-V2 MoE; 338 languages,
+      beats Codestral and CodeLlama at release
 authors:
-  - "DeepSeek Team"
-org: "DeepSeek"
+  - DeepSeek Team
+org: DeepSeek
 breakthrough_score: 6
 status: superseded
 model_spec:
-  parameters: "236B total / 21B active MoE; 16B and 6.7B sibling sizes"
-  architecture: "DeepSeek-V2 MoE with code-specialized post-training"
+  parameters: 236B total / 21B active MoE; 16B and 6.7B sibling sizes
+  architecture: DeepSeek-V2 MoE with code-specialized post-training
   context_window: 128000
   release_type: open_weights
-  modalities: [text, code]
+  modalities:
+    - text
+    - code
   benchmarks:
-    - name: "HumanEval Python"
-      score: "90.2%"
-    - name: "MATH"
-      score: "75.7%"
-  homepage: "https://api-docs.deepseek.com/news/news0614"
-  github: "https://github.com/deepseek-ai/DeepSeek-Coder-V2"
-
+    - name: HumanEval Python
+      score: 90.2%
+    - name: MATH
+      score: 75.7%
+    - name: Intelligence · AA Intelligence Index
+      score: '10.60'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+    - name: Coding · SciCode
+      score: 13.9%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+    - name: MMLU-Pro
+      score: 42.9%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+    - name: GPQA
+      score: 31.9%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+    - name: HLE
+      score: 5.3%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+  github: 'https://github.com/deepseek-ai/DeepSeek-Coder-V2'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+  hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Instruct'
 public_view:
   plain_english: |
     DeepSeek's June 2024 coding model — 236B mixture-of-experts
@@ -40,14 +71,14 @@ public_view:
     history. Coder V2 is the same brain that went to coding boot camp
     and stayed there.
   applications:
-    - product: "DeepSeek Coder API"
-      company: "DeepSeek"
+    - product: DeepSeek Coder API
+      company: DeepSeek
       year_deployed: 2024
-    - product: "Continue.dev / Cursor (community integration)"
-      company: "Multiple"
+    - product: Continue.dev / Cursor (community integration)
+      company: Multiple
       year_deployed: 2024
-    - product: "Self-hosted IDE assistants"
-      company: "Multiple"
+    - product: Self-hosted IDE assistants
+      company: Multiple
       year_deployed: 2024
   investment_angle: |
     DeepSeek-Coder V2 made open-weight coding competitive with closed
@@ -58,14 +89,16 @@ public_view:
     Pushed open-weight coding models past GPT-4 Turbo. By late 2024,
     serious enterprise coding deployments started defaulting to
     DeepSeek-Coder for self-hosted Copilot replacements.
-
 citations:
   - type: paper
     key: deepseek2024coderv2
-    title: "DeepSeek-Coder-V2: Breaking the Barrier of Closed-Source Models in Code Intelligence"
+    title: >-
+      DeepSeek-Coder-V2: Breaking the Barrier of Closed-Source Models in Code
+      Intelligence
     year: 2024
-    arxiv: "2406.11931"
-    url: "https://arxiv.org/abs/2406.11931"
+    arxiv: '2406.11931'
+    url: 'https://arxiv.org/abs/2406.11931'
+graph_featured: true
 ---
 
 ## What's distinctive

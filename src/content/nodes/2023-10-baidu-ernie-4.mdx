@@ -1,30 +1,38 @@
 ---
 slug: ernie-4
-title: "Ernie 4.0 — Baidu's Closed Frontier Bet"
-date: 2023-10-17
+title: Ernie 4.0 — Baidu's Closed Frontier Bet
+date: '2023-10-17'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
+  - cv
+  - multimodal
 relationships:
   - to: gpt-4
     type: competes_with
-    note: "Baidu claims GPT-4-comparable on Chinese benchmarks; closed API"
+    note: Baidu claims GPT-4-comparable on Chinese benchmarks; closed API
 authors:
-  - "Baidu Research Team"
-org: "Baidu"
+  - Baidu Research Team
+org: Baidu
 breakthrough_score: 6
 status: superseded
 model_spec:
-  parameters: "undisclosed (estimated 100-300B)"
-  architecture: "undisclosed proprietary transformer"
+  parameters: undisclosed (estimated 100-300B)
+  architecture: undisclosed proprietary transformer
   context_window: 8192
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "C-Eval (Chinese, claimed)"
-      score: "~80%"
-      vs_baseline: "Baidu's framing: 'comparable to GPT-4 on Chinese tasks'"
-  homepage: "https://yiyan.baidu.com/"
-
+    - name: 'C-Eval (Chinese, claimed)'
+      score: ~80%
+      vs_baseline: 'Baidu''s framing: ''comparable to GPT-4 on Chinese tasks'''
+  homepage: 'https://yiyan.baidu.com/'
+  availability:
+    - api
 public_view:
   plain_english: |
     Baidu's flagship closed-API LLM, launched October 2023 as the
@@ -38,14 +46,14 @@ public_view:
     pressure. Less open than Qwen, less capable than DeepSeek would
     later become. The legacy-search-engine answer to AI.
   applications:
-    - product: "Wenxin Yiyan (consumer chat product)"
-      company: "Baidu"
+    - product: Wenxin Yiyan (consumer chat product)
+      company: Baidu
       year_deployed: 2023
-    - product: "Baidu Search AI overview features"
-      company: "Baidu"
+    - product: Baidu Search AI overview features
+      company: Baidu
       year_deployed: 2023
-    - product: "Baidu Apollo (autonomous driving)"
-      company: "Baidu"
+    - product: Baidu Apollo (autonomous driving)
+      company: Baidu
       year_deployed: 2024
   investment_angle: |
     Ernie 4.0's launch was as much defensive as competitive — Baidu
@@ -64,19 +72,15 @@ public_view:
     the open-source upstarts (DeepSeek, Qwen) and consumer-distribution
     leaders (ByteDance Doubao) have made it hard for Baidu to convert
     technical parity into market share.
-
 citations:
   - type: release
     key: baidu2023ernie4
-    title: "Baidu releases Ernie 4.0"
+    title: Baidu releases Ernie 4.0
     year: 2023
-    venue: "Baidu Cloud"
-    url: "https://yiyan.baidu.com/"
+    venue: Baidu Cloud
+    url: 'https://yiyan.baidu.com/'
+graph_featured: true
 ---
-
-## What it is
-
-A closed-API multimodal foundation model released by Baidu on October 17, 2023, two days before Baidu's annual flagship event (Baidu World 2023). Marketed as comparable to GPT-4 on Chinese-language tasks, with native multimodal (image input) capability and integration across Baidu's product surfaces.
 
 ## How Ernie compares to peers (late 2023)
 

@@ -1,30 +1,76 @@
 ---
 slug: qwen-3-vl
-title: "Qwen3-VL — Open Vision-Language Frontier"
-date: 2025-09-23
+title: Qwen3-VL — Open Vision-Language Frontier
+date: '2025-09-23'
 era: multimodal
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: qwen-3
     type: builds_on
-    note: "Qwen 3 base + native vision encoder; family covers 2B/4B/8B/32B dense + 30B-A3B and 235B-A22B MoE"
+    note: >-
+      Qwen 3 base + native vision encoder; family covers 2B/4B/8B/32B dense +
+      30B-A3B and 235B-A22B MoE
   - to: pixtral-large
     type: competes_with
-    note: "Open-weight VLM peer; Qwen3-VL ships under Apache 2.0 across more sizes"
+    note: Open-weight VLM peer; Qwen3-VL ships under Apache 2.0 across more sizes
+  - to: grok-4
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Qwen Team"
-org: "Alibaba"
+  - Qwen Team
+org: Alibaba
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "2B / 4B / 8B / 32B dense + 30B-A3B and 235B-A22B MoE"
-  architecture: "Qwen 3 + native vision encoder + Thinking variants"
+  parameters: 2B / 4B / 8B / 32B dense + 30B-A3B and 235B-A22B MoE
+  architecture: Qwen 3 + native vision encoder + Thinking variants
   context_window: 256000
   release_type: open_weights
-  modalities: [text, vision]
-  homepage: "https://qwenlm.github.io/blog/qwen3-vl/"
-  github: "https://github.com/QwenLM/Qwen3-VL"
-
+  modalities:
+    - text
+    - vision
+  github: 'https://github.com/QwenLM/Qwen3-VL'
+  availability:
+    - open_weights
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '27.60'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: Coding · AA Coding Index
+      score: '20.90'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: Coding · SciCode
+      score: 39.9% (13.7–39.9%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 11.4% (0.0–11.4%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: MMLU-Pro
+      score: 83.6% (63.4–83.6%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: GPQA
+      score: 77.2% (37.1–77.2%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: HLE
+      score: 10.1% (2.9–10.1%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: Speed · Output tok/s
+      score: '44'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.70 in / $8.40 out
+      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+  aa_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Alibaba's vision-enabled Qwen 3 family — sizes from 2B (mobile)
@@ -36,14 +82,14 @@ public_view:
     Qwen 3's eyes. Same brain, plus a vision encoder. Comes in every
     size from a smartphone-fit 2B up to a frontier MoE.
   applications:
-    - product: "Qwen Chat (multimodal)"
-      company: "Alibaba"
+    - product: Qwen Chat (multimodal)
+      company: Alibaba
       year_deployed: 2025
-    - product: "Bailian Cloud vision API"
-      company: "Alibaba Cloud"
+    - product: Bailian Cloud vision API
+      company: Alibaba Cloud
       year_deployed: 2025
-    - product: "Qwen2.5-Omni (full audio+vision+text)"
-      company: "Alibaba"
+    - product: Qwen2.5-Omni (full audio+vision+text)
+      company: Alibaba
       year_deployed: 2025
   investment_angle: |
     Vision-language is now table stakes for any LLM family. Qwen3-VL
@@ -56,14 +102,14 @@ public_view:
     multimodal reasoning — closes the gap with closed multimodal
     frontier (GPT-4o, Claude 4-series, Gemini 3) for enterprises
     that require open weights.
-
 citations:
   - type: release
     key: alibaba2025qwen3vl
-    title: "Qwen3-VL Release"
+    title: Qwen3-VL Release
     year: 2025
-    venue: "Qwen Blog"
-    url: "https://qwenlm.github.io/blog/qwen3-vl/"
+    venue: Qwen Blog
+    url: 'https://qwenlm.github.io/blog/qwen3-vl/'
+graph_featured: true
 ---
 
 ## Why VLM proliferation matters

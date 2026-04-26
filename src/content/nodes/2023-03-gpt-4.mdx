@@ -1,44 +1,78 @@
 ---
 slug: gpt-4
-title: "GPT-4 — OpenAI's First Multimodal Frontier Model"
-date: 2023-03-14
+title: GPT-4 — OpenAI's First Multimodal Frontier Model
+date: '2023-03-14'
 era: alignment
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: chatgpt
-    type: scales
-    note: "Successor to GPT-3.5; ~10× capability jump on reasoning benchmarks"
+    type: builds_on
+    note: >-
+      [scales] Successor to GPT-3.5; ~10× capability jump on reasoning
+      benchmarks
   - to: clip
     type: builds_on
-    note: "Multimodal vision inputs (GPT-4V released later); architecture kinship undisclosed"
+    note: >-
+      Multimodal vision inputs (GPT-4V released later); architecture kinship
+      undisclosed
 authors:
-  - "OpenAI Team"
-org: "OpenAI"
+  - OpenAI Team
+org: OpenAI
 breakthrough_score: 9
 status: superseded
 model_spec:
-  parameters: "undisclosed (widely inferred: ~1.8T MoE, ~8 experts × 220B)"
-  architecture: "undisclosed; widely reported as mixture-of-experts"
+  parameters: 'undisclosed (widely inferred: ~1.8T MoE, ~8 experts × 220B)'
+  architecture: undisclosed; widely reported as mixture-of-experts
   context_window: 8192
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://openai.com/index/gpt-4/'
+  availability:
+    - api
+    - product
   benchmarks:
-    - name: "MMLU (5-shot)"
-      score: "86.4%"
-      vs_baseline: "GPT-3.5 ~70%, PaLM 69.3%"
-    - name: "Uniform Bar Exam"
-      score: "90th percentile"
-      vs_baseline: "GPT-3.5 10th percentile"
-    - name: "USMLE"
-      score: "~87%"
-      vs_baseline: "passing threshold 60%"
-    - name: "HumanEval"
-      score: "67.0%"
-      vs_baseline: "GPT-3.5 48.1%, Codex 28.8%"
-    - name: "GRE Quantitative"
-      score: "80th percentile"
-  homepage: "https://openai.com/index/gpt-4/"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '26.30'
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: Coding · AA Coding Index
+      score: '21.80'
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: Coding · SciCode
+      score: 40.4% (22.9–40.4%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: Agentic · Terminal-Bench Hard
+      score: 13.6% (3.8–13.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: MMLU-Pro
+      score: 80.6% (64.8–80.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: GPQA
+      score: 66.6% (42.6–66.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: HLE
+      score: 5.0% (2.8–5.0%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: Speed · Output tok/s
+      score: '105'
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $8.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+  family: OpenAI GPT
+  variants:
+    - id: gpt-4-turbo
+      label: GPT-4 Turbo
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/gpt-4'
+  modalities_in:
+    - image
 public_view:
   plain_english: |
     OpenAI's successor to GPT-3.5, launched as an API-gated upgrade to
@@ -52,20 +86,20 @@ public_view:
     after graduating medical school, passing the bar, and getting an
     MBA — across the board, not just in one specialty.
   applications:
-    - product: "ChatGPT Plus (premium tier)"
-      company: "OpenAI"
+    - product: ChatGPT Plus (premium tier)
+      company: OpenAI
       year_deployed: 2023
-    - product: "Microsoft Copilot (Office, Windows, Bing, GitHub)"
-      company: "Microsoft"
+    - product: 'Microsoft Copilot (Office, Windows, Bing, GitHub)'
+      company: Microsoft
       year_deployed: 2023
-    - product: "Duolingo Max"
-      company: "Duolingo"
+    - product: Duolingo Max
+      company: Duolingo
       year_deployed: 2023
-    - product: "Morgan Stanley wealth-advisor knowledge assistant"
-      company: "Morgan Stanley"
+    - product: Morgan Stanley wealth-advisor knowledge assistant
+      company: Morgan Stanley
       year_deployed: 2023
-    - product: "Khan Academy Khanmigo tutor"
-      company: "Khan Academy"
+    - product: Khan Academy Khanmigo tutor
+      company: Khan Academy
       year_deployed: 2023
   investment_angle: |
     GPT-4 is the inflection point where LLMs crossed the "good enough
@@ -84,28 +118,23 @@ public_view:
     and image-understanding demos from GPT-4's launch are the reference
     point that every subsequent model is implicitly benchmarked against
     in casual discourse.
-
 citations:
   - type: paper
     key: openai2023gpt4
-    title: "GPT-4 Technical Report"
-    authors: ["OpenAI"]
+    title: GPT-4 Technical Report
+    authors:
+      - OpenAI
     year: 2023
-    venue: "arXiv"
-    arxiv: "2303.08774"
+    venue: arXiv
+    arxiv: '2303.08774'
   - type: release
     key: openai2023gpt4blog
-    title: "GPT-4"
+    title: GPT-4
     year: 2023
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/gpt-4/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/gpt-4/'
+graph_featured: true
 ---
-
-## What it is
-
-A large-scale multimodal transformer (text + image input, text output) released via API and ChatGPT Plus on March 14, 2023. OpenAI published a "technical report" containing no technical details — no parameter count, no architecture specifics, no training data description, no training compute. The report argued safety and competitive concerns justified the opacity.
-
-Independent leaks (Semianalysis, June 2023) suggested GPT-4 is a mixture-of-experts model with ~1.8T total parameters and ~8 expert subnetworks of ~220B each, with ~280B active parameters per forward pass. These numbers are unconfirmed but widely repeated.
 
 ## Benchmark step-change vs GPT-3.5
 

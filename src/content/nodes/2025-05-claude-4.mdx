@@ -1,44 +1,99 @@
 ---
 slug: claude-4
-title: "Claude 4 — Opus & Sonnet (Agentic Frontier Family)"
-date: 2025-05-22
+title: Claude 4 — Opus & Sonnet (Agentic Frontier Family)
+date: '2025-05-22'
 era: agents
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-3-7-sonnet
-    type: scales
-    note: "Successor; major SWE-bench Verified gains; sustained agentic operation up to 7+ hours"
+    type: builds_on
+    note: >-
+      [scales] Successor; major SWE-bench Verified gains; sustained agentic
+      operation up to 7+ hours
   - to: o1
-    type: surpasses
-    note: "Outperforms o3 on real-world coding/agentic benchmarks while costing less"
+    type: competes_with
+    note: >-
+      [surpasses] Outperforms o3 on real-world coding/agentic benchmarks while
+      costing less
   - to: mcp
-    type: applies
-    note: "Native MCP support enables agentic tool use across thousands of community-published servers"
+    type: builds_on
+    note: >-
+      [applies] Native MCP support enables agentic tool use across thousands of
+      community-published servers
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 9
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + extended-thinking + tool-use RL"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + extended-thinking + tool-use RL
   context_window: 200000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "SWE-bench Verified (Opus 4)"
-      score: "79.4%"
-      vs_baseline: "Claude 3.7 Sonnet 70.3%, o3 71.7%"
-    - name: "TerminalBench (Opus 4)"
-      score: "43.2%"
-      vs_baseline: "Claude 3.7 Sonnet 27.6%, o3 30.2%"
-    - name: "GPQA Diamond"
-      score: "83.3% (Opus)"
-    - name: "Sustained autonomous coding"
-      score: "~7 hours uninterrupted"
-      vs_baseline: "prior generation: 30-60 min before drift"
-  homepage: "https://www.anthropic.com/news/claude-4"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '57.28'
+      vs_baseline: 'Rank #2 of 86 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Coding · SciCode
+      score: 54.5%
+      vs_baseline: 'Rank #2 of 85 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: Agentic · Terminal-Bench Hard
+      score: 51.5%
+      vs_baseline: 'Rank #2 of 83 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/terminalbench-hard'
+    - name: Coding · AA Coding Index
+      score: '38.60'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+    - name: MMLU-Pro
+      score: 88.0% (76.0–88.0%)
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+    - name: GPQA
+      score: 83.4% (64.6–83.4%)
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+    - name: HLE
+      score: 17.3% (4.0–17.3%)
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+    - name: Speed · Output tok/s
+      score: '56'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+  homepage: 'https://www.anthropic.com/news/claude-4'
+  availability:
+    - api
+    - product
+    - enterprise
+  family: Anthropic Claude
+  variants:
+    - id: claude-4-opus
+      label: Claude 4 Opus (Non-reasoning)
+      status: active
+    - id: claude-4-opus-thinking
+      label: Claude 4 Opus (Reasoning)
+      status: active
+    - id: claude-4-sonnet
+      label: Claude 4 Sonnet (Non-reasoning)
+      status: active
+    - id: claude-4-sonnet-thinking
+      label: Claude 4 Sonnet (Reasoning)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Anthropic's first model family explicitly designed for sustained
@@ -53,17 +108,17 @@ public_view:
     review its commits in the afternoon. The unit of work shifted
     from "one prompt response" to "one autonomous session."
   applications:
-    - product: "Claude Code (default model)"
-      company: "Anthropic"
+    - product: Claude Code (default model)
+      company: Anthropic
       year_deployed: 2025
-    - product: "Cursor, Windsurf, Cline, Aider"
-      company: "Various"
+    - product: 'Cursor, Windsurf, Cline, Aider'
+      company: Various
       year_deployed: 2025
-    - product: "Devin, Replit Agent"
-      company: "Cognition / Replit"
+    - product: 'Devin, Replit Agent'
+      company: Cognition / Replit
       year_deployed: 2025
-    - product: "Vercel v0 (UI generation)"
-      company: "Vercel"
+    - product: Vercel v0 (UI generation)
+      company: Vercel
       year_deployed: 2025
   investment_angle: |
     Claude 4 marks the transition from "AI as autocomplete" to "AI as
@@ -82,21 +137,15 @@ public_view:
     teams. The labor-market implications — entry-level engineering
     hiring contraction visible in Q3 2025 BLS data — are downstream
     of this and similar releases.
-
 citations:
   - type: release
     key: anthropic2025claude4
-    title: "Introducing Claude 4"
+    title: Introducing Claude 4
     year: 2025
-    venue: "Anthropic Blog"
-    url: "https://www.anthropic.com/news/claude-4"
+    venue: Anthropic Blog
+    url: 'https://www.anthropic.com/news/claude-4'
+graph_featured: true
 ---
-
-## What it is
-
-A two-tier flagship family — Claude Opus 4 (most capable) and Claude Sonnet 4 (balanced). Both ship with extended-thinking mode (per-request toggle, inherited from Claude 3.7), native tool use, and a substantially upgraded "computer use" capability for direct screen / mouse / keyboard control.
-
-The headline capability: sustained autonomous operation. Anthropic publicly demonstrated Opus 4 running uninterrupted on a software-engineering task for ~7 hours, producing a working merged-PR at the end. Prior generations drifted into incoherence after 30-60 minutes of agentic work.
 
 ## How Claude 4 compares to mid-2025 frontier
 

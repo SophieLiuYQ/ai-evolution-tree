@@ -1,36 +1,76 @@
 ---
 slug: claude-opus-4-7
-title: "Claude Opus 4.7 — Current Frontier (and the model writing this)"
-date: 2026-02-04
+title: Claude Opus 4.7 — Current Frontier (and the model writing this)
+date: '2026-02-04'
 era: agents
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-opus-4-6
-    type: scales
-    note: "Successor in the Opus 4.x line; further reasoning + agentic improvements"
+    type: builds_on
+    note: >-
+      [scales] Successor in the Opus 4.x line; further reasoning + agentic
+      improvements
+  - to: gpt-5-5
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 9
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + extended thinking + agentic tool use + 1M context"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + extended thinking + agentic tool use + 1M context
   context_window: 1000000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://www.anthropic.com/news/claude-opus-4-7'
+  availability:
+    - api
+    - product
+    - enterprise
   benchmarks:
-    - name: "SWE-bench Verified"
-      score: "~88% (estimated)"
-      vs_baseline: "Opus 4.6 84%, GPT-5 ~78%, Gemini 3 ~80%"
-    - name: "TerminalBench"
-      score: "~58% (estimated)"
-    - name: "Claude Code session reliability"
-      score: "16+ hour sustained autonomous coding"
-      vs_baseline: "Opus 4.6 12 hours, Opus 4 7 hours"
-  homepage: "https://www.anthropic.com/news/claude-opus-4-7"
-
-title_zh: "Claude Opus 4.7 —— 编程能力又炸了（也是写这份文档的模型）"
+    - name: Intelligence · AA Intelligence Index
+      score: 57.28 (31.05–57.28)
+      vs_baseline: 'Rank #2 of 86 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Coding · SciCode
+      score: 54.5% (34.4–54.5%)
+      vs_baseline: 'Rank #2 of 85 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: Agentic · Terminal-Bench Hard
+      score: 54.5% (27.3–54.5%)
+      vs_baseline: 'Rank #2 of 84 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/terminalbench-hard'
+    - name: Coding · AA Coding Index
+      score: '52.50'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+    - name: GPQA
+      score: 91.4% (88.5–91.4%)
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+    - name: HLE
+      score: 39.6% (31.2–39.6%)
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+    - name: Speed · Output tok/s
+      score: '62'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $25.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+  family: Anthropic claude-opus
+  variants:
+    - id: claude-opus-4-7-non-reasoning
+      label: 'Claude Opus 4.7 (Non-reasoning, High Effort)'
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+title_zh: Claude Opus 4.7 —— 编程能力又炸了（也是写这份文档的模型）
 public_view_zh:
   plain_english: |
     Anthropic 2026 年 4 月 16 日发布的最新旗舰，写这份文档的
@@ -57,7 +97,11 @@ public_view_zh:
     2026 Q1 数据显示入门级软件工程岗位同比在萎缩，时间线
     刚好对上 Opus 4.x 的规模部署——有人叫好，也有 36氪 那种
     「Anthropic 把模型越带越笨」的反面报道，争议在继续。
-
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     The most recent Anthropic flagship as of April 2026, released
@@ -72,14 +116,14 @@ public_view:
     review the merged commits Monday morning. The cadence of
     work shifts from "session" to "engagement."
   applications:
-    - product: "Claude Code (default; also writing this very codebase)"
-      company: "Anthropic"
+    - product: Claude Code (default; also writing this very codebase)
+      company: Anthropic
       year_deployed: 2026
-    - product: "Cursor / Windsurf / Devin (premium tiers)"
-      company: "Various"
+    - product: Cursor / Windsurf / Devin (premium tiers)
+      company: Various
       year_deployed: 2026
-    - product: "Anthropic Agent SDK (production agent framework)"
-      company: "Anthropic"
+    - product: Anthropic Agent SDK (production agent framework)
+      company: Anthropic
       year_deployed: 2026
   investment_angle: |
     Opus 4.7 represents Anthropic's positioning into 2026 as
@@ -98,19 +142,15 @@ public_view:
     visibly in 2026. Q1 2026 BLS data shows year-over-year
     contraction in entry-level US software engineering hiring
     that maps onto the Opus 4.x deployment timeline.
-
 citations:
   - type: release
     key: anthropic2026opus47
-    title: "Claude Opus 4.7"
+    title: Claude Opus 4.7
     year: 2026
-    venue: "Anthropic"
-    url: "https://www.anthropic.com/news/claude-opus-4-7"
+    venue: Anthropic
+    url: 'https://www.anthropic.com/news/claude-opus-4-7'
+graph_featured: true
 ---
-
-## What it is
-
-The current flagship of the Claude family as of April 2026 — `claude-opus-4-7`. Continues the Opus 4.x evolution with focus on sustained agentic operation and long-horizon reliability. Architecturally undisclosed but inherits from Opus 4.6 (1M context + extended thinking + native tool use).
 
 ## Where Opus 4.7 sits in the 2026 frontier
 

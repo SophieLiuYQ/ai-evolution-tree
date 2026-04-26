@@ -1,30 +1,33 @@
 ---
 slug: gan
-title: "Generative Adversarial Networks"
-date: 2014-06-10
+title: Generative Adversarial Networks
+date: '2014-06-10'
 era: architectures
-category: [generative, architecture]
+category:
+  - generative
+  - architecture
+  - nlp
 relationships:
   - to: backpropagation
     type: builds_on
-    note: "Two networks trained adversarially via standard backprop"
+    note: Two networks trained adversarially via standard backprop
   - to: alexnet
     type: builds_on
-    note: "Uses CNN building blocks for the discriminator"
+    note: Uses CNN building blocks for the discriminator
 authors:
-  - "Goodfellow, I. J."
-  - "Pouget-Abadie, J."
-  - "Mirza, M."
-  - "Xu, B."
-  - "et al."
-org: "Université de Montréal"
+  - 'Goodfellow, I. J.'
+  - 'Pouget-Abadie, J.'
+  - 'Mirza, M.'
+  - 'Xu, B.'
+  - et al.
+org: Université de Montréal
 breakthrough_score: 9
 status: active
-
 model_spec:
-  homepage: "https://arxiv.org/abs/1406.2661"
-  github: "https://github.com/goodfeli/adversarial"
-
+  homepage: 'https://arxiv.org/abs/1406.2661'
+  github: 'https://github.com/goodfeli/adversarial'
+  modalities:
+    - text
 public_view:
   plain_english: |
     A training setup that pits two neural networks against each other: one
@@ -36,14 +39,14 @@ public_view:
     other. Over time, the counterfeiter's bills get better and the
     inspector's eye gets sharper — until the bills would pass anywhere.
   applications:
-    - product: "StyleGAN photo-realistic face generator"
-      company: "NVIDIA"
+    - product: StyleGAN photo-realistic face generator
+      company: NVIDIA
       year_deployed: 2018
-    - product: "DeepFake video manipulation (open source proliferation)"
-      company: "Various"
+    - product: DeepFake video manipulation (open source proliferation)
+      company: Various
       year_deployed: 2017
-    - product: "This Person Does Not Exist"
-      company: "Various"
+    - product: This Person Does Not Exist
+      company: Various
       year_deployed: 2019
   investment_angle: |
     The first training framework that made photorealistic image synthesis
@@ -57,39 +60,30 @@ public_view:
     Every generative AI product — from Midjourney to voice cloning to
     synthetic training data — descends from the insight that you can train
     a generator by training its critic in parallel.
-
 citations:
   - type: paper
     key: goodfellow2014gan
-    title: "Generative Adversarial Networks"
-    authors: ["Goodfellow, I. J.", "Pouget-Abadie, J.", "et al."]
+    title: Generative Adversarial Networks
+    authors:
+      - 'Goodfellow, I. J.'
+      - 'Pouget-Abadie, J.'
+      - et al.
     year: 2014
-    venue: "NeurIPS"
-    arxiv: "1406.2661"
-    url: "https://arxiv.org/abs/1406.2661"
+    venue: NeurIPS
+    arxiv: '1406.2661'
+    url: 'https://arxiv.org/abs/1406.2661'
   - type: paper
     key: karras2019stylegan
-    title: "A Style-Based Generator Architecture for Generative Adversarial Networks"
-    authors: ["Karras, T.", "Laine, S.", "Aila, T."]
+    title: A Style-Based Generator Architecture for Generative Adversarial Networks
+    authors:
+      - 'Karras, T.'
+      - 'Laine, S.'
+      - 'Aila, T.'
     year: 2019
-    venue: "CVPR"
-    arxiv: "1812.04948"
+    venue: CVPR
+    arxiv: '1812.04948'
+graph_featured: true
 ---
-
-## What it is
-
-A GAN trains two networks simultaneously:
-
-- A **generator** $G(z)$ maps random noise $z$ to a sample that should resemble the training data.
-- A **discriminator** $D(x)$ assigns a probability that $x$ is a real sample rather than a generated one.
-
-They are optimized adversarially: $D$ tries to classify correctly, $G$ tries to fool $D$. At equilibrium, $G$'s distribution matches the data distribution and $D$ cannot do better than chance.
-
-The value function:
-
-$$
-\min_G \max_D \; \mathbb{E}_{x \sim p_{\text{data}}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]
-$$
 
 ## How it works
 

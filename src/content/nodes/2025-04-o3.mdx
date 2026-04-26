@@ -1,45 +1,97 @@
 ---
 slug: o3
-title: "OpenAI o3 — Frontier Reasoning at Scale"
-date: 2025-04-16
+title: OpenAI o3 — Frontier Reasoning at Scale
+date: '2025-04-16'
 era: reasoning
-category: [nlp, reasoning, agents]
+category:
+  - nlp
+  - reasoning
+  - agents
+  - cv
+  - multimodal
 relationships:
   - to: o1
-    type: scales
-    note: "Successor to o1; native tool use during reasoning; ~3-10× more inference compute per query"
+    type: builds_on
+    note: >-
+      [scales] Successor to o1; native tool use during reasoning; ~3-10× more
+      inference compute per query
   - to: deepseek-r1
-    type: surpasses
-    note: "Reclaims SOTA on math + science reasoning benchmarks after R1's 3-month interregnum"
+    type: competes_with
+    note: >-
+      [surpasses] Reclaims SOTA on math + science reasoning benchmarks after
+      R1's 3-month interregnum
 authors:
-  - "OpenAI Team"
-org: "OpenAI"
+  - OpenAI Team
+org: OpenAI
 breakthrough_score: 9
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + RL on reasoning + native tool use during thinking"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + RL on reasoning + native tool use during thinking
   context_window: 200000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://openai.com/index/introducing-o3-and-o4-mini/'
+  availability:
+    - api
+    - product
   benchmarks:
-    - name: "AIME 2024"
-      score: "96.7%"
-      vs_baseline: "o1 83.3%, R1 79.8%, Gemini 2.5 Pro 92.0%"
-    - name: "GPQA Diamond"
-      score: "87.7%"
-      vs_baseline: "o1 78.0%, Claude 3.7 84.8%"
-    - name: "Codeforces percentile"
-      score: "~99.9th"
-      vs_baseline: "o1 89th — beating most human competitive programmers"
-    - name: "ARC-AGI v1 (semi-private)"
-      score: "75.7%"
-      vs_baseline: "o1 25%; first model to substantially clear ARC threshold"
-    - name: "Humanity's Last Exam"
-      score: "20.3%"
-      vs_baseline: "Gemini 2.5 Pro 18.8%"
-  homepage: "https://openai.com/index/introducing-o3-and-o4-mini/"
-
+    - name: Coding · HumanEval
+      score: 99.1%
+      vs_baseline: 'Rank #1 of 17 · Top 10% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Intelligence · MMLU-Pro
+      score: 85.3%
+      vs_baseline: 'Rank #5 of 55 · Top 10% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Context · AA-LCR (long-context)
+      score: 69.3%
+      vs_baseline: 'Rank #8 of 84 · Top 10% · Artificial Analysis'
+      source_url: >-
+        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: Intelligence · AA Intelligence Index
+      score: '40.70'
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: Coding · SciCode
+      score: 41.0% (39.8–41.0%)
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: Agentic · Terminal-Bench Hard
+      score: 37.1% (6.1–37.1%)
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: MMLU-Pro
+      score: 85.3% (79.1–85.3%)
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: GPQA
+      score: 84.5% (74.8–84.5%)
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: HLE
+      score: 20.0% (8.7–20.0%)
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: Speed · Output tok/s
+      score: '16'
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+    - name: Price ($/M tokens)
+      score: $20.00 in / $80.00 out
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+  family: OpenAI o
+  variants:
+    - id: o3-mini
+      label: o3-mini
+      status: active
+    - id: o3-mini-high
+      label: o3-mini (high)
+      status: active
+    - id: o3-pro
+      label: o3-pro
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/o3'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     OpenAI's full o3 release in April 2025, after a December 2024
@@ -55,14 +107,14 @@ public_view:
     itself, and then answers." Inference cost per query rose
     proportionally — flagship o3-pro queries can run $1-10 each.
   applications:
-    - product: "ChatGPT (Plus, Pro, Enterprise tiers)"
-      company: "OpenAI"
+    - product: 'ChatGPT (Plus, Pro, Enterprise tiers)'
+      company: OpenAI
       year_deployed: 2025
-    - product: "Microsoft Copilot Researcher / Analyst agents"
-      company: "Microsoft"
+    - product: Microsoft Copilot Researcher / Analyst agents
+      company: Microsoft
       year_deployed: 2025
-    - product: "Cursor / Windsurf advanced coding modes"
-      company: "Various"
+    - product: Cursor / Windsurf advanced coding modes
+      company: Various
       year_deployed: 2025
   investment_angle: |
     o3's release answered the strategic question DeepSeek R1 had
@@ -82,23 +134,15 @@ public_view:
     do?" debates in policy, education, and labor-market analysis.
     The ARC-AGI result specifically reignited the AGI-timeline
     discussion across AI safety circles.
-
 citations:
   - type: release
     key: openai2025o3
-    title: "Introducing OpenAI o3 and o4-mini"
+    title: Introducing OpenAI o3 and o4-mini
     year: 2025
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/introducing-o3-and-o4-mini/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/introducing-o3-and-o4-mini/'
+graph_featured: true
 ---
-
-## What it is
-
-OpenAI's o-series flagship released April 16, 2025 (o3 + smaller sibling o4-mini). The architectural / training contributions are not publicly detailed, but the externally-observed capabilities show two key advances over o1:
-
-1. **Native tool use during reasoning** — the model can autonomously decide to run code, search, or call other tools mid-thought, with results fed back into the reasoning trace. This is "agentic reasoning" baked into the base model, not bolted on at the application layer.
-
-2. **Visual reasoning** — o3 can reason over images as part of the thought process, including ARC-AGI-style abstract grid puzzles where it must induce rules from few examples.
 
 ## o3 vs reasoning peers (Q2 2025)
 

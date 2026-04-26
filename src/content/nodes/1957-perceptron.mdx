@@ -1,19 +1,22 @@
 ---
 slug: perceptron
-title: "The Perceptron"
-date: 1958-11-01
+title: The Perceptron
+date: '1958-11-01'
 era: foundations
-category: [theory, architecture]
+category:
+  - theory
+  - architecture
+  - nlp
 relationships: []
 authors:
-  - "Rosenblatt, F."
-org: "Cornell Aeronautical Laboratory"
+  - 'Rosenblatt, F.'
+org: Cornell Aeronautical Laboratory
 breakthrough_score: 10
 status: foundational
-
 model_spec:
-  homepage: "https://psycnet.apa.org/doi/10.1037/h0042519"
-
+  homepage: 'https://psycnet.apa.org/doi/10.1037/h0042519'
+  modalities:
+    - text
 public_view:
   plain_english: |
     The first machine that learned to recognize patterns from examples
@@ -25,8 +28,8 @@ public_view:
     pennies, but every time you tell it "wrong," it slightly retunes the gap
     in its slot. After enough corrections it sorts them perfectly.
   applications:
-    - product: "Mark I Perceptron (image classification hardware)"
-      company: "US Office of Naval Research"
+    - product: Mark I Perceptron (image classification hardware)
+      company: US Office of Naval Research
       year_deployed: 1960
   investment_angle: |
     Not directly investable in 1958, but the conceptual lineage running
@@ -38,35 +41,28 @@ public_view:
     its core, a many-times-multiplied perceptron. Understanding its
     capabilities and its 1969 collapse is necessary context for why deep
     learning had to wait 50 years.
-
 citations:
   - type: paper
     key: rosenblatt1958perceptron
-    title: "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain"
-    authors: ["Rosenblatt, F."]
+    title: >-
+      The Perceptron: A Probabilistic Model for Information Storage and
+      Organization in the Brain
+    authors:
+      - 'Rosenblatt, F.'
     year: 1958
-    venue: "Psychological Review"
-    doi: "10.1037/h0042519"
-    url: "https://psycnet.apa.org/record/1959-09865-001"
+    venue: Psychological Review
+    doi: 10.1037/h0042519
+    url: 'https://psycnet.apa.org/record/1959-09865-001'
   - type: book
     key: minsky1969perceptrons
-    title: "Perceptrons: An Introduction to Computational Geometry"
-    authors: ["Minsky, M.", "Papert, S."]
+    title: 'Perceptrons: An Introduction to Computational Geometry'
+    authors:
+      - 'Minsky, M.'
+      - 'Papert, S.'
     year: 1969
-    venue: "MIT Press"
+    venue: MIT Press
+graph_featured: true
 ---
-
-## What it is
-
-A perceptron is a single artificial neuron: it takes a vector of inputs $x$, multiplies each by a learned weight $w$, sums them, adds a bias $b$, and emits 1 if the sum exceeds a threshold and 0 otherwise.
-
-Crucially, it ships with a **learning rule**. Given a labeled example $(x, y)$ where the perceptron predicted $\hat{y}$, weights are updated by:
-
-$$
-w \leftarrow w + \eta (y - \hat{y}) x
-$$
-
-That single line — adjust the weights in the direction of the error — is the conceptual ancestor of every gradient-based learning algorithm that followed.
 
 ## How it works
 

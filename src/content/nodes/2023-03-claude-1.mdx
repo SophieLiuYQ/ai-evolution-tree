@@ -1,34 +1,45 @@
 ---
 slug: claude-1
-title: "Claude 1 — Anthropic's First Public Model"
-date: 2023-03-14
+title: Claude 1 — Anthropic's First Public Model
+date: '2023-03-14'
 era: alignment
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: constitutional-ai
-    type: applies
-    note: "First production deployment of Constitutional AI training"
+    type: builds_on
+    note: '[applies] First production deployment of Constitutional AI training'
   - to: chatgpt
     type: competes_with
-    note: "Direct alternative; longer context (100k tokens vs 4k)"
+    note: Direct alternative; longer context (100k tokens vs 4k)
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "undisclosed (~50–100B inferred)"
-  architecture: "Decoder-only transformer + Constitutional AI post-training"
+  parameters: undisclosed (~50–100B inferred)
+  architecture: Decoder-only transformer + Constitutional AI post-training
   context_window: 9000
   release_type: api
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Bar exam"
-      score: "~50th percentile"
-    - name: "MMLU"
-      score: "~75% (Claude-1.3, mid-2023)"
-  homepage: "https://www.anthropic.com/news/introducing-claude"
-
+    - name: Bar exam
+      score: ~50th percentile
+    - name: MMLU
+      score: '~75% (Claude-1.3, mid-2023)'
+  homepage: 'https://www.anthropic.com/news/introducing-claude'
+  availability:
+    - api
+    - product
+  aa_url: 'https://artificialanalysis.ai/models/claude-4-1-opus'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Anthropic's first publicly available chatbot, launched four months
@@ -42,14 +53,14 @@ public_view:
     the 1980s — quality differences mattered less than the existence of
     a credible alternative for enterprise procurement.
   applications:
-    - product: "Notion AI"
-      company: "Notion"
+    - product: Notion AI
+      company: Notion
       year_deployed: 2023
-    - product: "Quora Poe"
-      company: "Quora"
+    - product: Quora Poe
+      company: Quora
       year_deployed: 2023
-    - product: "DuckDuckGo Instant Answers"
-      company: "DuckDuckGo"
+    - product: DuckDuckGo Instant Answers
+      company: DuckDuckGo
       year_deployed: 2023
   investment_angle: |
     Claude 1's launch validated the thesis that two API-tier LLM
@@ -64,21 +75,15 @@ public_view:
     enterprise AI procurement decision since 2023 implicitly assumes the
     existence of at least one credible alternative to the dominant
     vendor. That assumption starts here.
-
 citations:
   - type: release
     key: anthropic2023claude1
-    title: "Introducing Claude"
+    title: Introducing Claude
     year: 2023
-    venue: "Anthropic Blog"
-    url: "https://www.anthropic.com/news/introducing-claude"
+    venue: Anthropic Blog
+    url: 'https://www.anthropic.com/news/introducing-claude'
+graph_featured: true
 ---
-
-## What it is
-
-A chat-tuned LLM productized as an API and consumer chat interface (claude.ai). Architecturally undisclosed in detail, but believed to be a decoder-only transformer in the 50-100B parameter range, post-trained with Anthropic's Constitutional AI recipe.
-
-The notable spec: a context window of ~9,000 tokens at launch, expanded to 100,000 tokens with Claude 1.3 in May 2023 — at the time, ~25× larger than GPT-4's 8,000-token default and 12× larger than the GPT-4 32k variant.
 
 ## How it compared to peers in March 2023
 

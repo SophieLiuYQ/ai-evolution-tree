@@ -1,34 +1,39 @@
 ---
 slug: react-agents
-title: "ReAct — Reasoning + Acting in Language Models"
-date: 2022-10-06
+title: ReAct — Reasoning + Acting in Language Models
+date: '2022-10-06'
 era: agents
-category: [nlp, agents, theory]
+category:
+  - nlp
+  - agents
+  - theory
 relationships:
   - to: chain-of-thought
     type: builds_on
-    note: "Interleaves CoT reasoning with tool-calling actions in a single trajectory"
+    note: Interleaves CoT reasoning with tool-calling actions in a single trajectory
 authors:
-  - "Yao, S."
-  - "Zhao, J."
-  - "Yu, D."
-  - "Du, N."
-  - "Shafran, I."
-  - "Narasimhan, K."
-  - "Cao, Y."
-org: "Google"
+  - 'Yao, S.'
+  - 'Zhao, J.'
+  - 'Yu, D.'
+  - 'Du, N.'
+  - 'Shafran, I.'
+  - 'Narasimhan, K.'
+  - 'Cao, Y.'
+org: Google
 breakthrough_score: 7
 status: foundational
 model_spec:
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "HotpotQA (multi-hop QA)"
-      score: "+18% vs CoT alone"
-      vs_baseline: "first prompting framework to combine reasoning + retrieval"
-  homepage: "https://react-lm.github.io/"
-  github: "https://github.com/ysymyth/ReAct"
-
+    - name: HotpotQA (multi-hop QA)
+      score: +18% vs CoT alone
+      vs_baseline: first prompting framework to combine reasoning + retrieval
+  homepage: 'https://react-lm.github.io/'
+  github: 'https://github.com/ysymyth/ReAct'
+  availability:
+    - research
 public_view:
   plain_english: |
     A simple prompting framework that interleaves "thought" steps
@@ -42,17 +47,17 @@ public_view:
     open-book exam takers — same brain, but with the option to
     look something up, do a calculation, or run code, mid-thought.
   applications:
-    - product: "LangChain agent abstraction"
-      company: "LangChain"
+    - product: LangChain agent abstraction
+      company: LangChain
       year_deployed: 2023
-    - product: "OpenAI function calling / tool use"
-      company: "OpenAI"
+    - product: OpenAI function calling / tool use
+      company: OpenAI
       year_deployed: 2023
-    - product: "Anthropic tool use API"
-      company: "Anthropic"
+    - product: Anthropic tool use API
+      company: Anthropic
       year_deployed: 2024
-    - product: "AutoGPT, BabyAGI, Devin"
-      company: "Various"
+    - product: 'AutoGPT, BabyAGI, Devin'
+      company: Various
       year_deployed: 2023
   investment_angle: |
     ReAct is the conceptual root of the entire agentic-AI investment
@@ -68,33 +73,23 @@ public_view:
     decision-maker that uses tools" started here. Without this
     framing, the 2024-26 transition from chatbots to agents
     happens later or differently.
-
 citations:
   - type: paper
     key: yao2022react
-    title: "ReAct: Synergizing Reasoning and Acting in Language Models"
-    authors: ["Yao, S.", "Zhao, J.", "Yu, D.", "Du, N.", "Shafran, I.", "Narasimhan, K.", "Cao, Y."]
+    title: 'ReAct: Synergizing Reasoning and Acting in Language Models'
+    authors:
+      - 'Yao, S.'
+      - 'Zhao, J.'
+      - 'Yu, D.'
+      - 'Du, N.'
+      - 'Shafran, I.'
+      - 'Narasimhan, K.'
+      - 'Cao, Y.'
     year: 2022
-    venue: "ICLR 2023"
-    arxiv: "2210.03629"
+    venue: ICLR 2023
+    arxiv: '2210.03629'
+graph_featured: true
 ---
-
-## What it is
-
-A prompting framework where the model emits an interleaved sequence of:
-
-```
-Thought: I need to find when X happened.
-Action: search("X event date")
-Observation: X happened in 1987.
-Thought: Now I should figure out who was president then.
-Action: search("US president 1987")
-Observation: Ronald Reagan.
-Thought: ...
-Action: finish("Ronald Reagan")
-```
-
-The model decides at each step whether to think more or take an action; an external runtime executes the action and feeds the observation back. This is the "agent loop" — reasoning, acting, observing, repeat.
 
 ## What ReAct combined that wasn't combined before
 

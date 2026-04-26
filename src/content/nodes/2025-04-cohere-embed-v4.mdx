@@ -1,26 +1,35 @@
 ---
 slug: cohere-embed-v4
-title: "Cohere Embed v4 — 128K Context Multimodal Embeddings"
-date: 2025-04-15
+title: Cohere Embed v4 — 128K Context Multimodal Embeddings
+date: '2025-04-15'
 era: multimodal
-category: [nlp, multimodal, infrastructure]
+category:
+  - nlp
+  - multimodal
+  - infrastructure
+  - cv
 relationships:
   - to: clip
-    type: scales
-    note: "Embedding lineage from CLIP scaled to text+image+document at 128K context"
+    type: builds_on
+    note: >-
+      [scales] Embedding lineage from CLIP scaled to text+image+document at 128K
+      context
 authors:
-  - "Cohere Team"
-org: "Cohere"
+  - Cohere Team
+org: Cohere
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "multilingual encoder; native binary quantization"
+  parameters: undisclosed
+  architecture: multilingual encoder; native binary quantization
   context_window: 128000
   release_type: api
-  modalities: [text, vision]
-  homepage: "https://cohere.com/blog/embed-4"
-
+  modalities:
+    - text
+    - vision
+  homepage: 'https://cohere.com/blog/embed-4'
+  availability:
+    - api
 public_view:
   plain_english: |
     Cohere's April 2025 embedding model — 128K context window (the
@@ -34,14 +43,14 @@ public_view:
     cards (128K context per item) and the smallest cards (binary
     quantized) at the same time.
   applications:
-    - product: "Cohere Compass"
-      company: "Cohere"
+    - product: Cohere Compass
+      company: Cohere
       year_deployed: 2025
-    - product: "Enterprise RAG (banks, law firms)"
-      company: "Multiple"
+    - product: 'Enterprise RAG (banks, law firms)'
+      company: Multiple
       year_deployed: 2025
-    - product: "AWS Bedrock / Azure ML"
-      company: "Multiple"
+    - product: AWS Bedrock / Azure ML
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     Cohere has anchored on enterprise RAG and Embed v4 is the lever.
@@ -54,14 +63,14 @@ public_view:
     to 128K — meaning entire chapters / contracts / cases can be
     embedded as single vectors instead of split-and-aggregate. Changes
     RAG architecture for long-document use cases.
-
 citations:
   - type: release
     key: cohere2025embedv4
-    title: "Cohere Embed v4"
+    title: Cohere Embed v4
     year: 2025
-    venue: "Cohere Blog"
-    url: "https://cohere.com/blog/embed-v4"
+    venue: Cohere Blog
+    url: 'https://cohere.com/blog/embed-v4'
+graph_featured: true
 ---
 
 ## Embeddings leaderboard (April 2026 MTEB)

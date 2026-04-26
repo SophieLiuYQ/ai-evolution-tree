@@ -1,35 +1,40 @@
 ---
 slug: gpt-1
-title: "GPT-1 — Generative Pre-Training"
-date: 2018-06-11
+title: GPT-1 — Generative Pre-Training
+date: '2018-06-11'
 era: transformer
-category: [nlp, generative, training]
+category:
+  - nlp
+  - generative
+  - training
 relationships:
   - to: transformer
     type: builds_on
-    note: "Decoder-only stack from the original transformer; 12 layers"
+    note: Decoder-only stack from the original transformer; 12 layers
 authors:
-  - "Radford, A."
-  - "Narasimhan, K."
-  - "Salimans, T."
-  - "Sutskever, I."
-org: "OpenAI"
+  - 'Radford, A.'
+  - 'Narasimhan, K.'
+  - 'Salimans, T.'
+  - 'Sutskever, I.'
+org: OpenAI
 breakthrough_score: 8
 status: superseded
 model_spec:
-  parameters: "117M"
-  architecture: "Decoder-only transformer, 12 layers, 768 hidden, 12 heads"
+  parameters: 117M
+  architecture: 'Decoder-only transformer, 12 layers, 768 hidden, 12 heads'
   context_window: 512
-  training_tokens: "~1B (BookCorpus)"
+  training_tokens: ~1B (BookCorpus)
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "GLUE (avg, fine-tuned)"
-      score: "72.8"
-      vs_baseline: "prior task-specific SOTA average ~70.0"
-  homepage: "https://openai.com/index/language-unsupervised/"
-  github: "https://github.com/openai/finetune-transformer-lm"
-
+    - name: 'GLUE (avg, fine-tuned)'
+      score: '72.8'
+      vs_baseline: prior task-specific SOTA average ~70.0
+  homepage: 'https://openai.com/index/language-unsupervised/'
+  github: 'https://github.com/openai/finetune-transformer-lm'
+  availability:
+    - research
 public_view:
   plain_english: |
     OpenAI's first GPT — a transformer trained to predict the next word
@@ -41,8 +46,8 @@ public_view:
     after a broad education, they can be retrained quickly into a doctor,
     lawyer, or coder.
   applications:
-    - product: "Internal OpenAI research baseline"
-      company: "OpenAI"
+    - product: Internal OpenAI research baseline
+      company: OpenAI
       year_deployed: 2018
   investment_angle: |
     The methodological proof point for "pre-train at scale, fine-tune
@@ -54,20 +59,21 @@ public_view:
     "too dangerous to release" controversy, GPT-3's investor narrative
     would have been weaker. This is the unglamorous root of OpenAI's
     LLM lineage.
-
 citations:
   - type: paper
     key: radford2018gpt1
-    title: "Improving Language Understanding by Generative Pre-Training"
-    authors: ["Radford, A.", "Narasimhan, K.", "Salimans, T.", "Sutskever, I."]
+    title: Improving Language Understanding by Generative Pre-Training
+    authors:
+      - 'Radford, A.'
+      - 'Narasimhan, K.'
+      - 'Salimans, T.'
+      - 'Sutskever, I.'
     year: 2018
-    venue: "OpenAI tech report"
-    url: "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf"
+    venue: OpenAI tech report
+    url: >-
+      https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf
+graph_featured: true
 ---
-
-## What it is
-
-A 12-layer decoder-only transformer (117M parameters) pretrained on BookCorpus with the standard left-to-right next-token objective, then fine-tuned per-task. The first paper to clearly demonstrate that the pretrain → fine-tune recipe worked at meaningful scale for language.
 
 ## How it compares
 

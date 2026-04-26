@@ -1,41 +1,82 @@
 ---
 slug: llama-3
-title: "Llama 3 — Meta's Frontier-Comparable Open Model"
-date: 2024-04-18
+title: Llama 3 — Meta's Frontier-Comparable Open Model
+date: '2024-04-18'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: llama-2
-    type: scales
-    note: "Same architecture family + 7.5× more training tokens (2T → 15T)"
+    type: builds_on
+    note: '[scales] Same architecture family + 7.5× more training tokens (2T → 15T)'
   - to: gpt-4
     type: open_alt_to
-    note: "70B variant approaches GPT-4 on key benchmarks; first open-weight model to do so"
+    note: >-
+      70B variant approaches GPT-4 on key benchmarks; first open-weight model to
+      do so
+  - to: qwq-32b
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Meta AI Team"
-org: "Meta AI"
+  - Meta AI Team
+org: Meta AI
 breakthrough_score: 8
 status: superseded
 model_spec:
-  parameters: "8B / 70B (later: 405B in Llama 3.1)"
-  architecture: "Llama 2 + grouped-query attention (all sizes), 128k vocab"
+  parameters: '8B / 70B (later: 405B in Llama 3.1)'
+  architecture: 'Llama 2 + grouped-query attention (all sizes), 128k vocab'
   context_window: 8192
-  training_tokens: "15T (>5× Chinchilla-optimal — deliberate over-training for inference efficiency)"
+  training_tokens: >-
+    15T (>5× Chinchilla-optimal — deliberate over-training for inference
+    efficiency)
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
+  homepage: 'https://ai.meta.com/blog/meta-llama-3/'
+  github: 'https://github.com/meta-llama/llama3'
+  availability:
+    - open_weights
   benchmarks:
-    - name: "MMLU (5-shot, 70B)"
-      score: "82.0%"
-      vs_baseline: "Llama 2 70B 68.9%, Claude 3 Sonnet 79.0%"
-    - name: "HumanEval (70B)"
-      score: "81.7%"
-      vs_baseline: "Llama 2 70B 29.9%, GPT-4 67.0%"
-    - name: "GSM8K (70B)"
-      score: "93.0%"
-      vs_baseline: "Llama 2 70B 56.8%"
-  homepage: "https://ai.meta.com/blog/meta-llama-3/"
-  github: "https://github.com/meta-llama/llama3"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '18.50'
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: Coding · AA Coding Index
+      score: '9.40'
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: Coding · SciCode
+      score: 34.7% (1.7–34.7%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: Agentic · Terminal-Bench Hard
+      score: 6.8% (0.0–6.8%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: MMLU-Pro
+      score: 82.5% (20.0–82.5%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: GPQA
+      score: 72.8% (19.6–72.8%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: HLE
+      score: 8.1% (3.5–8.1%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+  aa_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
+  hf_url: 'https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct'
 public_view:
   plain_english: |
     Meta's third-generation open-weight model, trained on 15 trillion
@@ -49,14 +90,14 @@ public_view:
     frontier API in production use cases — like the moment Linux
     became viable for serious enterprise workloads, but for AI.
   applications:
-    - product: "WhatsApp / Instagram / Facebook Meta AI assistant"
-      company: "Meta"
+    - product: WhatsApp / Instagram / Facebook Meta AI assistant
+      company: Meta
       year_deployed: 2024
-    - product: "Together AI, Anyscale, Fireworks hosted endpoints"
-      company: "Various"
+    - product: 'Together AI, Anyscale, Fireworks hosted endpoints'
+      company: Various
       year_deployed: 2024
-    - product: "Groq ultra-fast inference"
-      company: "Groq"
+    - product: Groq ultra-fast inference
+      company: Groq
       year_deployed: 2024
   investment_angle: |
     Llama 3 is the strongest evidence to date that the closed-vs-open
@@ -74,28 +115,23 @@ public_view:
     to justify its premium against a free open alternative within
     one to two quarters of release. This pricing pressure is the
     single biggest factor reshaping the LLM business in 2024-26.
-
 citations:
   - type: release
     key: meta2024llama3
-    title: "Introducing Meta Llama 3"
+    title: Introducing Meta Llama 3
     year: 2024
-    venue: "Meta AI Blog"
-    url: "https://ai.meta.com/blog/meta-llama-3/"
+    venue: Meta AI Blog
+    url: 'https://ai.meta.com/blog/meta-llama-3/'
   - type: paper
     key: meta2024llama3paper
-    title: "The Llama 3 Herd of Models"
-    authors: ["Meta AI"]
+    title: The Llama 3 Herd of Models
+    authors:
+      - Meta AI
     year: 2024
-    venue: "arXiv"
-    arxiv: "2407.21783"
+    venue: arXiv
+    arxiv: '2407.21783'
+graph_featured: true
 ---
-
-## What it is
-
-Two foundation models (8B and 70B) at launch, with a 405B variant added in Llama 3.1 (2024-07-23). All variants share architecture: a Llama 2-style decoder-only transformer with GQA, RoPE, RMSNorm, SwiGLU, but with a much larger vocabulary (128k tokens vs 32k in Llama 2) and longer training (15T tokens vs 2T).
-
-The deliberate over-training (15T tokens for an 8B model is ~1875 tok/param vs Chinchilla's ~20 tok/param) is the most consequential design decision: it sacrifices training-time efficiency for inference-time efficiency. Modern serving economics make this worthwhile.
 
 ## Llama 3 vs concurrent peers (Q2 2024)
 

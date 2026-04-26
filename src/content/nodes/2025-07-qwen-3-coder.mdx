@@ -1,36 +1,84 @@
 ---
 slug: qwen-3-coder
-title: "Qwen3-Coder — Open-Source Coding Agent Frontier"
-date: 2025-07-22
+title: Qwen3-Coder — Open-Source Coding Agent Frontier
+date: '2025-07-22'
 era: agents
-category: [nlp, generative, code, agents]
+category:
+  - nlp
+  - generative
+  - code
+  - agents
+  - multimodal
 relationships:
   - to: qwen-3
-    type: fine_tunes
-    note: "Specialized post-training of Qwen 3 base on agentic coding traces and 256K-context repos"
+    type: builds_on
+    note: >-
+      [fine_tunes] Specialized post-training of Qwen 3 base on agentic coding
+      traces and 256K-context repos
   - to: deepseek-v3
     type: competes_with
-    note: "Both fight for top of open-weight SWE-bench leaderboard; Qwen3-Coder claims SOTA at release"
+    note: >-
+      Both fight for top of open-weight SWE-bench leaderboard; Qwen3-Coder
+      claims SOTA at release
+  - to: grok-4-1
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Qwen Team"
-org: "Alibaba"
+  - Qwen Team
+org: Alibaba
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "480B-A35B MoE flagship + 30B-A3B Flash"
-  architecture: "MoE with extended 256K → 1M context (YaRN)"
+  parameters: 480B-A35B MoE flagship + 30B-A3B Flash
+  architecture: MoE with extended 256K → 1M context (YaRN)
   context_window: 1000000
   release_type: open_weights
-  modalities: [text, code]
+  modalities:
+    - text
+    - code
   benchmarks:
-    - name: "SWE-bench Verified (480B-A35B)"
-      score: "69.6%"
-      vs_baseline: "Claude Sonnet 4 72.7%, DeepSeek-V3 38.8%"
-    - name: "Terminal-Bench"
-      score: "37.5%"
-  homepage: "https://qwenlm.github.io/blog/qwen3-coder/"
-  github: "https://github.com/QwenLM/Qwen3-Coder"
-
+    - name: SWE-bench Verified (480B-A35B)
+      score: 69.6%
+      vs_baseline: 'Claude Sonnet 4 72.7%, DeepSeek-V3 38.8%'
+    - name: Terminal-Bench
+      score: 37.5%
+    - name: Intelligence · AA Intelligence Index
+      score: '28.30'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: Coding · AA Coding Index
+      score: '22.90'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: Coding · SciCode
+      score: 35.9% (27.8–35.9%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: Agentic · Terminal-Bench Hard
+      score: 18.9% (15.2–18.9%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: MMLU-Pro
+      score: 78.8% (70.6–78.8%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: GPQA
+      score: 73.7% (51.6–73.7%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: HLE
+      score: 9.3% (4.0–9.3%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: Speed · Output tok/s
+      score: '156'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+    - name: Price ($/M tokens)
+      score: $0.35 in / $1.20 out
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+  homepage: 'https://qwenlm.github.io/blog/qwen3-coder/'
+  github: 'https://github.com/QwenLM/Qwen3-Coder'
+  availability:
+    - open_weights
+    - api
+  aa_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Qwen3-Coder is Alibaba's specialized coding-agent variant of Qwen 3,
@@ -44,14 +92,14 @@ public_view:
     reads the whole codebase before suggesting an edit, then runs the
     tests.
   applications:
-    - product: "Qwen Code CLI"
-      company: "Alibaba"
+    - product: Qwen Code CLI
+      company: Alibaba
       year_deployed: 2025
-    - product: "Cline / Roo Code (open IDE agents)"
-      company: "Multiple"
+    - product: Cline / Roo Code (open IDE agents)
+      company: Multiple
       year_deployed: 2025
-    - product: "Hugging Face Inference Providers"
-      company: "Hugging Face"
+    - product: Hugging Face Inference Providers
+      company: Hugging Face
       year_deployed: 2025
   investment_angle: |
     Coding is the highest-revenue LLM use case and the one where open
@@ -65,24 +113,15 @@ public_view:
     benchmark game. Cursor, Cline, Roo, and Aider all shipped Qwen3-
     Coder integrations within weeks — the first open model to drive
     serious agentic coding workflows.
-
 citations:
   - type: release
     key: alibaba2025qwen3coder
-    title: "Qwen3-Coder: Agentic Coding in the World"
+    title: 'Qwen3-Coder: Agentic Coding in the World'
     year: 2025
-    venue: "Qwen Blog"
-    url: "https://qwenlm.github.io/blog/qwen3-coder/"
+    venue: Qwen Blog
+    url: 'https://qwenlm.github.io/blog/qwen3-coder/'
+graph_featured: true
 ---
-
-## What it is
-
-A coding-specialized post-training of Qwen 3 base, in two sizes:
-
-- **Qwen3-Coder-480B-A35B** — flagship; matches or beats DeepSeek-V3 on SWE-bench Verified
-- **Qwen3-Coder-30B-A3B-Flash** — cheap MoE for IDE autocomplete
-
-Both ship 256K native context, extended to 1M via YaRN scaling. Post-training combined synthetic agent traces, repo-level diffs, and 100+ programming languages.
 
 ## Why it matters
 

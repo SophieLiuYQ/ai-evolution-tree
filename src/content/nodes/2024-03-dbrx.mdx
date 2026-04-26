@@ -1,40 +1,72 @@
 ---
 slug: dbrx
-title: "DBRX — Databricks' Open MoE"
-date: 2024-03-27
+title: DBRX — Databricks' Open MoE
+date: '2024-03-27'
 era: scale-era
-category: [nlp, generative, architecture]
+category:
+  - nlp
+  - generative
+  - architecture
 relationships:
   - to: mixtral-8x7b
     type: builds_on
-    note: "Sparse MoE in the same style as Mixtral; finer-grained experts (16 experts, top-4)"
+    note: >-
+      Sparse MoE in the same style as Mixtral; finer-grained experts (16
+      experts, top-4)
   - to: llama-2
-    type: surpasses
-    note: "DBRX outperforms Llama 2 70B on most benchmarks at half the inference cost"
+    type: competes_with
+    note: >-
+      [surpasses] DBRX outperforms Llama 2 70B on most benchmarks at half the
+      inference cost
 authors:
-  - "Mosaic AI Research / Databricks Team"
-org: "Databricks"
+  - Mosaic AI Research / Databricks Team
+org: Databricks
 breakthrough_score: 6
 status: superseded
 model_spec:
-  parameters: "132B total / 36B active"
-  architecture: "Sparse MoE — 16 experts × 8.25B per expert, top-4 routing"
+  parameters: 132B total / 36B active
+  architecture: 'Sparse MoE — 16 experts × 8.25B per expert, top-4 routing'
   context_window: 32768
-  training_tokens: "12T"
+  training_tokens: 12T
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU"
-      score: "73.7%"
-      vs_baseline: "Llama 2 70B 68.9%, Mixtral 8x7B 70.6%"
-    - name: "HumanEval"
-      score: "70.1%"
-      vs_baseline: "Llama 2 70B 29.9%, Mixtral 40.2%"
-    - name: "GSM8K"
-      score: "66.9%"
-  homepage: "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm"
-  github: "https://github.com/databricks/dbrx"
-
+    - name: MMLU
+      score: 73.7%
+      vs_baseline: 'Llama 2 70B 68.9%, Mixtral 8x7B 70.6%'
+    - name: HumanEval
+      score: 70.1%
+      vs_baseline: 'Llama 2 70B 29.9%, Mixtral 40.2%'
+    - name: GSM8K
+      score: 66.9%
+    - name: Intelligence · AA Intelligence Index
+      score: '8.30'
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+    - name: Coding · SciCode
+      score: 11.8%
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+    - name: MMLU-Pro
+      score: 39.7%
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+    - name: GPQA
+      score: 33.1%
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+    - name: HLE
+      score: 6.6%
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/dbrx'
+  homepage: 'https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm'
+  github: 'https://github.com/databricks/dbrx'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/dbrx'
+  hf_url: 'https://huggingface.co/databricks/dbrx-instruct'
 public_view:
   plain_english: |
     Databricks' open-weight MoE model released March 2024 — the
@@ -49,11 +81,11 @@ public_view:
     Databricks (a $43B-valued data-warehouse company) was now a
     serious AI infrastructure provider, not just a customer.
   applications:
-    - product: "Databricks Mosaic AI platform"
-      company: "Databricks"
+    - product: Databricks Mosaic AI platform
+      company: Databricks
       year_deployed: 2024
-    - product: "Hosted at Together / Fireworks"
-      company: "Various"
+    - product: Hosted at Together / Fireworks
+      company: Various
       year_deployed: 2024
   investment_angle: |
     DBRX was the model artifact behind Databricks' $1.3B Mosaic AI
@@ -69,19 +101,15 @@ public_view:
     overlapping categories. Snowflake (Arctic, April 2024) and
     BigQuery's AI investments followed similar logic: own the
     data, own the model that runs on the data.
-
 citations:
   - type: release
     key: databricks2024dbrx
-    title: "Introducing DBRX"
+    title: Introducing DBRX
     year: 2024
-    venue: "Databricks Blog"
-    url: "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm"
+    venue: Databricks Blog
+    url: 'https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm'
+graph_featured: true
 ---
-
-## What it is
-
-A sparse Mixture-of-Experts decoder-only transformer with 16 fine-grained experts (8.25B params each) and top-4 routing per token. 132B total parameters, 36B active per forward pass. Trained on 12T tokens of English text + code. Released open-weight under a custom Databricks license (commercial use OK, with conditions for >700M MAU services).
 
 ## DBRX vs concurrent open models (Q1-Q2 2024)
 

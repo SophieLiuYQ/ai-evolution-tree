@@ -1,32 +1,39 @@
 ---
 slug: hunyuan-large
-title: "Hunyuan-Large — Tencent's First Open Frontier MoE"
-date: 2024-11-04
+title: Hunyuan-Large — Tencent's First Open Frontier MoE
+date: '2024-11-04'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: mixtral
-    type: scales
-    note: "MoE lineage; Hunyuan-Large is the first 389B-class Chinese MoE released open"
+    type: builds_on
+    note: >-
+      [scales] MoE lineage; Hunyuan-Large is the first 389B-class Chinese MoE
+      released open
 authors:
-  - "Tencent Hunyuan Team"
-org: "Tencent"
+  - Tencent Hunyuan Team
+org: Tencent
 breakthrough_score: 6
 status: superseded
 model_spec:
-  parameters: "389B total / 52B active MoE"
-  architecture: "Cross-Layer Attention (CLA) MoE"
+  parameters: 389B total / 52B active MoE
+  architecture: Cross-Layer Attention (CLA) MoE
   context_window: 256000
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU"
-      score: "88.4%"
-    - name: "MATH"
-      score: "69.8%"
-  homepage: "https://hunyuan.tencent.com/modelSquare/home/list"
-  github: "https://github.com/Tencent/Tencent-Hunyuan-Large"
-
+    - name: MMLU
+      score: 88.4%
+    - name: MATH
+      score: 69.8%
+  homepage: 'https://hunyuan.tencent.com/modelSquare/home/list'
+  github: 'https://github.com/Tencent/Tencent-Hunyuan-Large'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     Tencent's first major open-weight large model — a 389-billion-
@@ -38,11 +45,11 @@ public_view:
     work on each input — at a scale only hyperscalers had matched
     until then.
   applications:
-    - product: "Tencent Cloud Hunyuan API"
-      company: "Tencent Cloud"
+    - product: Tencent Cloud Hunyuan API
+      company: Tencent Cloud
       year_deployed: 2024
-    - product: "Tencent Yuanbao chatbot"
-      company: "Tencent"
+    - product: Tencent Yuanbao chatbot
+      company: Tencent
       year_deployed: 2024
   investment_angle: |
     Tencent's late but full entry into the open-weight LLM race.
@@ -53,14 +60,16 @@ public_view:
     Made it three Chinese hyperscalers (Alibaba, DeepSeek/Tencent)
     shipping frontier-scale open MoE — a market structure unique to
     China through 2024–2026.
-
 citations:
   - type: paper
     key: tencent2024hunyuan
-    title: "Hunyuan-Large: An Open-Source MoE Model with 52 Billion Activated Parameters"
+    title: >-
+      Hunyuan-Large: An Open-Source MoE Model with 52 Billion Activated
+      Parameters
     year: 2024
-    arxiv: "2411.02265"
-    url: "https://arxiv.org/abs/2411.02265"
+    arxiv: '2411.02265'
+    url: 'https://arxiv.org/abs/2411.02265'
+graph_featured: true
 ---
 
 ## What it shipped

@@ -1,41 +1,76 @@
 ---
 slug: claude-3-7-sonnet
-title: "Claude 3.7 Sonnet — Hybrid Reasoning Model"
-date: 2025-02-24
+title: Claude 3.7 Sonnet — Hybrid Reasoning Model
+date: '2025-02-24'
 era: reasoning
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-3-5-sonnet
-    type: scales
-    note: "Same tier; adds extended-thinking mode for inference-time reasoning"
+    type: builds_on
+    note: >-
+      [scales] Same tier; adds extended-thinking mode for inference-time
+      reasoning
   - to: o1
     type: competes_with
-    note: "Hybrid approach: same model toggles between standard and reasoning modes (vs OpenAI's separate o-series)"
+    note: >-
+      Hybrid approach: same model toggles between standard and reasoning modes
+      (vs OpenAI's separate o-series)
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 8
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + extended-thinking RL post-training"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + extended-thinking RL post-training
   context_window: 200000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://www.anthropic.com/news/claude-3-7-sonnet'
+  availability:
+    - api
+    - product
   benchmarks:
-    - name: "SWE-bench Verified (extended thinking)"
-      score: "70.3%"
-      vs_baseline: "Claude 3.5 Sonnet 49.0%, o3-mini 49.3%"
-    - name: "AIME 2024"
-      score: "80.0%"
-      vs_baseline: "o1 83.3%, DeepSeek R1 79.8%"
-    - name: "GPQA Diamond"
-      score: "84.8%"
-      vs_baseline: "o1 78.0%, Claude 3.5 Sonnet 65.0%"
-    - name: "MMLU"
-      score: "88.7%"
-  homepage: "https://www.anthropic.com/news/claude-3-7-sonnet"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '34.70'
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: Coding · AA Coding Index
+      score: '27.60'
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: Coding · SciCode
+      score: 40.3% (37.6–40.3%)
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: Agentic · Terminal-Bench Hard
+      score: 21.2%
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: MMLU-Pro
+      score: 83.7% (80.3–83.7%)
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: GPQA
+      score: 77.2% (65.6–77.2%)
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: HLE
+      score: 10.3% (4.8–10.3%)
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+  aa_url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     The first Claude model that can switch between fast standard
@@ -50,14 +85,14 @@ public_view:
     behavior for the road. OpenAI's approach was a sedan and a
     sports car; Anthropic's was a hybrid you toggle.
   applications:
-    - product: "Claude Code (CLI agentic dev tool)"
-      company: "Anthropic"
+    - product: Claude Code (CLI agentic dev tool)
+      company: Anthropic
       year_deployed: 2025
-    - product: "Cursor / Windsurf default coding model"
-      company: "Anysphere / Codeium"
+    - product: Cursor / Windsurf default coding model
+      company: Anysphere / Codeium
       year_deployed: 2025
-    - product: "Devin (Cognition AI)"
-      company: "Cognition"
+    - product: Devin (Cognition AI)
+      company: Cognition
       year_deployed: 2025
   investment_angle: |
     Claude 3.7 Sonnet's SWE-bench Verified score (70.3%) was a 21-point
@@ -74,21 +109,15 @@ public_view:
     demo and started being a measurable share of real engineering
     work. The SWE-bench Verified leaderboard from Q1 2025 onward
     reads like an industry transition.
-
 citations:
   - type: release
     key: anthropic2025claude37
-    title: "Claude 3.7 Sonnet and Claude Code"
+    title: Claude 3.7 Sonnet and Claude Code
     year: 2025
-    venue: "Anthropic Blog"
-    url: "https://www.anthropic.com/news/claude-3-7-sonnet"
+    venue: Anthropic Blog
+    url: 'https://www.anthropic.com/news/claude-3-7-sonnet'
+graph_featured: true
 ---
-
-## What it is
-
-A successor to Claude 3.5 Sonnet (October 2024 update) that introduces a "hybrid" reasoning architecture: the same model can produce fast standard responses or, when prompted with the `extended_thinking` API parameter, generate long internal reasoning traces before responding (similar to o1's approach but exposed as a per-request toggle).
-
-The extended-thinking mode is fully visible to the API caller — the reasoning trace is returned alongside the final answer, addressing a major criticism of OpenAI's o1 (hidden reasoning).
 
 ## Hybrid vs separate-model approach
 

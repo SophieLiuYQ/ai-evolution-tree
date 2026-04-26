@@ -1,26 +1,34 @@
 ---
 slug: ltx-2
-title: "LTX-2 — Lightricks' Open Video + Audio Model"
-date: 2026-01-22
+title: LTX-2 — Lightricks' Open Video + Audio Model
+date: '2026-01-22'
 era: multimodal
-category: [generative, multimodal]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: hunyuan-video
     type: competes_with
-    note: "Open-weight video peer; LTX-2 adds 5B audio model + 4K/50fps under Apache 2.0"
+    note: >-
+      Open-weight video peer; LTX-2 adds 5B audio model + 4K/50fps under Apache
+      2.0
 authors:
-  - "Lightricks Team"
-org: "Lightricks"
+  - Lightricks Team
+org: Lightricks
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "19B (14B video + 5B audio)"
-  architecture: "DiT video + diffusion audio"
+  parameters: 19B (14B video + 5B audio)
+  architecture: DiT video + diffusion audio
   release_type: open_weights
-  modalities: [vision, generative]
-  homepage: "https://www.lightricks.com/ltx-studio"
-  github: "https://github.com/Lightricks/LTX-Video"
-
+  modalities:
+    - vision
+    - generative
+  github: 'https://github.com/Lightricks/LTX-Video'
+  availability:
+    - open_weights
+    - api
 public_view:
   plain_english: |
     Lightricks (the Israeli company behind Photoleap) released LTX-2
@@ -33,11 +41,11 @@ public_view:
     get a complete videos-with-sound generator without stitching
     multiple models together.
   applications:
-    - product: "LTX Studio (creator app)"
-      company: "Lightricks"
+    - product: LTX Studio (creator app)
+      company: Lightricks
       year_deployed: 2026
-    - product: "Hugging Face / fal.ai self-hosted"
-      company: "Multiple"
+    - product: Hugging Face / fal.ai self-hosted
+      company: Multiple
       year_deployed: 2026
   investment_angle: |
     Lightricks is profitable on the Photoleap consumer-app franchise,
@@ -49,14 +57,14 @@ public_view:
     "open Sora 2 alternative" — closed competitors were already
     shipping synchronized audio (Sora 2, Veo 3, Kling 3); LTX-2 made
     the same combination open.
-
 citations:
   - type: release
     key: lightricks2026ltx2
-    title: "LTX-2 Release"
+    title: LTX-2 Release
     year: 2026
-    venue: "Lightricks Blog"
-    url: "https://www.lightricks.com/blog/ltx-2"
+    venue: Lightricks Blog
+    url: 'https://www.lightricks.com/blog/ltx-2'
+graph_featured: true
 ---
 
 ## LTX-2 spec

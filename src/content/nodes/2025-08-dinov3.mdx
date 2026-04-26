@@ -1,26 +1,32 @@
 ---
 slug: dinov3
-title: "DINOv3 — Meta's Self-Supervised Vision Foundation"
-date: 2025-08-13
+title: DINOv3 — Meta's Self-Supervised Vision Foundation
+date: '2025-08-13'
 era: multimodal
-category: [cv, training]
+category:
+  - cv
+  - training
 relationships:
   - to: clip
     type: competes_with
-    note: "Both are foundation visual encoders; DINOv3 is purely self-supervised (no captions), unlike CLIP's image-text contrast"
+    note: >-
+      Both are foundation visual encoders; DINOv3 is purely self-supervised (no
+      captions), unlike CLIP's image-text contrast
 authors:
-  - "Meta AI Team"
-org: "Meta AI"
+  - Meta AI Team
+org: Meta AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "1.7B (ViT-7B distilled to family)"
-  architecture: "Self-supervised ViT + DINO objective with Gram anchoring"
+  parameters: 1.7B (ViT-7B distilled to family)
+  architecture: Self-supervised ViT + DINO objective with Gram anchoring
   release_type: open_weights
-  modalities: [vision]
-  homepage: "https://ai.meta.com/dinov3/"
-  github: "https://github.com/facebookresearch/dinov3"
-
+  modalities:
+    - vision
+  homepage: 'https://ai.meta.com/dinov3/'
+  github: 'https://github.com/facebookresearch/dinov3'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     Meta's August 2025 self-supervised vision encoder — a vision
@@ -35,14 +41,14 @@ public_view:
     who watches a billion images and figures out what matters by
     looking, no captions needed.
   applications:
-    - product: "Meta SAM 3 / 3D backbone"
-      company: "Meta"
+    - product: Meta SAM 3 / 3D backbone
+      company: Meta
       year_deployed: 2025
-    - product: "Open computer-vision research"
-      company: "Universities + open-source"
+    - product: Open computer-vision research
+      company: Universities + open-source
       year_deployed: 2025
-    - product: "Self-driving stack feature extraction"
-      company: "Multiple AV companies"
+    - product: Self-driving stack feature extraction
+      company: Multiple AV companies
       year_deployed: 2025
   investment_angle: |
     Foundation visual encoders are infrastructure — the moat is
@@ -55,14 +61,14 @@ public_view:
     image-text contrastive (CLIP) on most non-zero-shot CV tasks.
     Combined with SAM 3 (segmentation) and DINOv3, Meta now anchors
     the academic CV stack the way it anchored NLP with Llama.
-
 citations:
   - type: paper
     key: meta2025dinov3
-    title: "DINOv3"
+    title: DINOv3
     year: 2025
-    arxiv: "2508.10104"
-    url: "https://arxiv.org/abs/2508.10104"
+    arxiv: '2508.10104'
+    url: 'https://arxiv.org/abs/2508.10104'
+graph_featured: true
 ---
 
 ## What's distinctive

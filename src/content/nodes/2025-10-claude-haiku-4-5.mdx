@@ -1,36 +1,56 @@
 ---
 slug: claude-haiku-4-5
-title: "Claude Haiku 4.5 — Fast Tier Reasoning Capable"
-date: 2025-10-01
+title: Claude Haiku 4.5 — Fast Tier Reasoning Capable
+date: '2025-10-01'
 era: agents
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-4
     type: builds_on
-    note: "Fast tier of the Claude 4.x family; reasoning-mode capable at Haiku price point"
+    note: >-
+      Fast tier of the Claude 4.x family; reasoning-mode capable at Haiku price
+      point
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed (small)"
-  architecture: "Decoder-only transformer + extended thinking + tool use"
+  parameters: undisclosed (small)
+  architecture: Decoder-only transformer + extended thinking + tool use
   context_window: 200000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://www.anthropic.com/news/claude-haiku-4-5'
+  availability:
+    - api
+    - product
   benchmarks:
-    - name: "MMLU"
-      score: "~85%"
-      vs_baseline: "Claude 3.5 Haiku 75.2%, GPT-4o-mini 82.0%"
-    - name: "SWE-bench Verified"
-      score: "~50%"
-      vs_baseline: "Haiku 3.5 ~30%; Claude Sonnet 4 73.6%"
-    - name: "Cost / 1M output tokens"
-      score: "$1-2 (estimated)"
-      vs_baseline: "Sonnet 4 $15, Opus 4 $75"
-  homepage: "https://www.anthropic.com/news/claude-haiku-4-5"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '57.28'
+      vs_baseline: 'Rank #2 of 86 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Coding · SciCode
+      score: 54.5%
+      vs_baseline: 'Rank #2 of 85 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: Agentic · Terminal-Bench Hard
+      score: 51.5%
+      vs_baseline: 'Rank #2 of 83 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/terminalbench-hard'
+  aa_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Anthropic's October 2025 small/fast tier release. The notable
@@ -44,14 +64,14 @@ public_view:
     used to be cheap-and-basic, now delivers most of the premium
     capability at a fraction of the price.
   applications:
-    - product: "Claude Code (default for sub-routine tasks)"
-      company: "Anthropic"
+    - product: Claude Code (default for sub-routine tasks)
+      company: Anthropic
       year_deployed: 2025
-    - product: "Cursor / Windsurf (background agents)"
-      company: "Various"
+    - product: Cursor / Windsurf (background agents)
+      company: Various
       year_deployed: 2025
-    - product: "High-volume classification + extraction at scale"
-      company: "Various enterprise"
+    - product: High-volume classification + extraction at scale
+      company: Various enterprise
       year_deployed: 2025
   investment_angle: |
     Haiku 4.5 was the model behind Anthropic's late-2025
@@ -66,19 +86,15 @@ public_view:
     economically viable for most use cases. Where Opus is the
     capability ceiling and Sonnet is the production workhorse,
     Haiku 4.5 is the "let it run all the time" tier.
-
 citations:
   - type: release
     key: anthropic2025haiku45
-    title: "Claude Haiku 4.5"
+    title: Claude Haiku 4.5
     year: 2025
-    venue: "Anthropic"
-    url: "https://www.anthropic.com/news/claude-haiku-4-5"
+    venue: Anthropic
+    url: 'https://www.anthropic.com/news/claude-haiku-4-5'
+graph_featured: true
 ---
-
-## What it is
-
-The fast/cheap tier of the Claude 4.x family, released October 1, 2025 (the date encoded in its model ID `claude-haiku-4-5-20251001`). Architecturally a smaller-parameter member of the Claude 4 family, but capable of extended-thinking mode — a tier feature that prior Claude generations restricted to Sonnet and Opus.
 
 ## Claude 4.x tier matrix (Q4 2025 → 2026)
 

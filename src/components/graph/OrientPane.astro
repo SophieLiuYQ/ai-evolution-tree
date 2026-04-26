@@ -15,6 +15,19 @@ interface Props {
 const { layout, orient, sortMode, yearsTotal, hidden = false } = Astro.props;
 const totalGroups = layout.bands.length;
 
+// "Frontier" highlight: the latest full year (latest < current year).
+// Matches the reference UI where 2025 is highlighted even if 2026 has
+// early entries.
+const yearKeys = layout.bands
+  .map((b) => (typeof b.key === "number" ? b.key : Number(b.key)))
+  .filter((y) => Number.isFinite(y)) as number[];
+const nowYear = new Date().getFullYear();
+const frontierYear = (() => {
+  const past = yearKeys.filter((y) => y < nowYear);
+  if (past.length) return Math.max(...past);
+  return yearKeys.length ? Math.max(...yearKeys) : undefined;
+})();
+
 // Pre-fit cross-axis labels: wrap on word boundary first, shrink font
 // only if a single word still overflows. V cross strip is short (56px)
 // so cap at 2 lines; H cross strip is full row height so allow 3 lines.
@@ -28,7 +41,7 @@ const crossFitted = layout.crossBands?.map((cb) => {
 ---
 
 <div
-  class="orient-pane w-full overflow-auto bg-slate-50"
+  class="orient-pane w-full overflow-auto"
   data-orient={orient}
   data-sort={sortMode}
   style={hidden ? "display:none" : ""}
@@ -72,7 +85,14 @@ const crossFitted = layout.crossBands?.map((cb) => {
         first so cards and edges draw on top. NOT sticky. */}
     <g class="bands-bg">
       {layout.bands.map((b) => (
-        <rect x={b.rect.x} y={b.rect.y} width={b.rect.width} height={b.rect.height} fill={bandColor(b.idx, totalGroups)} rx={orient === "h" ? "6" : "0"} />
+        <rect
+          x={b.rect.x}
+          y={b.rect.y}
+          width={b.rect.width}
+          height={b.rect.height}
+          fill={bandColor(b.key, b.idx, frontierYear)}
+          rx={orient === "h" ? "6" : "0"}
+        />
       ))}
     </g>
 
@@ -93,8 +113,8 @@ const crossFitted = layout.crossBands?.map((cb) => {
         edge-labels so they overlay everything when sticky-translated. */}
     <g class="bands-header">
       {orient === "h"
-        ? <rect x="0" y="0" width={layout.W} height={H_TOP_PAD - 18} fill="#f8fafc" />
-        : <rect x="0" y="0" width={V_LEFT_PAD - 8} height={layout.H} fill="#f8fafc" />}
+        ? <rect x="0" y="0" width={layout.W} height={H_TOP_PAD - 18} fill="var(--graph-canvas-bg)" />
+        : <rect x="0" y="0" width={V_LEFT_PAD - 8} height={layout.H} fill="var(--graph-canvas-bg)" />}
       {orient === "h"
         ? layout.bands.map((b) => {
             // Center year label vertically in the actual header height
@@ -102,9 +122,18 @@ const crossFitted = layout.crossBands?.map((cb) => {
             const cy = b.header.y + b.header.height / 2;
             return (
               <g class="band-header" data-key={String(b.key)}>
-                <rect x={b.header.x} y={b.header.y} width={b.header.width} height={b.header.height} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
-                <text x={b.header.x + b.header.width / 2} y={cy + 1} text-anchor="middle" class="axis-label-primary" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
-                <text x={b.header.x + b.header.width / 2} y={cy + 16} text-anchor="middle" class="axis-label-secondary" fill="#64748b">
+                <rect
+                  x={b.header.x}
+                  y={b.header.y}
+                  width={b.header.width}
+                  height={b.header.height}
+                  rx="6"
+                  fill="var(--graph-surface)"
+                  stroke={bandHeader(b.key, frontierYear)}
+                  stroke-width="1.25"
+                />
+                <text x={b.header.x + b.header.width / 2} y={cy + 1} text-anchor="middle" class="axis-label-primary" fill={bandHeader(b.key, frontierYear)}>{b.label}</text>
+                <text x={b.header.x + b.header.width / 2} y={cy + 16} text-anchor="middle" class="axis-label-secondary">
                   {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
                 </text>
               </g>
@@ -112,9 +141,18 @@ const crossFitted = layout.crossBands?.map((cb) => {
           })
         : layout.bands.map((b) => (
             <g class="band-header" data-key={String(b.key)}>
-              <rect x={b.header.x + 8} y={b.header.y + 8} width={b.header.width - 8} height={b.header.height - 16} rx="6" fill="white" stroke={bandHeader(b.idx, totalGroups)} stroke-width="1.25" />
-              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" class="axis-label-primary" fill={bandHeader(b.idx, totalGroups)}>{b.label}</text>
-              <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" class="axis-label-secondary" fill="#64748b">
+              <rect
+                x={b.header.x + 8}
+                y={b.header.y + 8}
+                width={b.header.width - 8}
+                height={b.header.height - 16}
+                rx="6"
+                fill="var(--graph-surface)"
+                stroke={bandHeader(b.key, frontierYear)}
+                stroke-width="1.25"
+              />
+              <text x={b.header.x + 16} y={b.header.y + 38} text-anchor="start" class="axis-label-primary" fill={bandHeader(b.key, frontierYear)}>{b.label}</text>
+              <text x={b.header.x + 16} y={b.header.y + 56} text-anchor="start" class="axis-label-secondary">
                 {b.nodeCount} {b.nodeCount === 1 ? "node" : "nodes"}
               </text>
             </g>
@@ -133,8 +171,8 @@ const crossFitted = layout.crossBands?.map((cb) => {
             covers the cross-axis labels AND the year-band color stripe
             that would otherwise peek between sticky strip and cards. */}
         {orient === "v"
-          ? <rect x="0" y="0" width={layout.W} height="96" fill="#f8fafc" />
-          : <rect x="0" y="0" width="184" height={layout.H} fill="#f8fafc" />}
+          ? <rect x="0" y="0" width={layout.W} height="96" fill="var(--graph-canvas-bg)" />
+          : <rect x="0" y="0" width="184" height={layout.H} fill="var(--graph-canvas-bg)" />}
         {orient === "v"
           ? crossFitted!.map(({ cb, lines, fontSize }) => {
               const cx = cb.header.x + cb.header.width / 2;
@@ -144,8 +182,8 @@ const crossFitted = layout.crossBands?.map((cb) => {
               const startY = cy - blockH / 2 + fontSize * 0.85;
               return (
                 <g class="cross-band" data-key={String(cb.key)}>
-                  <rect x={cb.header.x + 4} y={cb.header.y} width={cb.header.width - 8} height={cb.header.height - 4} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1.25" />
-                  <text x={cx} text-anchor="middle" class="axis-label-primary" style={`font-size:${fontSize}px`} fill={bandHeader(cb.idx, layout.crossBands!.length)}>
+                  <rect x={cb.header.x + 4} y={cb.header.y} width={cb.header.width - 8} height={cb.header.height - 4} rx="6" fill="var(--graph-surface)" stroke={bandHeader(cb.key)} stroke-width="1.25" />
+                  <text x={cx} text-anchor="middle" class="axis-label-primary" style={`font-size:${fontSize}px`} fill={bandHeader(cb.key)}>
                     {lines.map((line, i) => (
                       <tspan x={cx} y={startY + i * fontSize * 1.05}>{line}</tspan>
                     ))}
@@ -160,8 +198,8 @@ const crossFitted = layout.crossBands?.map((cb) => {
               const tx = cb.header.x + 12;
               return (
                 <g class="cross-band" data-key={String(cb.key)}>
-                  <rect x={cb.header.x} y={cb.header.y + 4} width={cb.header.width} height={cb.header.height - 8} rx="6" fill="white" stroke={bandHeader(cb.idx, layout.crossBands!.length)} stroke-width="1.25" />
-                  <text x={tx} text-anchor="start" class="axis-label-primary" style={`font-size:${fontSize}px`} fill={bandHeader(cb.idx, layout.crossBands!.length)}>
+                  <rect x={cb.header.x} y={cb.header.y + 4} width={cb.header.width} height={cb.header.height - 8} rx="6" fill="var(--graph-surface)" stroke={bandHeader(cb.key)} stroke-width="1.25" />
+                  <text x={tx} text-anchor="start" class="axis-label-primary" style={`font-size:${fontSize}px`} fill={bandHeader(cb.key)}>
                     {lines.map((line, i) => (
                       <tspan x={tx} y={startY + i * fontSize * 1.05}>{line}</tspan>
                     ))}
@@ -175,7 +213,17 @@ const crossFitted = layout.crossBands?.map((cb) => {
 </div>
 
 <style>
-  .orient-pane { height: 100%; }
+  .orient-pane {
+    height: 100%;
+    background: var(--graph-canvas-bg, var(--bg));
+    --graph-surface: var(--bg-soft);
+    --graph-canvas-bg: var(--bg);
+    --graph-muted: var(--fg-muted);
+    /* Year-band stripes should be visible but subtle (match reference UI). */
+    --graph-band-alt: rgba(15, 23, 42, 0.028);
+    /* Frontier year highlight: keep it neutral (no green). */
+    --graph-band-highlight: rgba(15, 23, 42, 0.035);
+  }
   .edge { transition: opacity 0.15s ease; }
   .edge path { pointer-events: stroke; }
   .edge-label {
@@ -198,6 +246,6 @@ const crossFitted = layout.crossBands?.map((cb) => {
     font-size: 11px;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
     font-weight: 400;
-    fill: #64748b;
+    fill: var(--graph-muted, var(--fg-muted));
   }
 </style>

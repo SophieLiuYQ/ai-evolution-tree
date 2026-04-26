@@ -1,26 +1,40 @@
 ---
 slug: flux-2
-title: "FLUX.2 — Black Forest Labs' Open-Weight Image Frontier"
-date: 2025-11-25
+title: FLUX.2 — Black Forest Labs' Open-Weight Image Frontier
+date: '2025-11-25'
 era: multimodal
-category: [generative, multimodal, cv]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: stable-diffusion
     type: open_alt_to
-    note: "Black Forest Labs is the SD-team-departing successor; FLUX is the spiritual heir to Stable Diffusion in the open ecosystem"
+    note: >-
+      Black Forest Labs is the SD-team-departing successor; FLUX is the
+      spiritual heir to Stable Diffusion in the open ecosystem
 authors:
-  - "Black Forest Labs Team"
-org: "Black Forest Labs"
+  - Black Forest Labs Team
+org: Black Forest Labs
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "5 variants — klein 4B/9B (Apache 2.0), schnell, dev 32B, pro"
-  architecture: "Rectified-flow transformer (MMDiT)"
+  parameters: '5 variants — klein 4B/9B (Apache 2.0), schnell, dev 32B, pro'
+  architecture: Rectified-flow transformer (MMDiT)
   release_type: open_weights
-  modalities: [vision, generative]
-  homepage: "https://bfl.ai/blog/flux-2"
-  github: "https://github.com/black-forest-labs/flux"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://bfl.ai/blog/flux-2'
+  github: 'https://github.com/black-forest-labs/flux'
+  availability:
+    - api
+    - product
+  benchmarks:
+    - name: Generation · Image Arena Elo
+      score: '1205'
+      vs_baseline: 'Rank #6 of 48 · Top #6 of 48 · AA · Image Arena'
+      source_url: 'https://artificialanalysis.ai/text-to-image'
 public_view:
   plain_english: |
     Black Forest Labs' November 2025 image model — five variants
@@ -33,14 +47,14 @@ public_view:
     open ethos, but built on rectified-flow architecture instead of
     diffusion. Like a band reuniting under a new label.
   applications:
-    - product: "FLUX.1 Pro / FLUX.2 Pro API (BFL)"
-      company: "Black Forest Labs"
+    - product: FLUX.1 Pro / FLUX.2 Pro API (BFL)
+      company: Black Forest Labs
       year_deployed: 2024
-    - product: "fal.ai / Replicate / RunDiffusion hosted"
-      company: "Multiple"
+    - product: fal.ai / Replicate / RunDiffusion hosted
+      company: Multiple
       year_deployed: 2024
-    - product: "ComfyUI / Diffusers self-hosted"
-      company: "Multiple"
+    - product: ComfyUI / Diffusers self-hosted
+      company: Multiple
       year_deployed: 2024
   investment_angle: |
     BFL raised $200M+ at $1B+ valuation on the back of FLUX.1's open
@@ -52,14 +66,14 @@ public_view:
     services on technical quality (text rendering, prompt adherence).
     Continues the post-Stable-Diffusion lineage of fully-open
     foundation models in the visual domain.
-
 citations:
   - type: release
     key: bfl2025flux2
-    title: "FLUX.2 Release"
+    title: FLUX.2 Release
     year: 2025
-    venue: "Black Forest Labs Blog"
-    url: "https://blackforestlabs.ai/announcing-flux-2/"
+    venue: Black Forest Labs Blog
+    url: 'https://blackforestlabs.ai/announcing-flux-2/'
+graph_featured: true
 ---
 
 ## The 5 variants

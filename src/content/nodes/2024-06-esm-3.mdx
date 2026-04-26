@@ -1,26 +1,33 @@
 ---
 slug: esm-3
-title: "ESM-3 — Generative Protein Language Model"
-date: 2024-06-25
+title: ESM-3 — Generative Protein Language Model
+date: '2024-06-25'
 era: scale-era
-category: [generative, training]
+category:
+  - science
+  - generative
+  - nlp
 relationships:
   - to: alphafold-2
     type: competes_with
-    note: "Different approach to proteins — ESM is a language model on sequences; AlphaFold predicts structure"
+    note: >-
+      Different approach to proteins — ESM is a language model on sequences;
+      AlphaFold predicts structure
 authors:
-  - "EvolutionaryScale Team"
-org: "Meta AI"
+  - EvolutionaryScale Team
+org: Meta AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "1.4B / 7B / 98B"
-  architecture: "Multi-track protein language model (sequence + structure + function)"
+  parameters: 1.4B / 7B / 98B
+  architecture: Multi-track protein language model (sequence + structure + function)
   release_type: open_weights
-  modalities: [text]
-  homepage: "https://www.evolutionaryscale.ai/blog/esm3-release"
-  github: "https://github.com/evolutionaryscale/esm"
-
+  modalities:
+    - text
+  homepage: 'https://www.evolutionaryscale.ai/blog/esm3-release'
+  github: 'https://github.com/evolutionaryscale/esm'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     EvolutionaryScale (Meta spinoff) released ESM-3 in June 2024 — a
@@ -32,14 +39,14 @@ public_view:
     AlphaFold reads existing proteins. ESM-3 writes new ones.
     Different jobs, both essential to AI-driven biology.
   applications:
-    - product: "ESM-3 (open weights via EvolutionaryScale)"
-      company: "EvolutionaryScale"
+    - product: ESM-3 (open weights via EvolutionaryScale)
+      company: EvolutionaryScale
       year_deployed: 2024
-    - product: "Drug-design startups (Generate Biomedicines, etc.)"
-      company: "Multiple"
+    - product: 'Drug-design startups (Generate Biomedicines, etc.)'
+      company: Multiple
       year_deployed: 2024
-    - product: "Academic protein-engineering labs"
-      company: "Multiple universities"
+    - product: Academic protein-engineering labs
+      company: Multiple universities
       year_deployed: 2024
   investment_angle: |
     EvolutionaryScale spun out of Meta in 2024 with $142M+ in
@@ -52,14 +59,14 @@ public_view:
     Baker Lab's RFdiffusion + ProteinMPNN, established the open-
     source protein-engineering toolkit that competes with closed
     Google offerings.
-
 citations:
   - type: paper
     key: evolutionary2024esm3
-    title: "Simulating 500 million years of evolution with a language model"
+    title: Simulating 500 million years of evolution with a language model
     year: 2024
-    venue: "Science"
-    url: "https://www.science.org/doi/10.1126/science.ads0018"
+    venue: Science
+    url: 'https://www.science.org/doi/10.1126/science.ads0018'
+graph_featured: true
 ---
 
 ## ESM family

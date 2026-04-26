@@ -1,32 +1,80 @@
 ---
 slug: gpt-oss
-title: "gpt-oss — OpenAI's First Open-Weight Models in 6 Years"
-date: 2025-08-05
+title: gpt-oss — OpenAI's First Open-Weight Models in 6 Years
+date: '2025-08-05'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: gpt-2
     type: open_alt_to
-    note: "OpenAI's first major open-weight release since GPT-2 (2019); positions against Llama / Qwen / DeepSeek"
+    note: >-
+      OpenAI's first major open-weight release since GPT-2 (2019); positions
+      against Llama / Qwen / DeepSeek
+  - to: minimax-m2
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "OpenAI Team"
-org: "OpenAI"
+  - OpenAI Team
+org: OpenAI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "20B and 120B"
-  architecture: "Decoder-only transformer; Apache 2.0"
+  parameters: 20B and 120B
+  architecture: Decoder-only transformer; Apache 2.0
   context_window: 131072
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU (gpt-oss-120B)"
-      score: "85.4%"
-    - name: "AIME 2024"
-      score: "76.7%"
-  homepage: "https://openai.com/index/introducing-gpt-oss/"
-  github: "https://github.com/openai/gpt-oss"
-
+    - name: Coding · LiveCodeBench
+      score: 87.8%
+      vs_baseline: 'Rank #2 of 47 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Intelligence · AIME 2025
+      score: 93.4%
+      vs_baseline: 'Rank #3 of 45 · Top 10% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
+    - name: Intelligence · AA Intelligence Index
+      score: '33.30'
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: Coding · AA Coding Index
+      score: '28.60'
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: Coding · SciCode
+      score: 38.9% (34.0–38.9%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: Agentic · Terminal-Bench Hard
+      score: 23.5% (4.5–23.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: MMLU-Pro
+      score: 80.8% (71.8–80.8%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: GPQA
+      score: 78.2% (61.1–78.2%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: HLE
+      score: 18.5% (5.1–18.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: Speed · Output tok/s
+      score: '214'
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+    - name: Price ($/M tokens)
+      score: $0.15 in / $0.60 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+  homepage: 'https://openai.com/index/introducing-gpt-oss/'
+  github: 'https://github.com/openai/gpt-oss'
+  availability:
+    - open_weights
+    - api
+  aa_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/openai/gpt-oss-120b'
 public_view:
   plain_english: |
     OpenAI's first open-weight language models since GPT-2 in 2019 —
@@ -38,14 +86,14 @@ public_view:
     that had defined itself by closed products yielding ground to
     keep developers in its ecosystem.
   applications:
-    - product: "Hugging Face (gpt-oss-20B / 120B)"
-      company: "OpenAI"
+    - product: Hugging Face (gpt-oss-20B / 120B)
+      company: OpenAI
       year_deployed: 2025
-    - product: "Together AI / Fireworks / Groq hosted"
-      company: "Multiple"
+    - product: Together AI / Fireworks / Groq hosted
+      company: Multiple
       year_deployed: 2025
-    - product: "Self-hosted via vLLM / SGLang"
-      company: "Multiple"
+    - product: Self-hosted via vLLM / SGLang
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     Strategic concession more than a competitive shot — gpt-oss-120B
@@ -58,19 +106,13 @@ public_view:
     against the closed-API model. Every Western frontier lab now
     ships at least some open models (Anthropic the holdout). The
     open/closed line is now PRODUCT TIER, not company identity.
-
 citations:
   - type: release
     key: openai2025gptoss
-    title: "Introducing gpt-oss"
+    title: Introducing gpt-oss
     year: 2025
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/introducing-gpt-oss/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/introducing-gpt-oss/'
+graph_featured: true
 ---
 
-## What it is
-
-- gpt-oss-20B and gpt-oss-120B
-- Apache 2.0 license — no usage restrictions
-- 131K context, decoder-only transformer
-- Optimized for Triton-Lang inference; ships with reference vLLM and Ollama support

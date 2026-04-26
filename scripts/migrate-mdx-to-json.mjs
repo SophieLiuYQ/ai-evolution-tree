@@ -44,6 +44,20 @@ async function main() {
     (f) => f.endsWith(".mdx") && !f.startsWith("_"),
   );
 
+  // Two-tier graph compaction:
+  // - Always exclude nodes with `graph_hidden: true`
+  // - If any node is marked `graph_featured: true`, export ONLY featured nodes
+  //   (keeps the graph readable: one representative per company-year).
+  let hasFeatured = false;
+  for (const file of files) {
+    const raw = await readFile(join(NODES_DIR, file), "utf-8");
+    const { data: fm } = matter(raw);
+    if (fm?.graph_featured) {
+      hasFeatured = true;
+      break;
+    }
+  }
+
   const nodes = [];
   const edges = [];
 
@@ -51,6 +65,8 @@ async function main() {
     const path = join(NODES_DIR, file);
     const raw = await readFile(path, "utf-8");
     const { data: frontmatter, content: bodyMd } = matter(raw);
+    if (frontmatter.graph_hidden) continue;
+    if (hasFeatured && !frontmatter.graph_featured) continue;
 
     // Capture all node fields, normalize date
     const node = {

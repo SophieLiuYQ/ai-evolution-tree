@@ -1,25 +1,39 @@
 ---
 slug: runway-gen-4
-title: "Runway Gen-4.5 — Video Arena Leader"
-date: 2025-12-10
+title: Runway Gen-4.5 — Video Arena Leader
+date: '2025-12-10'
 era: multimodal
-category: [generative, multimodal]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: sora-2
-    type: surpasses
-    note: "Tops Artificial Analysis text-to-video arena (~1247 Elo) ahead of Sora 2 in late 2025"
+    type: competes_with
+    note: >-
+      [surpasses] Tops Artificial Analysis text-to-video arena (~1247 Elo) ahead
+      of Sora 2 in late 2025
 authors:
-  - "Runway Research"
-org: "Runway"
+  - Runway Research
+org: Runway
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "diffusion / flow with multi-shot consistency"
+  parameters: undisclosed
+  architecture: diffusion / flow with multi-shot consistency
   release_type: product
-  modalities: [vision, generative]
-  homepage: "https://runwayml.com/research/introducing-runway-gen-4"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://runwayml.com/research/introducing-runway-gen-4'
+  availability:
+    - api
+    - product
+  benchmarks:
+    - name: Video · Video Arena Elo
+      score: '1270'
+      vs_baseline: 'Rank #8 of 24 · Top #8 of 24 · AA · Video Arena'
+      source_url: 'https://artificialanalysis.ai/video/leaderboard/text-to-video'
 public_view:
   plain_english: |
     Runway's December 2025 video model — currently leads the
@@ -33,14 +47,14 @@ public_view:
     you compose shots, control camera moves, and maintain identity
     across cuts.
   applications:
-    - product: "Runway web app"
-      company: "Runway"
+    - product: Runway web app
+      company: Runway
       year_deployed: 2025
-    - product: "Act-One performance capture"
-      company: "Runway"
+    - product: Act-One performance capture
+      company: Runway
       year_deployed: 2024
-    - product: "Hollywood production tools"
-      company: "Lionsgate / Disney partners"
+    - product: Hollywood production tools
+      company: Lionsgate / Disney partners
       year_deployed: 2024
   investment_angle: |
     Runway has $300M+ raised and a partnership with Lionsgate to
@@ -52,14 +66,14 @@ public_view:
     against which Sora 2, Veo 3.1, and Chinese contenders (Kling,
     Seedance, Hailuo) are judged. Established that AI video can be a
     cinematographic tool, not just a TikTok clip generator.
-
 citations:
   - type: release
     key: runway2025gen4
-    title: "Runway Gen-4.5"
+    title: Runway Gen-4.5
     year: 2025
-    venue: "Runway Research"
-    url: "https://runwayml.com/research/gen-4-5"
+    venue: Runway Research
+    url: 'https://runwayml.com/research/gen-4-5'
+graph_featured: true
 ---
 
 ## Video-arena standings (Dec 2025)

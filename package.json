@@ -14,7 +14,11 @@
     "astro": "astro",
     "check": "astro check",
     "format": "prettier -w .",
-    "graph:export": "node scripts/migrate-mdx-to-json.mjs"
+    "graph:export": "node scripts/migrate-mdx-to-json.mjs",
+    "benchmarks:fetch": "node scripts/fetch-benchmarks.mjs",
+    "benchmarks:dry": "node scripts/fetch-benchmarks.mjs --dry-run --verbose",
+    "companies:bootstrap": "node scripts/bootstrap-companies.mjs",
+    "companies:import-aa": "node scripts/import-aa-catalog.mjs --dry-run"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

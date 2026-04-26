@@ -1,32 +1,39 @@
 ---
 slug: rlhf-preferences
-title: "Deep RL from Human Preferences (Foundational RLHF)"
-date: 2017-06-12
+title: Deep RL from Human Preferences (Foundational RLHF)
+date: '2017-06-12'
 era: alignment
-category: [theory, rl, training]
+category:
+  - theory
+  - rl
+  - training
+  - multimodal
 relationships:
   - to: backpropagation
     type: builds_on
-    note: "Standard policy-gradient RL trained via backprop on a learned reward model"
+    note: Standard policy-gradient RL trained via backprop on a learned reward model
 authors:
-  - "Christiano, P."
-  - "Leike, J."
-  - "Brown, T."
-  - "Martic, M."
-  - "Legg, S."
-  - "Amodei, D."
-org: "OpenAI"
+  - 'Christiano, P.'
+  - 'Leike, J.'
+  - 'Brown, T.'
+  - 'Martic, M.'
+  - 'Legg, S.'
+  - 'Amodei, D.'
+org: OpenAI
 breakthrough_score: 8
 status: foundational
 model_spec:
   release_type: paper
-  modalities: [text, rl]
+  modalities:
+    - text
+    - rl
   benchmarks:
-    - name: "Atari games (from preferences only)"
-      score: "matched/exceeded human-trajectory baselines"
-      vs_baseline: "no hand-coded reward function needed"
-  homepage: "https://arxiv.org/abs/1706.03741"
-
+    - name: Atari games (from preferences only)
+      score: matched/exceeded human-trajectory baselines
+      vs_baseline: no hand-coded reward function needed
+  homepage: 'https://arxiv.org/abs/1706.03741'
+  availability:
+    - research
 public_view:
   plain_english: |
     A 2017 paper showing that you could train a reinforcement learning
@@ -40,11 +47,11 @@ public_view:
     a teacher pairs of essays and ask "which is better?" — and let the
     machine figure out a reward function from the pattern of choices.
   applications:
-    - product: "InstructGPT (2022)"
-      company: "OpenAI"
+    - product: InstructGPT (2022)
+      company: OpenAI
       year_deployed: 2022
-    - product: "ChatGPT, Claude, Gemini, Llama Chat (RLHF lineage)"
-      company: "All major labs"
+    - product: 'ChatGPT, Claude, Gemini, Llama Chat (RLHF lineage)'
+      company: All major labs
       year_deployed: 2022
   investment_angle: |
     The methodological seed of the entire alignment-as-product market.
@@ -58,27 +65,22 @@ public_view:
     RL, 1990s-2010s) and "you can train AI via human judgment" (LLM
     alignment, 2022+). Without this paper, ChatGPT's launch is
     architecturally impossible.
-
 citations:
   - type: paper
     key: christiano2017rlhf
-    title: "Deep Reinforcement Learning from Human Preferences"
-    authors: ["Christiano, P.", "Leike, J.", "Brown, T.", "Martic, M.", "Legg, S.", "Amodei, D."]
+    title: Deep Reinforcement Learning from Human Preferences
+    authors:
+      - 'Christiano, P.'
+      - 'Leike, J.'
+      - 'Brown, T.'
+      - 'Martic, M.'
+      - 'Legg, S.'
+      - 'Amodei, D.'
     year: 2017
-    venue: "NeurIPS"
-    arxiv: "1706.03741"
+    venue: NeurIPS
+    arxiv: '1706.03741'
+graph_featured: true
 ---
-
-## What it is
-
-A reinforcement learning training pipeline that bypasses hand-designed reward functions:
-
-1. Collect pairs of agent behaviors (trajectories).
-2. Ask human annotators which trajectory is better.
-3. Train a neural reward model to predict the human's preference.
-4. Use the reward model as the reward signal for policy gradient RL.
-
-The 2017 paper demonstrated this on Atari games and MuJoCo simulated robotics — the agent could learn to backflip, play Pong, etc., without any hand-coded reward.
 
 ## Why it sat dormant for 5 years
 

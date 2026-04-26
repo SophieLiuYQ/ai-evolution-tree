@@ -1,26 +1,31 @@
 ---
 slug: sam-3
-title: "SAM 3 — Promptable Concept Segmentation"
-date: 2025-11-20
+title: SAM 3 — Promptable Concept Segmentation
+date: '2025-11-20'
 era: multimodal
-category: [cv, generative]
+category:
+  - cv
+  - generative
 relationships:
   - to: dinov3
     type: builds_on
-    note: "SAM 3 uses DINOv3 features as backbone; both are Meta CV foundation stack"
+    note: SAM 3 uses DINOv3 features as backbone; both are Meta CV foundation stack
 authors:
-  - "Meta AI Team"
-org: "Meta AI"
+  - Meta AI Team
+org: Meta AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Promptable segmentation transformer + concept head"
+  parameters: undisclosed
+  architecture: Promptable segmentation transformer + concept head
   release_type: open_weights
-  modalities: [vision]
-  homepage: "https://ai.meta.com/sam3/"
-  github: "https://github.com/facebookresearch/sam2"
-
+  modalities:
+    - vision
+  homepage: 'https://ai.meta.com/sam3/'
+  github: 'https://github.com/facebookresearch/sam2'
+  availability:
+    - open_weights
+    - api
 public_view:
   plain_english: |
     Meta's November 2025 segmentation model — the third generation of
@@ -34,14 +39,14 @@ public_view:
     is "describe what you want and I'll find every instance" — a
     semantic version of click-to-mask.
   applications:
-    - product: "Facebook Marketplace 'View in Room'"
-      company: "Meta"
+    - product: Facebook Marketplace 'View in Room'
+      company: Meta
       year_deployed: 2025
-    - product: "Instagram Edits"
-      company: "Meta"
+    - product: Instagram Edits
+      company: Meta
       year_deployed: 2025
-    - product: "Open CV research / Roboflow"
-      company: "Multiple"
+    - product: Open CV research / Roboflow
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     SAM is Meta's most-cited CV release after Llama. SAM 3's text
@@ -54,14 +59,14 @@ public_view:
     workflows. Pushes toward a future where computer vision is
     "describe what you want" rather than "label thousands of
     examples."
-
 citations:
   - type: release
     key: meta2025sam3
-    title: "SAM 3 — Promptable Concept Segmentation"
+    title: SAM 3 — Promptable Concept Segmentation
     year: 2025
-    venue: "Meta AI Blog"
-    url: "https://ai.meta.com/sam3/"
+    venue: Meta AI Blog
+    url: 'https://ai.meta.com/sam3/'
+graph_featured: true
 ---
 
 ## SAM family

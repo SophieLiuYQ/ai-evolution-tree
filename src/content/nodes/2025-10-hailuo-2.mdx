@@ -1,25 +1,38 @@
 ---
 slug: hailuo-2
-title: "MiniMax Hailuo 02 — Realtime 1080p Video"
-date: 2025-10-15
+title: MiniMax Hailuo 02 — Realtime 1080p Video
+date: '2025-10-15'
 era: multimodal
-category: [generative, multimodal]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: kling-2
     type: competes_with
-    note: "Same Chinese closed-video tier; Hailuo emphasizes NCR architecture and real-time interaction"
+    note: >-
+      Same Chinese closed-video tier; Hailuo emphasizes NCR architecture and
+      real-time interaction
 authors:
-  - "MiniMax Team"
-org: "MiniMax"
+  - MiniMax Team
+org: MiniMax
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "NCR (Non-autoregressive Convolutional Refinement)"
+  parameters: undisclosed
+  architecture: NCR (Non-autoregressive Convolutional Refinement)
   release_type: api
-  modalities: [vision, generative]
-  homepage: "https://hailuoai.video/"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://hailuoai.video/'
+  availability:
+    - api
+  benchmarks:
+    - name: Video · Video Arena Elo
+      score: '1227'
+      vs_baseline: 'Rank #10 of 24 · Top #10 of 24 · AA · Video Arena'
+      source_url: 'https://artificialanalysis.ai/video/leaderboard/text-to-video'
 public_view:
   plain_english: |
     MiniMax's October 2025 video model — built on a custom NCR
@@ -32,11 +45,11 @@ public_view:
     but optimized for speed-to-first-frame for interactive
     applications.
   applications:
-    - product: "Hailuo AI (consumer)"
-      company: "MiniMax"
+    - product: Hailuo AI (consumer)
+      company: MiniMax
       year_deployed: 2025
-    - product: "MiniMax API"
-      company: "MiniMax"
+    - product: MiniMax API
+      company: MiniMax
       year_deployed: 2025
   investment_angle: |
     MiniMax is building a vertical: text (M2), image (Speech 02 +
@@ -48,14 +61,14 @@ public_view:
     One of the fastest 1080p video generators in production —
     important for the next wave of avatar / live-stream / interactive
     generated content.
-
 citations:
   - type: release
     key: minimax2025hailuo
-    title: "Hailuo 02 Release"
+    title: Hailuo 02 Release
     year: 2025
-    venue: "MiniMax Hailuo"
-    url: "https://hailuoai.com/"
+    venue: MiniMax Hailuo
+    url: 'https://hailuoai.com/'
+graph_featured: true
 ---
 
 ## Chinese video-model field (late 2025)

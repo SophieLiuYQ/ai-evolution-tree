@@ -524,7 +524,9 @@ function finalize(
       const src = placedById.get(r.to);
       if (!src) continue;
       if (HIDDEN_EDGE_TYPES.has(r.type)) continue;
-      raw.push({ v: r.to, w: n.data.slug, type: r.type, src, tgt });
+      // Graph view combines "open alternative" into the generic "alternative".
+      const type = (r.type === "open_alt_to" ? "competes_with" : r.type) as Edge["type"];
+      raw.push({ v: r.to, w: n.data.slug, type, src, tgt });
     }
   }
 

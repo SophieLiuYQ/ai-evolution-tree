@@ -1,25 +1,39 @@
 ---
 slug: nano-banana-pro
-title: "Nano Banana Pro / Gemini 3 Pro Image — 4K Text-Native Image"
-date: 2025-11-19
+title: Nano Banana Pro / Gemini 3 Pro Image — 4K Text-Native Image
+date: '2025-11-19'
 era: multimodal
-category: [generative, multimodal, cv]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: gemini-3-pro
     type: builds_on
-    note: "Image-generation head on Gemini 3 backbone; native multimodal training pays off in coherence + text rendering"
+    note: >-
+      Image-generation head on Gemini 3 backbone; native multimodal training
+      pays off in coherence + text rendering
 authors:
-  - "Google DeepMind"
-org: "Google DeepMind"
+  - Google DeepMind
+org: Google DeepMind
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Gemini 3 multimodal backbone with image decoder"
+  parameters: undisclosed
+  architecture: Gemini 3 multimodal backbone with image decoder
   release_type: api
-  modalities: [vision, generative]
-  homepage: "https://deepmind.google/models/gemini-image/pro/"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://deepmind.google/models/gemini-image/pro/'
+  availability:
+    - api
+    - product
+  benchmarks:
+    - name: Generation · Image Arena Elo
+      score: '1262'
+      vs_baseline: 'Rank #3 of 48 · Top 10% · AA · Image Arena'
+      source_url: 'https://artificialanalysis.ai/text-to-image'
 public_view:
   plain_english: |
     Google DeepMind's image model integrated into Gemini 3 — internally
@@ -32,14 +46,14 @@ public_view:
     apps to MidJourney or DALL-E, Gemini just draws what you ask
     inline, and the result reads as if a designer made it.
   applications:
-    - product: "Gemini app (consumer image gen)"
-      company: "Google"
+    - product: Gemini app (consumer image gen)
+      company: Google
       year_deployed: 2025
-    - product: "Vertex AI Imagen / Gemini Image"
-      company: "Google Cloud"
+    - product: Vertex AI Imagen / Gemini Image
+      company: Google Cloud
       year_deployed: 2025
-    - product: "Workspace Slides / Docs"
-      company: "Google"
+    - product: Workspace Slides / Docs
+      company: Google
       year_deployed: 2025
   investment_angle: |
     Distribution is the play — Nano Banana ships in every Gemini
@@ -52,14 +66,14 @@ public_view:
     Banana made image generation a baseline LLM feature rather than
     a specialized tool. Closed the prompt-adherence + text-rendering
     gap with GPT Image 1.5 at the top of the leaderboards.
-
 citations:
   - type: release
     key: google2025nanobanana
-    title: "Gemini 3 Pro Image (Nano Banana Pro)"
+    title: Gemini 3 Pro Image (Nano Banana Pro)
     year: 2025
-    venue: "Google Blog"
-    url: "https://blog.google/technology/google-deepmind/nano-banana-pro/"
+    venue: Google Blog
+    url: 'https://blog.google/technology/google-deepmind/nano-banana-pro/'
+graph_featured: true
 ---
 
 ## Why this matters for the leaderboards

@@ -1,40 +1,76 @@
 ---
 slug: qwq-32b
-title: "QwQ-32B Preview — Alibaba's Open Reasoning Model"
-date: 2024-11-28
+title: QwQ-32B Preview — Alibaba's Open Reasoning Model
+date: '2024-11-28'
 era: reasoning
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: qwen-2-5
-    type: fine_tunes
-    note: "RL post-training on Qwen 2.5-32B base for chain-of-thought reasoning"
+    type: builds_on
+    note: >-
+      [fine_tunes] RL post-training on Qwen 2.5-32B base for chain-of-thought
+      reasoning
   - to: o1
     type: open_alt_to
-    note: "First open-weight reasoning model approaching o1-preview quality on math benchmarks"
+    note: >-
+      First open-weight reasoning model approaching o1-preview quality on math
+      benchmarks
 authors:
-  - "Qwen Team, Alibaba"
-org: "Alibaba"
+  - 'Qwen Team, Alibaba'
+org: Alibaba
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "32B"
-  architecture: "Qwen 2.5-32B base + RL on reasoning traces"
+  parameters: 32B
+  architecture: Qwen 2.5-32B base + RL on reasoning traces
   context_window: 32768
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "AIME 2024"
-      score: "50.0%"
-      vs_baseline: "o1-preview 56.7%, GPT-4o 13.4%, Claude 3.5 Sonnet 16.0%"
-    - name: "MATH-500"
-      score: "90.6%"
-      vs_baseline: "o1-preview 85.5%"
-    - name: "GPQA Diamond"
-      score: "65.2%"
-      vs_baseline: "o1-preview 73.3%"
-  homepage: "https://qwenlm.github.io/blog/qwq-32b/"
-  github: "https://github.com/QwenLM/QwQ"
-
+    - name: AIME 2024
+      score: 50.0%
+      vs_baseline: 'o1-preview 56.7%, GPT-4o 13.4%, Claude 3.5 Sonnet 16.0%'
+    - name: MATH-500
+      score: 90.6%
+      vs_baseline: o1-preview 85.5%
+    - name: GPQA Diamond
+      score: 65.2%
+      vs_baseline: o1-preview 73.3%
+    - name: Intelligence · AA Intelligence Index
+      score: '15.20'
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+    - name: Coding · SciCode
+      score: 3.8%
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+    - name: MMLU-Pro
+      score: 64.8%
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+    - name: GPQA
+      score: 55.7%
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+    - name: HLE
+      score: 4.8%
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+  homepage: 'https://qwenlm.github.io/blog/qwq-32b/'
+  github: 'https://github.com/QwenLM/QwQ'
+  availability:
+    - open_weights
+  family: Alibaba QwQ
+  variants:
+    - id: qwq-32b-preview
+      label: QwQ 32B-Preview
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
 public_view:
   plain_english: |
     Alibaba's first open-weight reasoning model, released November
@@ -50,11 +86,11 @@ public_view:
     but the demonstration that ended the "this can only be done
     inside one company" framing.
   applications:
-    - product: "Hugging Face hosted (qwen/QwQ-32B-Preview)"
-      company: "Various"
+    - product: Hugging Face hosted (qwen/QwQ-32B-Preview)
+      company: Various
       year_deployed: 2024
-    - product: "Math-tutoring fine-tunes"
-      company: "Various academic"
+    - product: Math-tutoring fine-tunes
+      company: Various academic
       year_deployed: 2025
   investment_angle: |
     QwQ-32B's release signaled that open-weight reasoning was no
@@ -71,19 +107,15 @@ public_view:
     proof, more than the model's specific capabilities, was the
     contribution. By Q1 2025, ten different labs had released
     reasoning models; the technique had become a shared methodology.
-
 citations:
   - type: release
     key: alibaba2024qwq
-    title: "QwQ: Reflect Deeply on the Boundaries of the Unknown"
+    title: 'QwQ: Reflect Deeply on the Boundaries of the Unknown'
     year: 2024
-    venue: "Alibaba Qwen Blog"
-    url: "https://qwenlm.github.io/blog/qwq-32b-preview/"
+    venue: Alibaba Qwen Blog
+    url: 'https://qwenlm.github.io/blog/qwq-32b-preview/'
+graph_featured: true
 ---
-
-## What it is
-
-A 32-billion-parameter reasoning model released November 28, 2024 as "QwQ-32B-Preview" by Alibaba's Qwen team. Built on the Qwen 2.5-32B base with RL post-training on reasoning traces (similar in spirit to OpenAI's o1 recipe, though Alibaba did not disclose detailed training specifics). At launch, the strongest open-weight model on math benchmarks (AIME, MATH-500) by a substantial margin.
 
 ## QwQ-32B-Preview vs o1-preview vs alternatives
 

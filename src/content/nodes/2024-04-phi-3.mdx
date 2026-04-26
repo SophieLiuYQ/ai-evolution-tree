@@ -1,38 +1,79 @@
 ---
 slug: phi-3
-title: "Phi-3 — Microsoft's Small Models, Big Quality"
-date: 2024-04-23
+title: 'Phi-3 — Microsoft''s Small Models, Big Quality'
+date: '2024-04-23'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: chinchilla
-    type: applies
-    note: "Pushes 'data quality > parameter count' thesis to extreme: 3.8B model rivals 7-13B competitors"
+    type: builds_on
+    note: >-
+      [applies] Pushes 'data quality > parameter count' thesis to extreme: 3.8B
+      model rivals 7-13B competitors
 authors:
-  - "Microsoft Research Team"
-org: "Microsoft"
+  - Microsoft Research Team
+org: Microsoft
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "Mini 3.8B / Small 7B / Medium 14B"
-  architecture: "Decoder-only transformer trained on heavily-filtered + synthetic data"
+  parameters: Mini 3.8B / Small 7B / Medium 14B
+  architecture: Decoder-only transformer trained on heavily-filtered + synthetic data
   context_window: 128000
-  training_tokens: "3.3T (heavily filtered web + synthetic 'textbook quality' data)"
+  training_tokens: 3.3T (heavily filtered web + synthetic 'textbook quality' data)
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU (Mini 3.8B)"
-      score: "68.8%"
-      vs_baseline: "Llama 2 7B 45.3%, Mistral 7B 60.1%, Llama 3 8B 66.6%"
-    - name: "HumanEval (Mini)"
-      score: "59.1%"
-      vs_baseline: "Llama 3 8B 62.2%, Llama 2 7B 12.8%"
-    - name: "Inference: tokens / second on iPhone 14"
-      score: "~12 tok/sec"
-      vs_baseline: "first GPT-3.5-class model practical on consumer phones"
-  homepage: "https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/"
-  github: "https://github.com/microsoft/Phi-3CookBook"
-
+    - name: MMLU (Mini 3.8B)
+      score: 68.8%
+      vs_baseline: 'Llama 2 7B 45.3%, Mistral 7B 60.1%, Llama 3 8B 66.6%'
+    - name: HumanEval (Mini)
+      score: 59.1%
+      vs_baseline: 'Llama 3 8B 62.2%, Llama 2 7B 12.8%'
+    - name: 'Inference: tokens / second on iPhone 14'
+      score: ~12 tok/sec
+      vs_baseline: first GPT-3.5-class model practical on consumer phones
+    - name: Intelligence · AA Intelligence Index
+      score: '10.10'
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: Coding · AA Coding Index
+      score: '3.00'
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: Coding · SciCode
+      score: 9.0%
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.0%
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: MMLU-Pro
+      score: 43.5%
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: GPQA
+      score: 31.9%
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: HLE
+      score: 4.4%
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+  homepage: >-
+    https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/
+  github: 'https://github.com/microsoft/Phi-3CookBook'
+  availability:
+    - open_weights
+  family: Microsoft phi
+  variants:
+    - id: phi-3-mini
+      label: Phi-3 Mini Instruct 3.8B
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/phi-3-mini'
+  hf_url: 'https://huggingface.co/microsoft/Phi-3-mini-128k-instruct'
 public_view:
   plain_english: |
     Microsoft's series of small foundation models — 3.8B / 7B / 14B
@@ -47,14 +88,14 @@ public_view:
     architecture," Phi's frame is "smarter data." Both reduce the
     importance of raw compute as the determinant of capability.
   applications:
-    - product: "Microsoft Copilot+ PC on-device features"
-      company: "Microsoft"
+    - product: Microsoft Copilot+ PC on-device features
+      company: Microsoft
       year_deployed: 2024
-    - product: "Apple Intelligence on-device companion (architectural inspiration)"
-      company: "Apple"
+    - product: Apple Intelligence on-device companion (architectural inspiration)
+      company: Apple
       year_deployed: 2024
-    - product: "Hundreds of edge / mobile fine-tunes"
-      company: "Various"
+    - product: Hundreds of edge / mobile fine-tunes
+      company: Various
       year_deployed: 2024
   investment_angle: |
     Phi-3 validated the on-device AI investment thesis that
@@ -71,28 +112,20 @@ public_view:
     The "small specialized model" segment (Phi, Gemma, Llama
     3.2-1B/3B, Qwen 0.5B/1.5B, Apple's on-device models)
     is now a real category, and Phi was the trigger.
-
 citations:
   - type: paper
     key: abdin2024phi3
-    title: "Phi-3 Technical Report"
-    authors: ["Abdin, M.", "Aneja, J.", "Awadalla, H.", "et al."]
+    title: Phi-3 Technical Report
+    authors:
+      - 'Abdin, M.'
+      - 'Aneja, J.'
+      - 'Awadalla, H.'
+      - et al.
     year: 2024
-    venue: "arXiv"
-    arxiv: "2404.14219"
+    venue: arXiv
+    arxiv: '2404.14219'
+graph_featured: true
 ---
-
-## What it is
-
-Three foundation models from Microsoft Research, released April 23, 2024:
-
-| Variant | Params | Context | Distinction |
-|---|---|---|---|
-| **Phi-3 Mini** | 3.8B | 4k / 128k | runs on smartphone |
-| **Phi-3 Small** | 7B | 8k | mid-tier on-device |
-| **Phi-3 Medium** | 14B | 4k / 128k | desktop / laptop tier |
-
-Architecturally standard decoder-only transformers. The contribution is **training data**: 3.3T tokens consisting of heavily filtered web pages + heavily filtered code + synthetic "textbook quality" data generated by larger models (GPT-3.5 / GPT-4). The data-curation pipeline is the moat, not the architecture.
 
 ## Phi-3 vs same-tier peers (Q2 2024)
 

@@ -1,32 +1,76 @@
 ---
 slug: step-3
-title: "Step-3 — StepFun's Open Vision Frontier"
-date: 2025-07-25
+title: Step-3 — StepFun's Open Vision Frontier
+date: '2025-07-25'
 era: multimodal
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: qwen-3
     type: competes_with
-    note: "Both vision-language MoE; Step-3 emphasizes 321B vision-native architecture"
+    note: >-
+      Both vision-language MoE; Step-3 emphasizes 321B vision-native
+      architecture
 authors:
-  - "StepFun Team"
-org: "Stepfun"
+  - StepFun Team
+org: Stepfun
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "321B total / 38B active MoE (VLM)"
-  architecture: "Vision-language MoE"
+  parameters: 321B total / 38B active MoE (VLM)
+  architecture: Vision-language MoE
   context_window: 65536
   release_type: open_weights
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "MMMU-Pro"
-      score: "63.2%"
-    - name: "MathVista"
-      score: "78.4%"
-  homepage: "https://www.stepfun.com/"
-  github: "https://github.com/stepfun-ai/Step3"
-
+    - name: MMMU-Pro
+      score: 63.2%
+    - name: MathVista
+      score: 78.4%
+    - name: Intelligence · AA Intelligence Index
+      score: '38.50'
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: Coding · AA Coding Index
+      score: '34.60'
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: Coding · SciCode
+      score: 40.4% (38.5–40.4%)
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: Agentic · Terminal-Bench Hard
+      score: 32.6% (27.3–32.6%)
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: GPQA
+      score: 83.1% (82.6–83.1%)
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: HLE
+      score: 22.6% (19.1–22.6%)
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: Speed · Output tok/s
+      score: '144'
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+  homepage: 'https://www.stepfun.com/'
+  github: 'https://github.com/stepfun-ai/Step3'
+  availability:
+    - open_weights
+  family: Stepfun step
+  variants:
+    - id: step-3-vl-10b
+      label: Step3 VL 10B
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     StepFun's July 2025 vision-language model — 321B parameters in a
@@ -37,11 +81,11 @@ public_view:
     A camera-and-microphone-equipped Qwen — same MoE architecture
     pattern but designed multimodal-first.
   applications:
-    - product: "StepChat / 跃问"
-      company: "StepFun"
+    - product: StepChat / 跃问
+      company: StepFun
       year_deployed: 2025
-    - product: "Hugging Face open-weights"
-      company: "Multiple"
+    - product: Hugging Face open-weights
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     StepFun is the smaller player in the Chinese frontier wave — but
@@ -53,14 +97,14 @@ public_view:
     Demonstrates that Chinese model labs are differentiating now —
     StepFun on multimodal, MiniMax on inference cost, Moonshot on
     long-horizon agents, Zhipu on coding. Not a single race anymore.
-
 citations:
   - type: release
     key: stepfun2025step3
-    title: "Step-3: Vision-Language Model with 321B Parameters"
+    title: 'Step-3: Vision-Language Model with 321B Parameters'
     year: 2025
-    venue: "StepFun Blog"
-    url: "https://www.stepfun.ai/research/step3"
+    venue: StepFun Blog
+    url: 'https://www.stepfun.ai/research/step3'
+graph_featured: true
 ---
 
 ## What it shipped

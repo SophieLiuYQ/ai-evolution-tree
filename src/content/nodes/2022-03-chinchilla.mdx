@@ -1,43 +1,52 @@
 ---
 slug: chinchilla
-title: "Chinchilla — Compute-Optimal LLM Training"
-date: 2022-03-29
+title: Chinchilla — Compute-Optimal LLM Training
+date: '2022-03-29'
 era: scale-era
-category: [theory, training]
+category:
+  - theory
+  - training
+  - nlp
 relationships:
   - to: scaling-laws
-    type: surpasses
-    note: "Corrects Kaplan et al.: data should scale ~1:1 with params, not slower"
+    type: competes_with
+    note: >-
+      [surpasses] Corrects Kaplan et al.: data should scale ~1:1 with params,
+      not slower
   - to: gpt-3
-    type: surpasses
-    note: "70B Chinchilla outperforms 175B GPT-3 and 280B Gopher across benchmarks"
+    type: competes_with
+    note: >-
+      [surpasses] 70B Chinchilla outperforms 175B GPT-3 and 280B Gopher across
+      benchmarks
 authors:
-  - "Hoffmann, J."
-  - "Borgeaud, S."
-  - "Mensch, A."
-  - "et al."
-org: "DeepMind"
+  - 'Hoffmann, J.'
+  - 'Borgeaud, S.'
+  - 'Mensch, A.'
+  - et al.
+org: DeepMind
 breakthrough_score: 9
 status: foundational
 model_spec:
-  parameters: "70B (Chinchilla) vs 280B (Gopher baseline, same compute)"
-  architecture: "Decoder-only transformer, same architecture as Gopher"
+  parameters: '70B (Chinchilla) vs 280B (Gopher baseline, same compute)'
+  architecture: 'Decoder-only transformer, same architecture as Gopher'
   context_window: 2048
-  training_tokens: "1.4T (Chinchilla) vs 300B (Gopher)"
-  training_compute: "~same FLOPs as Gopher — reallocated from params to data"
+  training_tokens: 1.4T (Chinchilla) vs 300B (Gopher)
+  training_compute: ~same FLOPs as Gopher — reallocated from params to data
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU"
-      score: "67.5%"
-      vs_baseline: "Gopher 60.0%, GPT-3 43.9%"
-    - name: "BIG-bench avg"
-      score: "65.1"
-      vs_baseline: "Gopher 54.4"
-    - name: "Average across 57 benchmarks"
-      score: "Chinchilla > Gopher > GPT-3"
-  homepage: "https://arxiv.org/abs/2203.15556"
-
+    - name: MMLU
+      score: 67.5%
+      vs_baseline: 'Gopher 60.0%, GPT-3 43.9%'
+    - name: BIG-bench avg
+      score: '65.1'
+      vs_baseline: Gopher 54.4
+    - name: Average across 57 benchmarks
+      score: Chinchilla > Gopher > GPT-3
+  homepage: 'https://arxiv.org/abs/2203.15556'
+  availability:
+    - research
 public_view:
   plain_english: |
     A DeepMind study that showed — contrary to two years of received
@@ -50,11 +59,11 @@ public_view:
     oven. Chinchilla showed the flour-to-oven ratio had been off all
     along — more flour in the same oven bakes better bread.
   applications:
-    - product: "Llama 2 sizing decisions"
-      company: "Meta AI"
+    - product: Llama 2 sizing decisions
+      company: Meta AI
       year_deployed: 2023
-    - product: "Frontier training runs at every major lab post-2022"
-      company: "All frontier labs"
+    - product: Frontier training runs at every major lab post-2022
+      company: All frontier labs
       year_deployed: 2022
   investment_angle: |
     Chinchilla shifted tens of billions of dollars in training spend
@@ -71,22 +80,20 @@ public_view:
     GPT-3 was five years ago, you are benefiting from Chinchilla. Every
     efficient small model (phi, Mistral 7B, Gemma) is a Chinchilla
     descendant.
-
 citations:
   - type: paper
     key: hoffmann2022chinchilla
-    title: "Training Compute-Optimal Large Language Models"
-    authors: ["Hoffmann, J.", "Borgeaud, S.", "Mensch, A.", "et al."]
+    title: Training Compute-Optimal Large Language Models
+    authors:
+      - 'Hoffmann, J.'
+      - 'Borgeaud, S.'
+      - 'Mensch, A.'
+      - et al.
     year: 2022
-    venue: "NeurIPS"
-    arxiv: "2203.15556"
+    venue: NeurIPS
+    arxiv: '2203.15556'
+graph_featured: true
 ---
-
-## What it is
-
-An empirical refutation of the Kaplan et al. (2020) scaling prescription. Kaplan concluded compute-optimal training meant scaling parameters much faster than data (exponent ~0.73 for N, ~0.27 for D). Chinchilla re-ran the experiment with ~400 training runs and found the exponents should both be ~0.5 — i.e., parameters and training tokens should scale roughly equally.
-
-Concrete prescription: **~20 training tokens per parameter** for compute-optimal performance.
 
 ## The under-training table
 

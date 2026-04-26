@@ -2,7 +2,7 @@
 // Loaded once at init from the inline JSON embedded by Graph.astro.
 
 export type Orient = "h" | "v";
-export type SortMode = "chronological" | "byOrg" | "byLicense";
+export type SortMode = "chronological" | "byFamily" | "byOrg" | "byLicense";
 
 export type EdgeStyle = { color: string; dash?: string; label: string };
 
@@ -21,6 +21,7 @@ type Variant = { edges: GraphEdge[]; nodePos: Record<string, NodePos> };
 
 export type GraphData = {
   edgeStyle: Record<string, EdgeStyle>;
+  nodes?: Record<string, any>;
   layouts: Record<Orient, Record<SortMode, Variant>>;
 };
 
@@ -33,6 +34,7 @@ const _incomingCache = new Map<string, Record<string, string[]>>();
 const _outgoingCache = new Map<string, Record<string, string[]>>();
 let _pinnedSlug: string | null = null;
 let _currentSort: SortMode = "chronological";
+let _selectedSlug: string | null = null;
 
 function buildAdjacency(orient: Orient, mode: SortMode) {
   const key = `${orient}:${mode}`;
@@ -50,17 +52,10 @@ function buildAdjacency(orient: Orient, mode: SortMode) {
 export function initState(): GraphData {
   const dataNode = document.getElementById("ai-tree-graph-data");
   _data = JSON.parse(dataNode?.textContent ?? "{}") as GraphData;
-  // Pre-build adjacency for every variant so hover/zoom never blocks.
+  // Pre-build adjacency for every variant so hover/pin never blocks.
   for (const o of ["h", "v"] as Orient[]) {
-    // Only chronological survives in clientPayload — byOrg / byLicense
-    // were retired (see GRAPH_DESIGN.md §II), so iterating them throws
-    // because `layouts[orient]["byOrg"]` is undefined. v-orient hover
-    // edges silently disappeared because the throw landed on h:byOrg
-    // *after* h:chronological was built but *before* v:chronological,
-    // leaving the v-adjacency cache empty.
-    for (const m of ["chronological"] as SortMode[]) {
-      buildAdjacency(o, m);
-    }
+    const modes = Object.keys(_data.layouts?.[o] ?? {}) as SortMode[];
+    for (const m of modes) buildAdjacency(o, m);
   }
   return _data;
 }
@@ -103,9 +98,14 @@ export const setSort = (m: SortMode) => {
   _currentSort = m;
 };
 
+export const getSelected = () => _selectedSlug;
+export const setSelected = (s: string | null) => {
+  _selectedSlug = s;
+};
+
 // ===== Edge-type visibility =====
 // Per-type on/off filter. Default: all visible types enabled. Restored
-// from localStorage on init. Hover and zoom skip rendering edges whose
+// from localStorage on init. Hover and pin skip rendering edges whose
 // type is currently disabled.
 const EDGE_TYPES_KEY = "ai-tree:edgeTypes";
 let _enabledEdgeTypes = new Set<string>();

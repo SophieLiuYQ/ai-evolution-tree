@@ -1,31 +1,39 @@
 ---
 slug: constitutional-ai
-title: "Constitutional AI — Harmlessness from AI Feedback"
-date: 2022-12-15
+title: Constitutional AI — Harmlessness from AI Feedback
+date: '2022-12-15'
 era: alignment
-category: [nlp, safety, training]
+category:
+  - nlp
+  - safety
+  - training
 relationships:
   - to: instructgpt
     type: builds_on
-    note: "Replaces human-rater preferences with AI critique against a written 'constitution'"
+    note: >-
+      Replaces human-rater preferences with AI critique against a written
+      'constitution'
 authors:
-  - "Bai, Y."
-  - "Kadavath, S."
-  - "Kundu, S."
-  - "Askell, A."
-  - "et al."
-org: "Anthropic"
+  - 'Bai, Y.'
+  - 'Kadavath, S.'
+  - 'Kundu, S.'
+  - 'Askell, A.'
+  - et al.
+org: Anthropic
 breakthrough_score: 8
 status: foundational
 model_spec:
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Helpful + Harmless trade-off"
-      score: "Pareto improvement vs RLHF baseline"
-      vs_baseline: "less harmful at no cost to helpfulness"
-  homepage: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback"
-
+    - name: Helpful + Harmless trade-off
+      score: Pareto improvement vs RLHF baseline
+      vs_baseline: less harmful at no cost to helpfulness
+  homepage: >-
+    https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback
+  availability:
+    - research
 public_view:
   plain_english: |
     Anthropic's alternative to RLHF: instead of using human raters to
@@ -40,11 +48,11 @@ public_view:
     self-edit. Both produce cleaner output; the constitution is cheaper
     to scale and easier to audit.
   applications:
-    - product: "Claude (all versions, 2023+)"
-      company: "Anthropic"
+    - product: 'Claude (all versions, 2023+)'
+      company: Anthropic
       year_deployed: 2023
-    - product: "Influenced Llama 3, Gemini, OpenAI safety stacks"
-      company: "Various"
+    - product: 'Influenced Llama 3, Gemini, OpenAI safety stacks'
+      company: Various
       year_deployed: 2024
   investment_angle: |
     Constitutional AI is Anthropic's core technical differentiator and
@@ -60,26 +68,21 @@ public_view:
     reshaped the alignment vocabulary. Every frontier lab now publishes
     some version of "model principles," "spec," or "policy" that traces
     back to the constitutional framing introduced here.
-
 citations:
   - type: paper
     key: bai2022constitutional
-    title: "Constitutional AI: Harmlessness from AI Feedback"
-    authors: ["Bai, Y.", "Kadavath, S.", "Kundu, S.", "Askell, A.", "et al."]
+    title: 'Constitutional AI: Harmlessness from AI Feedback'
+    authors:
+      - 'Bai, Y.'
+      - 'Kadavath, S.'
+      - 'Kundu, S.'
+      - 'Askell, A.'
+      - et al.
     year: 2022
-    venue: "arXiv"
-    arxiv: "2212.08073"
+    venue: arXiv
+    arxiv: '2212.08073'
+graph_featured: true
 ---
-
-## What it is
-
-A two-stage post-training pipeline:
-
-1. **SL-CAI** (Supervised Learning from CAI) — model generates responses to harmful prompts, then critiques and revises its own response using a constitutional principle ("Was the previous response harmful? Revise to be less harmful while remaining helpful."). Train SFT on the revised responses.
-
-2. **RL-CAI** (RL from AI Feedback) — instead of human preference rankings, an AI evaluator scores response pairs against the constitution. Train a preference model on these AI rankings, then PPO against it. (This is the "RLAIF" generalization of RLHF.)
-
-The "constitution" is a list of natural-language principles — e.g., "Choose the response that is more ethical and less harmful," "Choose the response that a wise, ethical, polite, and friendly person would more likely say."
 
 ## How it differs from InstructGPT/RLHF
 

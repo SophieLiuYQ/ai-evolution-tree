@@ -1,40 +1,51 @@
 ---
 slug: yi-34b
-title: "Yi-34B — 01.AI's Frontier Open Bilingual Model"
-date: 2023-11-05
+title: Yi-34B — 01.AI's Frontier Open Bilingual Model
+date: '2023-11-05'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: llama-2
     type: builds_on
-    note: "Architecturally close to Llama 2 (later confirmed); contested attribution at launch"
+    note: >-
+      Architecturally close to Llama 2 (later confirmed); contested attribution
+      at launch
   - to: qwen-1
-    type: surpasses
-    note: "Briefly took the open-Chinese-model SOTA on C-Eval / MMLU before Qwen 1.5 reclaimed"
+    type: competes_with
+    note: >-
+      [surpasses] Briefly took the open-Chinese-model SOTA on C-Eval / MMLU
+      before Qwen 1.5 reclaimed
 authors:
-  - "01.AI Team (Kai-Fu Lee)"
-org: "01.AI"
+  - 01.AI Team (Kai-Fu Lee)
+org: 01.AI
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "6B / 34B (later 9B)"
-  architecture: "Decoder-only transformer (Llama 2 architecture, Yi-trained tokenizer + 3T-token data)"
+  parameters: 6B / 34B (later 9B)
+  architecture: >-
+    Decoder-only transformer (Llama 2 architecture, Yi-trained tokenizer +
+    3T-token data)
   context_window: 4096
-  training_tokens: "3T (multilingual, Chinese-heavy)"
+  training_tokens: '3T (multilingual, Chinese-heavy)'
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU (5-shot, 34B)"
-      score: "76.3%"
-      vs_baseline: "Llama 2 70B 68.9%, Qwen-14B 66.3%"
-    - name: "C-Eval (Chinese, 34B)"
-      score: "81.4%"
-      vs_baseline: "Qwen-14B 63.5%, Llama 2 70B 50.1%"
-    - name: "GSM8K (34B)"
-      score: "67.9%"
-  homepage: "https://www.01.ai/"
-  github: "https://github.com/01-ai/Yi"
-
+    - name: 'MMLU (5-shot, 34B)'
+      score: 76.3%
+      vs_baseline: 'Llama 2 70B 68.9%, Qwen-14B 66.3%'
+    - name: 'C-Eval (Chinese, 34B)'
+      score: 81.4%
+      vs_baseline: 'Qwen-14B 63.5%, Llama 2 70B 50.1%'
+    - name: GSM8K (34B)
+      score: 67.9%
+  homepage: 'https://www.01.ai/'
+  github: 'https://github.com/01-ai/Yi'
+  availability:
+    - open_weights
+  hf_url: 'https://huggingface.co/01-ai/Yi-34B'
 public_view:
   plain_english: |
     01.AI's first major open-weight model, released November 2023.
@@ -48,14 +59,14 @@ public_view:
     Anthropic in the US (founder is a known industry figure, raises
     on his name as much as the technology, fast follow-on funding).
   applications:
-    - product: "01.AI Wanzhi consumer chat"
-      company: "01.AI"
+    - product: 01.AI Wanzhi consumer chat
+      company: 01.AI
       year_deployed: 2023
-    - product: "Yi-34B fine-tunes (community)"
-      company: "Various"
+    - product: Yi-34B fine-tunes (community)
+      company: Various
       year_deployed: 2023
-    - product: "Yi Lightning (closed flagship)"
-      company: "01.AI"
+    - product: Yi Lightning (closed flagship)
+      company: 01.AI
       year_deployed: 2024
   investment_angle: |
     01.AI raised >$1B at $1B+ valuation by 2024 on Kai-Fu Lee's brand
@@ -76,26 +87,23 @@ public_view:
     surfaced the harder question of how much credit Western
     open-source releases (Llama, Mistral) deserve in the Chinese
     open-LLM story.
-
 citations:
   - type: paper
     key: ai01yi
-    title: "Yi: Open Foundation Models by 01.AI"
-    authors: ["01.AI Team"]
+    title: 'Yi: Open Foundation Models by 01.AI'
+    authors:
+      - 01.AI Team
     year: 2024
-    venue: "arXiv"
-    arxiv: "2403.04652"
+    venue: arXiv
+    arxiv: '2403.04652'
   - type: release
     key: ai012023yi
-    title: "Yi-34B Release"
+    title: Yi-34B Release
     year: 2023
-    venue: "01.AI"
-    url: "https://huggingface.co/01-ai/Yi-34B"
+    venue: 01.AI
+    url: 'https://huggingface.co/01-ai/Yi-34B'
+graph_featured: true
 ---
-
-## What it is
-
-A 34-billion-parameter open-weight foundation model with a 6B sibling, released on November 5, 2023. Architecturally a decoder-only transformer that closely mirrors Llama 2 (RoPE, RMSNorm, SwiGLU, GQA), trained on 3T tokens of bilingual (Chinese + English) data with a custom tokenizer optimized for Chinese.
 
 ## Yi-34B vs concurrent open releases (Q4 2023)
 

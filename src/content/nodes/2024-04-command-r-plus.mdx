@@ -1,34 +1,68 @@
 ---
 slug: command-r-plus
-title: "Cohere Command R+ — RAG-Optimized Open Frontier"
-date: 2024-04-04
+title: Cohere Command R+ — RAG-Optimized Open Frontier
+date: '2024-04-04'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: transformer
     type: builds_on
-    note: "Decoder-only transformer with explicit retrieval-augmented generation training"
+    note: >-
+      Decoder-only transformer with explicit retrieval-augmented generation
+      training
+  - to: gpt-4o
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Cohere Team"
-org: "Cohere"
+  - Cohere Team
+org: Cohere
 breakthrough_score: 6
 status: superseded
 model_spec:
-  parameters: "104B"
-  architecture: "Decoder-only transformer + native tool use + multilingual + RAG-optimized post-training"
+  parameters: 104B
+  architecture: >-
+    Decoder-only transformer + native tool use + multilingual + RAG-optimized
+    post-training
   context_window: 128000
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "RAG benchmark (HotpotQA, NQ)"
-      score: "best open-weight RAG quality at release"
-      vs_baseline: "outperforms Llama 2 70B by ~15pts on multi-hop QA"
-    - name: "Multilingual"
-      score: "10 languages with strong fluency"
-    - name: "Tool use accuracy"
-      score: "first open model with strong native tool use"
-  homepage: "https://cohere.com/blog/command-r-plus-microsoft-azure"
-
+    - name: 'RAG benchmark (HotpotQA, NQ)'
+      score: best open-weight RAG quality at release
+      vs_baseline: outperforms Llama 2 70B by ~15pts on multi-hop QA
+    - name: Multilingual
+      score: 10 languages with strong fluency
+    - name: Tool use accuracy
+      score: first open model with strong native tool use
+    - name: Intelligence · AA Intelligence Index
+      score: '8.30'
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+    - name: Coding · SciCode
+      score: 11.8% (6.2–11.8%)
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+    - name: MMLU-Pro
+      score: 43.2% (33.8–43.2%)
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+    - name: GPQA
+      score: 32.3% (28.4–32.3%)
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+    - name: HLE
+      score: 4.8% (4.5–4.8%)
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+  homepage: 'https://cohere.com/blog/command-r-plus-microsoft-azure'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
 public_view:
   plain_english: |
     Cohere's flagship open-weight model, released April 2024.
@@ -43,14 +77,14 @@ public_view:
     enterprise-RAG workhorse. Less viral, more profitable per
     deployment.
   applications:
-    - product: "Cohere API (Coral)"
-      company: "Cohere"
+    - product: Cohere API (Coral)
+      company: Cohere
       year_deployed: 2024
-    - product: "Embedded in Notion AI / Box AI / Oracle / others (enterprise)"
-      company: "Various enterprise"
+    - product: Embedded in Notion AI / Box AI / Oracle / others (enterprise)
+      company: Various enterprise
       year_deployed: 2024
-    - product: "Hosted on Oracle Cloud Infrastructure (deep partnership)"
-      company: "Oracle"
+    - product: Hosted on Oracle Cloud Infrastructure (deep partnership)
+      company: Oracle
       year_deployed: 2024
   investment_angle: |
     Cohere's positioning as the "enterprise-trusted alternative to
@@ -70,24 +104,15 @@ public_view:
     "race to the frontier." The continued existence of Cohere
     as a meaningful enterprise vendor (vs being absorbed by
     a hyperscaler) validates the segment.
-
 citations:
   - type: release
     key: cohere2024crp
-    title: "Introducing Command R+"
+    title: Introducing Command R+
     year: 2024
-    venue: "Cohere"
-    url: "https://cohere.com/blog/command-r-plus-microsoft-azure"
+    venue: Cohere
+    url: 'https://cohere.com/blog/command-r-plus-microsoft-azure'
+graph_featured: true
 ---
-
-## What it is
-
-A 104B-parameter decoder-only transformer released open-weight (CC-BY-NC-4.0) on April 4, 2024. Architecturally not novel — Cohere's contributions were in the post-training pipeline:
-
-1. **RAG-optimized fine-tuning** — heavy emphasis on producing accurate citations and integrating retrieved context faithfully
-2. **Native tool use** — first-class support for function calling with structured argument schemas
-3. **Multilingual coverage** — 10 languages with strong fluency (English, French, Spanish, Italian, German, Portuguese, Japanese, Korean, Arabic, Chinese)
-4. **Explicit on-prem deployability** — model card includes detailed compute requirements for self-hosting
 
 ## Command R+ vs concurrent peers (Q2 2024)
 

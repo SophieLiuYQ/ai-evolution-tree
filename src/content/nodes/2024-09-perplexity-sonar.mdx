@@ -1,36 +1,45 @@
 ---
 slug: perplexity-sonar
-title: "Perplexity Sonar — Search-Native Generation"
-date: 2024-09-04
+title: Perplexity Sonar — Search-Native Generation
+date: '2024-09-04'
 era: agents
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: llama-3
-    type: fine_tunes
-    note: "First Sonar variants are Llama 3.1 fine-tunes specialized for grounded search-and-cite"
+    type: builds_on
+    note: >-
+      [fine_tunes] First Sonar variants are Llama 3.1 fine-tunes specialized for
+      grounded search-and-cite
   - to: react-agents
-    type: applies
-    note: "Productizes the search-as-tool ReAct pattern at consumer scale"
+    type: builds_on
+    note: '[applies] Productizes the search-as-tool ReAct pattern at consumer scale'
 authors:
-  - "Perplexity AI Team"
-org: "Perplexity"
+  - Perplexity AI Team
+org: Perplexity
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "Sonar Small 8B / Sonar Large 70B / Sonar Huge undisclosed"
-  architecture: "Llama 3.1 base + Perplexity post-training for citation-grounded answers + native web search integration"
+  parameters: Sonar Small 8B / Sonar Large 70B / Sonar Huge undisclosed
+  architecture: >-
+    Llama 3.1 base + Perplexity post-training for citation-grounded answers +
+    native web search integration
   context_window: 128000
   release_type: api
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Citation accuracy (vs ungrounded LLM)"
-      score: "~95% claims with valid source attribution"
-      vs_baseline: "raw GPT-4 ~50% (hallucination rate on factual queries)"
-    - name: "Latency"
-      score: "<1s to first token incl. web search"
-      vs_baseline: "category-leading for grounded responses"
-  homepage: "https://sonar.perplexity.ai/"
-
+    - name: Citation accuracy (vs ungrounded LLM)
+      score: ~95% claims with valid source attribution
+      vs_baseline: raw GPT-4 ~50% (hallucination rate on factual queries)
+    - name: Latency
+      score: <1s to first token incl. web search
+      vs_baseline: category-leading for grounded responses
+  homepage: 'https://sonar.perplexity.ai/'
+  availability:
+    - api
 public_view:
   plain_english: |
     Perplexity AI's family of LLM variants explicitly tuned for
@@ -46,14 +55,14 @@ public_view:
     natural-language answers instead of retrieving page lists.
     Sonar is the LLM optimized for this specific use case.
   applications:
-    - product: "Perplexity consumer search (perplexity.ai)"
-      company: "Perplexity"
+    - product: Perplexity consumer search (perplexity.ai)
+      company: Perplexity
       year_deployed: 2024
-    - product: "Sonar API (Apple Maps, Snapchat, Carrot Weather, etc.)"
-      company: "Various"
+    - product: 'Sonar API (Apple Maps, Snapchat, Carrot Weather, etc.)'
+      company: Various
       year_deployed: 2024
-    - product: "Perplexity Pro Search + Spaces"
-      company: "Perplexity"
+    - product: Perplexity Pro Search + Spaces
+      company: Perplexity
       year_deployed: 2024
   investment_angle: |
     Perplexity raised $500M Series C at $9B valuation in
@@ -72,27 +81,15 @@ public_view:
     product surface. Whether AI search remains a separate
     category or gets absorbed by general-purpose chat is the
     open question.
-
 citations:
   - type: release
     key: perplexity2024sonar
-    title: "Sonar by Perplexity"
+    title: Sonar by Perplexity
     year: 2024
-    venue: "Perplexity AI"
-    url: "https://docs.perplexity.ai/"
+    venue: Perplexity AI
+    url: 'https://docs.perplexity.ai/'
+graph_featured: true
 ---
-
-## What it is
-
-A family of LLM API endpoints from Perplexity AI optimized for grounded question-answering with citations. Three sizes:
-
-| Variant | Base | Specialization |
-|---|---|---|
-| Sonar Small | Llama 3.1 8B | fast Q&A with web grounding |
-| Sonar Large | Llama 3.1 70B | higher-quality answers |
-| Sonar Huge | undisclosed (~Llama 3.1 405B class) | flagship, longest reasoning |
-
-The post-training and serving infrastructure are Perplexity's contributions, not the base models themselves. The combined system (LLM + retrieval + citation post-processing) is what's productized.
 
 ## Perplexity vs concurrent "AI search" peers
 

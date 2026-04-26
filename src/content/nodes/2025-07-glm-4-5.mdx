@@ -1,37 +1,85 @@
 ---
 slug: glm-4-5
-title: "GLM-4.5 — Zhipu's Open Frontier Family"
-date: 2025-07-28
+title: GLM-4.5 — Zhipu's Open Frontier Family
+date: '2025-07-28'
 era: reasoning
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: chatglm
-    type: scales
-    note: "Multi-generation jump from ChatGLM lineage; open-weight 355B MoE flagship + Air mid-tier + V vision sibling"
+    type: builds_on
+    note: >-
+      [scales] Multi-generation jump from ChatGLM lineage; open-weight 355B MoE
+      flagship + Air mid-tier + V vision sibling
   - to: deepseek-v3
     type: competes_with
-    note: "Open Chinese MoE peer; GLM differentiates on coding + Cambricon-chip training story"
+    note: >-
+      Open Chinese MoE peer; GLM differentiates on coding + Cambricon-chip
+      training story
+  - to: grok-4
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Zhipu AI Team"
-org: "Tsinghua / Zhipu"
+  - Zhipu AI Team
+org: Tsinghua / Zhipu
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "355B total / 32B active MoE (4.5); 106B vision (4.5V)"
-  architecture: "MoE + reasoning + vision variants"
+  parameters: 355B total / 32B active MoE (4.5); 106B vision (4.5V)
+  architecture: MoE + reasoning + vision variants
   context_window: 128000
   release_type: open_weights
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "WebDev Arena (GLM-4.7)"
-      score: "#1"
-    - name: "BFCL-v3 tool use"
-      score: "76.0%"
-    - name: "SWE-bench Verified"
-      score: "64.2%"
-  homepage: "https://z.ai/blog/glm-4.5"
-  github: "https://github.com/zai-org/GLM-4.5"
-
+    - name: WebDev Arena (GLM-4.7)
+      score: '#1'
+    - name: BFCL-v3 tool use
+      score: 76.0%
+    - name: SWE-bench Verified
+      score: 64.2%
+    - name: Intelligence · AA Intelligence Index
+      score: '26.40'
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: Coding · AA Coding Index
+      score: '26.30'
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: Coding · SciCode
+      score: 34.8% (18.8–34.8%)
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: Agentic · Terminal-Bench Hard
+      score: 22.0% (5.3–22.0%)
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: MMLU-Pro
+      score: 83.5% (75.1–83.5%)
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: GPQA
+      score: 78.2% (57.3–78.2%)
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: HLE
+      score: 12.2% (3.6–12.2%)
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: Speed · Output tok/s
+      score: '47'
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: Price ($/M tokens)
+      score: $0.60 in / $2.20 out
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+  homepage: 'https://z.ai/blog/glm-4.5'
+  github: 'https://github.com/zai-org/GLM-4.5'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/zai-org/GLM-5'
 public_view:
   plain_english: |
     Zhipu's GLM-4.5 is a complete open-weight family — frontier MoE,
@@ -44,14 +92,14 @@ public_view:
     quietly shipping a competitive frontier model with strong coding
     and tool use, but doing it under MIT instead of behind an API.
   applications:
-    - product: "Z.ai chat (formerly chatglm.cn)"
-      company: "Zhipu AI"
+    - product: Z.ai chat (formerly chatglm.cn)
+      company: Zhipu AI
       year_deployed: 2025
-    - product: "BigModel.cn API"
-      company: "Zhipu AI"
+    - product: BigModel.cn API
+      company: Zhipu AI
       year_deployed: 2025
-    - product: "Hosted via OpenRouter, Together, Hugging Face"
-      company: "Multiple"
+    - product: 'Hosted via OpenRouter, Together, Hugging Face'
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     GLM-4.6 is reportedly the first frontier-tier model trained on
@@ -65,20 +113,20 @@ public_view:
     WebDev Arena. The family's combination of MIT licensing, Chinese
     hardware, and frontier coding scores marks a turning point in the
     geopolitical model landscape.
-
 citations:
   - type: release
     key: zhipu2025glm45
-    title: "GLM-4.5: Reasoning, Coding, and Agentic Capabilities"
+    title: 'GLM-4.5: Reasoning, Coding, and Agentic Capabilities'
     year: 2025
-    venue: "Z.ai Blog"
-    url: "https://z.ai/blog/glm-4.5"
+    venue: Z.ai Blog
+    url: 'https://z.ai/blog/glm-4.5'
   - type: paper
     key: glm2024report
-    title: "ChatGLM Technical Report"
+    title: ChatGLM Technical Report
     year: 2024
-    arxiv: "2406.12793"
-    url: "https://arxiv.org/abs/2406.12793"
+    arxiv: '2406.12793'
+    url: 'https://arxiv.org/abs/2406.12793'
+graph_featured: true
 ---
 
 ## Family timeline

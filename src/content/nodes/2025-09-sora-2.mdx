@@ -1,31 +1,43 @@
 ---
 slug: sora-2
-title: "Sora 2 — Native Audio + Improved Physics"
-date: 2025-09-30
+title: Sora 2 — Native Audio + Improved Physics
+date: '2025-09-30'
 era: multimodal
-category: [generative]
+category:
+  - generative
+  - audio
+  - video
+  - multimodal
 relationships:
   - to: sora
-    type: scales
-    note: "Successor to Sora 1; native audio generation, longer durations, better physics consistency"
+    type: builds_on
+    note: >-
+      [scales] Successor to Sora 1; native audio generation, longer durations,
+      better physics consistency
 authors:
-  - "OpenAI Sora Team"
-org: "OpenAI"
+  - OpenAI Sora Team
+org: OpenAI
 breakthrough_score: 8
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "DiT successor with native audio token generation + improved spatiotemporal coherence"
+  parameters: undisclosed
+  architecture: >-
+    DiT successor with native audio token generation + improved spatiotemporal
+    coherence
   release_type: product
-  modalities: [text, audio, video]
+  modalities:
+    - text
+    - audio
+    - video
   benchmarks:
-    - name: "Audio + video joint generation"
-      score: "first OpenAI release with synchronized AI-generated audio + visuals"
-      vs_baseline: "Sora 1 silent; competitors had cascaded audio (separate model)"
-    - name: "Output duration"
-      score: "20s production / longer experimental"
-  homepage: "https://openai.com/index/sora-2/"
-
+    - name: Audio + video joint generation
+      score: first OpenAI release with synchronized AI-generated audio + visuals
+      vs_baseline: Sora 1 silent; competitors had cascaded audio (separate model)
+    - name: Output duration
+      score: 20s production / longer experimental
+  homepage: 'https://openai.com/index/sora-2/'
+  availability:
+    - product
 public_view:
   plain_english: |
     OpenAI's September 2025 Sora successor — the first version
@@ -43,14 +55,14 @@ public_view:
     consumer-video distribution market that ByteDance / Meta /
     Google have historically owned.
   applications:
-    - product: "Sora consumer app (TikTok-style video feed)"
-      company: "OpenAI"
+    - product: Sora consumer app (TikTok-style video feed)
+      company: OpenAI
       year_deployed: 2025
-    - product: "ChatGPT Pro / Plus video generation"
-      company: "OpenAI"
+    - product: ChatGPT Pro / Plus video generation
+      company: OpenAI
       year_deployed: 2025
-    - product: "Various advertising and short-form content production pipelines"
-      company: "Various agencies"
+    - product: Various advertising and short-form content production pipelines
+      company: Various agencies
       year_deployed: 2025
   investment_angle: |
     Sora 2's product packaging as a standalone consumer app
@@ -70,23 +82,15 @@ public_view:
     implications — for content moderation, deepfakes,
     advertising labor markets, and the social-media platform
     landscape — are still being absorbed in 2026.
-
 citations:
   - type: release
     key: openai2025sora2
-    title: "Sora 2"
+    title: Sora 2
     year: 2025
-    venue: "OpenAI"
-    url: "https://openai.com/sora-2/"
+    venue: OpenAI
+    url: 'https://openai.com/sora-2/'
+graph_featured: true
 ---
-
-## What it is
-
-OpenAI's September 30, 2025 Sora successor release. Architecturally undisclosed. Headline new capabilities:
-
-1. **Native audio generation** — synchronized speech, sound effects, ambient audio generated in the same model pass as the visuals (not a separately-cascaded audio model)
-2. **Improved spatiotemporal coherence** — physics, object permanence, character identity across cuts substantially more reliable than Sora 1
-3. **Consumer app launch** — TikTok-style interface where users see / generate / remix short AI videos
 
 ## Sora 2 vs late-2025 video peers
 

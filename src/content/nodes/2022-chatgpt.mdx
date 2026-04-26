@@ -1,33 +1,71 @@
 ---
 slug: chatgpt
-title: "ChatGPT — RLHF-Aligned Conversational LLM"
-date: 2022-11-30
+title: ChatGPT — RLHF-Aligned Conversational LLM
+date: '2022-11-30'
 era: alignment
-category: [nlp, generative, safety]
+category:
+  - nlp
+  - generative
+  - safety
 relationships:
   - to: gpt-3
-    type: fine_tunes
-    note: "RLHF post-training on GPT-3.5 base (text-davinci-003)"
+    type: builds_on
+    note: '[fine_tunes] RLHF post-training on GPT-3.5 base (text-davinci-003)'
   - to: instructgpt
     type: builds_on
-    note: "Productizes the InstructGPT alignment recipe with chat UI"
+    note: Productizes the InstructGPT alignment recipe with chat UI
 authors:
-  - "OpenAI Team"
-org: "OpenAI"
+  - OpenAI Team
+org: OpenAI
 breakthrough_score: 10
 status: foundational
 model_spec:
-  parameters: "~175B (GPT-3.5 base, undisclosed exact)"
-  architecture: "Decoder-only transformer + RLHF post-training (PPO against reward model)"
+  parameters: '~175B (GPT-3.5 base, undisclosed exact)'
+  architecture: Decoder-only transformer + RLHF post-training (PPO against reward model)
   context_window: 4096
   release_type: product
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "User adoption"
-      score: "100M MAU in 2 months"
-      vs_baseline: "fastest-growing consumer product in history"
-  homepage: "https://openai.com/index/chatgpt/"
-
+    - name: User adoption
+      score: 100M MAU in 2 months
+      vs_baseline: fastest-growing consumer product in history
+    - name: Intelligence · AA Intelligence Index
+      score: '21.80'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: Coding · AA Coding Index
+      score: '21.20'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: Coding · SciCode
+      score: 37.8%
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: Agentic · Terminal-Bench Hard
+      score: 12.9%
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: MMLU-Pro
+      score: 82.0%
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: GPQA
+      score: 68.6%
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: HLE
+      score: 5.8%
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: Speed · Output tok/s
+      score: '166'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+    - name: Price ($/M tokens)
+      score: $1.25 in / $10.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+  homepage: 'https://openai.com/index/chatgpt/'
+  availability:
+    - product
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     A version of GPT-3.5 fine-tuned with human feedback so that it
@@ -41,14 +79,14 @@ public_view:
     intense customer-service training — same raw capability, vastly more
     usable.
   applications:
-    - product: "ChatGPT (consumer chat product)"
-      company: "OpenAI"
+    - product: ChatGPT (consumer chat product)
+      company: OpenAI
       year_deployed: 2022
-    - product: "Microsoft Copilot (Office, Windows, GitHub, Bing)"
-      company: "Microsoft"
+    - product: 'Microsoft Copilot (Office, Windows, GitHub, Bing)'
+      company: Microsoft
       year_deployed: 2023
-    - product: "ChatGPT Enterprise"
-      company: "OpenAI"
+    - product: ChatGPT Enterprise
+      company: OpenAI
       year_deployed: 2023
   investment_angle: |
     The product launch that converted "AI is impressive in demos" into
@@ -67,39 +105,37 @@ public_view:
     being a research field and became a consumer category. Every
     subsequent regulatory, geopolitical, labor-market, and education
     debate about AI is downstream of this launch.
-
 citations:
   - type: release
     key: openai2022chatgpt
-    title: "Introducing ChatGPT"
+    title: Introducing ChatGPT
     year: 2022
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/chatgpt/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/chatgpt/'
   - type: paper
     key: ouyang2022instructgpt
-    title: "Training Language Models to Follow Instructions with Human Feedback"
-    authors: ["Ouyang, L.", "Wu, J.", "Jiang, X.", "et al."]
+    title: Training Language Models to Follow Instructions with Human Feedback
+    authors:
+      - 'Ouyang, L.'
+      - 'Wu, J.'
+      - 'Jiang, X.'
+      - et al.
     year: 2022
-    venue: "NeurIPS"
-    arxiv: "2203.02155"
+    venue: NeurIPS
+    arxiv: '2203.02155'
   - type: paper
     key: christiano2017rlhf
-    title: "Deep Reinforcement Learning from Human Preferences"
-    authors: ["Christiano, P.", "Leike, J.", "Brown, T.", "et al."]
+    title: Deep Reinforcement Learning from Human Preferences
+    authors:
+      - 'Christiano, P.'
+      - 'Leike, J.'
+      - 'Brown, T.'
+      - et al.
     year: 2017
-    venue: "NeurIPS"
-    arxiv: "1706.03741"
+    venue: NeurIPS
+    arxiv: '1706.03741'
+graph_featured: true
 ---
-
-## What it is
-
-ChatGPT (initial release, Nov 2022) was a fine-tuned variant of `text-davinci-003` (GPT-3.5), trained with **Reinforcement Learning from Human Feedback (RLHF)** to:
-
-1. Follow natural-language instructions rather than continue arbitrary text.
-2. Hold multi-turn conversations with stable persona.
-3. Refuse a curated set of harmful or policy-violating requests.
-
-The product surface — a chat box with conversation memory — was as important as the model. It made few-shot prompting (which requires ML literacy to use well) implicit in the conversational format.
 
 ## How it works (training pipeline)
 

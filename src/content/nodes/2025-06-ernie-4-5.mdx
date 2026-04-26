@@ -1,32 +1,83 @@
 ---
 slug: ernie-4-5
-title: "ERNIE 4.5 — Baidu Goes Open"
-date: 2025-06-30
+title: ERNIE 4.5 — Baidu Goes Open
+date: '2025-06-30'
 era: reasoning
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: baidu-ernie-4
-    type: scales
-    note: "Baidu's first major open-weight release after years of closed ERNIE — 10 variants up to 424B/47B-active MoE"
+    type: builds_on
+    note: >-
+      [scales] Baidu's first major open-weight release after years of closed
+      ERNIE — 10 variants up to 424B/47B-active MoE
+  - to: grok-3
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Baidu ERNIE Team"
-org: "Baidu"
+  - Baidu ERNIE Team
+org: Baidu
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "Up to 424B total / 47B active MoE; smaller dense variants from 0.3B"
-  architecture: "MoE; some variants with vision (28B-A3B-VL)"
+  parameters: Up to 424B total / 47B active MoE; smaller dense variants from 0.3B
+  architecture: MoE; some variants with vision (28B-A3B-VL)
   context_window: 128000
   release_type: open_weights
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "MMLU (424B)"
-      score: "86.9%"
-    - name: "GSM8K"
-      score: "93.0%"
-  homepage: "https://yiyan.baidu.com/"
-  github: "https://github.com/PaddlePaddle/ERNIE"
-
+    - name: MMLU (424B)
+      score: 86.9%
+    - name: GSM8K
+      score: 93.0%
+    - name: Intelligence · AA Intelligence Index
+      score: '15.00'
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: Coding · AA Coding Index
+      score: '14.50'
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: Coding · SciCode
+      score: 31.5%
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: Agentic · Terminal-Bench Hard
+      score: 6.1%
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: MMLU-Pro
+      score: 77.6%
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: GPQA
+      score: 81.1%
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: HLE
+      score: 3.5%
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: Speed · Output tok/s
+      score: '26'
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+    - name: Price ($/M tokens)
+      score: $0.28 in / $1.10 out
+      source_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+  homepage: 'https://yiyan.baidu.com/'
+  github: 'https://github.com/PaddlePaddle/ERNIE'
+  availability:
+    - open_weights
+  family: Baidu ernie
+  variants:
+    - id: ernie-4-5-300b-a47b
+      label: ERNIE 4.5 300B A47B
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/baidu/ERNIE-4.5-300B-A47B-Paddle'
 public_view:
   plain_english: |
     Baidu's June 2025 strategy reversal — they open-sourced ten
@@ -39,14 +90,14 @@ public_view:
     years insisting closed APIs were the right model, then conceded
     the open-weight ground in a single release.
   applications:
-    - product: "Baidu AI Cloud Qianfan"
-      company: "Baidu"
+    - product: Baidu AI Cloud Qianfan
+      company: Baidu
       year_deployed: 2025
-    - product: "ERNIE Bot (free consumer)"
-      company: "Baidu"
+    - product: ERNIE Bot (free consumer)
+      company: Baidu
       year_deployed: 2025
-    - product: "Hugging Face hosted"
-      company: "Multiple"
+    - product: Hugging Face hosted
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     Baidu's pivot to Apache 2.0 was forced by the market — open-weight
@@ -59,20 +110,20 @@ public_view:
     capitulation to the DeepSeek-led open-weight wave. It means EVERY
     major Chinese hyperscaler (Alibaba, ByteDance via Doubao, Baidu,
     Tencent, Huawei) now ships open-weight models at frontier scale.
-
 citations:
   - type: release
     key: baidu2025ernie45
-    title: "ERNIE 4.5 Open-Source Release"
+    title: ERNIE 4.5 Open-Source Release
     year: 2025
-    venue: "Baidu AI Blog"
-    url: "https://ai.baidu.com/blog/ernie-4.5-open-source"
+    venue: Baidu AI Blog
+    url: 'https://ai.baidu.com/blog/ernie-4.5-open-source'
   - type: paper
     key: baidu2025erniepaper
-    title: "ERNIE 4.5 Technical Report"
+    title: ERNIE 4.5 Technical Report
     year: 2025
-    arxiv: "2507.04543"
-    url: "https://arxiv.org/abs/2507.04543"
+    arxiv: '2507.04543'
+    url: 'https://arxiv.org/abs/2507.04543'
+graph_featured: true
 ---
 
 ## The 10-variant lineup

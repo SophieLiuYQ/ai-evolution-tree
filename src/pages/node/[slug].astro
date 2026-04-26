@@ -5,9 +5,11 @@ import CitationsBlock from "../../components/CitationsBlock.astro";
 import ModelSpec from "../../components/ModelSpec.astro";
 import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
 import LineageZoom from "../../components/LineageZoom.astro";
-import { stroke as orgStrokeColor, fill as orgFillColor } from "../../lib/graph/constants";
-import { ORG_HOMEPAGE, ORG_GITHUB } from "../../lib/org-links";
+import { stroke as orgStrokeColor, fill as orgFillColor, HIDDEN_EDGE_TYPES } from "../../lib/graph/constants";
+import { ORG_GITHUB } from "../../lib/org-links";
 import { normalizeOrg } from "../../lib/org-display";
+import { normalizeCategories } from "../../lib/categories";
+import { benchSource } from "../../lib/benchmark-sources";
 
 export async function getStaticPaths() {
   const nodes = await getCollection("nodes");
@@ -21,37 +23,50 @@ const { node } = Astro.props;
 const { Content } = await render(node);
 const d = node.data;
 const allNodes = await getCollection("nodes");
+const companies = await getCollection("companies");
+const company = (() => {
+  const matches = companies.filter((c) => c.data.orgs.includes(d.org));
+  if (!matches.length) return null;
+  // Prefer the most "aggregated" company view (covers multiple org aliases),
+  // so Google/DeepMind nodes link to the combined company page rather than
+  // a single-org stub.
+  matches.sort((a, b) => {
+    const ao = a.data.orgs.length;
+    const bo = b.data.orgs.length;
+    if (bo !== ao) return bo - ao;
+    return a.data.name.localeCompare(b.data.name);
+  });
+  return matches[0];
+})();
+const orgHref = company ? `/company/${company.data.slug}/` : "/tree/";
 
 // ===== Header data prep =====
 
-// Short date: "Apr 2025" (day precision is rarely meaningful for releases)
 const fmtShort = d.date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "short",
 });
 
-// Split "Claude 4.7 — Adaptive Thinking" into name + tagline
 const splitMatch = d.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
-const titleName = splitMatch ? splitMatch[1] : d.title;
-const titleTagline = splitMatch ? splitMatch[2] : null;
+const rawTitleName = splitMatch ? splitMatch[1] : d.title;
+const rawTitleTagline = splitMatch ? splitMatch[2] : null;
 
-// Same split on the Chinese title (if any). Model name stays English
-// (industry convention — "Claude 4" doesn't become "克劳德4"), only
-// the tagline side translates.
+// "Series" titles like "Claude 4.5 — Series" should read as one phrase
+// rather than a name + a separate tagline pill. Inline "Series" into
+// the displayed title and skip the tagline render below.
+const isSeriesTitle = rawTitleTagline?.trim().toLowerCase() === "series";
+const titleName = isSeriesTitle ? `${rawTitleName} Series` : rawTitleName;
+const titleTagline = isSeriesTitle ? null : rawTitleTagline;
+
 const splitZh = d.title_zh?.match(/^(.+?)\s+[—–-]\s+(.+)$/);
-const titleNameZh = splitZh ? splitZh[1] : d.title_zh ?? null;
-const titleTaglineZh = splitZh ? splitZh[2] : null;
-
-// (`breakthrough_score` is intentionally not surfaced in the UI — the
-// score is subjective and was promising precision the rubric can't
-// support. The number stays in frontmatter for future ranking work.)
-
-const STATUS_LABEL: Record<string, string> = {
-  foundational: "Foundational",
-  active: "Active",
-  superseded: "Superseded",
-  archived: "Archived",
-};
+const rawTitleNameZh = splitZh ? splitZh[1] : d.title_zh ?? null;
+const rawTitleTaglineZh = splitZh ? splitZh[2] : null;
+const isSeriesTitleZh = rawTitleTaglineZh?.trim() === "系列" ||
+  rawTitleTaglineZh?.trim().toLowerCase() === "series";
+const titleNameZh = isSeriesTitleZh && rawTitleNameZh
+  ? `${rawTitleNameZh} 系列`
+  : rawTitleNameZh;
+const titleTaglineZh = isSeriesTitleZh ? null : rawTitleTaglineZh;
 
 const RELEASE_LABEL: Record<string, string> = {
   open_weights: "Open weights",
@@ -78,269 +93,1759 @@ const ERA_LABEL: Record<string, string> = {
 };
 const eraLabel = ERA_LABEL[d.era] ?? d.era;
 
-// "Qwen Team" / "Anthropic Team" / etc. add nothing — hide them.
-// Real author lists (named individuals) stay.
 const hideAuthors =
   d.authors.length <= 1 &&
   d.authors.some((a) => /\bteam\b/i.test(a) || a === d.org);
 
-// Lead paragraph: full plain-English explanation. Schema caps it at
-// ~100 words, so it fits a header without ballooning. Earlier we
-// truncated to 28 words but that left readers staring at "Gemini…"
-// mid-sentence — bad UX, no upside.
 const summary = d.public_view.plain_english.trim().replace(/\s+/g, " ");
 const summaryZh = d.public_view_zh?.plain_english?.trim().replace(/\s+/g, " ");
 
 const orgStroke = orgStrokeColor(d.org);
 const orgFill = orgFillColor(d.org);
 
-// External link pills: official site (homepage) + GitHub when relevant.
-// Official site: per-model `spec.homepage` wins, else org→homepage fallback.
-// GitHub: per-model `spec.github` wins; else, for open-weights models,
-// fall back to an org-level GitHub page. Closed-source labs intentionally
-// lack an ORG_GITHUB entry, so the pill is hidden for them by default.
-const officialUrl = d.model_spec?.homepage ?? ORG_HOMEPAGE[d.org];
+// "Official ↗" pill links ONLY to the model's own page if the MDX
+// declares one — no fallback to the org's generic homepage. Many Chinese
+// labs publish only on GitHub or HF; faking an "Official" link to the
+// company's marketing site is misleading. The org-name pill on the left
+// still routes to the internal /company/<org>/ page for browsing.
+const officialUrl = d.model_spec?.homepage;
 const isOpenWeights = d.model_spec?.release_type === "open_weights";
 const githubUrl =
   d.model_spec?.github ?? (isOpenWeights ? ORG_GITHUB[d.org] : undefined);
+
+// ===== Lineage parent/child counts (for the panel subtitle) =====
+// Use the same HIDDEN_EDGE_TYPES set as LineageZoom so the counts here
+// match the dots actually drawn in the minigraph.
+const slugSet = new Set(allNodes.map((n) => n.data.slug));
+const parentCount = d.relationships.filter(
+  (r) => slugSet.has(r.to) && !HIDDEN_EDGE_TYPES.has(r.type),
+).length;
+const childCount = allNodes.reduce((acc, n) => {
+  if (n.data.slug === d.slug) return acc;
+  return acc + n.data.relationships.filter(
+    (r) => r.to === d.slug && !HIDDEN_EDGE_TYPES.has(r.type),
+  ).length;
+}, 0);
+const lineageSubtitle = (() => {
+  const parts: string[] = [];
+  if (parentCount > 0) parts.push(`${parentCount} parent${parentCount > 1 ? "s" : ""}`);
+  if (childCount > 0) parts.push(`${childCount} child${childCount > 1 ? "ren" : ""}`);
+  return parts.join(" · ") || null;
+})();
+// Dense lineage (5+ relationships, e.g. CLIP → 7 children) needs full-width
+// rendering so the SVG cards don't get squeezed unreadable. Sparse lineage
+// (≤ 4 relationships, e.g. GPT-5 → 1 parent + 1 child) keeps the side-by-side
+// 2-col layout next to the comparison-table prose.
+const denseLineage = parentCount + childCount > 4;
+
+// ===== Spec table data (right side of hero) =====
+const spec = d.model_spec;
+
+const fmtCtx = (n?: number) => {
+  if (!n) return null;
+  if (n >= 1_000_000) return `${n / 1_000_000}M tokens`;
+  if (n >= 1_000) return `${n / 1_000}k tokens`;
+  return `${n} tokens`;
+};
+const ctxHint = (n?: number): string | null => {
+  if (!n) return null;
+  if (n >= 1_000_000) return `≈ entire codebase`;
+  if (n >= 200_000) return `≈ ${Math.round(n / 1300)}+ pages`;
+  if (n >= 32_000) return `≈ ${Math.round(n / 1300)} pages`;
+  if (n >= 4_000) return `≈ short doc`;
+  return `short prompt`;
+};
+const accessLabel = (t?: string): string => {
+  if (t === "api") return "API Only";
+  if (t === "open_weights") return "Open Weights";
+  if (t === "product") return "Product Only";
+  if (t === "paper") return "Research";
+  if (t === "demo") return "Demo / Waitlist";
+  return "N/A";
+};
+
+// Recognise placeholder / undisclosed strings that older MDX rows still
+// carry. Anything matching → render as "N/A" in the spec table.
+const PLACEHOLDER_TEXT = new Set([
+  "undisclosed",
+  "Undisclosed",
+  "N/A",
+  "—",
+  "Placeholder scaffold — fill with official specs and benchmark snapshots.",
+  "Series node (collapsed variants).",
+]);
+const isPlaceholder = (s?: string): boolean => {
+  if (!s) return true;
+  const t = String(s).trim();
+  if (!t) return true;
+  return PLACEHOLDER_TEXT.has(t);
+};
+const naOr = (s?: string): string => (isPlaceholder(s) ? "N/A" : String(s));
+
+// Modality formatter — Title-Case the AA-derived tokens (text, image,
+// audio, video) and join with " · " so multiple modalities read as a
+// row of distinct items rather than a sentence.
+const MODALITY_LABEL: Record<string, string> = {
+  text: "Text",
+  image: "Image",
+  audio: "Audio",
+  video: "Video",
+  speech: "Audio",
+};
+const fmtModalities = (arr?: readonly string[]): string => {
+  if (!arr || arr.length === 0) return "N/A";
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const m of arr) {
+    const label = MODALITY_LABEL[m] ?? m;
+    if (!seen.has(label)) {
+      out.push(label);
+      seen.add(label);
+    }
+  }
+  return out.length ? out.join(" · ") : "N/A";
+};
+
+// Capabilities label map — same labels as the lower ModelSpec card
+// uses for type tags + the LegendPanel filter rows. Keep in sync.
+const CAPABILITY_LABEL: Record<string, string> = {
+  agents: "Agent",
+  multimodal: "Multimodal",
+  reasoning: "Reasoning",
+  generative: "Generative",
+  nlp: "Text / NLP",
+  cv: "Vision",
+  audio: "Audio",
+  video: "Video",
+  code: "Code",
+  science: "Science",
+  world_model: "World model",
+  paper: "Paper",
+};
+const fmtCapabilities = (cats: readonly string[]): string => {
+  const norm = normalizeCategories(cats ?? []);
+  const labels = norm.map((c) => CAPABILITY_LABEL[c] ?? c);
+  return labels.length ? labels.join(", ") : "N/A";
+};
+
+// Compact architecture for the spec table (long descriptions get truncated
+// to first 2 words for the right-aligned cell — full text stays on hover)
+const archCompact = (s?: string): string => {
+  if (isPlaceholder(s)) return "N/A";
+  // Strip everything after first em-dash / period; take first ~3 words
+  const head = s!.split(/[—.]/)[0].trim();
+  const words = head.split(/\s+/);
+  if (words.length <= 3) return head;
+  return words.slice(0, 3).join(" ");
+};
+
+// ===== Capability cards (left half of row 2) =====
+const normalizedCats = normalizeCategories(d.category ?? []);
+type Capability = { icon: string; title: string; desc: string; color: string };
+const CAP_LIBRARY: Record<string, Capability> = {
+  reasoning: {
+    icon: "brain",
+    title: "Reasoning",
+    desc: "Solves complex math, logic, and planning tasks.",
+    color: "blue",
+  },
+  code: {
+    icon: "code",
+    title: "Coding",
+    desc: "Strong real-world software engineering.",
+    color: "purple",
+  },
+  nlp: {
+    icon: "doc",
+    title: "Long Documents",
+    desc: "Handles entire codebases, books, and multi-doc RAG.",
+    color: "blue",
+  },
+  agents: {
+    icon: "robot",
+    title: "Agent Workflows",
+    desc: "Built for tool use and autonomous tasks.",
+    color: "green",
+  },
+  multimodal: {
+    icon: "layers",
+    title: "Multimodal",
+    desc: "Combines text, vision, and audio in one model.",
+    color: "purple",
+  },
+  generative: {
+    icon: "sparkle",
+    title: "Generative",
+    desc: "Produces images, video, audio, or other media.",
+    color: "pink",
+  },
+  cv: {
+    icon: "eye",
+    title: "Vision",
+    desc: "Understands images, scenes, and visual context.",
+    color: "amber",
+  },
+  audio: {
+    icon: "wave",
+    title: "Audio",
+    desc: "Speech, music, or other audio understanding/synthesis.",
+    color: "cyan",
+  },
+  paper: {
+    icon: "book",
+    title: "Research",
+    desc: "Foundational paper or scientific contribution.",
+    color: "slate",
+  },
+  science: {
+    icon: "atom",
+    title: "Science",
+    desc: "Built for biology, chemistry, materials, weather, or math research.",
+    color: "teal",
+  },
+};
+const longDocFromCtx = spec?.context_window && spec.context_window >= 128_000;
+const capabilityKeys: string[] = [];
+for (const k of normalizedCats) {
+  if (CAP_LIBRARY[k] && !capabilityKeys.includes(k)) capabilityKeys.push(k);
+}
+if (longDocFromCtx && !capabilityKeys.includes("nlp")) capabilityKeys.unshift("nlp");
+const capabilities = capabilityKeys.slice(0, 4).map((k) => CAP_LIBRARY[k]);
+
+// ===== Performance: top 3 benchmarks =====
+type Bench = { name: string; score: string; vs_baseline?: string; source_url?: string };
+function parseRank(vs?: string): { rank: number; total: number } | null {
+  if (!vs) return null;
+  const m = vs.match(/Rank #(\d+)\s+of\s+(\d+)/i);
+  if (!m) return null;
+  const rank = parseInt(m[1], 10);
+  const total = parseInt(m[2], 10);
+  if (!Number.isFinite(rank) || !Number.isFinite(total) || total <= 0) return null;
+  return { rank, total };
+}
+
+type ScoreMeta = {
+  unit: "pct" | "num" | null;
+  value: number | null; // primary / best value for bar marker
+  rangeMin: number | null;
+  rangeMax: number | null;
+};
+
+function parseScoreMeta(score: string): ScoreMeta {
+  if (typeof score !== "string") return { unit: null, value: null, rangeMin: null, rangeMax: null };
+
+  const pctValueMatch = score.match(/(\d+(?:\.\d+)?)\s*%/);
+  const pctRangeMatch = score.match(/(\d+(?:\.\d+)?)\s*[–-]\s*(\d+(?:\.\d+)?)\s*%/);
+  if (pctValueMatch) {
+    const value = parseFloat(pctValueMatch[1]);
+    const rangeMin = pctRangeMatch ? parseFloat(pctRangeMatch[1]) : null;
+    const rangeMax = pctRangeMatch ? parseFloat(pctRangeMatch[2]) : null;
+    return { unit: "pct", value, rangeMin, rangeMax };
+  }
+
+  const numValueMatch = score.match(/(\d+(?:\.\d+)?)/);
+  const numRangeMatch = score.match(/(\d+(?:\.\d+)?)\s*[–-]\s*(\d+(?:\.\d+)?)/);
+  const value = numValueMatch ? parseFloat(numValueMatch[1]) : null;
+  const rangeMin = numRangeMatch ? parseFloat(numRangeMatch[1]) : null;
+  const rangeMax = numRangeMatch ? parseFloat(numRangeMatch[2]) : null;
+  return { unit: value === null ? null : "num", value, rangeMin, rangeMax };
+}
+
+function clamp01to100(v: number | null): number | null {
+  if (v === null || !Number.isFinite(v)) return null;
+  return Math.max(0, Math.min(100, v));
+}
+
+function formatTopPct(rank: number, total: number): string {
+  const pct = (rank / total) * 100;
+  if (pct < 1) return "Top <1%";
+  if (pct < 10) return `Top ${pct.toFixed(1)}%`;
+  return `Top ${Math.round(pct)}%`;
+}
+const allBench = (spec?.benchmarks ?? []) as Bench[];
+// Pick up to 3 headline rows. Prefer rank-style leaderboards (Rank #X of Y),
+// otherwise fall back to percent-based scores. This ensures models like GPT-5
+// (AA indexes are not percentages) still show 3 rows here.
+const headlineBench = allBench
+  .map((b) => ({
+    ...b,
+    rank: parseRank(b.vs_baseline),
+    scoreMeta: parseScoreMeta(b.score),
+  }))
+  .filter((b) => b.rank !== null || b.scoreMeta.value !== null)
+  .sort((a, b) => {
+    const ar = a.rank ? a.rank.rank / a.rank.total : null;
+    const br = b.rank ? b.rank.rank / b.rank.total : null;
+    if (ar !== null && br !== null) return ar - br;
+    if (ar !== null) return -1;
+    if (br !== null) return 1;
+    // Neither has rank: higher score value is better
+    return (b.scoreMeta.value ?? -Infinity) - (a.scoreMeta.value ?? -Infinity);
+  })
+  .slice(0, 3);
+
+// ===== Variant surfaces (versioned / tiered) =====
+type Variant = {
+  id: string;
+  label: string;
+  status?: "preview" | "active" | "legacy" | "retired";
+  released_at?: Date;
+  retired_at?: Date;
+  api_model?: string;
+  benchmarks?: Bench[];
+};
+const variants = (spec?.variants ?? []) as Variant[];
+const hasVariants = variants.length > 0;
+const variantOptions = [{ id: "auto", label: "Auto (family)" }, ...variants.map((v) => ({ id: v.id, label: v.label }))];
+
+function pickHeadline(benchArr: Bench[]) {
+  return benchArr
+    .map((b) => ({
+      ...b,
+      rank: parseRank(b.vs_baseline),
+      scoreMeta: parseScoreMeta(b.score),
+    }))
+    .filter((b) => b.rank !== null || b.scoreMeta.value !== null)
+    .sort((a, b) => {
+      const ar = a.rank ? a.rank.rank / a.rank.total : null;
+      const br = b.rank ? b.rank.rank / b.rank.total : null;
+      if (ar !== null && br !== null) return ar - br;
+      if (ar !== null) return -1;
+      if (br !== null) return 1;
+      return (b.scoreMeta.value ?? -Infinity) - (a.scoreMeta.value ?? -Infinity);
+    })
+    .slice(0, 3);
+}
+
+function fmtIso(d?: Date) {
+  if (!d) return null;
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+const variantBench = new Map<string, Bench[]>();
+variantBench.set("auto", allBench);
+for (const v of variants) variantBench.set(v.id, (v.benchmarks ?? allBench) as Bench[]);
+
+function benchNote(name: string): string {
+  if (/AIME/i.test(name)) return "Mathematical reasoning (with chain-of-thought)";
+  if (/SWE-?bench/i.test(name)) return "Real-world software engineering";
+  if (/Humanity'?s Last Exam/i.test(name)) return "Hardest mixed reasoning benchmark";
+  if (/MMLU/i.test(name)) return "Broad academic knowledge";
+  if (/GPQA/i.test(name)) return "Graduate-level science Q&A";
+  if (/HumanEval/i.test(name)) return "Function-level code synthesis";
+  if (/MATH\b/i.test(name)) return "High-school competition math";
+  if (/MMMU/i.test(name)) return "Multimodal academic understanding";
+  if (/Codeforces/i.test(name)) return "Competitive programming";
+  if (/Arena|Elo/i.test(name)) return "Human preference (head-to-head)";
+  return "Standardized capability benchmark";
+}
+function benchVsLabel(vs?: string): string | null {
+  if (!vs) return null;
+  // Capture first competitor name + score
+  const m = vs.match(/^\s*([^,]+?)\s+(\d+(?:\.\d+)?\s*%)/);
+  if (!m) return vs.split(",")[0].trim();
+  return `vs ${m[1].trim()} (${m[2].trim()})`;
+}
+
+// ===== Context window timeline =====
+// Each tick is bilingual — short English (1-2 words) + Chinese to match the
+// design (which shows 聊天 / 长文档 / 长文档 / 本模型 / 整个代码库). Long
+// English phrases like "Multi-doc RAG" overflowed when ticks were close in
+// log-space; trimmed to single words.
+const CTX_TICKS: Array<{
+  v: number;
+  label: string;
+  note: string;
+  noteZh: string;
+}> = [
+  { v: 4_000, label: "4k", note: "Chat", noteZh: "聊天" },
+  { v: 32_000, label: "32k", note: "Long docs", noteZh: "长文档" },
+  { v: 128_000, label: "128k", note: "Books", noteZh: "整本书" },
+  { v: 400_000, label: "400k", note: "Multi-doc", noteZh: "多文档" },
+  { v: 1_000_000, label: "1M", note: "Codebase", noteZh: "整个代码库" },
+  { v: 10_000_000, label: "10M", note: "", noteZh: "" },
+];
+const CTX_MIN_LOG = Math.log10(2_000);
+const CTX_MAX_LOG = Math.log10(20_000_000);
+function ctxLogPos(v: number): number {
+  const lv = Math.log10(Math.max(v, 1));
+  return Math.max(
+    0,
+    Math.min(100, ((lv - CTX_MIN_LOG) / (CTX_MAX_LOG - CTX_MIN_LOG)) * 100),
+  );
+}
+const ctxValue = spec?.context_window;
+const ctxThisModelPos = ctxValue ? ctxLogPos(ctxValue) : null;
+const ctxThisModelHint = ctxValue ? ctxHint(ctxValue) : null;
+// Active-tick detection: model is "on a tick" only if its log-distance to
+// the nearest tick is within ON_TICK_TOLERANCE (≈ within 1.26× of the tick
+// value). 128k model → on the 128k tick. 200k model → between 128k and 400k,
+// no active tick → marker label visible above the axis.
+const ON_TICK_TOLERANCE = 0.16; // log10 distance ≈ 45% multiplicative — 163.84k → 128k tick
+function findActiveTickIdx(v: number): number {
+  let bestI = -1;
+  let bestD = Infinity;
+  CTX_TICKS.forEach((t, i) => {
+    const d = Math.abs(Math.log10(t.v) - Math.log10(v));
+    if (d < bestD) {
+      bestD = d;
+      bestI = i;
+    }
+  });
+  return bestD < ON_TICK_TOLERANCE ? bestI : -1;
+}
+const activeTickIdx = ctxValue ? findActiveTickIdx(ctxValue) : -1;
+const isOnTick = activeTickIdx >= 0;
+
+// ===== Availability matrix =====
+// Source of truth: model_spec.availability[] (multi-channel array). When
+// missing (older nodes not yet migrated), fall back to deriving from the
+// single-valued release_type so the row never crashes on legacy data.
+type AvailState = "available" | "not-released" | "not-available" | "contact";
+type AvailRow = { key: string; label: string; status: AvailState; sub: string };
+
+const availChannels = new Set<string>(spec?.availability ?? []);
+// Back-compat fallback: if the new field is absent, project release_type
+// onto a minimal channel set (api → api; open_weights → open_weights;
+// product → product; etc.) so older nodes still render something useful.
+if (!availChannels.size && releaseType) {
+  if (releaseType === "api") availChannels.add("api");
+  else if (releaseType === "open_weights") availChannels.add("open_weights");
+  else if (releaseType === "product") availChannels.add("product");
+  else if (releaseType === "paper") availChannels.add("research");
+  else if (releaseType === "demo") availChannels.add("demo");
+}
+
+const availability: AvailRow[] = [
+  {
+    key: "api",
+    label: "API",
+    status: availChannels.has("api") ? "available" : "not-available",
+    sub: availChannels.has("api") ? "Available" : "Not available",
+  },
+  {
+    key: "product",
+    label: "Product / App",
+    status: availChannels.has("product") ? "available" : "not-available",
+    sub: availChannels.has("product") ? "Available" : "Not available",
+  },
+  {
+    key: "open-source",
+    label: "Open Source",
+    status: availChannels.has("open_weights") ? "available" : "not-released",
+    sub: availChannels.has("open_weights") ? "Released" : "Not released",
+  },
+  {
+    key: "enterprise",
+    label: "Enterprise",
+    status: availChannels.has("enterprise")
+      ? "available"
+      : (availChannels.has("api") || availChannels.has("product"))
+        ? "contact"
+        : "not-available",
+    sub: availChannels.has("enterprise")
+      ? "Available"
+      : (availChannels.has("api") || availChannels.has("product"))
+        ? "Contact sales"
+        : "—",
+  },
+];
+
+// ===== Pricing model =====
+const pricingModel = (() => {
+  if (releaseType === "api") {
+    return { title: "Pay per token", body: "Input and output billed separately.", pill: "Pay-per-token" };
+  }
+  if (releaseType === "open_weights") {
+    return { title: "Free / self-host", body: "Open weights — pay only for compute.", pill: "Self-host" };
+  }
+  if (releaseType === "product") {
+    return { title: "Subscription", body: "Bundled inside the host product.", pill: "Subscription" };
+  }
+  if (releaseType === "paper") {
+    return { title: "Research artifact", body: "Not commercially released.", pill: "Research" };
+  }
+  if (releaseType === "demo") {
+    return { title: "Demo access", body: "Limited / waitlisted.", pill: "Demo" };
+  }
+  return { title: "Not disclosed", body: "Pricing not disclosed.", pill: null };
+})();
+
+const heroDescription = summary;
+const heroDescriptionZh = summaryZh;
 ---
 
 <Base title={`${d.title} · AI Evolution Tree`} description={d.public_view.plain_english}>
-  <article>
-    <header class="node-header">
-      {/* Org-color accent bar — instant visual identity for the lab */}
-      <div class="org-accent-bar" style={`background: ${orgStroke};`} />
+  <article class="model-page">
+    {/* ============== Breadcrumb ============== */}
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/" data-i18n="nav.home">Home</a>
+      <span class="bc-sep">›</span>
+      <a href="/tree/" data-i18n="nav.graph">Graph</a>
+      <span class="bc-sep">›</span>
+      <span class="bc-current">{titleName}</span>
+    </nav>
 
-      <div class="node-header-inner">
-        {/* Top meta row: date only — Tier was removed (subjective score) */}
-        <div class="header-meta">
-          <time datetime={d.date.toISOString()} class="header-date">
-            {fmtShort}
-          </time>
+    {/* ============== HERO (left/right split) ============== */}
+    <section class="hero">
+      <div class="hero-accent" style={`background: ${orgStroke};`} />
+      <div class="hero-grid">
+        {/* LEFT: title block */}
+        <div class="hero-left">
+          <div class="hero-meta">
+            <time datetime={d.date.toISOString()} class="hero-date">{fmtShort}</time>
+            <a
+              href={orgHref}
+              class="pill pill-org hero-meta-org"
+              style={`--pill-stroke: ${orgStroke}; --pill-fill: ${orgFill};`}
+              title={`See models from ${normalizeOrg(d.org)}`}
+            >
+              {normalizeOrg(d.org)}
+            </a>
+          </div>
+          <h1 class="hero-title">{titleName}</h1>
+          {(titleTagline || titleTaglineZh) && (
+            <div class="hero-tagline-pill">
+              <span class={titleTaglineZh ? "lang-en has-zh" : "lang-en"}>{titleTagline}</span>
+              {titleTaglineZh && <span class="lang-zh">{titleTaglineZh}</span>}
+            </div>
+          )}
+          <p class="hero-desc">
+            <span class={heroDescriptionZh ? "lang-en has-zh" : "lang-en"}>{heroDescription}</span>
+            {heroDescriptionZh && <span class="lang-zh">{heroDescriptionZh}</span>}
+          </p>
+          <div class="hero-pills">
+            {officialUrl && (
+              <a href={officialUrl} target="_blank" rel="noopener" class="pill pill-link" data-i18n="detail.official">
+                Official ↗
+              </a>
+            )}
+            {githubUrl && (
+              <a href={githubUrl} target="_blank" rel="noopener" class="pill pill-link pill-github" data-i18n="detail.github">
+                GitHub ↗
+              </a>
+            )}
+            {spec?.aa_url && (
+              <a href={spec.aa_url} target="_blank" rel="noopener" class="pill pill-link" data-i18n="detail.aa">
+                Artificial Analysis ↗
+              </a>
+            )}
+            {spec?.hf_url && (
+              <a href={spec.hf_url} target="_blank" rel="noopener" class="pill pill-link" data-i18n="detail.hf">
+                Hugging Face ↗
+              </a>
+            )}
+          </div>
         </div>
 
-        {/* Title — name big, tagline second-line smaller */}
-        <h1 class="title-name">{titleName}</h1>
-        {titleTagline && (
-          <p class="title-tagline">
-            <span class={titleTaglineZh ? "lang-en has-zh" : "lang-en"}>{titleTagline}</span>
-            {titleTaglineZh && <span class="lang-zh">{titleTaglineZh}</span>}
-          </p>
-        )}
-
-        {/* 1-sentence summary — answers "what is this?" before specs */}
-        <p class="title-summary">
-          <span class={summaryZh ? "lang-en has-zh" : "lang-en"}>{summary}</span>
-          {summaryZh && <span class="lang-zh">{summaryZh}</span>}
-        </p>
-
-        {/* Unified key-fact pills: org / release / era / status.
-            All same shape, same size — the four facts a reader needs
-            to triage the model in 2 seconds. */}
-        <div class="key-pills" role="list">
-          <a
-            href="/tree/"
-            class="key-pill key-pill-org"
-            style={`--pill-stroke: ${orgStroke}; --pill-fill: ${orgFill};`}
-            title={`See models from ${normalizeOrg(d.org)}`}
-          >
-            {normalizeOrg(d.org)}
-          </a>
-          {releaseLabel && releaseType && (
-            <span class="key-pill key-pill-release" data-i18n={`release.${releaseType}`}>{releaseLabel}</span>
-          )}
-          <span class="key-pill key-pill-era" data-i18n={`era.${d.era}`}>{eraLabel}</span>
-          <span class={`key-pill key-pill-status status-${d.status}`} data-i18n={`status.${d.status}`}>
-            {STATUS_LABEL[d.status] ?? d.status}
-          </span>
-          {officialUrl && (
-            <a
-              href={officialUrl}
-              target="_blank"
-              rel="noopener"
-              class="key-pill key-pill-link"
-              title={`Official site for ${d.title}`}
-              data-i18n="detail.official"
-            >
-              Official ↗
-            </a>
-          )}
-          {githubUrl && (
-            <a
-              href={githubUrl}
-              target="_blank"
-              rel="noopener"
-              class="key-pill key-pill-link key-pill-github"
-              title={`GitHub for ${d.title}`}
-              data-i18n="detail.github"
-            >
-              GitHub ↗
-            </a>
-          )}
+        {/* RIGHT: spec table */}
+        <div class="hero-right">
+          <div class="spec-table">
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <rect x="6" y="6" width="12" height="12" rx="2"/>
+                  <rect x="9" y="9" width="6" height="6" rx="1"/>
+                  <path d="M6 10h-2 M6 14h-2 M20 10h2 M20 14h2 M10 6v-2 M14 6v-2 M10 20v-2 M14 20v-2"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.parameters">Parameters</div>
+              <div class="spec-row-value">{naOr(spec?.parameters)}</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <circle cx="12" cy="6" r="2"/>
+                  <circle cx="6" cy="18" r="2"/>
+                  <circle cx="18" cy="18" r="2"/>
+                  <path d="M12 8v4 M12 12l-6 4 M12 12l6 4"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.architecture">Architecture</div>
+              <div
+                class="spec-row-value"
+                title={isPlaceholder(spec?.architecture) ? "" : spec?.architecture ?? ""}
+              >{archCompact(spec?.architecture)}</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M4 7h16 M4 12h16 M4 17h10"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.context_window">Context Window</div>
+              <div class="spec-row-value">{fmtCtx(spec?.context_window) ?? "N/A"}</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                {/* Inbox arrow — input modality */}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/>
+                  <path d="M12 4v11 M8 11l4 4 4-4"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.modality_in">Modality in</div>
+              <div class="spec-row-value">{fmtModalities(spec?.modalities_in)}</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                {/* Outbox arrow — output modality */}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/>
+                  <path d="M12 15V4 M8 8l4-4 4 4"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.modality_out">Modality out</div>
+              <div class="spec-row-value">{fmtModalities(spec?.modalities_out)}</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                {/* Sparkle — capabilities */}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.capabilities">Capabilities</div>
+              <div
+                class="spec-row-value"
+                title={fmtCapabilities(d.category ?? [])}
+              >{fmtCapabilities(d.category ?? [])}</div>
+            </div>
+            <div class="spec-row">
+              <div class="spec-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <circle cx="12" cy="12" r="8"/>
+                  <path d="M12 4v8l5 3"/>
+                </svg>
+              </div>
+              <div class="spec-row-label" data-i18n="spec.release_type">Release</div>
+              <div class="spec-row-value">{accessLabel(releaseType)}</div>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        {!hideAuthors && (
-          <p class="header-authors">
-            {d.authors.join(" · ")}
-          </p>
+    {/* ============== ROW: Capabilities + Context Window ============== */}
+    <section class="dual-row">
+      {/* Capabilities */}
+      <div class="panel">
+        <h2 class="block-heading">Core Capabilities</h2>
+        {capabilities.length > 0 ? (
+          <div class="capability-grid">
+            {capabilities.map((c) => (
+              <div class="capability-card">
+                <div class={`capability-icon icon-color-${c.color}`}>
+                  {c.icon === "brain" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 4a3 3 0 00-3 3v1a3 3 0 00-1 5.7V15a3 3 0 003 3h1v2a1 1 0 002 0V4z"/><path d="M15 4a3 3 0 013 3v1a3 3 0 011 5.7V15a3 3 0 01-3 3h-1v2a1 1 0 01-2 0V4z"/></svg>
+                  )}
+                  {c.icon === "code" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 8l-4 4 4 4 M16 8l4 4-4 4 M14 6l-4 12"/></svg>
+                  )}
+                  {c.icon === "doc" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5 M9 12h7 M9 16h7"/></svg>
+                  )}
+                  {c.icon === "robot" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="8" width="16" height="11" rx="2"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/><path d="M12 4v4 M9 19v2 M15 19v2 M2 13h2 M20 13h2"/></svg>
+                  )}
+                  {c.icon === "layers" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5 M3 17l9 5 9-5"/></svg>
+                  )}
+                  {c.icon === "sparkle" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
+                  )}
+                  {c.icon === "eye" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                  )}
+                  {c.icon === "wave" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12h2 M7 8v8 M11 4v16 M15 8v8 M19 12h2"/></svg>
+                  )}
+                  {c.icon === "book" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5a2 2 0 012-2h13v18H6a2 2 0 01-2-2V5z"/><path d="M9 3v18"/></svg>
+                  )}
+                  {c.icon === "atom" && (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="1.6" fill="currentColor"/><ellipse cx="12" cy="12" rx="9" ry="3.5"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(120 12 12)"/></svg>
+                  )}
+                </div>
+                <div class="capability-title">{c.title}</div>
+                <div class="capability-desc">{c.desc}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="block-empty">Capability tags not provided.</p>
         )}
       </div>
-    </header>
 
-    <div class="mb-6">
-      <LineageZoom nodes={allNodes} currentSlug={d.slug} />
-    </div>
+      {/* Context Window panel (centered big number + timeline) */}
+      <div class="panel ctx-panel">
+        <h2 class="block-heading">Context Window</h2>
+        {ctxValue ? (
+          <>
+            <div class="ctx-bigvalue">
+              <span class="ctx-bignum">{fmtCtx(ctxValue)?.replace(" tokens", "")}</span>
+              <span class="ctx-bigunit">tokens</span>
+            </div>
+            <div class="ctx-bighint">{ctxThisModelHint}</div>
+            <div class="ctx-timeline" style={`--marker-color: ${orgStroke};`}>
+              <div class="ctx-axis"></div>
+              {CTX_TICKS.map((t, i) => {
+                const isActive = i === activeTickIdx;
+                const hasNote = isActive || !!t.note;
+                return (
+                  <div class={`ctx-tick ${isActive ? "ctx-tick-active" : ""} ctx-tick-row-${i % 2}`} style={`left: ${ctxLogPos(t.v)}%;`}>
+                    <span class="ctx-tick-mark"></span>
+                    <span class="ctx-tick-label">{t.label}</span>
+                    {hasNote && (
+                      <span class={`ctx-tick-note ${isActive ? "ctx-tick-note-active" : ""}`}>
+                        {isActive ? (
+                          <>
+                            <span class="lang-en has-zh">This model</span>
+                            <span class="lang-zh">本模型</span>
+                          </>
+                        ) : (
+                          <>
+                            <span class={t.noteZh ? "lang-en has-zh" : "lang-en"}>{t.note}</span>
+                            {t.noteZh && <span class="lang-zh">{t.noteZh}</span>}
+                          </>
+                        )}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+              {ctxThisModelPos !== null && (
+                <div class="ctx-marker" style={`left: ${ctxThisModelPos}%;`}>
+                  {/* Value label only shown when model lands BETWEEN ticks —
+                      on-tick the active tick already labels itself, so the
+                      marker is just a dot. */}
+                  {!isOnTick && (
+                    <span class="ctx-marker-label">{fmtCtx(ctxValue)?.replace(" tokens", "")}</span>
+                  )}
+                  <span class="ctx-marker-dot"></span>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <p class="block-empty">Context window not disclosed.</p>
+        )}
+      </div>
+    </section>
 
-    <div class="prose-node max-w-none">
-      {d.model_spec && <ModelSpec spec={d.model_spec} org={normalizeOrg(d.org)} modelTitle={d.title} category={d.category} />}
-      <Content />
-    </div>
+    {/* ============== ROW: Availability + Pricing ============== */}
+    <section class="dual-row avail-pricing">
+      <div class="panel">
+        <h2 class="block-heading">Availability</h2>
+        <div class="avail-grid">
+          {availability.map((a) => (
+            <div class={`avail-pill avail-${a.status}`}>
+              <span class="avail-dot"></span>
+              <div class="avail-text">
+                <div class="avail-label">{a.label}</div>
+                <div class="avail-sub">{a.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="panel pricing-panel">
+        <h2 class="block-heading pricing-heading">Pricing Model</h2>
+        <div class="pricing-title">{pricingModel.title}</div>
+        <div class="pricing-body">{pricingModel.body}</div>
+        {pricingModel.pill && <span class="pricing-pill">{pricingModel.pill}</span>}
+      </div>
+    </section>
 
+    {/* ============== Performance (3-up) ============== */}
+    {headlineBench.length > 0 && (
+      <section class="panel perf-panel" data-variant-scope>
+        <div class="perf-head-row">
+          <h2 class="block-heading">Benchmark Performance</h2>
+          <span class="block-sub-inline">All scores from authoritative leaderboards (click "source" to verify)</span>
+          <a href="#tech-details" class="perf-see-all">View all benchmarks →</a>
+        </div>
+        {hasVariants && (
+          <div class="variant-strip" role="tablist" aria-label="Model variants">
+            {variantOptions.map((v) => (
+              <button
+                type="button"
+                class="variant-btn"
+                data-variant-btn={v.id}
+                role="tab"
+                aria-selected={v.id === "auto" ? "true" : "false"}
+              >
+                {v.label}
+              </button>
+            ))}
+          </div>
+        )}
+        {hasVariants && (
+          <div class="variant-meta-row">
+            <div class="variant-meta" data-variant-meta="auto">
+              Showing family-level rollup (includes multiple modes).
+            </div>
+            {variants.map((v) => (
+              <div class="variant-meta" data-variant-meta={v.id} hidden>
+                {v.status && <span class={`variant-pill variant-${v.status}`}>{v.status}</span>}
+                {fmtIso(v.released_at) && <span class="variant-kv">Released {fmtIso(v.released_at)}</span>}
+                {fmtIso(v.retired_at) && <span class="variant-kv">Retired {fmtIso(v.retired_at)}</span>}
+                {v.api_model && <span class="variant-kv">API: {v.api_model}</span>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {variantOptions.map((v) => {
+          const benchArr = variantBench.get(v.id) ?? allBench;
+          const head = pickHeadline(benchArr);
+          return (
+            <div data-variant-block={v.id} hidden={v.id !== "auto"}>
+              <div class={head.length === 3 ? "perf-grid three" : head.length === 2 ? "perf-grid two" : "perf-grid one"}>
+                {head.map((b) => (
+                  <div class="perf-card">
+                    <div class="perf-name-row">
+                      <span class="perf-name">{b.name}</span>
+                      {b.scoreMeta.unit === "num" && (
+                        <span class="perf-unit" title="Index score (higher is better; not a percent).">Index</span>
+                      )}
+                      {(() => { const s = benchSource(b); return (
+                        <a class="perf-source" href={s.url} target="_blank" rel="noopener">{s.label} ↗</a>
+                      ); })()}
+                    </div>
+                    <div class="perf-bar-row">
+                      <div class="perf-bar">
+                        <div class="perf-bar-track"></div>
+                        {(() => {
+                          const v = clamp01to100(b.scoreMeta.value);
+                          const r0 = clamp01to100(b.scoreMeta.rangeMin);
+                          const r1 = clamp01to100(b.scoreMeta.rangeMax);
+                          const hasRange = r0 !== null && r1 !== null && Math.abs(r1 - r0) > 0.01;
+                          const min = hasRange ? Math.min(r0!, r1!) : null;
+                          const max = hasRange ? Math.max(r0!, r1!) : null;
+                          return (
+                            <>
+                              {hasRange && (
+                                <div
+                                  class="perf-bar-range"
+                                  title="Mode range across variants (e.g. thinking/max/high)."
+                                  style={`left: ${min}%; width: ${Math.max(0, max! - min!)}%;`}
+                                />
+                              )}
+                              {v !== null && <div class="perf-bar-fill" style={`width: ${v}%;`}></div>}
+                              {v !== null && <div class="perf-bar-dot" style={`left: ${v}%;`}></div>}
+                            </>
+                          );
+                        })()}
+                      </div>
+                      <div class="perf-bar-value">{b.score.replace(/\s*\([^)]*\)\s*/g, "").trim()}</div>
+                    </div>
+                    <div class="perf-note">{benchNote(b.name)}</div>
+                    {(() => {
+                      const r = b.rank;
+                      const top = r ? formatTopPct(r.rank, r.total) : null;
+                      const range =
+                        b.scoreMeta.rangeMin !== null && b.scoreMeta.rangeMax !== null
+                          ? `${b.scoreMeta.rangeMin.toFixed(b.scoreMeta.unit === "pct" ? 1 : 2)}–${b.scoreMeta.rangeMax.toFixed(b.scoreMeta.unit === "pct" ? 1 : 2)}${b.scoreMeta.unit === "pct" ? "%" : ""}`
+                          : null;
+                      const confidence = r ? (range ? "High" : "Medium") : "Low";
+                      return (
+                        <div class="perf-meta">
+                          {r && (
+                            <span class="perf-meta-chip" title="Leaderboard position.">
+                              Rank {r.rank} / {r.total} · {top}
+                            </span>
+                          )}
+                          {range && (
+                            <span class="perf-meta-chip" title="Min–max across variants/modes.">
+                              Range {range}
+                            </span>
+                          )}
+                          <span class={`perf-meta-chip perf-conf perf-conf-${confidence.toLowerCase()}`} title="Heuristic confidence based on available metadata.">
+                            Confidence: {confidence}
+                          </span>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+        <p class="perf-foot">* Scores sourced from: Artificial Analysis · Hugging Face · LLM Stats · LMArena · OpenRouter</p>
+      </section>
+    )}
+
+    {/* ============== Lineage + Comparison (2-col, or stacked when dense) ============== */}
+    <section class={`dual-row lineage-prose-row ${denseLineage ? "lineage-prose-stacked" : ""}`}>
+      <div class="panel lineage-panel">
+        <div class="panel-head">
+          <h2 class="block-heading">Lineage</h2>
+          {lineageSubtitle && (
+            <span class="panel-head-meta">{lineageSubtitle}</span>
+          )}
+        </div>
+        <LineageZoom nodes={allNodes} currentSlug={d.slug} />
+      </div>
+      <div class="panel prose-panel">
+        <div class="prose-node prose-cmp max-w-none">
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    {/* ============== Related Models ============== */}
     <RelationshipsBlock current={node} all={allNodes} />
+
+    {/* ============== Technical Details (collapsible) ============== */}
+    {d.model_spec && (
+      <details class="tech-details" id="tech-details">
+        <summary class="tech-summary">
+          <span class="tech-summary-label">Technical Details</span>
+          <span class="tech-summary-sub">All benchmarks, scale bars, MoE, training compute, and more</span>
+          <span class="tech-summary-chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="tech-body">
+          <ModelSpec spec={d.model_spec} org={normalizeOrg(d.org)} modelTitle={d.title} category={d.category} />
+        </div>
+      </details>
+    )}
+
+    {hasVariants && (
+      <script is:inline>
+        {String.raw`
+(() => {
+  const params = new URLSearchParams(location.search);
+  const stored = (() => { try { return localStorage.getItem('ai-tree:variant'); } catch { return null; } })();
+  const initial = params.get('variant') || stored || 'auto';
+
+  function setVariant(id) {
+    document.documentElement.dataset.variant = id;
+    document.querySelectorAll('[data-variant-block]').forEach((el) => {
+      el.hidden = el.getAttribute('data-variant-block') !== id;
+    });
+    document.querySelectorAll('[data-variant-meta]').forEach((el) => {
+      el.hidden = el.getAttribute('data-variant-meta') !== id;
+    });
+    document.querySelectorAll('[data-variant-btn]').forEach((btn) => {
+      const isActive = btn.getAttribute('data-variant-btn') === id;
+      btn.classList.toggle('variant-active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    try { localStorage.setItem('ai-tree:variant', id); } catch {}
+    const u = new URL(location.href);
+    u.searchParams.set('variant', id);
+    history.replaceState(null, '', u);
+  }
+
+  document.addEventListener('click', (e) => {
+    const t = e.target instanceof Element ? e.target.closest('[data-variant-btn]') : null;
+    if (!t) return;
+    const id = t.getAttribute('data-variant-btn');
+    if (id) setVariant(id);
+  });
+
+  setVariant(initial);
+})();
+        `}
+      </script>
+    )}
+
+    {!hideAuthors && <p class="meta-authors">{d.authors.join(" · ")}</p>}
 
     <CitationsBlock citations={d.citations} />
   </article>
 </Base>
 
 <style>
-  .node-header {
-    margin-bottom: 2.25rem;
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-    border: 1px solid var(--border, #e2e8f0);
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-  }
-  .org-accent-bar {
-    height: 5px;
-    width: 100%;
-  }
-  .node-header-inner {
-    padding: 18px 22px 22px;
-  }
+  .model-page { color: var(--fg); }
 
-  /* ===== Top meta row: date + tier badge ===== */
-  .header-meta {
+  /* ============== Breadcrumb ============== */
+  .breadcrumb {
     display: flex;
+    gap: 8px;
     align-items: center;
-    justify-content: space-between;
+    font-size: 13px;
+    color: var(--fg-muted);
     margin-bottom: 14px;
   }
-  .header-date {
+  .breadcrumb a {
+    color: var(--accent-2);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .bc-sep { color: var(--fg-faint); }
+  .bc-current {
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  /* ============== HERO ============== */
+  .hero {
+    position: relative;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .hero-accent {
+    height: 4px;
+    width: 100%;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 36px;
+    padding: 26px 28px 28px;
+  }
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 22px; }
+  }
+
+  .hero-left { min-width: 0; }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .hero-date {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--fg-muted);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
   }
-  /* ===== Title hierarchy: NAME big, tagline secondary ===== */
-  .title-name {
-    font-size: clamp(2rem, 4vw, 2.75rem);   /* 32-44px */
+  .hero-meta-org {
+    /* Use same .pill / .pill-org styles, but with the meta row's
+       slightly tighter sizing to match the date's monospace beat. */
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 4vw, 2.6rem);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.025em;
     color: #0f172a;
-    margin: 0 0 6px;
-  }
-  .title-tagline {
-    font-size: 18px;        /* text-lg */
-    font-weight: 500;
-    line-height: 1.4;
-    color: #475569;
     margin: 0 0 12px;
   }
-  .title-summary {
-    font-size: 16px;        /* text-base */
-    line-height: 1.55;
-    color: #334155;
-    margin: 0 0 16px;
-    /* Full container width — readability cap removed per request */
+  .hero-tagline-pill {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 14px;
   }
-
-  /* ===== Unified key-fact pills ===== */
-  .key-pills {
+  .hero-desc {
+    color: #334155;
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+  .hero-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-bottom: 12px;
   }
-  .key-pill {
+
+  /* Pill styles (shared with meta strip) */
+  .pill {
     display: inline-flex;
     align-items: center;
     padding: 4px 11px;
     border-radius: 999px;
-    font-family: ui-sans-serif, system-ui, sans-serif;
     font-size: 12.5px;
     font-weight: 600;
     line-height: 1.2;
-    border: 1px solid var(--border, #e2e8f0);
+    border: 1px solid var(--border);
     background: white;
     color: #475569;
     text-decoration: none;
-    transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    transition: background 0.12s ease;
   }
-  .key-pill:hover {
-    background: #f8fafc;
-  }
-
-  /* Org pill carries the lab's color identity */
-  .key-pill-org {
+  .pill:hover { background: #f8fafc; }
+  .pill-plain { color: #475569; }
+  .pill-org {
     color: var(--pill-stroke, #475569);
     background: var(--pill-fill, white);
     border-color: var(--pill-stroke, #cbd5e1);
     font-weight: 700;
   }
-  .key-pill-org:hover {
-    background: white;
-  }
-
-  /* Status pills get a tinted background per state */
-  .status-foundational {
-    color: #b45309;
-    background: #fef3c7;
-    border-color: #fcd34d;
-  }
-  .status-active {
-    color: #047857;
-    background: #d1fae5;
-    border-color: #6ee7b7;
-  }
-  .status-superseded {
-    color: #475569;
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-  }
-  .status-archived {
-    color: #64748b;
-    background: #e2e8f0;
-    border-color: #94a3b8;
-  }
-
-  /* External link pills (Official / GitHub) — visually similar to the
-     other key pills but clearly clickable + external. */
-  .key-pill-link {
+  .pill-org:hover { background: var(--pill-fill, white); }
+  .pill-link {
     color: #1d4ed8;
     border-color: #bfdbfe;
     background: #eff6ff;
   }
-  .key-pill-link:hover {
-    background: #dbeafe;
-    border-color: #93c5fd;
-  }
-  .key-pill-github {
+  .pill-link:hover { background: #dbeafe; }
+  .pill-github {
     color: #24292f;
     border-color: #d0d7de;
     background: #f6f8fa;
   }
-  .key-pill-github:hover {
-    background: #eaeef2;
-    border-color: #afb8c1;
+
+  /* ============== Hero RIGHT — spec table ============== */
+  .hero-right {
+    min-width: 0;
+  }
+  .spec-table {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fcfcfc;
+  }
+  .spec-row {
+    display: grid;
+    /* icon | label (compact) | value (gets the rest, can wrap) */
+    grid-template-columns: 26px auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-row-icon {
+    width: 22px;
+    height: 22px;
+    color: #64748b;
+  }
+  .spec-row-icon svg { width: 100%; height: 100%; }
+  .spec-row-label {
+    font-size: 13px;
+    color: var(--fg-muted);
+    font-weight: 500;
+  }
+  .spec-row-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: right;
+    line-height: 1.35;
+    /* Allow wrap so long MoE descriptions ("~1T total MoE (both Ling-1T
+       and Ring-1T)") stay readable instead of being chopped to "...Lin...".
+       Soft break at hyphens / spaces keeps natural breakpoints. */
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    min-width: 0;
   }
 
-  .header-authors {
+  /* ============== Generic panel + dual-row ============== */
+  .panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px 20px;
+    margin-bottom: 16px;
+  }
+  .dual-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 0;
+  }
+  .dual-row > .panel { margin-bottom: 16px; }
+  @media (max-width: 880px) {
+    .dual-row { grid-template-columns: 1fr; gap: 0; }
+  }
+  .dual-row.avail-pricing { grid-template-columns: 2fr 1fr; }
+  @media (max-width: 880px) {
+    .dual-row.avail-pricing { grid-template-columns: 1fr; }
+  }
+  .block-heading {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg-muted);
+    margin: 0 0 14px;
+    letter-spacing: 0.02em;
+  }
+  .block-sub-inline {
+    font-size: 12px;
+    color: var(--fg-faint);
+    margin-left: 8px;
+    font-weight: 400;
+  }
+  .block-empty {
     font-size: 13px;
-    color: #64748b;
-    margin: 0;
+    color: var(--fg-muted);
+    font-style: italic;
+  }
+
+  /* ============== Capabilities ============== */
+  .capability-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .capability-card {
+    background: var(--bg-sunk);
+    border-radius: 10px;
+    padding: 14px 14px 14px;
+    text-align: center;
+  }
+  .capability-icon {
+    width: 28px;
+    height: 28px;
+    margin: 0 auto 8px;
+  }
+  .capability-icon svg { width: 100%; height: 100%; }
+  .icon-color-blue { color: #2563eb; }
+  .icon-color-purple { color: #7c3aed; }
+  .icon-color-green { color: #047857; }
+  .icon-color-pink { color: #db2777; }
+  .icon-color-amber { color: #d97706; }
+  .icon-color-cyan { color: #0891b2; }
+  .icon-color-indigo { color: #4f46e5; }
+  .icon-color-slate { color: #475569; }
+  .icon-color-teal { color: #0d9488; }
+  .capability-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+  }
+  .capability-desc {
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    line-height: 1.4;
+  }
+
+  /* ============== Context Window panel ============== */
+  .ctx-panel { display: flex; flex-direction: column; }
+  .ctx-bigvalue {
+    text-align: center;
+    margin-top: 6px;
+  }
+  .ctx-bignum {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .ctx-bigunit {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-left: 6px;
+  }
+  .ctx-bighint {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--fg-muted);
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+  .ctx-timeline {
+    position: relative;
+    height: 100px;
+    margin: 30px 0 4px;
+    padding: 0 4px;
+  }
+  .ctx-axis {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    top: 18px;
+    height: 1px;
+    background: #cbd5e1;
+  }
+  .ctx-tick {
+    position: absolute;
+    top: 10px;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--fg-muted);
+    /* Wider band — adjacent ticks alternate row-0/row-1 so they can each
+       claim 110px without colliding (only same-row neighbors compete,
+       and those are 2 stops apart in log-space). */
+    width: 110px;
+  }
+  .ctx-tick-mark {
+    display: block;
+    width: 1px;
+    height: 8px;
+    background: #cbd5e1;
+    margin: 0 auto;
+  }
+  .ctx-tick-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 8px;
+    line-height: 1.1;
+  }
+  .ctx-tick.ctx-tick-active .ctx-tick-label {
+    color: var(--marker-color, #047857);
+    font-weight: 700;
+  }
+  .ctx-tick-note {
+    display: block;
+    font-size: 11px;
+    color: var(--fg-faint);
+    margin-top: 4px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  /* Two-row stagger: even-index ticks (0, 2, 4 → 4k / 128k / 1M) use the
+     top note row; odd-index (1, 3, 5 → 32k / 400k / 10M) drop to row 2.
+     This doubles available horizontal width per row — same-row neighbors
+     are 2 stops apart in log-space (e.g. 4k → 128k = 38%) so 110px bands
+     never overlap. */
+  .ctx-tick-row-1 .ctx-tick-note {
+    margin-top: 22px;
+  }
+  .ctx-tick-note-active {
+    color: var(--marker-color, #047857);
+    font-weight: 700;
+  }
+  /* Active tick gets a slightly taller mark so the active position pops
+     visually even before the marker dot above is parsed. */
+  .ctx-tick.ctx-tick-active .ctx-tick-mark {
+    height: 12px;
+    width: 2px;
+    background: var(--marker-color, #047857);
+  }
+  .ctx-marker {
+    position: absolute;
+    top: -4px;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 2;
+  }
+  .ctx-marker-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--marker-color, #047857);
+    margin-bottom: 2px;
+    white-space: nowrap;
+  }
+  .ctx-marker-dot {
+    display: block;
+    width: 14px;
+    height: 14px;
+    background: var(--marker-color, #047857);
+    border: 3px solid white;
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: 0 0 0 1px var(--marker-color, #047857);
+  }
+
+  /* ============== Performance ============== */
+  .perf-panel { padding-bottom: 14px; }
+  .perf-head-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .perf-head-row .block-heading { margin-bottom: 0; }
+  .perf-see-all {
+    margin-left: auto;
+    font-size: 12.5px;
+    color: var(--accent-2);
+    text-decoration: none;
+  }
+  .perf-see-all:hover { text-decoration: underline; }
+  .variant-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 2px 0 12px;
+  }
+  .variant-btn {
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .variant-btn:hover { background: #f8fafc; }
+  .variant-btn.variant-active {
+    border-color: rgba(4, 120, 87, 0.35);
+    background: rgba(16, 185, 129, 0.10);
+  }
+  .variant-meta-row {
+    margin: -2px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--fg-muted);
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .variant-pill {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 10px;
+    margin-right: 6px;
+  }
+  .variant-preview { background: rgba(59, 130, 246, 0.10); border-color: rgba(59, 130, 246, 0.25); }
+  .variant-active { background: rgba(16, 185, 129, 0.10); border-color: rgba(16, 185, 129, 0.25); }
+  .variant-legacy { background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35); }
+  .variant-retired { background: rgba(239, 68, 68, 0.10); border-color: rgba(239, 68, 68, 0.25); }
+  .variant-kv { margin-right: 10px; }
+  .perf-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .perf-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .perf-grid.two { grid-template-columns: repeat(2, 1fr); }
+  .perf-grid.one { grid-template-columns: 1fr; }
+  @media (max-width: 880px) {
+    .perf-grid.three, .perf-grid.two { grid-template-columns: 1fr; }
+  }
+  .perf-card {
+    /* Compact card — no extra background, panel already provides chrome */
+    padding: 6px 4px;
+  }
+  .perf-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .perf-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .perf-unit {
+    font-size: 10px;
+    font-weight: 700;
+    color: #0f172a;
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 999px;
+    line-height: 1;
+  }
+  .perf-source {
+    font-size: 10.5px;
+    color: var(--fg-faint);
+    text-decoration: none;
+  }
+  .perf-source:hover { text-decoration: underline; }
+  .perf-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .perf-bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .perf-bar-track {
+    position: absolute;
+    inset: 0;
+    background: #e5e7eb;
+  }
+  .perf-bar-range {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: rgba(4, 120, 87, 0.22);
+    border-radius: 999px;
+  }
+  .perf-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #047857, #059669);
+    border-radius: 999px;
+    position: relative;
+    z-index: 1;
+  }
+  .perf-bar-dot {
+    position: absolute;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    background: #047857;
+    border: 3px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.4);
+  }
+  .perf-bar-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    min-width: 70px;
+    text-align: right;
+  }
+  .perf-note {
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.4;
+  }
+  .perf-vs {
+    font-size: 11.5px;
+    color: var(--fg-faint);
+    margin-top: 4px;
+  }
+  .perf-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .perf-meta-chip {
+    font-size: 10.5px;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 3px 8px;
+    border-radius: 999px;
+    line-height: 1.2;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .perf-conf { color: #0f172a; }
+  .perf-conf-high { border-color: rgba(4, 120, 87, 0.25); background: rgba(16, 185, 129, 0.08); }
+  .perf-conf-medium { border-color: rgba(234, 179, 8, 0.25); background: rgba(234, 179, 8, 0.08); }
+  .perf-conf-low { border-color: rgba(148, 163, 184, 0.35); background: rgba(148, 163, 184, 0.12); color: #334155; }
+  .perf-foot {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: var(--fg-faint);
+  }
+
+  /* ============== Availability ============== */
+  .avail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 720px) {
+    .avail-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .avail-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: white;
+  }
+  .avail-pill.avail-available {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+  }
+  .avail-pill.avail-contact {
+    background: #f8fafc;
+  }
+  .avail-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #d1d5db;
+    box-shadow: inset 0 0 0 2px white;
+    border: 1px solid #d1d5db;
+  }
+  .avail-pill.avail-available .avail-dot {
+    background: #10b981;
+    border-color: #059669;
+  }
+  .avail-pill.avail-contact .avail-dot {
+    background: #94a3b8;
+    border-color: #64748b;
+  }
+  .avail-text { min-width: 0; }
+  .avail-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+  }
+  .avail-sub {
+    font-size: 11px;
+    color: var(--fg-muted);
+    margin-top: 1px;
+  }
+
+  /* ============== Pricing ============== */
+  .pricing-heading { color: var(--accent); }
+  .pricing-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .pricing-body {
+    font-size: 12.5px;
+    color: #334155;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .pricing-pill {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  /* ============== Lineage / Prose / Tech panels ============== */
+  .lineage-panel,
+  .prose-panel { padding: 18px 20px 22px; }
+
+  /* Lineage + Comparison row: ⅖ / ⅗ split — comparison tables are
+     wider than lineage minigraphs, so weight more space to the right. */
+  .lineage-prose-row {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+  /* Dense lineage (5+ relationships) — split into two stacked rows so the
+     mini-graph SVG gets full panel width and child cards stay legible.
+     Server-side branch via `denseLineage` flag; CSS just overrides the
+     grid template so the existing dual-row gap rules still apply. */
+  .lineage-prose-row.lineage-prose-stacked {
+    grid-template-columns: 1fr;
+  }
+  @media (max-width: 880px) {
+    .lineage-prose-row { grid-template-columns: 1fr; }
+  }
+
+  /* Panel head row — heading + right-aligned meta (e.g. "1 parent · 1 child") */
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .panel-head .block-heading { margin-bottom: 0; }
+  .panel-head-meta {
+    font-size: 12px;
+    color: var(--fg-faint);
+    font-weight: 500;
+  }
+
+  /* Comparison-table styling — make MDX-rendered tables in the right
+     panel look like the design (clean header, subtle dividers, the row
+     containing <strong> cells = "this model" gets a green highlight).
+     Scoped to .prose-cmp so other prose tables stay default. */
+  .prose-panel .prose-cmp { font-size: 13px; }
+  .prose-panel .prose-cmp h2:first-child {
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .prose-panel .prose-cmp table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 4px 0 14px;
+    font-size: 12.5px;
+  }
+  .prose-panel .prose-cmp thead th {
+    background: var(--bg-sunk);
+    color: var(--fg-muted);
+    font-weight: 600;
+    font-size: 12px;
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .prose-panel .prose-cmp tbody td {
+    padding: 11px 10px;
+    color: #334155;
+    border-bottom: 1px solid var(--border);
+  }
+  .prose-panel .prose-cmp tbody tr:last-child td { border-bottom: none; }
+  /* Highlighted "this model" row — any row whose first cell is bolded
+     in MDX (** **). Uses :has() — supported in all modern browsers
+     (Safari 15.4+ / Chrome 105+ / Firefox 121+). */
+  .prose-panel .prose-cmp tbody tr:has(strong) td {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .prose-panel .prose-cmp tbody tr:has(strong) td strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .prose-panel .prose-cmp ul,
+  .prose-panel .prose-cmp ol {
+    margin: 8px 0 12px 18px;
+    color: #334155;
+  }
+  .prose-panel .prose-cmp li { margin: 3px 0; }
+  .prose-panel .prose-cmp p {
+    margin: 8px 0;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  .tech-details {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    margin: 16px 0 14px;
+  }
+  .tech-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .tech-summary::-webkit-details-marker { display: none; }
+  .tech-summary-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .tech-summary-sub {
+    font-size: 12.5px;
+    color: var(--fg-muted);
+    flex: 1;
+  }
+  .tech-summary-chev {
+    font-size: 18px;
+    color: var(--fg-muted);
+    transition: transform 0.18s ease;
+  }
+  .tech-details[open] .tech-summary-chev { transform: rotate(180deg); }
+  .tech-body { padding: 0 18px 18px; }
+
+  .meta-authors {
+    font-size: 12px;
+    color: #64748b;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin: 18px 0 10px;
   }
 </style>

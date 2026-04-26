@@ -1,26 +1,33 @@
 ---
 slug: parakeet-tdt
-title: "NVIDIA Parakeet-TDT — Open ASR Leader"
-date: 2025-04-30
+title: NVIDIA Parakeet-TDT — Open ASR Leader
+date: '2025-04-30'
 era: multimodal
-category: [audio, generative]
+category:
+  - audio
+  - generative
 relationships:
   - to: whisper
-    type: surpasses
-    note: "Tops Hugging Face Open ASR Leaderboard with 6.05% WER, beating Whisper large-v3-turbo"
+    type: competes_with
+    note: >-
+      [surpasses] Tops Hugging Face Open ASR Leaderboard with 6.05% WER, beating
+      Whisper large-v3-turbo
 authors:
-  - "NVIDIA NeMo Team"
-org: "Nvidia"
+  - NVIDIA NeMo Team
+org: Nvidia
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "0.6B (TDT v2/v3); 1.1B RNNT/CTC; 2.5B Canary-Qwen"
-  architecture: "Token-Duration Transducer (TDT)"
+  parameters: 0.6B (TDT v2/v3); 1.1B RNNT/CTC; 2.5B Canary-Qwen
+  architecture: Token-Duration Transducer (TDT)
   release_type: open_weights
-  modalities: [audio]
-  homepage: "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2"
-  github: "https://github.com/NVIDIA/NeMo"
-
+  modalities:
+    - audio
+  homepage: 'https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2'
+  github: 'https://github.com/NVIDIA/NeMo'
+  availability:
+    - open_weights
+  hf_url: 'https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2'
 public_view:
   plain_english: |
     NVIDIA's open speech-recognition family — Parakeet-TDT-0.6B
@@ -33,14 +40,14 @@ public_view:
     the next leap — same open-source story, lower error rate, faster
     inference.
   applications:
-    - product: "NVIDIA Riva (production ASR)"
-      company: "Nvidia"
+    - product: NVIDIA Riva (production ASR)
+      company: Nvidia
       year_deployed: 2025
-    - product: "Open transcription pipelines (universities, podcast tools)"
-      company: "Multiple"
+    - product: 'Open transcription pipelines (universities, podcast tools)'
+      company: Multiple
       year_deployed: 2025
-    - product: "Edge deployment (RTX laptops)"
-      company: "Multiple"
+    - product: Edge deployment (RTX laptops)
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     NVIDIA's NeMo open-source stack (Parakeet ASR + Canary multilingual
@@ -52,14 +59,14 @@ public_view:
     production deployments. Combined with the Canary-Qwen-2.5B
     record (5.63% WER) released months later, NVIDIA owns the open
     ASR frontier in 2025–2026.
-
 citations:
   - type: release
     key: nvidia2025parakeet
-    title: "NVIDIA Parakeet-TDT v2"
+    title: NVIDIA Parakeet-TDT v2
     year: 2025
-    venue: "Hugging Face"
-    url: "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2"
+    venue: Hugging Face
+    url: 'https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2'
+graph_featured: true
 ---
 
 ## Open ASR leaderboard (April 2026)

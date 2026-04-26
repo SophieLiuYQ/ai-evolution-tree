@@ -1,38 +1,49 @@
 ---
 slug: resnet
-title: "ResNet — Deep Residual Learning"
-date: 2015-12-10
+title: ResNet — Deep Residual Learning
+date: '2015-12-10'
 era: architectures
-category: [cv, architecture, training]
+category:
+  - cv
+  - architecture
+  - training
 relationships:
   - to: alexnet
     type: builds_on
-    note: "CNN lineage; resolves vanishing-gradient problem that capped depth at ~20 layers"
+    note: >-
+      CNN lineage; resolves vanishing-gradient problem that capped depth at ~20
+      layers
   - to: backpropagation
-    type: applies
-    note: "Skip connections let gradients flow through 100+ layer networks"
+    type: builds_on
+    note: '[applies] Skip connections let gradients flow through 100+ layer networks'
 authors:
-  - "He, K."
-  - "Zhang, X."
-  - "Ren, S."
-  - "Sun, J."
-org: "Microsoft"
+  - 'He, K.'
+  - 'Zhang, X.'
+  - 'Ren, S.'
+  - 'Sun, J.'
+org: Microsoft
 breakthrough_score: 9
 status: foundational
 model_spec:
-  parameters: "ResNet-50: 25M · ResNet-152: 60M · trained variants up to ResNet-1001"
-  architecture: "Deep CNN with residual (skip) connections every 2-3 layers; 50/101/152 layer variants standard"
-  training_compute: "~8 GPU-weeks for ResNet-152"
+  parameters: 'ResNet-50: 25M · ResNet-152: 60M · trained variants up to ResNet-1001'
+  architecture: >-
+    Deep CNN with residual (skip) connections every 2-3 layers; 50/101/152 layer
+    variants standard
+  training_compute: ~8 GPU-weeks for ResNet-152
   release_type: open_weights
-  modalities: [vision]
+  modalities:
+    - vision
   benchmarks:
-    - name: "ImageNet ILSVRC 2015 top-5 error"
-      score: "3.57% (152 layers, ensemble)"
-      vs_baseline: "GoogLeNet 2014 6.67%, AlexNet 2012 15.3%; first system to surpass human (~5%)"
-    - name: "COCO object detection (improvements)"
-      score: "+28% mAP vs prior SOTA"
-  homepage: "https://arxiv.org/abs/1512.03385"
-
+    - name: ImageNet ILSVRC 2015 top-5 error
+      score: '3.57% (152 layers, ensemble)'
+      vs_baseline: >-
+        GoogLeNet 2014 6.67%, AlexNet 2012 15.3%; first system to surpass human
+        (~5%)
+    - name: COCO object detection (improvements)
+      score: +28% mAP vs prior SOTA
+  homepage: 'https://arxiv.org/abs/1512.03385'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     A 2015 architecture from Microsoft Research that introduced "skip
@@ -49,14 +60,14 @@ public_view:
     if needed" lanes — preserving the original signal as a baseline
     while still allowing each layer to add refinement.
   applications:
-    - product: "Backbone for thousands of vision systems 2016-2024"
-      company: "Industry-wide"
+    - product: Backbone for thousands of vision systems 2016-2024
+      company: Industry-wide
       year_deployed: 2016
-    - product: "Tesla Autopilot vision stack"
-      company: "Tesla"
+    - product: Tesla Autopilot vision stack
+      company: Tesla
       year_deployed: 2017
-    - product: "Medical imaging diagnostic systems"
-      company: "Various"
+    - product: Medical imaging diagnostic systems
+      company: Various
       year_deployed: 2017
   investment_angle: |
     The skip-connection insight generalized far beyond CV. Every
@@ -74,26 +85,20 @@ public_view:
     primitive in modern deep learning — used in essentially every
     network with more than ~10 layers. Without it, the depth
     that enables scaling laws would not be practically achievable.
-
 citations:
   - type: paper
     key: he2015resnet
-    title: "Deep Residual Learning for Image Recognition"
-    authors: ["He, K.", "Zhang, X.", "Ren, S.", "Sun, J."]
+    title: Deep Residual Learning for Image Recognition
+    authors:
+      - 'He, K.'
+      - 'Zhang, X.'
+      - 'Ren, S.'
+      - 'Sun, J.'
     year: 2015
-    venue: "CVPR 2016"
-    arxiv: "1512.03385"
+    venue: CVPR 2016
+    arxiv: '1512.03385'
+graph_featured: true
 ---
-
-## What it is
-
-A CNN architecture where each "residual block" computes a learned function $\mathcal{F}(x)$ added to the block's input $x$:
-
-$$
-y = \mathcal{F}(x, \{W_i\}) + x
-$$
-
-The skip connection ($+ x$) preserves the input as a baseline. The block only needs to learn the *residual* — the difference from identity — rather than the full transformation. If the optimal mapping for that block were the identity, the network can simply learn $\mathcal{F} \to 0$ and stop interfering.
 
 ## Why this enables depth
 

@@ -1,43 +1,72 @@
 ---
 slug: llama-2
-title: "Llama 2 — Open-Weight LLM with Commercial License"
-date: 2023-07-18
+title: Llama 2 — Open-Weight LLM with Commercial License
+date: '2023-07-18'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: llama-1
-    type: scales
-    note: "Same architecture, ~40% more training data (1.4T → 2.0T tokens), commercial license added"
+    type: builds_on
+    note: >-
+      [scales] Same architecture, ~40% more training data (1.4T → 2.0T tokens),
+      commercial license added
   - to: instructgpt
-    type: applies
-    note: "Llama 2 Chat applies SFT + RLHF (PPO) to the base model"
+    type: builds_on
+    note: '[applies] Llama 2 Chat applies SFT + RLHF (PPO) to the base model'
 authors:
-  - "Touvron, H."
-  - "Martin, L."
-  - "Stone, K."
-  - "Albert, P."
-  - "et al."
-org: "Meta AI"
+  - 'Touvron, H.'
+  - 'Martin, L.'
+  - 'Stone, K.'
+  - 'Albert, P.'
+  - et al.
+org: Meta AI
 breakthrough_score: 8
 status: superseded
 model_spec:
-  parameters: "7B / 13B / 70B (also 34B trained but not released)"
-  architecture: "Llama 1 + grouped-query attention (GQA, 70B only)"
+  parameters: 7B / 13B / 70B (also 34B trained but not released)
+  architecture: 'Llama 1 + grouped-query attention (GQA, 70B only)'
   context_window: 4096
-  training_tokens: "2.0T"
+  training_tokens: 2.0T
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU (5-shot)"
-      score: "68.9% (70B)"
-      vs_baseline: "Llama 1 65B 63.4%, GPT-3.5 70%"
-    - name: "HumanEval"
-      score: "29.9% (70B base) / 32.3% (Llama 2 Chat 70B)"
-    - name: "TruthfulQA"
-      score: "44.9% (70B Chat)"
-  homepage: "https://ai.meta.com/llama/"
-  github: "https://github.com/meta-llama/llama"
-
+    - name: MMLU (5-shot)
+      score: 68.9% (70B)
+      vs_baseline: 'Llama 1 65B 63.4%, GPT-3.5 70%'
+    - name: HumanEval
+      score: 29.9% (70B base) / 32.3% (Llama 2 Chat 70B)
+    - name: TruthfulQA
+      score: 44.9% (70B Chat)
+    - name: Intelligence · AA Intelligence Index
+      score: '9.70'
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+    - name: Coding · SciCode
+      score: 11.8% (0.0–11.8%)
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+    - name: MMLU-Pro
+      score: 40.6% (16.4–40.6%)
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+    - name: GPQA
+      score: 32.7% (22.7–32.7%)
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+    - name: HLE
+      score: 5.8% (4.7–5.8%)
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+    - name: Speed · Output tok/s
+      score: '116'
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+    - name: Price ($/M tokens)
+      score: $0.05 in / $0.25 out
+      source_url: 'https://artificialanalysis.ai/models/llama-2-chat-7b'
+  homepage: 'https://ai.meta.com/llama/'
+  github: 'https://github.com/meta-llama/llama'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/llama-2-chat-70b'
+  hf_url: 'https://huggingface.co/meta-llama/Llama-2-7b-chat-hf'
 public_view:
   plain_english: |
     Meta's second open-weight foundation model, released alongside a
@@ -51,17 +80,17 @@ public_view:
     market — within six months, dozens of companies had products built
     on Llama 2 that they could legally sell.
   applications:
-    - product: "Hugging Face Inference API default OSS model"
-      company: "Hugging Face"
+    - product: Hugging Face Inference API default OSS model
+      company: Hugging Face
       year_deployed: 2023
-    - product: "Anyscale, Replicate, Together AI hosting"
-      company: "Various"
+    - product: 'Anyscale, Replicate, Together AI hosting'
+      company: Various
       year_deployed: 2023
-    - product: "Code Llama (Meta fine-tune)"
-      company: "Meta AI"
+    - product: Code Llama (Meta fine-tune)
+      company: Meta AI
       year_deployed: 2023
-    - product: "WhatsApp Meta AI assistant (later Llama 3)"
-      company: "Meta"
+    - product: WhatsApp Meta AI assistant (later Llama 3)
+      company: Meta
       year_deployed: 2024
   investment_angle: |
     Llama 2's commercial license created the open-LLM startup ecosystem
@@ -76,26 +105,21 @@ public_view:
     and started being a business model. The 2024-25 commodification of
     LLM inference pricing (per-million-tokens dropping >90% in 18
     months) is a direct downstream effect.
-
 citations:
   - type: paper
     key: touvron2023llama2
-    title: "Llama 2: Open Foundation and Fine-Tuned Chat Models"
-    authors: ["Touvron, H.", "Martin, L.", "Stone, K.", "Albert, P.", "et al."]
+    title: 'Llama 2: Open Foundation and Fine-Tuned Chat Models'
+    authors:
+      - 'Touvron, H.'
+      - 'Martin, L.'
+      - 'Stone, K.'
+      - 'Albert, P.'
+      - et al.
     year: 2023
-    venue: "arXiv"
-    arxiv: "2307.09288"
+    venue: arXiv
+    arxiv: '2307.09288'
+graph_featured: true
 ---
-
-## What it is
-
-A family of three foundation models (7B, 13B, 70B) plus matching chat-tuned variants (Llama 2 Chat). Architecturally near-identical to Llama 1 with two notable changes:
-
-- **Grouped-Query Attention (GQA)** in the 70B model — middle ground between multi-head attention (highest quality, most memory) and multi-query attention (less memory, slight quality loss). Now standard in Llama 3, Mistral, Claude.
-- **Doubled context** to 4k tokens (vs Llama 1's 2k).
-- **+40% training tokens** — 2.0T vs Llama 1's 1.4T.
-
-The license — "Llama 2 Community License" — permits commercial use unless your service has >700M monthly active users (carve-out aimed at Google / Microsoft / Apple / OpenAI).
 
 ## Llama 2 vs concurrent peers (mid-2023)
 

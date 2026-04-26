@@ -1,35 +1,47 @@
 ---
 slug: sora
-title: "Sora — OpenAI's Text-to-Video"
-date: 2024-02-15
+title: Sora — OpenAI's Text-to-Video
+date: '2024-02-15'
 era: multimodal
-category: [generative]
+category:
+  - generative
+  - video
+  - multimodal
 relationships:
   - to: stable-diffusion
     type: builds_on
-    note: "Diffusion-based generative paradigm; extends to spatiotemporal video tokens"
+    note: >-
+      Diffusion-based generative paradigm; extends to spatiotemporal video
+      tokens
   - to: transformer
-    type: applies
-    note: "DiT (Diffusion Transformer) — replaces U-Net with transformer over patches"
+    type: builds_on
+    note: >-
+      [applies] DiT (Diffusion Transformer) — replaces U-Net with transformer
+      over patches
 authors:
-  - "OpenAI Sora Team"
-org: "OpenAI"
+  - OpenAI Sora Team
+org: OpenAI
 breakthrough_score: 8
 status: superseded
 model_spec:
-  parameters: "undisclosed"
-  architecture: "DiT (Diffusion Transformer) on spatiotemporal patches; latent video diffusion"
+  parameters: undisclosed
+  architecture: >-
+    DiT (Diffusion Transformer) on spatiotemporal patches; latent video
+    diffusion
   release_type: demo
-  modalities: [text, video]
+  modalities:
+    - text
+    - video
   benchmarks:
-    - name: "Output duration"
-      score: "60 seconds (preview)"
-      vs_baseline: "Runway Gen-2 16s, Pika 4s, prior demos sub-10s"
-    - name: "Output resolution"
-      score: "1920x1080 cinematic"
-      vs_baseline: "step change vs prior consumer text-to-video"
-  homepage: "https://openai.com/index/sora/"
-
+    - name: Output duration
+      score: 60 seconds (preview)
+      vs_baseline: 'Runway Gen-2 16s, Pika 4s, prior demos sub-10s'
+    - name: Output resolution
+      score: 1920x1080 cinematic
+      vs_baseline: step change vs prior consumer text-to-video
+  homepage: 'https://openai.com/index/sora/'
+  availability:
+    - demo
 public_view:
   plain_english: |
     OpenAI's text-to-video model, demonstrated as research previews
@@ -45,14 +57,14 @@ public_view:
     capability demo from a private research lab that compressed
     the broader industry's video-AI roadmap by 12-18 months.
   applications:
-    - product: "Sora consumer access (sora.com)"
-      company: "OpenAI"
+    - product: Sora consumer access (sora.com)
+      company: OpenAI
       year_deployed: 2024
-    - product: "Embedded in ChatGPT Plus / Pro"
-      company: "OpenAI"
+    - product: Embedded in ChatGPT Plus / Pro
+      company: OpenAI
       year_deployed: 2024
-    - product: "Various film and ad-agency creative pipelines (limited access)"
-      company: "Various"
+    - product: Various film and ad-agency creative pipelines (limited access)
+      company: Various
       year_deployed: 2024
   investment_angle: |
     Sora's February 2024 demo was the catalyst for the
@@ -73,21 +85,15 @@ public_view:
     no longer obviously distinguishable from human-produced
     content. The implications for advertising, film, content
     moderation, and disinformation are still being absorbed.
-
 citations:
   - type: release
     key: openai2024sora
-    title: "Video generation models as world simulators"
+    title: Video generation models as world simulators
     year: 2024
-    venue: "OpenAI Research"
-    url: "https://openai.com/index/video-generation-models-as-world-simulators/"
+    venue: OpenAI Research
+    url: 'https://openai.com/index/video-generation-models-as-world-simulators/'
+graph_featured: true
 ---
-
-## What it is
-
-OpenAI's text-to-video generative model, first demonstrated February 15, 2024 with a set of research-preview videos. Architecturally a Diffusion Transformer (DiT) operating on spatiotemporal latent patches: the input video is encoded into latent space (similar to Stable Diffusion's VAE), divided into spacetime patches, and a transformer denoises the patch sequence conditioned on text.
-
-The OpenAI write-up framed Sora as a "world simulator" — the suggestion that scaling video diffusion learned implicit physics (objects persisting through occlusion, fluid dynamics, lighting consistency) was a key narrative choice.
 
 ## How Sora compares to text-to-video peers
 

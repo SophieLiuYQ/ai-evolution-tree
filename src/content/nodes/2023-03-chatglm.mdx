@@ -1,37 +1,43 @@
 ---
 slug: chatglm
-title: "ChatGLM-6B — Tsinghua's Bilingual Open Chat Model"
-date: 2023-03-14
+title: ChatGLM-6B — Tsinghua's Bilingual Open Chat Model
+date: '2023-03-14'
 era: alignment
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: transformer
     type: builds_on
-    note: "Decoder-only with GLM-style autoregressive blank-filling pretraining"
+    note: Decoder-only with GLM-style autoregressive blank-filling pretraining
   - to: instructgpt
-    type: applies
-    note: "SFT + RLHF on Chinese-heavy data; first major open Chinese chat model"
+    type: builds_on
+    note: >-
+      [applies] SFT + RLHF on Chinese-heavy data; first major open Chinese chat
+      model
 authors:
-  - "Tsinghua KEG Team"
-org: "Tsinghua / Zhipu"
+  - Tsinghua KEG Team
+org: Tsinghua / Zhipu
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "6B (later 130B closed; GLM-4 series follows)"
-  architecture: "GLM (Generalized Language Model) — autoregressive blank infilling"
+  parameters: 6B (later 130B closed; GLM-4 series follows)
+  architecture: GLM (Generalized Language Model) — autoregressive blank infilling
   context_window: 2048
-  training_tokens: "~1T (Chinese-English bilingual)"
+  training_tokens: ~1T (Chinese-English bilingual)
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "C-Eval (Chinese language)"
-      score: "first open model to publish strong Chinese benchmark scores"
-      vs_baseline: "Llama 1 effectively 0% on Chinese subtasks"
-    - name: "MMLU (English)"
-      score: "~40% (6B variant)"
-  homepage: "https://chatglm.cn/"
-  github: "https://github.com/THUDM/ChatGLM-6B"
-
+    - name: C-Eval (Chinese language)
+      score: first open model to publish strong Chinese benchmark scores
+      vs_baseline: Llama 1 effectively 0% on Chinese subtasks
+    - name: MMLU (English)
+      score: ~40% (6B variant)
+  homepage: 'https://chatglm.cn/'
+  github: 'https://github.com/THUDM/ChatGLM-6B'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     A 6-billion-parameter open-weight chat model from Tsinghua University,
@@ -44,11 +50,11 @@ public_view:
     open-source ecosystem, with the same kind of week-one viral spread.
     Released before Llama 1 itself in some respects.
   applications:
-    - product: "ChatGLM-6B / ChatGLM2-6B / ChatGLM3-6B (community)"
-      company: "Tsinghua / Zhipu"
+    - product: ChatGLM-6B / ChatGLM2-6B / ChatGLM3-6B (community)
+      company: Tsinghua / Zhipu
       year_deployed: 2023
-    - product: "Zhipu AI commercial product (later GLM-4)"
-      company: "Zhipu AI"
+    - product: Zhipu AI commercial product (later GLM-4)
+      company: Zhipu AI
       year_deployed: 2024
   investment_angle: |
     ChatGLM seeded Zhipu AI, which by 2024 had raised >$2B at >$3B
@@ -63,28 +69,26 @@ public_view:
     models and started shipping models tuned natively for Chinese language
     and culture. The current Chinese AI ecosystem — Qwen, DeepSeek, Yi,
     Kimi — exists because ChatGLM proved a market existed.
-
 citations:
   - type: paper
     key: zeng2022glm
-    title: "GLM-130B: An Open Bilingual Pre-trained Model"
-    authors: ["Zeng, A.", "Liu, X.", "Du, Z.", "et al."]
+    title: 'GLM-130B: An Open Bilingual Pre-trained Model'
+    authors:
+      - 'Zeng, A.'
+      - 'Liu, X.'
+      - 'Du, Z.'
+      - et al.
     year: 2022
-    venue: "ICLR 2023"
-    arxiv: "2210.02414"
+    venue: ICLR 2023
+    arxiv: '2210.02414'
   - type: release
     key: thudm2023chatglm
-    title: "ChatGLM-6B Release"
+    title: ChatGLM-6B Release
     year: 2023
-    venue: "Hugging Face / GitHub"
-    url: "https://github.com/THUDM/ChatGLM-6B"
+    venue: Hugging Face / GitHub
+    url: 'https://github.com/THUDM/ChatGLM-6B'
+graph_featured: true
 ---
-
-## What it is
-
-A 6.2B-parameter chat-tuned model released on Hugging Face on March 14, 2023 — the same day as GPT-4 and Claude 1. Architecturally a GLM (Generalized Language Model), which uses an autoregressive blank-filling pretraining objective rather than pure left-to-right LM. Post-trained with SFT + RLHF on a Chinese-English bilingual corpus.
-
-The 6B size was the operative move — small enough to run on a single 24GB consumer GPU, which is what drove the >1M-download viral spread in week one.
 
 ## How ChatGLM compared to peers (March 2023)
 

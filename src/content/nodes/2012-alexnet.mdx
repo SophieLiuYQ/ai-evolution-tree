@@ -1,32 +1,40 @@
 ---
 slug: alexnet
-title: "AlexNet — ImageNet Classification with Deep CNNs"
-date: 2012-09-30
+title: AlexNet — ImageNet Classification with Deep CNNs
+date: '2012-09-30'
 era: deep-learning-revival
-category: [cv, architecture, training]
+category:
+  - cv
+  - architecture
+  - training
 relationships:
   - to: backpropagation
     type: builds_on
-    note: "Trained end-to-end via backprop on GPUs; first to scale the recipe to 60M params"
+    note: >-
+      Trained end-to-end via backprop on GPUs; first to scale the recipe to 60M
+      params
 authors:
-  - "Krizhevsky, A."
-  - "Sutskever, I."
-  - "Hinton, G. E."
-org: "University of Toronto"
+  - 'Krizhevsky, A.'
+  - 'Sutskever, I.'
+  - 'Hinton, G. E.'
+org: University of Toronto
 breakthrough_score: 10
 status: foundational
 model_spec:
-  parameters: "60M"
-  architecture: "8-layer CNN (5 conv + 3 FC), ReLU, dropout"
-  training_compute: "~6 days on 2× GTX 580 (3 GB VRAM each)"
+  parameters: 60M
+  architecture: '8-layer CNN (5 conv + 3 FC), ReLU, dropout'
+  training_compute: ~6 days on 2× GTX 580 (3 GB VRAM each)
   release_type: paper
-  modalities: [vision]
+  modalities:
+    - vision
   benchmarks:
-    - name: "ImageNet ILSVRC-2012 top-5 error"
-      score: "15.3%"
-      vs_baseline: "runner-up 26.2%, prior SOTA ~25%"
-  homepage: "https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html"
-
+    - name: ImageNet ILSVRC-2012 top-5 error
+      score: 15.3%
+      vs_baseline: 'runner-up 26.2%, prior SOTA ~25%'
+  homepage: >-
+    https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html
+  availability:
+    - research
 public_view:
   plain_english: |
     A deep neural network that, in 2012, smashed the world record on a
@@ -42,14 +50,14 @@ public_view:
     champion by 20 wins. The next year, half the field has switched to
     the same tactic.
   applications:
-    - product: "Google Photos auto-tagging"
-      company: "Google"
+    - product: Google Photos auto-tagging
+      company: Google
       year_deployed: 2015
-    - product: "Facebook face recognition"
-      company: "Meta"
+    - product: Facebook face recognition
+      company: Meta
       year_deployed: 2014
-    - product: "Tesla Autopilot vision stack (early)"
-      company: "Tesla"
+    - product: Tesla Autopilot vision stack (early)
+      company: Tesla
       year_deployed: 2016
   investment_angle: |
     The single event that triggered the modern AI investment cycle.
@@ -63,29 +71,31 @@ public_view:
     AlexNet, "deep learning" was the field. The 12 years from this paper
     to ChatGPT are essentially one continuous compounding curve, and this
     is its inflection point.
-
 citations:
   - type: paper
     key: krizhevsky2012imagenet
-    title: "ImageNet Classification with Deep Convolutional Neural Networks"
-    authors: ["Krizhevsky, A.", "Sutskever, I.", "Hinton, G. E."]
+    title: ImageNet Classification with Deep Convolutional Neural Networks
+    authors:
+      - 'Krizhevsky, A.'
+      - 'Sutskever, I.'
+      - 'Hinton, G. E.'
     year: 2012
-    venue: "NeurIPS"
-    url: "https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html"
+    venue: NeurIPS
+    url: >-
+      https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html
   - type: dataset
     key: deng2009imagenet
-    title: "ImageNet: A Large-Scale Hierarchical Image Database"
-    authors: ["Deng, J.", "Dong, W.", "Socher, R.", "et al."]
+    title: 'ImageNet: A Large-Scale Hierarchical Image Database'
+    authors:
+      - 'Deng, J.'
+      - 'Dong, W.'
+      - 'Socher, R.'
+      - et al.
     year: 2009
-    venue: "CVPR"
-    doi: "10.1109/CVPR.2009.5206848"
+    venue: CVPR
+    doi: 10.1109/CVPR.2009.5206848
+graph_featured: true
 ---
-
-## What it is
-
-AlexNet is an 8-layer convolutional neural network (5 conv + 3 fully-connected) that won the 2012 ImageNet Large Scale Visual Recognition Challenge with a top-5 error rate of 15.3% — the runner-up scored 26.2%. The 11-percentage-point margin was unprecedented and forced the field to take deep learning seriously.
-
-The technical paper introduced **no single new idea** — convolutions (Fukushima 1980), backprop (1986), ReLU (Nair & Hinton 2010), dropout (Hinton et al. 2012), GPU training (multiple precursors) all predated it. AlexNet's contribution was **engineering**: it combined them at a scale that, given the available data (ImageNet) and hardware (two GTX 580s), produced a result no prior system could match.
 
 ## How it works
 

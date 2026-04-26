@@ -1,29 +1,38 @@
 ---
 slug: alphafold-3
-title: "AlphaFold 3 — All-Atom Biomolecular Prediction"
-date: 2024-05-08
+title: AlphaFold 3 — All-Atom Biomolecular Prediction
+date: '2024-05-08'
 era: multimodal
-category: [generative, training]
+category:
+  - science
+  - generative
+  - cv
+  - multimodal
 relationships:
   - to: alphafold-2
-    type: scales
-    note: "Adds nucleic acids, ligands, and ions; predicts protein-DNA-drug complexes, not just protein structure"
+    type: builds_on
+    note: >-
+      [scales] Adds nucleic acids, ligands, and ions; predicts protein-DNA-drug
+      complexes, not just protein structure
 authors:
-  - "Abramson, J."
-  - "Adler, J."
-  - "Dunger, J."
-  - "et al."
-org: "DeepMind"
+  - 'Abramson, J.'
+  - 'Adler, J.'
+  - 'Dunger, J.'
+  - et al.
+org: DeepMind
 breakthrough_score: 9
 status: foundational
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Diffusion-based all-atom structure prediction"
+  parameters: undisclosed
+  architecture: Diffusion-based all-atom structure prediction
   release_type: api
-  modalities: [vision, generative]
-  homepage: "https://deepmind.google/technologies/alphafold/"
-  github: "https://github.com/google-deepmind/alphafold3"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://deepmind.google/technologies/alphafold/'
+  github: 'https://github.com/google-deepmind/alphafold3'
+  availability:
+    - api
 public_view:
   plain_english: |
     DeepMind + Isomorphic Labs' May 2024 release — extends AlphaFold 2
@@ -37,14 +46,14 @@ public_view:
     is a sculpture-of-the-protein-with-drugs-bound-to-it generator —
     the one drug discovery actually wanted.
   applications:
-    - product: "AlphaFold Server (academic)"
-      company: "DeepMind"
+    - product: AlphaFold Server (academic)
+      company: DeepMind
       year_deployed: 2024
-    - product: "Isomorphic Labs drug discovery"
-      company: "Isomorphic Labs"
+    - product: Isomorphic Labs drug discovery
+      company: Isomorphic Labs
       year_deployed: 2024
-    - product: "Pharma R&D pipelines (multiple)"
-      company: "Multiple"
+    - product: Pharma R&D pipelines (multiple)
+      company: Multiple
       year_deployed: 2024
   investment_angle: |
     AlphaFold 3 is the centerpiece of Isomorphic Labs' drug-discovery
@@ -58,15 +67,17 @@ public_view:
     AlphaFold's economic impact from "PDB completion" to "real
     therapeutic pipelines." The 2024 chemistry Nobel went to David
     Baker + Demis Hassabis + John Jumper for this lineage.
-
 citations:
   - type: paper
     key: deepmind2024alphafold3
-    title: "Accurate structure prediction of biomolecular interactions with AlphaFold 3"
+    title: >-
+      Accurate structure prediction of biomolecular interactions with AlphaFold
+      3
     year: 2024
-    venue: "Nature"
-    doi: "10.1038/s41586-024-07487-w"
-    url: "https://www.nature.com/articles/s41586-024-07487-w"
+    venue: Nature
+    doi: 10.1038/s41586-024-07487-w
+    url: 'https://www.nature.com/articles/s41586-024-07487-w'
+graph_featured: true
 ---
 
 ## What's new

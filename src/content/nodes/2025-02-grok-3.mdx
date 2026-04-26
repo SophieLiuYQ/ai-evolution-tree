@@ -1,39 +1,94 @@
 ---
 slug: grok-3
-title: "Grok 3 — xAI's Frontier Bet"
-date: 2025-02-17
+title: Grok 3 — xAI's Frontier Bet
+date: '2025-02-17'
 era: scale-era
-category: [nlp, multimodal, generative, reasoning, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - reasoning
+  - agents
+  - cv
 relationships:
   - to: gpt-4o
     type: competes_with
-    note: "xAI's frontier-tier challenger to GPT-4o / Claude / Gemini"
+    note: xAI's frontier-tier challenger to GPT-4o / Claude / Gemini
   - to: chain-of-thought
-    type: applies
-    note: "Grok 3 'Think mode' uses extended-thinking inference-time compute"
+    type: builds_on
+    note: >-
+      [applies] Grok 3 'Think mode' uses extended-thinking inference-time
+      compute
 authors:
-  - "xAI Team"
-org: "xAI"
+  - xAI Team
+org: xAI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + extended-thinking mode + native tool use"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + extended-thinking mode + native tool use
   context_window: 1000000
-  training_compute: "~200k H100 GPUs (Colossus cluster, the largest single-cluster training run publicly disclosed at release)"
+  training_compute: >-
+    ~200k H100 GPUs (Colossus cluster, the largest single-cluster training run
+    publicly disclosed at release)
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "AIME 2025 (with Think mode)"
-      score: "~93%"
-      vs_baseline: "o3 ~95%, Gemini 2.5 Pro ~92%, Claude 3.7 ~80%"
-    - name: "GPQA Diamond"
-      score: "~85%"
-    - name: "Training cluster size"
-      score: "200k H100 GPUs (Colossus)"
-      vs_baseline: "single largest training cluster publicly cited at release"
-  homepage: "https://x.ai/news/grok-3"
-
+    - name: Coding · HumanEval
+      score: 97.8%
+      vs_baseline: 'Rank #2 of 15 · Top #2 of 15 · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Intelligence · MMLU-Pro
+      score: 82.8%
+      vs_baseline: 'Rank #10 of 47 · Top #10 of 47 · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Intelligence · AA Intelligence Index
+      score: '32.10'
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: Coding · AA Coding Index
+      score: '25.20'
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: Coding · SciCode
+      score: 40.6% (36.8–40.6%)
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 17.4% (11.4–17.4%)
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: MMLU-Pro
+      score: 82.8% (79.9–82.8%)
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: GPQA
+      score: 79.1% (69.3–79.1%)
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: HLE
+      score: 11.1% (5.1–11.1%)
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: Speed · Output tok/s
+      score: '215'
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.30 in / $0.50 out
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+  homepage: 'https://x.ai/news/grok-3'
+  availability:
+    - api
+    - product
+  family: xAI grok
+  variants:
+    - id: grok-3-mini-reasoning
+      label: Grok 3 mini Reasoning (high)
+      status: active
+    - id: grok-3-reasoning
+      label: Grok 3 Reasoning Beta
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/grok-3'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+    - image
 public_view:
   plain_english: |
     xAI's third-generation flagship model, released February 2025
@@ -49,14 +104,14 @@ public_view:
     durable competitive position is the open question; the
     strategic willingness to deploy capital is not in doubt.
   applications:
-    - product: "X Premium / Premium+ Grok integration"
-      company: "xAI"
+    - product: X Premium / Premium+ Grok integration
+      company: xAI
       year_deployed: 2025
-    - product: "Standalone Grok consumer app"
-      company: "xAI"
+    - product: Standalone Grok consumer app
+      company: xAI
       year_deployed: 2025
-    - product: "xAI API"
-      company: "xAI"
+    - product: xAI API
+      company: xAI
       year_deployed: 2025
   investment_angle: |
     xAI's $10B March 2025 fundraise (at >$50B valuation)
@@ -82,22 +137,15 @@ public_view:
     specific positioning as the "most pro-free-speech AI"
     converts to durable customer preference remains to be
     seen.
-
 citations:
   - type: release
     key: xai2025grok3
-    title: "Grok 3 Beta — The Age of Reasoning Agents"
+    title: Grok 3 Beta — The Age of Reasoning Agents
     year: 2025
-    venue: "xAI"
-    url: "https://x.ai/news/grok-3"
+    venue: xAI
+    url: 'https://x.ai/news/grok-3'
+graph_featured: true
 ---
-
-## What it is
-
-xAI's frontier model release of February 17, 2025, with two distinguishing strategic facts beyond the model itself:
-
-1. **Colossus training cluster** — 200,000 H100 GPUs in a single Memphis, Tennessee facility, built in ~122 days from initial site preparation to operational training. The largest single-cluster build publicly cited at the time.
-2. **Compressed development timeline** — xAI was founded July 2023; Grok 3 ships at frontier-comparable quality 19 months later. The fastest "company founded → frontier model shipped" timeline in the modern LLM era.
 
 ## Grok 3 vs early-2025 frontier
 

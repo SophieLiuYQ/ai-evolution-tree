@@ -1,29 +1,38 @@
 ---
 slug: graphcast
-title: "GraphCast — AI Weather Forecasting at ECMWF Quality"
-date: 2023-11-14
+title: GraphCast — AI Weather Forecasting at ECMWF Quality
+date: '2023-11-14'
 era: scale-era
-category: [generative, training]
+category:
+  - science
+  - generative
+  - cv
 relationships:
   - to: alphafold-2
-    type: applies
-    note: "Same DeepMind 'foundation model for a hard scientific problem' playbook applied to weather"
+    type: builds_on
+    note: >-
+      [applies] Same DeepMind 'foundation model for a hard scientific problem'
+      playbook applied to weather
 authors:
-  - "Lam, R."
-  - "Sanchez-Gonzalez, A."
-  - "Willson, M."
-  - "et al."
-org: "DeepMind"
+  - 'Lam, R.'
+  - 'Sanchez-Gonzalez, A.'
+  - 'Willson, M.'
+  - et al.
+org: DeepMind
 breakthrough_score: 8
 status: foundational
 model_spec:
-  parameters: "37M"
-  architecture: "Graph Neural Network on icosahedral grid"
+  parameters: 37M
+  architecture: Graph Neural Network on icosahedral grid
   release_type: open_weights
-  modalities: [vision, generative]
-  homepage: "https://deepmind.google/discover/blog/graphcast-ai-model-for-faster-and-more-accurate-global-weather-forecasting/"
-  github: "https://github.com/google-deepmind/graphcast"
-
+  modalities:
+    - vision
+    - generative
+  homepage: >-
+    https://deepmind.google/discover/blog/graphcast-ai-model-for-faster-and-more-accurate-global-weather-forecasting/
+  github: 'https://github.com/google-deepmind/graphcast'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     DeepMind's November 2023 weather model — a graph neural network
@@ -37,14 +46,14 @@ public_view:
     accurately than ECMWF's billion-dollar HPC pipeline — a kind of
     "AlphaFold moment" for weather.
   applications:
-    - product: "DeepMind GraphCast / GenCast / NeuralGCM"
-      company: "DeepMind"
+    - product: DeepMind GraphCast / GenCast / NeuralGCM
+      company: DeepMind
       year_deployed: 2023
-    - product: "ECMWF AIFS (operational Feb 25, 2025)"
-      company: "ECMWF"
+    - product: 'ECMWF AIFS (operational Feb 25, 2025)'
+      company: ECMWF
       year_deployed: 2025
-    - product: "Google MetNet-3 (precipitation nowcasting)"
-      company: "Google"
+    - product: Google MetNet-3 (precipitation nowcasting)
+      company: Google
       year_deployed: 2023
   investment_angle: |
     AI weather is now a procurement category — energy traders,
@@ -58,15 +67,15 @@ public_view:
     Pangu-Weather, Shanghai AI Lab FengWu, Fudan FuXi, IBM+NASA
     Prithvi-WxC, Google MetNet, and ECMWF's operational AIFS —
     a complete AI-weather industry in 2 years.
-
 citations:
   - type: paper
     key: deepmind2023graphcast
-    title: "Learning skillful medium-range global weather forecasting"
+    title: Learning skillful medium-range global weather forecasting
     year: 2023
-    venue: "Science"
-    doi: "10.1126/science.adi2336"
-    url: "https://www.science.org/doi/10.1126/science.adi2336"
+    venue: Science
+    doi: 10.1126/science.adi2336
+    url: 'https://www.science.org/doi/10.1126/science.adi2336'
+graph_featured: true
 ---
 
 ## AI weather field (2024-2026)

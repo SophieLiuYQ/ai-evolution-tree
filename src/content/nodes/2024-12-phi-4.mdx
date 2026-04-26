@@ -1,38 +1,82 @@
 ---
 slug: phi-4
-title: "Phi-4 — Microsoft's Synthetic-Data Small Model"
-date: 2024-12-12
+title: Phi-4 — Microsoft's Synthetic-Data Small Model
+date: '2024-12-12'
 era: scale-era
-category: [nlp, generative, training]
+category:
+  - nlp
+  - generative
+  - training
 relationships:
   - to: phi-3
-    type: scales
-    note: "Same synthetic-data training philosophy; Phi-4 reaches GPT-4o-class reasoning at 14B"
+    type: builds_on
+    note: >-
+      [scales] Same synthetic-data training philosophy; Phi-4 reaches
+      GPT-4o-class reasoning at 14B
   - to: chinchilla
     type: builds_on
-    note: "Phi line argues quality-of-data > quantity, in the spirit of Chinchilla but pushed further"
+    note: >-
+      Phi line argues quality-of-data > quantity, in the spirit of Chinchilla
+      but pushed further
 authors:
-  - "Microsoft Research"
-org: "Microsoft"
+  - Microsoft Research
+org: Microsoft
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "14B dense"
-  architecture: "Decoder-only transformer; trained heavily on synthetic data"
+  parameters: 14B dense
+  architecture: Decoder-only transformer; trained heavily on synthetic data
   context_window: 16384
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU"
-      score: "84.8%"
-    - name: "GPQA"
-      score: "56.1%"
-      vs_baseline: "GPT-4o 50.6%"
-    - name: "MATH"
-      score: "80.4%"
-  homepage: "https://techcommunity.microsoft.com/blog/aiplatformblog/introducing-phi-4-microsoft%E2%80%99s-newest-small-language-model-specializing-in-comple/4357090"
-  github: "https://github.com/microsoft/phi-4"
-
+    - name: MMLU
+      score: 84.8%
+    - name: GPQA
+      score: 56.1%
+      vs_baseline: GPT-4o 50.6%
+    - name: MATH
+      score: 80.4%
+    - name: Intelligence · AA Intelligence Index
+      score: '10.40'
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: Coding · AA Coding Index
+      score: '11.20'
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: Coding · SciCode
+      score: 26.0% (10.8–26.0%)
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: Agentic · Terminal-Bench Hard
+      score: 3.8% (0.0–3.8%)
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: MMLU-Pro
+      score: 71.4% (46.5–71.4%)
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: HLE
+      score: 4.4% (4.1–4.4%)
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: Speed · Output tok/s
+      score: '35'
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+    - name: Price ($/M tokens)
+      score: $0.13 in / $0.50 out
+      source_url: 'https://artificialanalysis.ai/models/phi-4'
+  homepage: >-
+    https://techcommunity.microsoft.com/blog/aiplatformblog/introducing-phi-4-microsoft%E2%80%99s-newest-small-language-model-specializing-in-comple/4357090
+  github: 'https://github.com/microsoft/phi-4'
+  availability:
+    - open_weights
+  family: Microsoft phi
+  variants:
+    - id: phi-4-mini
+      label: Phi-4 Mini Instruct
+      status: active
+    - id: phi-4-multimodal
+      label: Phi-4 Multimodal Instruct
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/phi-4'
+  hf_url: 'https://huggingface.co/microsoft/phi-4'
 public_view:
   plain_english: |
     Microsoft's December 2024 small model — only 14 billion parameters
@@ -45,14 +89,14 @@ public_view:
     on a curated diet of textbook-quality examples generated to cover
     exactly the skills it would be tested on.
   applications:
-    - product: "Azure AI Foundry (Phi family)"
-      company: "Microsoft"
+    - product: Azure AI Foundry (Phi family)
+      company: Microsoft
       year_deployed: 2024
-    - product: "Phi-4-mini / Phi-4-multimodal / Phi-4-reasoning"
-      company: "Microsoft"
+    - product: Phi-4-mini / Phi-4-multimodal / Phi-4-reasoning
+      company: Microsoft
       year_deployed: 2025
-    - product: "Hugging Face open weights (MIT)"
-      company: "Microsoft"
+    - product: Hugging Face open weights (MIT)
+      company: Microsoft
       year_deployed: 2024
   investment_angle: |
     Phi-4 changed the procurement math for SLM (small language model)
@@ -65,14 +109,14 @@ public_view:
     Validated synthetic-data training at scale. Showed that closed
     labs' web-scraping advantage matters less than once thought —
     a small model + great data can beat a huge model + average data.
-
 citations:
   - type: paper
     key: ms2024phi4
-    title: "Phi-4 Technical Report"
+    title: Phi-4 Technical Report
     year: 2024
-    arxiv: "2412.08905"
-    url: "https://arxiv.org/abs/2412.08905"
+    arxiv: '2412.08905'
+    url: 'https://arxiv.org/abs/2412.08905'
+graph_featured: true
 ---
 
 ## What's distinctive

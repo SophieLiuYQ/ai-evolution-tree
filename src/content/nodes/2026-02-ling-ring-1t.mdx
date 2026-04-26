@@ -1,30 +1,44 @@
 ---
 slug: ling-ring-1t
-title: "Ling-2.5-1T / Ring-2.5-1T — Ant Group's Trillion-Parameter Twins"
-date: 2026-02-15
+title: Ling-2.5-1T / Ring-2.5-1T — Ant Group's Trillion-Parameter Twins
+date: '2026-02-15'
 era: reasoning
-category: [nlp, generative, reasoning, agents]
+category:
+  - nlp
+  - generative
+  - reasoning
+  - agents
 relationships:
   - to: deepseek-v3-2
     type: competes_with
-    note: "Trillion-parameter Chinese open MoE peer; Ring uses hybrid linear attention for thinking"
+    note: >-
+      Trillion-parameter Chinese open MoE peer; Ring uses hybrid linear
+      attention for thinking
 authors:
-  - "Ant Group AI Team"
-org: "Ant Group"
+  - Ant Group AI Team
+org: Ant Group
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "~1T total MoE (both Ling and Ring siblings)"
-  architecture: "Ling: agent-native MoE. Ring: hybrid-linear-attention thinking model"
+  parameters: ~1T total MoE (both Ling and Ring siblings)
+  architecture: 'Ling: agent-native MoE. Ring: hybrid-linear-attention thinking model'
   context_window: 128000
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "IMO 2025 (Ring)"
-      score: "Gold-equivalent"
-  homepage: "https://www.antgroup.com/ai"
-  github: "https://github.com/inclusionAI/Ring"
-
+    - name: IMO 2025 (Ring)
+      score: Gold-equivalent
+  homepage: 'https://www.antgroup.com/ai'
+  github: 'https://github.com/inclusionAI/Ring'
+  availability:
+    - open_weights
+    - api
+  aa_url: 'https://artificialanalysis.ai/models/ling-1t'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Ant Group's first major frontier release — two siblings at 1
@@ -37,11 +51,11 @@ public_view:
     them entering the AI race directly rather than relying on Qwen.
     Like a bank's quant division publishing its own foundation model.
   applications:
-    - product: "Ant Group internal agent platform"
-      company: "Ant Group"
+    - product: Ant Group internal agent platform
+      company: Ant Group
       year_deployed: 2026
-    - product: "Ming-Flash-Omni-2.0 (sibling omni model)"
-      company: "Ant Group"
+    - product: Ming-Flash-Omni-2.0 (sibling omni model)
+      company: Ant Group
       year_deployed: 2026
   investment_angle: |
     Ant Group's frontier entry signals that financial services AI is
@@ -52,14 +66,14 @@ public_view:
     Two trillion-parameter open models from a non-traditional player,
     one of which (Ring) makes a credible math reasoning claim against
     Gemini Deep Think and AlphaProof.
-
 citations:
   - type: release
     key: ant2026lingring
-    title: "Ling-2.5-1T and Ring-2.5-1T Release"
+    title: Ling-2.5-1T and Ring-2.5-1T Release
     year: 2026
-    venue: "Ant Group AI Blog"
-    url: "https://github.com/inclusionAI/Ling-V2"
+    venue: Ant Group AI Blog
+    url: 'https://github.com/inclusionAI/Ling-V2'
+graph_featured: true
 ---
 
 ## The two siblings

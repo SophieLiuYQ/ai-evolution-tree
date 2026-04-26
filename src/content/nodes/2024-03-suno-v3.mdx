@@ -1,34 +1,42 @@
 ---
 slug: suno-v3
-title: "Suno v3 — Text-to-Music at Consumer Quality"
-date: 2024-03-21
+title: Suno v3 — Text-to-Music at Consumer Quality
+date: '2024-03-21'
 era: multimodal
-category: [audio, generative]
+category:
+  - audio
+  - generative
+  - multimodal
 relationships:
   - to: transformer
     type: builds_on
-    note: "Audio-token autoregressive transformer (specifics undisclosed)"
+    note: Audio-token autoregressive transformer (specifics undisclosed)
   - to: stable-diffusion
-    type: applies
-    note: "Generalizes the 'open / consumer-friendly text-to-X' product pattern from images to music"
+    type: builds_on
+    note: >-
+      [applies] Generalizes the 'open / consumer-friendly text-to-X' product
+      pattern from images to music
 authors:
-  - "Suno AI Team"
-org: "Suno"
+  - Suno AI Team
+org: Suno
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Audio token transformer (likely encodec-style discrete audio tokens + LM)"
+  parameters: undisclosed
+  architecture: Audio token transformer (likely encodec-style discrete audio tokens + LM)
   release_type: product
-  modalities: [text, audio]
+  modalities:
+    - text
+    - audio
   benchmarks:
-    - name: "Output duration"
-      score: "2 minutes (v3); extended in v3.5+"
-      vs_baseline: "v2 30 seconds; v1 hummable clips only"
-    - name: "Lyric quality + vocal coherence"
-      score: "first version where most outputs sound 'like a real song'"
-  homepage: "https://suno.com/"
-
+    - name: Output duration
+      score: 2 minutes (v3); extended in v3.5+
+      vs_baseline: v2 30 seconds; v1 hummable clips only
+    - name: Lyric quality + vocal coherence
+      score: first version where most outputs sound 'like a real song'
+  homepage: 'https://suno.com/'
+  availability:
+    - product
 public_view:
   plain_english: |
     A Boston-based startup's text-to-music generator that, in
@@ -43,14 +51,14 @@ public_view:
     Suno v3 was that moment for music in 2024. Same UX
     pattern, new modality.
   applications:
-    - product: "Suno consumer app (suno.com / mobile)"
-      company: "Suno"
+    - product: Suno consumer app (suno.com / mobile)
+      company: Suno
       year_deployed: 2024
-    - product: "Microsoft Copilot music generation feature"
-      company: "Microsoft (partnership)"
+    - product: Microsoft Copilot music generation feature
+      company: Microsoft (partnership)
       year_deployed: 2023
-    - product: "Various music-meme TikTok content"
-      company: "Creators worldwide"
+    - product: Various music-meme TikTok content
+      company: Creators worldwide
       year_deployed: 2024
   investment_angle: |
     Suno raised $125M Series B in May 2024 at ~$500M valuation
@@ -71,25 +79,15 @@ public_view:
     monthly subscription + viral social distribution) is being
     copied across other modalities now (video, 3D, voice,
     longform writing).
-
 citations:
   - type: release
     key: suno2024v3
-    title: "Suno v3 release"
+    title: Suno v3 release
     year: 2024
-    venue: "Suno Blog"
-    url: "https://suno.com/blog/v3"
+    venue: Suno Blog
+    url: 'https://suno.com/blog/v3'
+graph_featured: true
 ---
-
-## What it is
-
-A text-to-music generator producing complete songs (vocals + instruments + production) from text prompts. v3 (March 2024) was the first version producing "passable as real" outputs at 2-minute length. Subsequent releases (v3.5 in June 2024, v4 in late 2024) extended duration and quality.
-
-Architectural details are not public. Likely components (inferred from related research like MusicLM, MusicGen):
-- **Audio tokenization** — neural codec (similar to EnCodec or SoundStream) compressing audio to discrete tokens at ~50 Hz
-- **Conditioning** — text embedding (CLIP-style or T5) conditions the music generation
-- **Autoregressive transformer** — generates audio tokens conditioned on text + prior tokens
-- **Detokenization** — neural codec decoder reconstructs waveform
 
 ## Suno vs concurrent text-to-music systems
 

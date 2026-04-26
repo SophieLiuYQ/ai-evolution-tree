@@ -1,44 +1,91 @@
 ---
 slug: qwen-2-5
-title: "Qwen 2.5 — Open Frontier-Comparable from Alibaba"
-date: 2024-09-19
+title: Qwen 2.5 — Open Frontier-Comparable from Alibaba
+date: '2024-09-19'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: qwen-1
-    type: scales
-    note: "5 generations on; 18T-token training; sizes 0.5B → 72B; Apache 2.0"
+    type: builds_on
+    note: >-
+      [scales] 5 generations on; 18T-token training; sizes 0.5B → 72B; Apache
+      2.0
   - to: llama-3
-    type: surpasses
-    note: "Qwen 2.5 72B exceeds Llama 3 70B on most benchmarks at similar size"
+    type: competes_with
+    note: >-
+      [surpasses] Qwen 2.5 72B exceeds Llama 3 70B on most benchmarks at similar
+      size
+  - to: claude-3
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Qwen Team, Alibaba"
-org: "Alibaba"
+  - 'Qwen Team, Alibaba'
+org: Alibaba
 breakthrough_score: 8
 status: active
 model_spec:
-  parameters: "0.5B / 1.5B / 3B / 7B / 14B / 32B / 72B (dense); also Qwen2.5-Coder, Qwen2.5-Math variants"
-  architecture: "Decoder-only transformer + GQA + RoPE + SwiGLU"
+  parameters: >-
+    0.5B / 1.5B / 3B / 7B / 14B / 32B / 72B (dense); also Qwen2.5-Coder,
+    Qwen2.5-Math variants
+  architecture: Decoder-only transformer + GQA + RoPE + SwiGLU
   context_window: 131072
-  training_tokens: "18T"
+  training_tokens: 18T
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU (5-shot, 72B)"
-      score: "85.3%"
-      vs_baseline: "Llama 3.1 70B 83.1%, Llama 3 70B 82.0%"
-    - name: "HumanEval (72B)"
-      score: "86.6%"
-      vs_baseline: "Llama 3.1 70B 80.5%"
-    - name: "GSM8K (72B)"
-      score: "95.8%"
-      vs_baseline: "Llama 3.1 70B 95.1%"
-    - name: "MATH (72B)"
-      score: "83.1%"
-      vs_baseline: "Llama 3.1 70B 68.0%"
-  homepage: "https://qwenlm.github.io/blog/qwen2.5/"
-  github: "https://github.com/QwenLM/Qwen2.5"
-
+    - name: 'MMLU (5-shot, 72B)'
+      score: 85.3%
+      vs_baseline: 'Llama 3.1 70B 83.1%, Llama 3 70B 82.0%'
+    - name: HumanEval (72B)
+      score: 86.6%
+      vs_baseline: Llama 3.1 70B 80.5%
+    - name: GSM8K (72B)
+      score: 95.8%
+      vs_baseline: Llama 3.1 70B 95.1%
+    - name: MATH (72B)
+      score: 83.1%
+      vs_baseline: Llama 3.1 70B 68.0%
+    - name: Intelligence · AA Intelligence Index
+      score: '34.60'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: Coding · AA Coding Index
+      score: '31.90'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: Coding · SciCode
+      score: 42.8%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: Agentic · Terminal-Bench Hard
+      score: 26.5%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: MMLU-Pro
+      score: 86.2%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: GPQA
+      score: 84.4%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: HLE
+      score: 21.1%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: Speed · Output tok/s
+      score: '128'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+    - name: Price ($/M tokens)
+      score: $1.25 in / $10.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+  homepage: 'https://qwenlm.github.io/blog/qwen2.5/'
+  github: 'https://github.com/QwenLM/Qwen2.5'
+  availability:
+    - open_weights
+  family: Alibaba qwen
+  variants:
+    - id: qwen-turbo
+      label: Qwen2.5 Turbo
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
 public_view:
   plain_english: |
     Alibaba's Qwen 2.5 generation, released September 2024, was the
@@ -54,17 +101,17 @@ public_view:
     Where Llama is a sedan family, Qwen 2.5 is sedan + SUV + truck
     + pickup + scooter, all priced lower.
   applications:
-    - product: "Tongyi Qianwen consumer chat"
-      company: "Alibaba"
+    - product: Tongyi Qianwen consumer chat
+      company: Alibaba
       year_deployed: 2024
-    - product: "Qwen-Coder default in many AI IDEs"
-      company: "Various"
+    - product: Qwen-Coder default in many AI IDEs
+      company: Various
       year_deployed: 2024
-    - product: "Aliyun Bailian enterprise marketplace"
-      company: "Alibaba Cloud"
+    - product: Aliyun Bailian enterprise marketplace
+      company: Alibaba Cloud
       year_deployed: 2024
-    - product: "Most-downloaded model family on Hugging Face by Q4 2024"
-      company: "Open-source ecosystem"
+    - product: Most-downloaded model family on Hugging Face by Q4 2024
+      company: Open-source ecosystem
       year_deployed: 2024
   investment_angle: |
     Qwen 2.5 was the pivot point where Chinese open-weight models
@@ -83,26 +130,23 @@ public_view:
     enterprises with concerns about Chinese-origin models routinely
     benchmark against Qwen 2.5 / 3 to negotiate better pricing from
     OpenAI / Anthropic. The market structural effect is large.
-
 citations:
   - type: paper
     key: alibaba2024qwen25
-    title: "Qwen2.5 Technical Report"
-    authors: ["Qwen Team"]
+    title: Qwen2.5 Technical Report
+    authors:
+      - Qwen Team
     year: 2024
-    venue: "arXiv"
-    arxiv: "2412.15115"
+    venue: arXiv
+    arxiv: '2412.15115'
   - type: release
     key: alibaba2024qwen25release
-    title: "Qwen 2.5 Open Source Release"
+    title: Qwen 2.5 Open Source Release
     year: 2024
-    venue: "Alibaba"
-    url: "https://qwenlm.github.io/blog/qwen2.5/"
+    venue: Alibaba
+    url: 'https://qwenlm.github.io/blog/qwen2.5/'
+graph_featured: true
 ---
-
-## What it is
-
-A multi-size open-weight foundation model family released September 19, 2024 with sizes 0.5B / 1.5B / 3B / 7B / 14B / 32B / 72B. All variants under Apache 2.0 license, trained on 18T tokens (the largest publicly-disclosed pretraining dataset for an open model at the time). Architectural inheritance from Qwen 2 with refinements; the headline gain came from data-quality work and the much larger token count.
 
 ## Specialized variants in the Qwen 2.5 family
 

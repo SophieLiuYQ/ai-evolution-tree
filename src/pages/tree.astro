@@ -3,7 +3,13 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Graph from "../components/Graph.astro";
 
-const nodes = await getCollection("nodes");
+const allNodes = await getCollection("nodes");
+const hasFeatured = allNodes.some((n) => n.data.graph_featured);
+const nodes = allNodes.filter((n) => {
+  if (n.data.graph_hidden) return false;
+  if (hasFeatured) return !!n.data.graph_featured;
+  return true;
+});
 ---
 
 <Base title="AI Evolution Tree · A living tree of ML/LLM/AI advancement">
@@ -18,19 +24,12 @@ const nodes = await getCollection("nodes");
 <style is:global>
   /* === Full-bleed graph page: kill page scroll, only the inner
      orient-pane should scroll. Otherwise the user sees TWO vertical
-     scrollbars (page + pane). ===
-     Strategy:
-     - body/html overflow:hidden (no page scroll)
-     - footer hidden (would push body past 100vh)
-     - main: no padding, no max-width, exact viewport-minus-header height
-     - .graph-fullbleed fills main 100% (no negative-margin trick needed) */
+     scrollbars (page + pane). === */
   body:has(.graph-fullbleed),
   html:has(.graph-fullbleed) {
     overflow: hidden;
     height: 100vh;
   }
-  body:has(.graph-fullbleed) > footer { display: none; }
-
   main:has(> .graph-fullbleed) {
     max-width: none !important;
     padding: 0 !important;
@@ -41,5 +40,27 @@ const nodes = await getCollection("nodes");
     width: 100%;
     height: 100%;
     padding: 0.5rem 0.75rem;
+    /* Page-scoped theme override — "paper" palette for the tree.
+       Everything inside Graph.* consumes the standard CSS variables
+       (`--bg`, `--bg-soft`, `--border`, `--fg`, `--accent`, ...). */
+    --bg: #f7f4ec;          /* canvas */
+    --bg-soft: #fbf9f3;     /* cards / panels */
+    --bg-sunk: #f3efe5;     /* legend panel */
+    --border: rgba(15, 23, 42, 0.10);
+    --border-strong: rgba(15, 23, 42, 0.14);
+    --accent: #1f5f3f;
+    --accent-soft: rgba(31, 95, 63, 0.12);
+    background: #f7f4ec;
+  }
+
+  /* Cream the page bg + nav header so the graph canvas reads as one
+     editorial composition (same treatment as landing). */
+  body:has(.graph-fullbleed) {
+    background: #f7f4ec;
+  }
+  body:has(.graph-fullbleed) > header {
+    background: rgba(247, 244, 236, 0.92) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(8px);
   }
 </style>

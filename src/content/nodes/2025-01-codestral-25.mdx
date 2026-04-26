@@ -1,31 +1,41 @@
 ---
 slug: codestral-25
-title: "Codestral 25.01 — Mistral's Coding Model"
-date: 2025-01-13
+title: Codestral 25.01 — Mistral's Coding Model
+date: '2025-01-13'
 era: agents
-category: [generative, code, nlp, agents]
+category:
+  - generative
+  - code
+  - nlp
+  - agents
+  - multimodal
 relationships:
   - to: mistral-large-2
-    type: fine_tunes
-    note: "Mistral's coding-specialized release on the broader Mistral architecture; covers fill-in-the-middle and 80+ languages"
+    type: builds_on
+    note: >-
+      [fine_tunes] Mistral's coding-specialized release on the broader Mistral
+      architecture; covers fill-in-the-middle and 80+ languages
 authors:
-  - "Mistral AI Team"
-org: "Mistral AI"
+  - Mistral AI Team
+org: Mistral AI
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "22B"
-  architecture: "Decoder-only transformer; coding fine-tune"
+  parameters: 22B
+  architecture: Decoder-only transformer; coding fine-tune
   context_window: 256000
   release_type: open_weights
-  modalities: [text, code]
+  modalities:
+    - text
+    - code
   benchmarks:
-    - name: "HumanEval Python"
-      score: "86.6%"
-    - name: "RepoBench"
-      score: "38.0%"
-  homepage: "https://mistral.ai/news/codestral-25-08"
-
+    - name: HumanEval Python
+      score: 86.6%
+    - name: RepoBench
+      score: 38.0%
+  homepage: 'https://mistral.ai/news/codestral-25-08'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     Mistral's January 2025 coding model — 22B parameters, 256K
@@ -38,14 +48,14 @@ public_view:
     The European answer to GitHub Copilot — same use case (autocomplete
     + chat coding), open-weight, hosted in EU.
   applications:
-    - product: "Le Chat (coding mode)"
-      company: "Mistral AI"
+    - product: Le Chat (coding mode)
+      company: Mistral AI
       year_deployed: 2025
-    - product: "Continue.dev / Tabby self-hosted"
-      company: "Multiple"
+    - product: Continue.dev / Tabby self-hosted
+      company: Multiple
       year_deployed: 2025
-    - product: "Mistral La Plateforme API"
-      company: "Mistral AI"
+    - product: Mistral La Plateforme API
+      company: Mistral AI
       year_deployed: 2025
   investment_angle: |
     Codestral is Mistral's commercial-coding play targeting
@@ -57,14 +67,14 @@ public_view:
     Codestral helped commoditize the "coding-specialized model"
     category that previously belonged to GitHub Copilot and DeepSeek-
     Coder. Now every major lab ships a coding variant.
-
 citations:
   - type: release
     key: mistral2025codestral
-    title: "Codestral 25.01"
+    title: Codestral 25.01
     year: 2025
-    venue: "Mistral AI Blog"
-    url: "https://mistral.ai/news/codestral-2501/"
+    venue: Mistral AI Blog
+    url: 'https://mistral.ai/news/codestral-2501/'
+graph_featured: true
 ---
 
 ## Mistral's code stack

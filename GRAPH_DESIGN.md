@@ -23,8 +23,7 @@ src/
 │  └─ graph/
 │     ├─ LegendPanel.astro        ← left aside (title, controls, legend)
 │     ├─ OrientPane.astro         ← one SVG pane (h or v)
-│     ├─ Card.astro               ← per-node card group + zoom/pin buttons
-│     └─ ZoomModal.astro          ← top-layer modal markup (empty shell)
+│     └─ Card.astro               ← per-node card group + pin button
 ├─ lib/graph/                     ← BUILD-time TypeScript (Astro frontmatter)
 │  ├─ types.ts                    ← Placed, Edge, Layout, EdgeStagger
 │  ├─ constants.ts                ← colors, edgeStyle, sizes, hidden types
@@ -36,7 +35,6 @@ src/
    ├─ state.ts                    ← graphData parse + adjacency + pin state
    ├─ dom.ts                      ← buildPath, buildLabel, getActivePane
    ├─ hover.ts                    ← renderHover, clearHover, attachInteractions
-   ├─ zoom.ts                     ← 1-hop layout + route + modal render
    ├─ orient.ts                   ← h/v toggle + storage
    └─ main.ts                     ← entry point (import in Graph.astro <script>)
 ```
@@ -47,9 +45,8 @@ Quick rules:
 - Anything that runs after the page loads → `scripts/graph/`
 - `Graph.astro` is just a wiring layer; resist the urge to grow it back.
 
-If you change routing, update BOTH `lib/graph/routing.ts` AND
-`scripts/graph/zoom.ts` (the zoom modal ports the same algorithm
-client-side — see §VII duplication note).
+If you change routing, update `lib/graph/routing.ts` (build-time) and
+`scripts/graph/route.ts` (client-time hover/pin routing) together.
 
 ---
 
@@ -146,6 +143,11 @@ h-orient). The sort selector controls the SECONDARY axis:
 | byFamily | year rows/cols | model-family lanes (evolution swimlanes) |
 
 **Removed `byType` (2026-04-20):** the single-bucket `modelType(cats, slug)` classifier was fundamentally lossy — a robotics VLA is *both* Agent AND Multimodal AND Generative, and forcing one bucket hid the overlap. Type is now rendered as *overlapping* tag pills in the node detail's `ModelSpec` section, not as a graph sort axis.
+
+**Legend filter counts (2026-04-25):** the left LegendPanel shows per-bucket
+counts for **Capabilities** (multi-tag; a node can increment multiple tags)
+and **License** (open vs closed), matching the existing Company counts. This
+helps users understand dataset composition at a glance before filtering.
 
 **Removed `byOrg` and `byLicense` (2026-04-21):** the LegendPanel filter
 rows (Company, License) cover the same need — pick the subset you care
@@ -610,7 +612,7 @@ JavaScript reads embedded JSON edge data and dynamically creates SVG
 elements ONLY for the hovered node’s **1-hop neighborhood** (direct
 parents + direct children). To keep hubs readable, the hover renderer
 caps the display to **at most 6 incident edges**, prioritizing:
-`builds_on` → `open_alt_to` → `competes_with` (“alternative”).
+`builds_on` → `competes_with` (“alternative”).
 On mouseleave, they’re removed.
 
 ### Default state: ZERO edges visible
@@ -622,7 +624,16 @@ a clean Civ-tech-tree of cards and is invited to hover.
 
 When hovering node N, the JS renders edges only for N's ancestor lineage
 (direct parents + direct children). The renderer picks only incident
-edges and caps to 6 so even high-degree hubs stay legible.
+edges and caps to 6 so even high-degree hubs stay legible. It also
+dedupes symmetric `alternative` relationships (A↔B) and keeps only one
+edge per node-pair to prevent perfect overlap.
+
+Routing rule (hover + pin):
+- Edges are drawn as **freeform shortest paths**: straight segments
+  between card rectangles, with a tiny quadratic bulge only when needed
+  to separate near-parallel edges.
+- Ports are spread along the card face so arrowheads don’t stack.
+- Labels must avoid cards, other labels, and *any edge segment*.
 
 This is the load-bearing UX choice: the graph **acts as a study tool,
 not a wall map**. The user explores by hover; the visual focus is one
@@ -631,19 +642,26 @@ lineage at a time.
 ### Embedded JSON contract
 
 At the bottom of the figure, an inline `<script type="application/json">`
-holds the precomputed edge geometry:
+holds the precomputed node positions + edges for every (orient × sort)
+variant. Note: hover/pin edges are routed client-side from `nodePos`
+so the path geometry stays short and local.
 
 ```json
 {
   "edgeStyle": { "builds_on": { "color": "#2563EB", "label": "builds on" }, ... },
-  "h": [ { "v": "backpropagation", "w": "alexnet", "type": "builds_on",
-           "d": "M 564.0 91.5 C ...", "midX": 614, "midY": 97.75 }, ... ],
-  "v": [ ... ]
+  "layouts": {
+    "v": {
+      "chronological": {
+        "nodePos": { "gpt-4": { "x": 520, "y": 840, "w": 220, "h": 64 }, ... },
+        "edges": [ { "v": "transformer", "w": "gpt-3", "type": "builds_on", ... }, ... ]
+      }
+    }
+  }
 }
 ```
 
-Both panes' edges + the type-style map. JS picks the right pane's array
-based on `localStorage.getItem("ai-tree:orient")`.
+JS picks the right (orient × sort) layout slice based on the UI state
+and `localStorage` preferences.
 
 Size: ~30 KB JSON for 96 edges × 2 panes. Trivial vs the 300 KB inline
 SVG it replaces.
@@ -653,7 +671,7 @@ SVG it replaces.
 ```typescript
 const NS = "http://www.w3.org/2000/svg";
 const path = document.createElementNS(NS, "path");
-path.setAttribute("d", e.d);
+path.setAttribute("d", route.d); // computed from nodePos at hover time
 path.setAttribute("stroke", style.color);
 path.setAttribute("marker-end", `url(#arrow-${orient}-${e.type})`);
 edgesGroup.appendChild(path);
@@ -697,6 +715,10 @@ Stick with V1/V2 when:
 V3 trades static-friendliness for visual cleanliness. For a
 JS-required interactive viewer (which this is), V3 wins on every axis
 that matters.
+
+Note (2026-04-25): hover dims non-neighborhood nodes lightly
+(~50% opacity + mild grayscale) so the user can keep spatial context
+without the “everything disappears” effect of heavy dimming.
 
 ---
 
@@ -995,16 +1017,12 @@ forward in time the same way the field actually evolved.
 Acceptable cost — power users can use the timeline view (`/timeline`)
 which shows everything chronologically.
 
-### Per-card zoom modal — 1-hop neighborhood at native size
+### Per-card pin — persistent 1-hop highlight
 
-Hover reveals **two stacked pill buttons just outside each card's
-right edge** — `zoom` (top) and `highlight this path` (bottom).
+Hover reveals an external pill button just outside each card's right
+edge: `highlight this path`.
 
-`zoom`: opens the 1-hop modal at z-index 9999 (focused card + direct
-parents + direct children), repacked tight and rendered at native
-pixel size (never scaled).
-
-`highlight this path`: pins the ancestor lineage so it stays
+It pins the ancestor lineage so it stays
 highlighted across `mouseleave`. The user can then **scroll up/down
 or left/right to follow the full path** without losing the highlight.
 Click again to unpin. Switching orientation also unpins (positions
@@ -1016,23 +1034,20 @@ pinned slug instead of wiping when set; `renderHover()` is unchanged
 (transient hovers temporarily show another card's lineage, then
 mouseleave restores the pinned one).
 
-Both buttons sit OUTSIDE the card (left-aligned at `p.width + 6`)
-because:
+The button sits OUTSIDE the card (left-aligned at `p.width + 6`) because:
 - A bottom-right inside-card icon competes visually with the score
   badge in the opposite corner; eyes can't tell which corner is "the
   action."
-- An external pill with literal text ("zoom" / "highlight this
-  path") is unambiguous — no icon-recognition cost, no doubt about
-  what the click does.
-- Stacking vertically keeps the affordance grouped and consistent
-  across button widths.
+- An external pill with literal text ("highlight this path") is
+  unambiguous — no icon-recognition cost, no doubt about what the
+  click does.
 
 Because the buttons are outside card geometry, an invisible
 `hover-bay` rect (`p.width + 150` wide, `pointer-events="all"`,
 `fill="transparent"`) is rendered first inside `<g class="node">`. It
 extends the parent `<a class="node-link">` link's hit area into the
-right gap so the mouse can travel from card to either button without
-crossing empty space (which would `mouseleave` the link → hide them
+right gap so the mouse can travel from card to the button without
+crossing empty space (which would `mouseleave` the link → hide it
 mid-travel).
 
 ### Search box — type a model name, jump to its card
@@ -1074,6 +1089,15 @@ This is intentional: the graph is the primary exploration surface; the
 detail page is the deep-dive surface. The inspector reduces context
 switching when scanning multiple models in a year band.
 
+**Inspector overview block contract (2026-04-25):**
+- Always show **Released** (from `date`).
+- Show **Available as** from `model_spec.availability` (fallback:
+  `model_spec.release_type`; otherwise `—`).
+- Show **Modality input/output** from `model_spec.modalities_in/out`
+  (fallback: `model_spec.modalities`; otherwise `—`).
+- Show **Capabilities** from `category[]` (capability tags that also
+  drive the left-side filter).
+
 ### No minimap overlay (intentional)
 
 We intentionally do **not** render a minimap overlay on `/tree/` by
@@ -1081,7 +1105,7 @@ default. With a paper-like background and dense year bands, the minimap
 adds more visual clutter than information. If reintroduced, it must be
 behind an explicit toggle and must not compete with the inspector panel.
 
-### Detail-page lineage view (server-rendered zoom)
+### Detail-page lineage view (server-rendered lineage panel)
 
 The individual node page at `/node/<slug>/` embeds a server-rendered
 version of the same 1-hop view — `components/LineageZoom.astro`. Why
@@ -1123,16 +1147,16 @@ the same primitive can power both 1-hop view and any future N-hop view
 without changing the layout primitives.
 
 **3. Native pixel size, not scaled.** Cards stay 220×64 (identical to
-the main graph). The modal's SVG `width`/`height` are set to the
-layout bbox; no `preserveAspectRatio`. The svg-wrap container has
-`overflow: auto` and centers the SVG via flexbox when it's smaller
-than the panel. If a node has lots of children + parents and the
-subgraph exceeds panel size, it scrolls — but text never shrinks.
+the main graph). The lineage SVG uses its natural layout bbox (no
+`preserveAspectRatio`). The wrapper has `overflow: auto` and centers
+the SVG via flexbox when it's smaller than the panel. If a node has
+lots of children + parents and the subgraph exceeds panel size, it
+scrolls — but text never shrinks.
 
-Edges are routed using the same V3.1 single-strategy direct cubic
-Bezier (`zRoute` is a JS port of the frontmatter `directPath`), with
-the same V3.3 spatial-order stagger to prevent crossings (sort by
-source perp position before assigning `tgtIdx`; mirror on source side).
+Edges are routed as the shortest-possible straight segment between card
+rectangles (center-to-center ray, clipped to each rectangle boundary).
+This keeps the 1-hop view readable and prevents the “giant parabola”
+arcs that cut through unrelated nodes.
 
 Why this set of choices:
 - 1-hop matches the cognitive question "what does this node sit
@@ -1145,30 +1169,23 @@ Why this set of choices:
   Scrolling 1-hop is rare in practice (<10 nodes typical) and
   preferable to shrinking text past readability.
 
-Implementation rules (all preserve §IX invariants):
-- Reuses `incomingByOrient` + `outgoingByOrient` built once at
-  init for both hover and zoom.
-- Clones existing `<g class="node">` from the active pane and rewrites
-  `transform` to the compact coords. Org colors, fonts, score badges
-  all stay identical to the main view.
-- The zoom button is stripped from clones to prevent nested zoom.
-- Edges and labels rebuilt fresh; arrow markers scoped to
-  `zoom-arrow-*` IDs to not collide with the main SVG's markers.
-- Focused (clicked) card gets a drop-shadow + bolder stroke so it stays
-  visually anchored after the dim background appears.
-- Close: × button, click backdrop, or Escape.
-- Title shows: `<focused title> · N parents · M children`.
+Implementation rules:
+- Pure SSR (`components/LineageZoom.astro`) — no dependency on the graph
+  page’s client runtime.
+- Reuses the same card styling so org colors, fonts, and badges match
+  the main graph.
+- Suppresses the graph-only pin affordance inside the lineage panel
+  (it doesn’t wire up on detail pages).
 
 Button mechanics: `pointer-events: none` by default so it doesn't
 intercept the parent `<a>` link's click, then `pointer-events: all`
 when the parent card is hovered. Click handler calls `preventDefault()`
 + `stopPropagation()` so the underlying SVG `<a>` doesn't navigate.
 
-Note on duplication: `zRoute`, `zPerpOffset`, and `zBezierAt` are
-client-side ports of the frontmatter routing functions. If the main
-routing strategy changes (e.g. V4 routing), update both. Duplication is
-the price of running the layout in the browser without bundling
-frontmatter helpers.
+Note on routing: hover + pin intentionally compute edge geometry in
+the browser (they don’t use precomputed Beziers). This lets us optimize
+for “local clarity” (short edges + non-overlapping labels) without
+changing the global layout export format.
 
 ---
 
@@ -1178,7 +1195,7 @@ frontmatter helpers.
 
 | Channel | What it encodes | Visual treatment |
 |---|---|---|
-| Edge color | Relationship type (builds_on / competes_with / open_alt_to) | Stroke color (solid lines) |
+| Edge color | Relationship type (builds_on / competes_with) | Stroke color (solid lines) |
 | Card stripe | Source organization (org) | 6px left stripe on card |
 | Background band | Year of release | Ultra-light neutral stripes + one “frontier year” highlight band |
 
@@ -1192,15 +1209,12 @@ visible alternating stripes) and use ONE softly tinted “frontier” band
 (latest full year: max year strictly less than the current year) so the
 user’s eye has an anchor near the present.
 
-### Three types, three primary hues
+### Two types, two primary hues
 
-**Edge types simplified to 3** (2026-04-24): the project shrank from
-9 types (builds_on / scales / fine_tunes / distills / applies /
-replaces / surpasses / competes_with / open_alt_to) to **3**
-(`builds_on` / `competes_with` / `open_alt_to`). Reason: edge type
-carries narrative load — readers can hold three meanings, not nine.
-Legacy sub-distinctions are preserved as `[tag]` prefixes inside
-relationship `note` for richer detail pages, never as graph color.
+**Edge types simplified to 2** (2026-04-25): the graph treats “open
+alternative” as just a subtype of “alternative”, so only two meanings
+are encoded by edge color:
+`builds_on` and `competes_with` (label: “alternative”).
 
 **Current palette** (v0.20):
 
@@ -1208,18 +1222,14 @@ relationship `note` for richer detail pages, never as graph color.
 |---|---|---|---|---|
 | `builds_on` | ~159 | Royal blue | `#2563EB` | 220° |
 | `competes_with` | ~142 | Crimson red | `#DC2626` | 0° |
-| `open_alt_to` | ~55 | Forest green | `#16A34A` | 140° |
-
-Adjacent-pair gaps: blue↔red 140°, blue↔green 80°, red↔green 140°.
-All ≥80°, well above the ~60° threshold where the eye stops fusing
-hues. With only 3 types we no longer need filler hues, lightness
-differentiation, or dash patterns — solid lines + bold hue is enough.
+With only 2 types we don't need dash patterns — solid lines + bold hue
+is enough.
 
 **Generalize the rule**:
 1. Count edge type frequency.
-2. If 3 or fewer types: assign primaries on the color-wheel triangle
-   (0° / 120° / 240°, rotated to taste). Done.
-3. If more types: ask whether the additional types are **carrying
+2. If 3 or fewer types: assign high-contrast primaries (triangle on the
+   color wheel). Done.
+3. If more types: ask whether additional types are **carrying
    their narrative weight** before adding hues. v0.18→v0.20 history
    below — we tried 9 / 6 / 4 types and found 3 most readable.
 

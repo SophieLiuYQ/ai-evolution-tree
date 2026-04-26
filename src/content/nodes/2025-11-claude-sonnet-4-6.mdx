@@ -1,35 +1,83 @@
 ---
 slug: claude-sonnet-4-6
-title: "Claude Sonnet 4.6 — The Production Workhorse Update"
-date: 2025-11-18
+title: Claude Sonnet 4.6 — The Production Workhorse Update
+date: '2025-11-18'
 era: agents
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-4
-    type: scales
-    note: "Mid-cycle Sonnet refresh; expanded context, faster tool use, higher SWE-bench"
+    type: builds_on
+    note: >-
+      [scales] Mid-cycle Sonnet refresh; expanded context, faster tool use,
+      higher SWE-bench
+  - to: gpt-5
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + extended thinking + improved tool routing"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + extended thinking + improved tool routing
   context_window: 200000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://www.anthropic.com/news/claude-sonnet-4-6'
+  availability:
+    - api
+    - product
+    - enterprise
   benchmarks:
-    - name: "SWE-bench Verified"
-      score: "~78%"
-      vs_baseline: "Sonnet 4 73.6%, Opus 4 79.4%"
-    - name: "TerminalBench"
-      score: "~42%"
-      vs_baseline: "Sonnet 4 35.5%"
-    - name: "MMLU"
-      score: "~89%"
-  homepage: "https://www.anthropic.com/news/claude-sonnet-4-6"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '57.28'
+      vs_baseline: 'Rank #2 of 86 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Coding · SciCode
+      score: 54.5%
+      vs_baseline: 'Rank #2 of 85 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: Agentic · Terminal-Bench Hard
+      score: 51.5%
+      vs_baseline: 'Rank #2 of 83 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/terminalbench-hard'
+    - name: Coding · AA Coding Index
+      score: '50.90'
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+    - name: GPQA
+      score: 87.5% (79.7–87.5%)
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+    - name: HLE
+      score: 30.0% (10.8–30.0%)
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+    - name: Speed · Output tok/s
+      score: '66'
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+  family: Anthropic claude-sonnet
+  variants:
+    - id: claude-sonnet-4-6-adaptive
+      label: 'Claude Sonnet 4.6 (Adaptive Reasoning, Max Effort)'
+      status: active
+    - id: claude-sonnet-4-6-non-reasoning-low-effort
+      label: 'Claude Sonnet 4.6 (Non-reasoning, Low Effort)'
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Anthropic's mid-cycle November 2025 Sonnet refresh — a
@@ -43,14 +91,14 @@ public_view:
     better. Most users never noticed the version bump but their
     sessions just felt smarter.
   applications:
-    - product: "Cursor / Windsurf / Cline (default coding model)"
-      company: "Various"
+    - product: Cursor / Windsurf / Cline (default coding model)
+      company: Various
       year_deployed: 2025
-    - product: "Claude Code (default for most tasks)"
-      company: "Anthropic"
+    - product: Claude Code (default for most tasks)
+      company: Anthropic
       year_deployed: 2025
-    - product: "GitHub Copilot Workspace"
-      company: "GitHub"
+    - product: GitHub Copilot Workspace
+      company: GitHub
       year_deployed: 2025
   investment_angle: |
     Sonnet 4.6 is the model behind most enterprise AI coding
@@ -69,19 +117,15 @@ public_view:
     appears in this project's CLAUDE knowledge prompt as
     `claude-sonnet-4-6` — which is the lineage marker for
     the workhorse tier of the family.
-
 citations:
   - type: release
     key: anthropic2025sonnet46
-    title: "Claude Sonnet 4.6"
+    title: Claude Sonnet 4.6
     year: 2025
-    venue: "Anthropic"
-    url: "https://www.anthropic.com/news/claude-sonnet-4-6"
+    venue: Anthropic
+    url: 'https://www.anthropic.com/news/claude-sonnet-4-6'
+graph_featured: true
 ---
-
-## What it is
-
-Mid-cycle update to Claude Sonnet 4 (released originally May 2025), shipped November 2025 with model ID `claude-sonnet-4-6`. Capability gains primarily on agentic coding (SWE-bench Verified +5pts, TerminalBench +6pts), with smaller gains on general benchmarks. Same pricing as Sonnet 4.
 
 ## The 8-week cadence pattern
 

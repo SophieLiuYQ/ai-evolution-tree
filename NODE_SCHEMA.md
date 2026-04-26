@@ -119,6 +119,24 @@ Free-form tags. Common ones: `nlp`, `cv`, `rl`, `generative`, `architecture`, `t
 ### `parents` (array of slugs, required, may be empty)
 Slugs of other nodes that this work **directly builds on**. Not citations — *intellectual ancestors*. Guideline: max 3–5. If you find yourself listing 8 parents, you are conflating "cites" with "builds on."
 
+### `relationships` (array, optional)
+Edges from this node to other nodes in the tree graph. Each entry:
+
+```yaml
+relationships:
+  - to: gpt-4
+    type: builds_on
+    note: "Same-series successor; larger training + new modalities"
+```
+
+Allowed `type` values (kept intentionally small):
+- `builds_on` — direct lineage / successor / technical inheritance
+- `competes_with` — same-surface competitors / direct comparisons
+- `open_alt_to` — a more-open, self-hostable alternative to a more-closed peer
+
+Use `note` to preserve nuance (e.g. scale jumps, distillation, fine-tuning) when the
+underlying relationship semantics don’t warrant a separate edge type.
+
 Empty array `[]` is valid for root nodes (e.g., `perceptron`).
 
 ### `authors` (array of strings, required)
@@ -147,6 +165,57 @@ Self-assigned scores are a starting point, not final. Reviewers adjust.
 | `active` | Current state of the art or actively deployed |
 | `superseded` | Replaced by later work; historically important, no longer preferred |
 | `archived` | Work that was influential but is now mostly a curiosity |
+
+### `model_spec` (object, optional)
+Technical spec + benchmark block shown on the node page.
+
+Key fields (all optional unless noted):
+
+- `model_spec.parameters` — freeform (e.g. `"671B total / 37B active MoE"`).
+- `model_spec.architecture` — freeform summary (MoE, routing, etc.).
+- `model_spec.context_window` — integer tokens.
+- `model_spec.release_type` — `paper | api | open_weights | demo | product`.
+- `model_spec.modalities` — array of strings (e.g. `["text","vision"]`). If
+  you don’t specify input/output separately, the UI treats this as both.
+- `model_spec.modalities_in` / `model_spec.modalities_out` — optional arrays
+  of strings for models where I/O differ (e.g. STT, TTS, text-to-image).
+- `model_spec.benchmarks[]` — array of `{ name, score, vs_baseline?, source_url? }`.
+- `model_spec.homepage` / `model_spec.github` — official links.
+- `model_spec.aa_url` — Artificial Analysis model page (optional).
+- `model_spec.hf_url` — Hugging Face model page (optional).
+
+#### `model_spec.variants[]` (optional)
+Use variants to represent **versioned/tiered surfaces** inside a single model
+family without adding separate graph nodes (e.g. GPT‑5.2 Instant/Thinking/Pro).
+
+Each variant:
+
+- `id` (string, required) — stable key used by the UI switcher.
+- `label` (string, required) — human-facing name.
+- `status` (optional) — `preview | active | legacy | retired`.
+- `released_at` / `retired_at` (optional) — ISO dates.
+- `api_model` (optional) — canonical API model id (if applicable).
+- `benchmarks[]` (optional) — per-variant benchmark set; if omitted the UI
+  falls back to the parent `model_spec.benchmarks`.
+
+#### `model_spec.family` (optional)
+String used by `/tree/` “By Family” layout to place nodes into stable
+evolution lanes (e.g. `"OpenAI GPT"`, `"Anthropic Claude"`). If omitted,
+the tree falls back to a heuristic based on slug/org.
+
+### `graph_hidden` (boolean, optional)
+If true, the node still has a detail page at `/node/{slug}/` but is
+excluded from the `/tree/` graph. Used to collapse many fine-grained
+SKU-level model variants into one “series” node while keeping the
+variants accessible.
+
+### `graph_featured` (boolean, optional)
+If present on any node, `/tree/` and `/timeline/` switch into a
+“featured-only” view: they render only nodes where `graph_featured: true`
+(and always exclude `graph_hidden: true`). Intended for extreme
+compaction, e.g. one representative model-line per company per year
+(distinct names like Sonnet vs Haiku remain separate); the rest remains
+accessible via company pages and direct node URLs.
 
 ### `public_view` (object, required)
 See sub-fields above. All sub-fields are required except `market_size_usd`. Keep each ≤ the word limits below — Public View is meant to be scannable.
@@ -185,6 +254,28 @@ Components available in MDX:
 - `<Citation bibkey="vaswani2017attention" />` — inline citation linking back to `citations` array
 
 (More components added over time; see `src/components/mdx/` for the registry.)
+
+## Company pages (content collection)
+
+In addition to `nodes`, the site also has a `companies` content collection used
+to generate `/company/{slug}/` pages.
+
+File naming:
+
+```
+src/content/companies/{slug}.mdx
+```
+
+Frontmatter (see `src/content.config.ts` for the enforced schema):
+
+- `slug` (required) — kebab-case identifier used in the URL.
+- `name` (required) — display name.
+- `orgs[]` (required) — which `org` values from node frontmatter belong to this company view.
+- `homepage` (optional) — official site.
+- `summary` / `summary_zh` — short description shown on listing pages.
+- `catalog[]` (optional) — manual list of official model ids (used to track what’s missing from the tree).
+- `catalog[].node_slug` (optional) — link a catalog item to an existing tree node.
+- `sources[]` (optional) — URLs for the company page.
 
 ## Validation
 

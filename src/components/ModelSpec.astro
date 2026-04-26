@@ -19,6 +19,20 @@ interface Spec {
   training_tokens?: string;
   training_compute?: string;
   release_type?: string;
+  variants?: {
+    id: string;
+    label: string;
+    status?: "preview" | "active" | "legacy" | "retired";
+    released_at?: Date;
+    retired_at?: Date;
+    api_model?: string;
+    benchmarks?: {
+      name: string;
+      score: string;
+      vs_baseline?: string;
+      source_url?: string;
+    }[];
+  }[];
   benchmarks?: {
     name: string;
     score: string;
@@ -39,6 +53,16 @@ interface Props {
   category?: readonly string[];
 }
 const { spec, org, modelTitle, category } = Astro.props;
+
+const benchVariants = (() => {
+  const base = spec.benchmarks ?? [];
+  const vars = spec.variants ?? [];
+  return [
+    { id: "auto", label: "Auto (family)", benchmarks: base },
+    ...vars.map((v) => ({ id: v.id, label: v.label, benchmarks: v.benchmarks ?? base })),
+  ];
+})();
+const hasBenchmarks = benchVariants.some((v) => v.benchmarks && v.benchmarks.length > 0);
 
 // Human-readable label for each raw category tag. Order of the CATEGORY_ORDER
 // array below is the display priority: "headline" type tags (the ones a
@@ -70,7 +94,7 @@ const CATEGORY_ORDER = [
 
 import { stroke as orgStrokeColor } from "../lib/graph/constants";
 import { normalizeCategories } from "../lib/categories";
-import { ORG_HOMEPAGE } from "../lib/org-links";
+import { LB_HOME, BENCHMARK_PROVIDER, benchSource, type LBProvider } from "../lib/benchmark-sources";
 
 const typeTags = normalizeCategories(category ?? []).slice().sort(
   (a, b) =>
@@ -87,9 +111,11 @@ const markerColor = org ? orgStrokeColor(org) : "#2563eb";
 
 const fmtCtx = (n?: number) => {
   if (!n) return null;
-  if (n >= 1_000_000) return `${n / 1_000_000}M tokens`;
-  if (n >= 1_000) return `${n / 1_000}k tokens`;
-  return `${n} tokens`;
+  // Round to integer so 32_768 → "33k", not "32.768k". Compact "k"/"M"
+  // suffix (no "tokens" or "ctx" — the row is already labeled Context).
+  if (n >= 1_000_000) return `${Math.round(n / 1_000_000)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
+  return `${n}`;
 };
 
 // ============== Value-driven IMPLICATIONS ==============
@@ -451,108 +477,15 @@ const FIELD_HELP: Record<
   },
 };
 
-// ============== Benchmark → leaderboard source ==============
-// Default citation source for each benchmark. Constrained to the three
-// approved authorities: artificialanalysis.ai (frontier evals),
-// huggingface.co (open-weight evals), llm-stats.com (cross-model
-// comparison). A node's per-benchmark `source_url` overrides this.
-
-type LBProvider =
-  | "artificialanalysis"
-  | "huggingface"
-  | "llm-stats"
-  | "arena"
-  | "openrouter";
-const LB_HOME: Record<LBProvider, { label: string; url: string }> = {
-  "artificialanalysis": { label: "Artificial Analysis", url: "https://artificialanalysis.ai/" },
-  "huggingface": { label: "Hugging Face", url: "https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard" },
-  "llm-stats": { label: "LLM Stats", url: "https://llm-stats.com/" },
-  "arena": { label: "LMArena", url: "https://arena.ai/about" },
-  "openrouter": { label: "OpenRouter Rankings", url: "https://openrouter.ai/rankings" },
-};
-
-const BENCHMARK_PROVIDER: Record<string, LBProvider> = {
-  // Frontier reasoning + generic LLM (artificialanalysis)
-  "MMLU": "artificialanalysis",
-  "MMLU-Pro": "artificialanalysis",
-  "GPQA": "artificialanalysis",
-  "GPQA Diamond": "artificialanalysis",
-  "AIME": "artificialanalysis",
-  "AIME 2024": "artificialanalysis",
-  "AIME 2025": "artificialanalysis",
-  "Humanity's Last Exam": "artificialanalysis",
-  "BrowseComp": "artificialanalysis",
-  "Artificial Analysis Intelligence": "artificialanalysis",
-  // Coding (artificialanalysis tracks SWE-bench Verified)
-  "SWE-bench": "artificialanalysis",
-  "SWE-bench Verified": "artificialanalysis",
-  "HumanEval": "huggingface",
-  "Terminal-Bench": "artificialanalysis",
-  "LiveCodeBench v5": "artificialanalysis",
-  "RepoBench": "huggingface",
-  "Codeforces": "artificialanalysis",
-  // Math
-  "MATH": "huggingface",
-  "GSM8K": "huggingface",
-  // Multimodal (artificialanalysis)
-  "MathVista": "artificialanalysis",
-  "MMMU": "artificialanalysis",
-  "MMMU-Pro": "artificialanalysis",
-  // Image / video (artificialanalysis covers image + video arenas)
-  "VBench": "artificialanalysis",
-  // Cross-comparison — Arena is the canonical source for human-pref
-  // Elo rankings; OpenRouter exposes traffic-weighted live rankings.
-  "ChatBot Arena": "arena",
-  "ChatBot Arena Elo": "arena",
-  "LMArena": "arena",
-  "Arena Elo": "arena",
-  "OpenRouter Rankings": "openrouter",
-  "Traffic share": "openrouter",
-  "ARC-AGI": "artificialanalysis",
-  // Hallucination (artificialanalysis tracks FACTS Grounding)
-  "FACTS Grounding": "artificialanalysis",
-  "Hallucination rate (FACTS Grounding)": "artificialanalysis",
-  // Tool use
-  "BFL-v3 tool use": "artificialanalysis",
-  "BFCL-v3 tool use": "artificialanalysis",
-};
-
-// Resolve a citation URL for a benchmark row. Priority:
-//   1. explicit source_url on the row
-//   2. exact-match provider in BENCHMARK_PROVIDER
-//   3. prefix-match provider (e.g., "AIME 2025" → "AIME")
-//   4. default to artificialanalysis.ai homepage
-function benchSource(b: { name: string; source_url?: string }): {
-  label: string;
-  url: string;
-} {
-  if (b.source_url) {
-    // Detect which provider hosts the URL for the label
-    if (/llm-stats\.com/.test(b.source_url)) return { label: "LLM Stats", url: b.source_url };
-    if (/huggingface\.co/.test(b.source_url)) return { label: "Hugging Face", url: b.source_url };
-    if (/artificialanalysis\.ai/.test(b.source_url))
-      return { label: "Artificial Analysis", url: b.source_url };
-    if (/arena\.ai|lmarena\.ai/.test(b.source_url))
-      return { label: "LMArena", url: b.source_url };
-    if (/openrouter\.ai/.test(b.source_url))
-      return { label: "OpenRouter Rankings", url: b.source_url };
-    return { label: "Source", url: b.source_url };
-  }
-  let provider: LBProvider | undefined = BENCHMARK_PROVIDER[b.name];
-  if (!provider) {
-    for (const k of Object.keys(BENCHMARK_PROVIDER)) {
-      if (b.name.startsWith(k)) {
-        provider = BENCHMARK_PROVIDER[k];
-        break;
-      }
-    }
-  }
-  return LB_HOME[provider ?? "artificialanalysis"];
-}
+// Benchmark → leaderboard source routing lives in src/lib/benchmark-sources.ts
+// (5 approved authorities: artificialanalysis · huggingface · llm-stats ·
+// arena · openrouter). Imports at top of frontmatter.
 
 // Org → official homepage fallback lives in src/lib/org-links.ts so the
 // node header and ModelSpec stay in sync.
-const officialUrl = spec.homepage ?? (org ? ORG_HOMEPAGE[org] : undefined);
+// Only show "Official site ↗" if the model has its OWN page — don't
+// fallback to the org's generic homepage. See note in src/pages/node/[slug].astro.
+const officialUrl = spec.homepage;
 
 // ============== Benchmark parsing (Direction H scale-bar rendering) ==============
 // Each benchmark row in the frontmatter stores `score` + freeform `vs_baseline`.
@@ -562,6 +495,8 @@ const officialUrl = spec.homepage ?? (org ? ORG_HOMEPAGE[org] : undefined);
 
 type ParsedBench = {
   current: number | null;
+  currentMin: number | null;
+  currentMax: number | null;
   baseline: number | null;
   baselineLabel: string | null;
 };
@@ -571,6 +506,11 @@ function parseBench(scoreStr: string, baselineStr?: string): ParsedBench {
   // prices, Elo) disables the scale bar.
   const scoreMatch = scoreStr.match(/(\d+(?:\.\d+)?)\s*%/);
   const current = scoreMatch ? parseFloat(scoreMatch[1]) : null;
+  // Optional range like "51–56%" or "(51.0–56.1%)" anywhere in the score.
+  // We render a filled span on the bar for min..max.
+  const rangeMatch = scoreStr.match(/(\d+(?:\.\d+)?)\s*[–-]\s*(\d+(?:\.\d+)?)\s*%/);
+  const currentMin = rangeMatch ? parseFloat(rangeMatch[1]) : null;
+  const currentMax = rangeMatch ? parseFloat(rangeMatch[2]) : null;
 
   let baseline: number | null = null;
   let baselineLabel: string | null = null;
@@ -586,7 +526,7 @@ function parseBench(scoreStr: string, baselineStr?: string): ParsedBench {
       baseline = parseFloat(m[2]);
     }
   }
-  return { current, baseline, baselineLabel };
+  return { current, currentMin, currentMax, baseline, baselineLabel };
 }
 
 // ============== Scale-bar references ==============
@@ -1006,22 +946,41 @@ type Row = {
   implicationZh: string;
 };
 
+// Recognise placeholder / undisclosed strings so we display "N/A"
+// instead of carrying the long auto-stamped sentinel text into the
+// detail panel. A field whose only value is "Placeholder scaffold..."
+// has effectively no information to convey.
+const SPEC_PLACEHOLDERS = new Set([
+  "undisclosed",
+  "Undisclosed",
+  "N/A",
+  "—",
+  "Placeholder scaffold — fill with official specs and benchmark snapshots.",
+  "Series node (collapsed variants).",
+]);
+const isSpecPlaceholder = (s?: string): boolean => {
+  if (!s) return true;
+  const t = String(s).trim();
+  return !t || SPEC_PLACEHOLDERS.has(t);
+};
+const naOrSpec = (s?: string): string => (isSpecPlaceholder(s) ? "N/A" : String(s));
+
 const rows: Row[] = [];
 if (spec.parameters)
   rows.push({
     key: "parameters",
     label: "Parameters",
-    value: spec.parameters,
-    implication: paramImpl(spec.parameters),
-    implicationZh: paramImplZh(spec.parameters),
+    value: naOrSpec(spec.parameters),
+    implication: isSpecPlaceholder(spec.parameters) ? "" : paramImpl(spec.parameters),
+    implicationZh: isSpecPlaceholder(spec.parameters) ? "" : paramImplZh(spec.parameters),
   });
 if (spec.architecture)
   rows.push({
     key: "architecture",
     label: "Architecture",
-    value: spec.architecture,
-    implication: archImpl(spec.architecture),
-    implicationZh: archImplZh(spec.architecture),
+    value: naOrSpec(spec.architecture),
+    implication: isSpecPlaceholder(spec.architecture) ? "" : archImpl(spec.architecture),
+    implicationZh: isSpecPlaceholder(spec.architecture) ? "" : archImplZh(spec.architecture),
   });
 if (spec.context_window)
   rows.push({
@@ -1350,8 +1309,8 @@ if (spec.release_type)
   }
 
   {
-    spec.benchmarks && spec.benchmarks.length > 0 && (
-      <div>
+    hasBenchmarks && (
+      <div data-variant-scope>
         <div class="mb-2 flex items-center gap-1.5">
           <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)]" data-i18n="detail.benchmarks">
             Benchmarks
@@ -1391,81 +1350,103 @@ if (spec.release_type)
             </span>
           )}
         </div>
+        {benchVariants.length > 1 && (
+          <div class="bench-variant-note">
+            Showing:
+            <span class="bench-variant-chip" data-variant-meta="auto">Auto (family)</span>
+            {benchVariants
+              .filter((v) => v.id !== "auto")
+              .map((v) => (
+                <span class="bench-variant-chip" data-variant-meta={v.id} hidden>{v.label}</span>
+              ))}
+          </div>
+        )}
         {/* Direction H prev→now scale-bar rendering. Each benchmark row shows
             a baseline → current progression on a 0-100 axis with a colored
             delta segment, so readers see the gap AND the magnitude at a glance
             instead of parsing two numbers in a table cell. Rows that don't
             parse as percentages (Elo, prices, ratios) fall back to text-only. */}
-        <div class="bench-list" style={`--marker-color: ${markerColor};`}>
-          {spec.benchmarks.map((b) => {
-            const src = benchSource(b);
-            const p = parseBench(b.score, b.vs_baseline);
-            const hasScale = p.current !== null;
-            const hasDelta = hasScale && p.baseline !== null;
-            const delta = hasDelta ? (p.current! - p.baseline!) : null;
-            return (
-              <div class="bench-row">
-                <div class="bench-top">
-                  <div class="bench-name">
-                    {b.name}
-                    <a
-                      href={src.url}
-                      target="_blank"
-                      rel="noopener"
-                      class="bench-source-link"
-                      title={`Verified on ${src.label}`}
-                    >
-                      {src.label} ↗
-                    </a>
-                  </div>
-                  <div class="bench-nums">
-                    {hasDelta && (
-                      <>
-                        <span class="bench-prev-num">{p.baseline!.toFixed(1)}%</span>
-                        <span class="bench-arrow">→</span>
-                      </>
+        {benchVariants.map((v) => (
+          <div data-variant-block={v.id} hidden={v.id !== "auto"}>
+            <div class="bench-list" style={`--marker-color: ${markerColor};`}>
+              {v.benchmarks.map((b) => {
+                const src = benchSource(b);
+                const p = parseBench(b.score, b.vs_baseline);
+                const hasScale = p.current !== null || (p.currentMin !== null && p.currentMax !== null);
+                const hasBaseline = hasScale && p.baseline !== null;
+                const hasRange = p.currentMin !== null && p.currentMax !== null;
+                const delta = (!hasRange && hasBaseline && p.current !== null) ? (p.current - p.baseline!) : null;
+                return (
+                  <div class="bench-row">
+                    <div class="bench-top">
+                      <div class="bench-name">
+                        {b.name}
+                        <a
+                          href={src.url}
+                          target="_blank"
+                          rel="noopener"
+                          class="bench-source-link"
+                          title={`Verified on ${src.label}`}
+                        >
+                          {src.label} ↗
+                        </a>
+                      </div>
+                      <div class="bench-nums">
+                        {hasBaseline && (
+                          <>
+                            <span class="bench-prev-num">{p.baseline!.toFixed(1)}%</span>
+                            <span class="bench-arrow">→</span>
+                          </>
+                        )}
+                        <span class="bench-curr-num">{b.score}</span>
+                        {delta !== null && (
+                          <span class={`bench-delta ${delta >= 0 ? "bench-delta-pos" : "bench-delta-neg"}`}>
+                            {delta >= 0 ? "+" : ""}{delta.toFixed(1)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {p.baselineLabel && hasBaseline && (
+                      <div class="bench-baseline-label">
+                        vs <span class="bench-baseline-name">{p.baselineLabel}</span>
+                      </div>
                     )}
-                    <span class="bench-curr-num">{b.score}</span>
-                    {delta !== null && (
-                      <span class={`bench-delta ${delta >= 0 ? "bench-delta-pos" : "bench-delta-neg"}`}>
-                        {delta >= 0 ? "+" : ""}{delta.toFixed(1)}
-                      </span>
+                    {hasScale ? (
+                      <div class="bench-bar">
+                        <div class="bench-track" />
+                        {[0, 25, 50, 75, 100].map((t) => (
+                          <div class="bench-tick" style={`left: ${t}%;`} />
+                        ))}
+                        {hasRange && (
+                          <div
+                            class="bench-fill-range"
+                            style={`left: ${Math.min(p.currentMin!, p.currentMax!)}%; width: ${Math.abs(p.currentMax! - p.currentMin!)}%;`}
+                          />
+                        )}
+                        {hasBaseline && !hasRange && p.current !== null && (
+                          <div
+                            class="bench-fill"
+                            style={`left: ${Math.min(p.baseline!, p.current!)}%; width: ${Math.abs(p.current! - p.baseline!)}%;`}
+                          />
+                        )}
+                        {hasBaseline && (
+                          <div class="bench-marker-prev" style={`left: ${p.baseline}%;`} />
+                        )}
+                        <div class="bench-marker-curr" style={`left: ${(p.current ?? p.currentMax ?? 0)}%;`} />
+                        <div class="bench-endpoint bench-endpoint-0">0%</div>
+                        <div class="bench-endpoint bench-endpoint-100">100%</div>
+                      </div>
+                    ) : (
+                      b.vs_baseline && (
+                        <div class="bench-baseline-text">baseline: {b.vs_baseline}</div>
+                      )
                     )}
                   </div>
-                </div>
-                {p.baselineLabel && hasDelta && (
-                  <div class="bench-baseline-label">
-                    vs <span class="bench-baseline-name">{p.baselineLabel}</span>
-                  </div>
-                )}
-                {hasScale ? (
-                  <div class="bench-bar">
-                    <div class="bench-track" />
-                    {[0, 25, 50, 75, 100].map((t) => (
-                      <div class="bench-tick" style={`left: ${t}%;`} />
-                    ))}
-                    {hasDelta && (
-                      <div
-                        class="bench-fill"
-                        style={`left: ${Math.min(p.baseline!, p.current!)}%; width: ${Math.abs(p.current! - p.baseline!)}%;`}
-                      />
-                    )}
-                    {hasDelta && (
-                      <div class="bench-marker-prev" style={`left: ${p.baseline}%;`} />
-                    )}
-                    <div class="bench-marker-curr" style={`left: ${p.current}%;`} />
-                    <div class="bench-endpoint bench-endpoint-0">0%</div>
-                    <div class="bench-endpoint bench-endpoint-100">100%</div>
-                  </div>
-                ) : (
-                  b.vs_baseline && (
-                    <div class="bench-baseline-text">baseline: {b.vs_baseline}</div>
-                  )
-                )}
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
         <p class="mt-2 text-[10.5px] italic text-[var(--fg-muted)]">
           All ranking scores cite one of three approved leaderboards
           (Artificial Analysis, Hugging Face, LLM Stats). Click "Source"
@@ -2200,6 +2181,23 @@ if (spec.release_type)
     margin-top: 8px;
     font-style: italic;
   }
+  .bench-variant-note {
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin: 2px 0 10px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .bench-variant-chip {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+    font-size: 10.5px;
+    font-weight: 650;
+  }
 
   .bench-bar {
     position: relative;
@@ -2232,6 +2230,15 @@ if (spec.release_type)
     opacity: 0.35;
     transform: translateY(-50%);
     border-radius: 2px;
+  }
+  .bench-fill-range {
+    position: absolute;
+    top: 50%;
+    height: 6px;
+    background: var(--marker-color);
+    opacity: 0.22;
+    transform: translateY(-50%);
+    border-radius: 3px;
   }
   .bench-marker-prev {
     position: absolute;

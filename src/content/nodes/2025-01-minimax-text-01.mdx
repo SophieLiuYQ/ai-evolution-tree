@@ -1,40 +1,49 @@
 ---
 slug: minimax-text-01
-title: "MiniMax-Text-01 — Lightning Attention at 4M Context"
-date: 2025-01-15
+title: MiniMax-Text-01 — Lightning Attention at 4M Context
+date: '2025-01-15'
 era: scale-era
-category: [nlp, generative, architecture, agents]
+category:
+  - nlp
+  - generative
+  - architecture
+  - agents
 relationships:
   - to: transformer
     type: builds_on
-    note: "Replaces standard quadratic attention with Lightning Attention (linear-time variant)"
+    note: >-
+      Replaces standard quadratic attention with Lightning Attention
+      (linear-time variant)
   - to: kimi-chat
-    type: surpasses
-    note: "Pushes the long-context bar to 4M tokens, exceeding Kimi's 2M and Gemini 1.5 Pro's 1M"
+    type: competes_with
+    note: >-
+      [surpasses] Pushes the long-context bar to 4M tokens, exceeding Kimi's 2M
+      and Gemini 1.5 Pro's 1M
 authors:
-  - "MiniMax Team"
-org: "MiniMax"
+  - MiniMax Team
+org: MiniMax
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "456B total / 45.9B active"
-  architecture: "MoE + hybrid Lightning Attention (linear) + softmax attention every 8 layers"
+  parameters: 456B total / 45.9B active
+  architecture: MoE + hybrid Lightning Attention (linear) + softmax attention every 8 layers
   context_window: 4000000
-  training_tokens: "undisclosed"
+  training_tokens: undisclosed
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Needle-in-haystack (4M context)"
-      score: ">95% recall claimed"
-      vs_baseline: "first model to ship 4M-token context publicly"
-    - name: "MMLU"
-      score: "88.5%"
-      vs_baseline: "comparable to DeepSeek V3 / GPT-4o"
-    - name: "RULER (long-context, 1M)"
-      score: "competitive with Gemini 1.5 Pro on documented subsets"
-  homepage: "https://www.minimax.io/news/minimax-01-series"
-  github: "https://github.com/MiniMax-AI/MiniMax-01"
-
+    - name: Needle-in-haystack (4M context)
+      score: '>95% recall claimed'
+      vs_baseline: first model to ship 4M-token context publicly
+    - name: MMLU
+      score: 88.5%
+      vs_baseline: comparable to DeepSeek V3 / GPT-4o
+    - name: 'RULER (long-context, 1M)'
+      score: competitive with Gemini 1.5 Pro on documented subsets
+  github: 'https://github.com/MiniMax-AI/MiniMax-01'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     A Shanghai startup's January 2025 open-weight model with a 4
@@ -50,14 +59,14 @@ public_view:
     so it can keep going for 4× the distance — at some cost to peak
     speed in the first kilometer.
   applications:
-    - product: "MiniMax Hailuo consumer chat"
-      company: "MiniMax"
+    - product: MiniMax Hailuo consumer chat
+      company: MiniMax
       year_deployed: 2025
-    - product: "Talkie / MiniMax character-AI products"
-      company: "MiniMax"
+    - product: Talkie / MiniMax character-AI products
+      company: MiniMax
       year_deployed: 2024
-    - product: "Long-doc analysis enterprise (Chinese-market)"
-      company: "Various"
+    - product: Long-doc analysis enterprise (Chinese-market)
+      company: Various
       year_deployed: 2025
   investment_angle: |
     MiniMax raised >$1B at $2.5B+ valuation by 2024 as one of China's
@@ -77,22 +86,17 @@ public_view:
     "context arms race" of 2024-25 has converged on hybrid linear /
     standard attention as the default approach, with MiniMax as one
     of the early demonstrations.
-
 citations:
   - type: paper
     key: minimax2025text01
-    title: "MiniMax-01: Scaling Foundation Models with Lightning Attention"
-    authors: ["MiniMax Team"]
+    title: 'MiniMax-01: Scaling Foundation Models with Lightning Attention'
+    authors:
+      - MiniMax Team
     year: 2025
-    venue: "arXiv"
-    arxiv: "2501.08313"
+    venue: arXiv
+    arxiv: '2501.08313'
+graph_featured: true
 ---
-
-## What it is
-
-A 456-billion-parameter open-weight Mixture-of-Experts model with 45.9B active parameters, released January 15, 2025. The architectural headline: most attention layers use "Lightning Attention" — a chunked linear-time attention variant — with standard quadratic softmax attention preserved only on every 8th layer to maintain short-context fidelity.
-
-This hybrid achieves O(n) instead of O(n²) cost in sequence length for the linear-attention layers, enabling the practical 4M-token context window. At 4M tokens, standard quadratic attention would require ~16TB of attention memory — effectively impossible. Linear attention requires ~constant memory per token.
 
 ## How MiniMax-Text-01 compares to long-context peers
 

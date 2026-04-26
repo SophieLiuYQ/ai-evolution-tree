@@ -1,42 +1,70 @@
 ---
 slug: claude-3-5-sonnet
-title: "Claude 3.5 Sonnet — Mid-Tier Surpasses Prior Flagships"
-date: 2024-06-20
+title: Claude 3.5 Sonnet — Mid-Tier Surpasses Prior Flagships
+date: '2024-06-20'
 era: alignment
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-3
-    type: scales
-    note: "Mid-tier model surpasses Claude 3 Opus on most benchmarks at 1/5 the price"
+    type: builds_on
+    note: >-
+      [scales] Mid-tier model surpasses Claude 3 Opus on most benchmarks at 1/5
+      the price
   - to: gpt-4o
-    type: surpasses
-    note: "Tops GPT-4o on coding (HumanEval 92.0% vs 90.2%) and graduate reasoning"
+    type: competes_with
+    note: >-
+      [surpasses] Tops GPT-4o on coding (HumanEval 92.0% vs 90.2%) and graduate
+      reasoning
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 8
 status: superseded
 model_spec:
-  parameters: "undisclosed"
-  architecture: "undisclosed; native multimodal (text + vision)"
+  parameters: undisclosed
+  architecture: undisclosed; native multimodal (text + vision)
   context_window: 200000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://www.anthropic.com/news/claude-3-5-sonnet'
+  availability:
+    - api
+    - product
   benchmarks:
-    - name: "MMLU"
-      score: "88.7%"
-      vs_baseline: "Claude 3 Opus 86.8%, GPT-4o 88.7%"
-    - name: "HumanEval"
-      score: "92.0%"
-      vs_baseline: "Claude 3 Opus 84.9%, GPT-4o 90.2%"
-    - name: "GPQA Diamond (graduate reasoning)"
-      score: "59.4%"
-      vs_baseline: "Claude 3 Opus 50.4%, GPT-4o 53.6%"
-    - name: "MATH"
-      score: "71.1%"
-      vs_baseline: "Claude 3 Opus 60.1%"
-  homepage: "https://www.anthropic.com/news/claude-3-5-sonnet"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '15.90'
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: Coding · AA Coding Index
+      score: '30.20'
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: Coding · SciCode
+      score: 36.6% (31.6–36.6%)
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: MMLU-Pro
+      score: 77.2% (75.1–77.2%)
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: GPQA
+      score: 59.9% (56.0–59.9%)
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: HLE
+      score: 3.9% (3.7–3.9%)
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+  aa_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+  modalities_in:
+    - image
 public_view:
   plain_english: |
     A mid-tier Claude 3.5 model that, on release, beat the previous
@@ -49,17 +77,17 @@ public_view:
     the price — an industry pattern that reset everyone's expectations
     for how often mid-tier was supposed to leap.
   applications:
-    - product: "Cursor (default coding model)"
-      company: "Anysphere"
+    - product: Cursor (default coding model)
+      company: Anysphere
       year_deployed: 2024
-    - product: "Claude.ai (default for Pro and free tier)"
-      company: "Anthropic"
+    - product: Claude.ai (default for Pro and free tier)
+      company: Anthropic
       year_deployed: 2024
-    - product: "Windsurf, Cline, Aider, GitHub Copilot Workspace"
-      company: "Various"
+    - product: 'Windsurf, Cline, Aider, GitHub Copilot Workspace'
+      company: Various
       year_deployed: 2024
-    - product: "Salesforce Agentforce"
-      company: "Salesforce"
+    - product: Salesforce Agentforce
+      company: Salesforce
       year_deployed: 2024
   investment_angle: |
     Claude 3.5 Sonnet was the model that captured the developer market
@@ -78,21 +106,15 @@ public_view:
     on. This reframed enterprise procurement: build on the model
     abstraction (provider, not version) and assume continuous quality
     upgrade.
-
 citations:
   - type: release
     key: anthropic2024claude35sonnet
-    title: "Introducing Claude 3.5 Sonnet"
+    title: Introducing Claude 3.5 Sonnet
     year: 2024
-    venue: "Anthropic Blog"
-    url: "https://www.anthropic.com/news/claude-3-5-sonnet"
+    venue: Anthropic Blog
+    url: 'https://www.anthropic.com/news/claude-3-5-sonnet'
+graph_featured: true
 ---
-
-## What it is
-
-A mid-tier model in the Claude 3.5 generation. At launch (June 20, 2024), the only model in the 3.5 line; Anthropic added Claude 3.5 Haiku (October 2024) but never released a 3.5 Opus, instead jumping to Claude 3.7 Sonnet and eventually Claude 4 Opus.
-
-Quality position: matched or beat both GPT-4o and Claude 3 Opus on most reasoning, math, and coding benchmarks while priced identically to Claude 3 Sonnet ($3/$15 per 1M tokens — i.e., ⅕ the cost of Opus).
 
 ## How it landed in the competitive matrix (mid-2024)
 

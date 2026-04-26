@@ -1,30 +1,86 @@
 ---
 slug: grok-4-1
-title: "Grok 4.1 — Hallucination Halved, 2M Context"
-date: 2025-11-17
+title: 'Grok 4.1 — Hallucination Halved, 2M Context'
+date: '2025-11-17'
 era: reasoning
-category: [nlp, multimodal, generative, reasoning, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - reasoning
+  - agents
+  - cv
 relationships:
   - to: grok-4
-    type: scales
-    note: "Same family; 4.1 cuts hallucination rate to 4.22% and ships 2M-context Fast variant"
+    type: builds_on
+    note: >-
+      [scales] Same family; 4.1 cuts hallucination rate to 4.22% and ships
+      2M-context Fast variant
+  - to: llama-4
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "xAI Team"
-org: "xAI"
+  - xAI Team
+org: xAI
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "MoE with reasoning + tool-use"
+  parameters: undisclosed
+  architecture: MoE with reasoning + tool-use
   context_window: 2000000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "Hallucination rate (FACTS Grounding)"
-      score: "4.22%"
-      vs_baseline: "Grok 4: ~9%"
-  homepage: "https://x.ai/news/grok-4-1"
-
+    - name: Hallucination rate (FACTS Grounding)
+      score: 4.22%
+      vs_baseline: 'Grok 4: ~9%'
+    - name: Intelligence · AA Intelligence Index
+      score: '38.60'
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: Coding · AA Coding Index
+      score: '30.90'
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: Coding · SciCode
+      score: 44.2% (29.6–44.2%)
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 24.2% (14.4–24.2%)
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: MMLU-Pro
+      score: 85.4% (74.3–85.4%)
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: GPQA
+      score: 85.3% (63.7–85.3%)
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: HLE
+      score: 17.6% (5.0–17.6%)
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: Speed · Output tok/s
+      score: '149'
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.20 in / $0.50 out
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+  homepage: 'https://x.ai/news/grok-4-1'
+  availability:
+    - api
+    - product
+  family: xAI grok
+  variants:
+    - id: grok-4-1-fast
+      label: Grok 4.1 Fast (Non-reasoning)
+      status: active
+    - id: grok-4-1-fast-reasoning
+      label: Grok 4.1 Fast (Reasoning)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     xAI's November 2025 update to Grok 4 — most notably, it cut the
@@ -37,14 +93,14 @@ public_view:
     it doesn't know — the kind of correction a junior analyst gets
     after their first quarter on the job.
   applications:
-    - product: "X (formerly Twitter) AI features"
-      company: "xAI"
+    - product: X (formerly Twitter) AI features
+      company: xAI
       year_deployed: 2025
-    - product: "Grok app"
-      company: "xAI"
+    - product: Grok app
+      company: xAI
       year_deployed: 2025
-    - product: "xAI API"
-      company: "xAI"
+    - product: xAI API
+      company: xAI
       year_deployed: 2025
   investment_angle: |
     Grok 4.1's hallucination drop matters for enterprise procurement —
@@ -56,14 +112,14 @@ public_view:
     Demonstrated that aggressive RLHF + factuality-focused training
     can halve hallucination at the frontier without sacrificing
     capability. Grok 4.20 Beta 2 (March 2026) continued this trend.
-
 citations:
   - type: release
     key: xai2025grok41
-    title: "Grok 4.1 Release Notes"
+    title: Grok 4.1 Release Notes
     year: 2025
-    venue: "xAI Blog"
-    url: "https://x.ai/news/grok-4-1"
+    venue: xAI Blog
+    url: 'https://x.ai/news/grok-4-1'
+graph_featured: true
 ---
 
 ## Family

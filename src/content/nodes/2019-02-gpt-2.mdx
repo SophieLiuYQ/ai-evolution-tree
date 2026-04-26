@@ -1,46 +1,50 @@
 ---
 slug: gpt-2
-title: "GPT-2 — Language Models are Unsupervised Multitask Learners"
-date: 2019-02-14
+title: GPT-2 — Language Models are Unsupervised Multitask Learners
+date: '2019-02-14'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: gpt-1
-    type: scales
-    note: "13× more parameters (117M → 1.5B), 8× more data (~40 GB WebText)"
+    type: builds_on
+    note: '[scales] 13× more parameters (117M → 1.5B), 8× more data (~40 GB WebText)'
   - to: bert
     type: competes_with
-    note: "Decoder-only counter to BERT's encoder-only approach"
+    note: Decoder-only counter to BERT's encoder-only approach
 authors:
-  - "Radford, A."
-  - "Wu, J."
-  - "Child, R."
-  - "Luan, D."
-  - "Amodei, D."
-  - "Sutskever, I."
-org: "OpenAI"
+  - 'Radford, A.'
+  - 'Wu, J.'
+  - 'Child, R.'
+  - 'Luan, D.'
+  - 'Amodei, D.'
+  - 'Sutskever, I.'
+org: OpenAI
 breakthrough_score: 9
 status: superseded
 model_spec:
-  parameters: "1.5B (largest of 4 sizes: 117M / 345M / 762M / 1.5B)"
-  architecture: "Decoder-only transformer, 48 layers, 1600 hidden"
+  parameters: '1.5B (largest of 4 sizes: 117M / 345M / 762M / 1.5B)'
+  architecture: 'Decoder-only transformer, 48 layers, 1600 hidden'
   context_window: 1024
-  training_tokens: "~40 GB text (~10B tokens, WebText: outbound Reddit links with ≥3 karma)"
+  training_tokens: '~40 GB text (~10B tokens, WebText: outbound Reddit links with ≥3 karma)'
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "LAMBADA accuracy (zero-shot)"
-      score: "63.2%"
-      vs_baseline: "prior SOTA 59.2% (supervised)"
-    - name: "WikiText-103 perplexity (zero-shot)"
-      score: "17.5"
-      vs_baseline: "prior SOTA ~18 (supervised)"
-    - name: "Winograd Schema (zero-shot)"
-      score: "70.7%"
-      vs_baseline: "prior 63.7%"
-  homepage: "https://openai.com/index/better-language-models/"
-  github: "https://github.com/openai/gpt-2"
-
+    - name: LAMBADA accuracy (zero-shot)
+      score: 63.2%
+      vs_baseline: prior SOTA 59.2% (supervised)
+    - name: WikiText-103 perplexity (zero-shot)
+      score: '17.5'
+      vs_baseline: prior SOTA ~18 (supervised)
+    - name: Winograd Schema (zero-shot)
+      score: 70.7%
+      vs_baseline: prior 63.7%
+  homepage: 'https://openai.com/index/better-language-models/'
+  github: 'https://github.com/openai/gpt-2'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     OpenAI's 1.5 billion parameter language model — about 13× larger
@@ -53,14 +57,14 @@ public_view:
     next paragraph in your style — and the paragraph after that — and
     sometimes invents a plausible news article that never happened.
   applications:
-    - product: "AI Dungeon (text adventure)"
-      company: "Latitude"
+    - product: AI Dungeon (text adventure)
+      company: Latitude
       year_deployed: 2019
-    - product: "Talk to Transformer (web demo)"
-      company: "Adam King"
+    - product: Talk to Transformer (web demo)
+      company: Adam King
       year_deployed: 2019
-    - product: "GPT-2 fine-tunes on Hugging Face hub"
-      company: "Various"
+    - product: GPT-2 fine-tunes on Hugging Face hub
+      company: Various
       year_deployed: 2019
   investment_angle: |
     GPT-2 was the first AI model to be the subject of mainstream news
@@ -74,26 +78,29 @@ public_view:
     and made "this model is too dangerous to release" a meaningful claim
     that companies, regulators, and journalists would all subsequently
     take seriously.
-
 citations:
   - type: paper
     key: radford2019gpt2
-    title: "Language Models are Unsupervised Multitask Learners"
-    authors: ["Radford, A.", "Wu, J.", "Child, R.", "Luan, D.", "Amodei, D.", "Sutskever, I."]
+    title: Language Models are Unsupervised Multitask Learners
+    authors:
+      - 'Radford, A.'
+      - 'Wu, J.'
+      - 'Child, R.'
+      - 'Luan, D.'
+      - 'Amodei, D.'
+      - 'Sutskever, I.'
     year: 2019
-    venue: "OpenAI tech report"
-    url: "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf"
+    venue: OpenAI tech report
+    url: >-
+      https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf
   - type: release
     key: openai2019staged
-    title: "Better Language Models and Their Implications"
+    title: Better Language Models and Their Implications
     year: 2019
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/better-language-models/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/better-language-models/'
+graph_featured: true
 ---
-
-## What it is
-
-A 1.5B-parameter decoder-only transformer trained on WebText (curated outbound links from Reddit). Same architecture as GPT-1, ~13× scaled. The contribution is empirical: showed that scaling improved zero-shot transfer to multiple downstream tasks without any task-specific fine-tuning.
 
 ## Versus GPT-1 (8 months earlier)
 

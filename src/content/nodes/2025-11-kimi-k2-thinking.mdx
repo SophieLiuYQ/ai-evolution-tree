@@ -1,38 +1,77 @@
 ---
 slug: kimi-k2-thinking
-title: "Kimi K2 Thinking — 200-Tool-Call Agent"
-date: 2025-11-06
+title: Kimi K2 Thinking — 200-Tool-Call Agent
+date: '2025-11-06'
 era: agents
-category: [nlp, generative, agents, reasoning]
+category:
+  - nlp
+  - generative
+  - agents
+  - reasoning
 relationships:
   - to: kimi-k2
-    type: fine_tunes
-    note: "K2 base + thinking RL; chains 200–300 tool calls per task"
+    type: builds_on
+    note: '[fine_tunes] K2 base + thinking RL; chains 200–300 tool calls per task'
   - to: deepseek-r1
-    type: surpasses
-    note: "Tops HLE (Humanity's Last Exam) and BrowseComp at release"
+    type: competes_with
+    note: '[surpasses] Tops HLE (Humanity''s Last Exam) and BrowseComp at release'
+  - to: grok-4
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Moonshot AI Team"
-org: "Moonshot AI"
+  - Moonshot AI Team
+org: Moonshot AI
 breakthrough_score: 8
 status: active
 model_spec:
-  parameters: "1T total / 32B active MoE"
-  architecture: "MoE + extended-thinking RL with native tool-call interleaving"
+  parameters: 1T total / 32B active MoE
+  architecture: MoE + extended-thinking RL with native tool-call interleaving
   context_window: 256000
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Humanity's Last Exam"
-      score: "44.9%"
-      vs_baseline: "Claude Sonnet 4.5 41.7%, GPT-5 26.1%"
-    - name: "BrowseComp"
-      score: "60.2%"
-    - name: "SWE-bench Verified"
-      score: "71.3%"
-  homepage: "https://moonshotai.github.io/Kimi-K2-Thinking/"
-  github: "https://github.com/MoonshotAI/Kimi-K2"
-
+    - name: Vision · MMMU-Pro
+      score: 73.1%
+      vs_baseline: 'Rank #9 of 26 · Top #9 of 26 · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
+    - name: Intelligence · AA Intelligence Index
+      score: '40.90'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: Coding · AA Coding Index
+      score: '34.80'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: Coding · SciCode
+      score: 42.4%
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: Agentic · Terminal-Bench Hard
+      score: 31.1%
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: MMLU-Pro
+      score: 84.8%
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: GPQA
+      score: 83.8%
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: HLE
+      score: 22.3%
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: Speed · Output tok/s
+      score: '85'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+    - name: Price ($/M tokens)
+      score: $0.60 in / $2.50 out
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+  github: 'https://github.com/MoonshotAI/Kimi-K2'
+  availability:
+    - open_weights
+    - api
+    - product
+  aa_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Moonshot's K2 model trained to think while it acts. Most reasoning
@@ -46,14 +85,14 @@ public_view:
     write a plan and then dump 5 search queries. K2 reads, thinks,
     refines its question, searches again, reads, thinks — for hours.
   applications:
-    - product: "Kimi.com (free chat tier)"
-      company: "Moonshot AI"
+    - product: Kimi.com (free chat tier)
+      company: Moonshot AI
       year_deployed: 2025
-    - product: "OpenRouter / Hugging Face inference"
-      company: "Multiple"
+    - product: OpenRouter / Hugging Face inference
+      company: Multiple
       year_deployed: 2025
-    - product: "Self-hosted agentic stacks"
-      company: "Multiple"
+    - product: Self-hosted agentic stacks
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     K2 Thinking is the empirical proof that long-horizon agents can be
@@ -66,14 +105,14 @@ public_view:
     Made long-horizon, tool-using agents accessible without an API
     contract. Proved that test-time compute scaling — chaining hundreds
     of tool calls — beats pure parameter scaling on many tasks.
-
 citations:
   - type: release
     key: moonshot2025k2thinking
-    title: "Kimi K2 Thinking Release"
+    title: Kimi K2 Thinking Release
     year: 2025
-    venue: "Moonshot AI Blog"
-    url: "https://moonshotai.github.io/Kimi-K2/thinking.html"
+    venue: Moonshot AI Blog
+    url: 'https://moonshotai.github.io/Kimi-K2/thinking.html'
+graph_featured: true
 ---
 
 ## What's new

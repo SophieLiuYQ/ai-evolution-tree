@@ -1,42 +1,92 @@
 ---
 slug: o1
-title: "OpenAI o1 — Inference-Time Reasoning"
-date: 2024-09-12
+title: OpenAI o1 — Inference-Time Reasoning
+date: '2024-09-12'
 era: reasoning
-category: [nlp, generative, training]
+category:
+  - nlp
+  - generative
+  - training
 relationships:
   - to: gpt-4o
     type: builds_on
-    note: "Successor frontier; trades inference latency for reasoning capability"
+    note: Successor frontier; trades inference latency for reasoning capability
   - to: chain-of-thought
-    type: applies
-    note: "Internalizes CoT into training; generates long hidden reasoning traces before answering"
+    type: builds_on
+    note: >-
+      [applies] Internalizes CoT into training; generates long hidden reasoning
+      traces before answering
 authors:
-  - "OpenAI Team"
-org: "OpenAI"
+  - OpenAI Team
+org: OpenAI
 breakthrough_score: 9
 status: superseded
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + RL on reasoning traces (specifics undisclosed)"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + RL on reasoning traces (specifics undisclosed)
   context_window: 128000
   release_type: api
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "AIME 2024 (math olympiad)"
-      score: "83.3%"
-      vs_baseline: "GPT-4o 13.4% — 6× improvement"
-    - name: "Codeforces (competitive programming, percentile)"
-      score: "89th"
-      vs_baseline: "GPT-4o 11th"
-    - name: "GPQA Diamond (PhD-level science)"
-      score: "78.0%"
-      vs_baseline: "GPT-4o 53.6%; PhD experts ~70%"
-    - name: "MATH"
-      score: "94.8%"
-      vs_baseline: "GPT-4o 76.6%"
-  homepage: "https://openai.com/index/learning-to-reason-with-llms/"
-
+    - name: AIME 2024 (math olympiad)
+      score: 83.3%
+      vs_baseline: GPT-4o 13.4% — 6× improvement
+    - name: 'Codeforces (competitive programming, percentile)'
+      score: 89th
+      vs_baseline: GPT-4o 11th
+    - name: GPQA Diamond (PhD-level science)
+      score: 78.0%
+      vs_baseline: GPT-4o 53.6%; PhD experts ~70%
+    - name: MATH
+      score: 94.8%
+      vs_baseline: GPT-4o 76.6%
+    - name: Intelligence · AA Intelligence Index
+      score: '30.80'
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: Coding · AA Coding Index
+      score: '20.50'
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: Coding · SciCode
+      score: 35.8% (32.3–35.8%)
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: Agentic · Terminal-Bench Hard
+      score: 12.9%
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: MMLU-Pro
+      score: 84.1% (74.2–84.1%)
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: GPQA
+      score: 74.7% (60.3–74.7%)
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: HLE
+      score: 7.7% (4.9–7.7%)
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: Speed · Output tok/s
+      score: '82'
+      source_url: 'https://artificialanalysis.ai/models/o1'
+    - name: Price ($/M tokens)
+      score: $15.00 in / $60.00 out
+      source_url: 'https://artificialanalysis.ai/models/o1'
+  homepage: 'https://openai.com/index/learning-to-reason-with-llms/'
+  availability:
+    - api
+    - product
+  family: OpenAI o
+  variants:
+    - id: o1-mini
+      label: o1-mini
+      status: active
+    - id: o1-preview
+      label: o1-preview
+      status: active
+    - id: o1-pro
+      label: o1-pro
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/o1'
+  modalities_in:
+    - text
+    - image
 public_view:
   plain_english: |
     OpenAI's first model trained explicitly to "think before it answers"
@@ -51,14 +101,14 @@ public_view:
     student writing a problem set — slower, with visible scratch
     work, and substantially more accurate on hard problems.
   applications:
-    - product: "ChatGPT Plus / Pro (o1-preview, then o1)"
-      company: "OpenAI"
+    - product: 'ChatGPT Plus / Pro (o1-preview, then o1)'
+      company: OpenAI
       year_deployed: 2024
-    - product: "Codeforces / IOI-style coding evaluation references"
-      company: "Various"
+    - product: Codeforces / IOI-style coding evaluation references
+      company: Various
       year_deployed: 2024
-    - product: "Scientific research assistants"
-      company: "Various academic"
+    - product: Scientific research assistants
+      company: Various academic
       year_deployed: 2024
   investment_angle: |
     o1 opened a new scaling axis — inference-time compute — that doesn't
@@ -77,28 +127,26 @@ public_view:
     capability could be bought at inference time, not just training
     time. This is the most important technical pivot in the LLM
     landscape since GPT-3.
-
 citations:
   - type: release
     key: openai2024o1
-    title: "Introducing OpenAI o1"
+    title: Introducing OpenAI o1
     year: 2024
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/introducing-openai-o1-preview/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/introducing-openai-o1-preview/'
   - type: paper
     key: wei2022cot
-    title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
-    authors: ["Wei, J.", "Wang, X.", "Schuurmans, D.", "et al."]
+    title: Chain-of-Thought Prompting Elicits Reasoning in Large Language Models
+    authors:
+      - 'Wei, J.'
+      - 'Wang, X.'
+      - 'Schuurmans, D.'
+      - et al.
     year: 2022
-    venue: "NeurIPS"
-    arxiv: "2201.11903"
+    venue: NeurIPS
+    arxiv: '2201.11903'
+graph_featured: true
 ---
-
-## What it is
-
-A frontier model trained to internalize chain-of-thought reasoning. Architecturally a decoder-only transformer (specifics undisclosed), but post-trained with reinforcement learning on long-form reasoning traces. At inference, the model generates a hidden reasoning trace (often 1,000-10,000 tokens) before emitting a final answer; users see only the answer plus a short summary of the reasoning.
-
-OpenAI declined to publish the reward signal, the RL algorithm, or the dataset of reasoning traces. The most-cited speculation: process supervision (PRM-style reward modeling, per the "Let's Verify Step by Step" paper from OpenAI in 2023), combined with verifiable-reward domains (math, code) where ground truth is checkable.
 
 ## Capability step-change in math and code
 

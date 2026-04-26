@@ -1,26 +1,70 @@
 ---
 slug: molmo
-title: "Molmo — Allen AI's Open Vision-Language Model"
-date: 2024-09-25
+title: Molmo — Allen AI's Open Vision-Language Model
+date: '2024-09-25'
 era: multimodal
-category: [nlp, multimodal, generative]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - cv
 relationships:
   - to: olmo-2
     type: builds_on
-    note: "Allen AI's vision sibling to OLMo; pioneered 'pointing' as a VLM output modality"
+    note: >-
+      Allen AI's vision sibling to OLMo; pioneered 'pointing' as a VLM output
+      modality
 authors:
-  - "Allen Institute for AI"
-org: "Allen AI"
+  - Allen Institute for AI
+org: Allen AI
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "1B (E) / 7B (D) / 7B (O) / 72B"
-  architecture: "Vision encoder + Olmo / Qwen language backbone"
+  parameters: 1B (E) / 7B (D) / 7B (O) / 72B
+  architecture: Vision encoder + Olmo / Qwen language backbone
   release_type: open_weights
-  modalities: [text, vision]
-  homepage: "https://molmo.allenai.org/"
-  github: "https://github.com/allenai/molmo"
-
+  modalities:
+    - text
+    - vision
+  homepage: 'https://molmo.allenai.org/'
+  github: 'https://github.com/allenai/molmo'
+  availability:
+    - open_weights
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '9.20'
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: Coding · AA Coding Index
+      score: '1.20'
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: Coding · SciCode
+      score: 13.3% (3.6–13.3%)
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.0%
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: MMLU-Pro
+      score: 37.1%
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: GPQA
+      score: 42.5% (24.0–42.5%)
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: HLE
+      score: 5.1% (4.4–5.1%)
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+  aa_url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+  context_window: 4096
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Allen AI's open vision-language family — released September 2024
@@ -34,14 +78,14 @@ public_view:
     in words; Molmo can also point at the specific pixel where the
     answer is.
   applications:
-    - product: "Molmo demo (Allen AI playground)"
-      company: "Allen AI"
+    - product: Molmo demo (Allen AI playground)
+      company: Allen AI
       year_deployed: 2024
-    - product: "Open robotics research (pointing for grasping)"
-      company: "Multiple universities"
+    - product: Open robotics research (pointing for grasping)
+      company: Multiple universities
       year_deployed: 2024
-    - product: "Molmo 2 (Dec 2025) on Olmo / Qwen 3 backbones"
-      company: "Allen AI"
+    - product: Molmo 2 (Dec 2025) on Olmo / Qwen 3 backbones
+      company: Allen AI
       year_deployed: 2025
   investment_angle: |
     Molmo's "pointing" output reframes VLMs as components of
@@ -54,14 +98,16 @@ public_view:
     Llava-style "scrape and pretrain" approach for many VLM tasks.
     Molmo 72B held its own against Gemini 1.5 Pro and Claude 3 Opus
     at release with a fraction of the data.
-
 citations:
   - type: paper
     key: ai2024molmo
-    title: "Molmo and PixMo: Open Weights and Open Data for State-of-the-Art Multimodal Models"
+    title: >-
+      Molmo and PixMo: Open Weights and Open Data for State-of-the-Art
+      Multimodal Models
     year: 2024
-    arxiv: "2409.17146"
-    url: "https://arxiv.org/abs/2409.17146"
+    arxiv: '2409.17146'
+    url: 'https://arxiv.org/abs/2409.17146'
+graph_featured: true
 ---
 
 ## Family

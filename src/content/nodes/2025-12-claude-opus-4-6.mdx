@@ -1,42 +1,85 @@
 ---
 slug: claude-opus-4-6
-title: "Claude Opus 4.6 — 1M Context, Sustained Multi-Hour Agency"
-date: 2025-12-10
+title: 'Claude Opus 4.6 — 1M Context, Sustained Multi-Hour Agency'
+date: '2025-12-10'
 era: agents
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: claude-4
-    type: scales
-    note: "Opus 4 → 4.5 → 4.6 incremental line; 4.6 introduces production 1M context"
+    type: builds_on
+    note: >-
+      [scales] Opus 4 → 4.5 → 4.6 incremental line; 4.6 introduces production 1M
+      context
   - to: minimax-text-01
-    type: applies
-    note: "Inherits the long-context attention pattern explored by MiniMax-01 in Jan 2025"
+    type: builds_on
+    note: >-
+      [applies] Inherits the long-context attention pattern explored by
+      MiniMax-01 in Jan 2025
+  - to: gpt-5
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Anthropic Team"
-org: "Anthropic"
+  - Anthropic Team
+org: Anthropic
 breakthrough_score: 8
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Decoder-only transformer + extended thinking + hybrid long-context attention"
+  parameters: undisclosed
+  architecture: Decoder-only transformer + extended thinking + hybrid long-context attention
   context_window: 1000000
   release_type: api
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://www.anthropic.com/news/claude-opus-4-6'
+  availability:
+    - api
+    - product
+    - enterprise
   benchmarks:
-    - name: "SWE-bench Verified"
-      score: "~84%"
-      vs_baseline: "Opus 4 79.4%, GPT-5 ~78%"
-    - name: "TerminalBench"
-      score: "~52%"
-      vs_baseline: "Opus 4 43.2%, Sonnet 4.6 42%"
-    - name: "Sustained autonomous task duration"
-      score: "12+ hours uninterrupted"
-      vs_baseline: "Opus 4 7 hours, Sonnet 4.6 ~3 hours"
-    - name: "Long-context recall (1M tokens)"
-      score: ">99% needle"
-      vs_baseline: "matches Gemini 2.5 Pro at 1M; first Anthropic 1M variant"
-  homepage: "https://www.anthropic.com/news/claude-opus-4-6"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '57.28'
+      vs_baseline: 'Rank #2 of 86 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Coding · SciCode
+      score: 54.5%
+      vs_baseline: 'Rank #2 of 85 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: Agentic · Terminal-Bench Hard
+      score: 51.5%
+      vs_baseline: 'Rank #2 of 83 · Top 5% · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/terminalbench-hard'
+    - name: Coding · AA Coding Index
+      score: '48.10'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+    - name: GPQA
+      score: 89.6% (84.0–89.6%)
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+    - name: HLE
+      score: 36.7% (18.6–36.7%)
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+    - name: Speed · Output tok/s
+      score: '56'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $25.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+  family: Anthropic claude-opus
+  variants:
+    - id: claude-opus-4-6-adaptive
+      label: 'Claude Opus 4.6 (Adaptive Reasoning, Max Effort)'
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Anthropic's December 2025 Opus refresh, with the headline
@@ -51,14 +94,14 @@ public_view:
     in the morning and review at lunch, Opus 4.6 is the one you'd
     hand a project at start of week and review on Friday.
   applications:
-    - product: "Claude Code (default for long sessions)"
-      company: "Anthropic"
+    - product: Claude Code (default for long sessions)
+      company: Anthropic
       year_deployed: 2025
-    - product: "Long-document analysis (legal, financial, scientific)"
-      company: "Various enterprise"
+    - product: 'Long-document analysis (legal, financial, scientific)'
+      company: Various enterprise
       year_deployed: 2025
-    - product: "Devin / Replit Agent (Pro tier)"
-      company: "Cognition / Replit"
+    - product: Devin / Replit Agent (Pro tier)
+      company: Cognition / Replit
       year_deployed: 2025
   investment_angle: |
     Opus 4.6 is the proximal cause of the late-2025 "AI did
@@ -78,23 +121,15 @@ public_view:
     orientation graph + light theme + Civ-style layout in
     one session" a tractable conversation rather than a
     multi-week project.
-
 citations:
   - type: release
     key: anthropic2025opus46
-    title: "Claude Opus 4.6"
+    title: Claude Opus 4.6
     year: 2025
-    venue: "Anthropic"
-    url: "https://www.anthropic.com/news/claude-opus-4-6"
+    venue: Anthropic
+    url: 'https://www.anthropic.com/news/claude-opus-4-6'
+graph_featured: true
 ---
-
-## What it is
-
-The fourth iteration in the Claude Opus 4.x line, released December 10, 2025. Headline capabilities:
-
-1. **1M-token production context** (with experimental higher contexts)
-2. **12+ hour sustained autonomous operation** for agentic tasks
-3. **84% SWE-bench Verified** — frontier on real-world software engineering
 
 ## Opus 4.x cadence
 

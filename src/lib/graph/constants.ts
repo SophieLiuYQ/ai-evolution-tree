@@ -77,19 +77,13 @@ export const fill = (org: string) => orgFill[org] ?? "#f3f4f6";
 export const stroke = (org: string) => orgStroke[org] ?? "#6b7280";
 
 // ===== Edge styles =====
-// Visible types: primary triangle (blue/orange/green) for the 3 most frequent
-// types — each at ~120° hue apart for max distinguishability.
+// Relationship types are intentionally minimal (builds_on / competes_with /
+// open_alt_to). Keep colors high-contrast and stable.
 export const edgeStyle: Record<Rel["type"], EdgeStyle> = {
   builds_on: { color: "#2563EB", label: "builds on" },
-  scales: { color: "#EA580C", label: "scales" },
-  competes_with: { color: "#16A34A", label: "competes" },
-  surpasses: { color: "#C026D3", label: "surpasses" },
-  fine_tunes: { color: "#EAB308", label: "fine-tunes" },
-  distills: { color: "#78350F", label: "distills" },
-  // Hidden types — present in source data but never rendered.
-  applies: { color: "#0891B2", dash: "4,3", label: "applies" },
-  replaces: { color: "#64748B", dash: "4,3", label: "replaces" },
-  open_alt_to: { color: "#DB2777", dash: "6,3", label: "open alt" },
+  competes_with: { color: "#DC2626", label: "alternative" },
+  // Graph view merges this into `competes_with`; keep here for completeness.
+  open_alt_to: { color: "#DC2626", label: "alternative" },
 };
 
 // Edge types completely excluded from the graph: no path, no label, no lineage
@@ -97,9 +91,7 @@ export const edgeStyle: Record<Rel["type"], EdgeStyle> = {
 // MDX/JSON for reference (and shown on the detail page) — just not visualized
 // in the graph layer. Keeps the "every drawn edge has a label" rule enforceable.
 export const HIDDEN_EDGE_TYPES = new Set<Rel["type"]>([
-  "applies",
-  "replaces",
-  "open_alt_to",
+  // none
 ]);
 
 // ===== Layout constants (fixed font sizes — never zoomed) =====

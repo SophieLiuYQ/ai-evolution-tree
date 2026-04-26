@@ -1,32 +1,96 @@
 ---
 slug: gemma-3
-title: "Gemma 3 — Google's Open-Weight Family"
-date: 2025-03-12
+title: Gemma 3 — Google's Open-Weight Family
+date: '2025-03-12'
 era: scale-era
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: gemini-2-5-pro
-    type: distills
-    note: "Open Gemma family distills knowledge from Google's closed Gemini line"
+    type: builds_on
+    note: >-
+      [distills] Open Gemma family distills knowledge from Google's closed
+      Gemini line
+  - to: step-3
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Google DeepMind"
-org: "Google DeepMind"
+  - Google DeepMind
+org: Google DeepMind
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "1B / 4B / 12B / 27B dense"
-  architecture: "Decoder-only transformer with vision encoder (4B+)"
+  parameters: 1B / 4B / 12B / 27B dense
+  architecture: Decoder-only transformer with vision encoder (4B+)
   context_window: 128000
   release_type: open_weights
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "MMLU (Gemma 3 27B)"
-      score: "76.9%"
-    - name: "ChatBot Arena Elo (27B)"
-      score: "1338"
-  homepage: "https://ai.google.dev/gemma"
-  github: "https://github.com/google-deepmind/gemma"
-
+    - name: MMLU (Gemma 3 27B)
+      score: 76.9%
+    - name: ChatBot Arena Elo (27B)
+      score: '1338'
+    - name: Intelligence · AA Intelligence Index
+      score: '10.30'
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: Coding · AA Coding Index
+      score: '9.60'
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: Coding · SciCode
+      score: 21.2% (0.0–21.2%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: Agentic · Terminal-Bench Hard
+      score: 3.8% (0.0–3.8%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: MMLU-Pro
+      score: 66.9% (5.5–66.9%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: GPQA
+      score: 42.8% (22.4–42.8%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: HLE
+      score: 5.2% (4.0–5.2%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: Speed · Output tok/s
+      score: '28'
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+  homepage: 'https://ai.google.dev/gemma'
+  github: 'https://github.com/google-deepmind/gemma'
+  availability:
+    - open_weights
+  family: Google / DeepMind gemma
+  variants:
+    - id: gemma-3-12b
+      label: Gemma 3 12B Instruct
+      status: active
+    - id: gemma-3-1b
+      label: Gemma 3 1B Instruct
+      status: active
+    - id: gemma-3-270m
+      label: Gemma 3 270M
+      status: active
+    - id: gemma-3-27b
+      label: Gemma 3 27B Instruct
+      status: active
+    - id: gemma-3-4b
+      label: Gemma 3 4B Instruct
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/gemma-3-270m'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/google/gemma-3-27b-it'
 public_view:
   plain_english: |
     Google DeepMind's March 2025 open-weight family, sized 1B / 4B /
@@ -37,14 +101,14 @@ public_view:
     Gemini's open-source little sibling. Same architectural DNA,
     runnable on consumer GPUs.
   applications:
-    - product: "Google AI Studio (Gemma)"
-      company: "Google"
+    - product: Google AI Studio (Gemma)
+      company: Google
       year_deployed: 2025
-    - product: "Hugging Face / Ollama / LM Studio"
-      company: "Multiple"
+    - product: Hugging Face / Ollama / LM Studio
+      company: Multiple
       year_deployed: 2025
-    - product: "Vertex AI Model Garden"
-      company: "Google Cloud"
+    - product: Vertex AI Model Garden
+      company: Google Cloud
       year_deployed: 2025
   investment_angle: |
     Gemma is Google's defensive open-weight play against Llama and
@@ -57,20 +121,20 @@ public_view:
     Llama and Qwen had owned that space outright. The vision support
     and 128K context closed key feature gaps with Llama 3.2 Vision and
     Qwen 2.5-VL.
-
 citations:
   - type: release
     key: google2025gemma3
-    title: "Gemma 3 Release Notes"
+    title: Gemma 3 Release Notes
     year: 2025
-    venue: "Google Developers Blog"
-    url: "https://blog.google/technology/developers/gemma-3/"
+    venue: Google Developers Blog
+    url: 'https://blog.google/technology/developers/gemma-3/'
   - type: paper
     key: gemma3report
-    title: "Gemma 3 Technical Report"
+    title: Gemma 3 Technical Report
     year: 2025
-    arxiv: "2503.19786"
-    url: "https://arxiv.org/abs/2503.19786"
+    arxiv: '2503.19786'
+    url: 'https://arxiv.org/abs/2503.19786'
+graph_featured: true
 ---
 
 ## Family

@@ -1,45 +1,67 @@
 ---
 slug: palm
-title: "PaLM — Pathways Language Model (540B)"
-date: 2022-04-04
+title: PaLM — Pathways Language Model (540B)
+date: '2022-04-04'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: gpt-3
-    type: scales
-    note: "3× more parameters (175B → 540B), trained on 780B tokens"
+    type: builds_on
+    note: '[scales] 3× more parameters (175B → 540B), trained on 780B tokens'
   - to: scaling-laws
-    type: applies
-    note: "Sized to Kaplan et al. — under-trained by Chinchilla standards"
+    type: builds_on
+    note: '[applies] Sized to Kaplan et al. — under-trained by Chinchilla standards'
 authors:
-  - "Chowdhery, A."
-  - "Narang, S."
-  - "Devlin, J."
-  - "Bosma, M."
-  - "et al."
-org: "Google"
+  - 'Chowdhery, A.'
+  - 'Narang, S.'
+  - 'Devlin, J.'
+  - 'Bosma, M.'
+  - et al.
+org: Google
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "540B"
-  architecture: "Decoder-only transformer, multi-query attention, SwiGLU"
+  parameters: 540B
+  architecture: 'Decoder-only transformer, multi-query attention, SwiGLU'
   context_window: 2048
-  training_tokens: "780B (multilingual web + GitHub)"
-  training_compute: "~6144 TPU v4 chips"
+  training_tokens: 780B (multilingual web + GitHub)
+  training_compute: ~6144 TPU v4 chips
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "BIG-bench Hard (5-shot)"
-      score: "65.7"
-      vs_baseline: "GPT-3 175B 52.0"
-    - name: "MMLU (5-shot)"
-      score: "69.3%"
-      vs_baseline: "GPT-3 ~44%"
-    - name: "HumanEval (Python coding)"
-      score: "26.2%"
-      vs_baseline: "Codex 28.8%"
-  homepage: "https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/"
-
+    - name: BIG-bench Hard (5-shot)
+      score: '65.7'
+      vs_baseline: GPT-3 175B 52.0
+    - name: MMLU (5-shot)
+      score: 69.3%
+      vs_baseline: GPT-3 ~44%
+    - name: HumanEval (Python coding)
+      score: 26.2%
+      vs_baseline: Codex 28.8%
+    - name: Intelligence · AA Intelligence Index
+      score: '8.60'
+      source_url: 'https://artificialanalysis.ai/models/palm-2'
+    - name: Coding · AA Coding Index
+      score: '4.60'
+      source_url: 'https://artificialanalysis.ai/models/palm-2'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/palm-2'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/palm-2'
+  homepage: >-
+    https://research.google/blog/pathways-language-model-palm-scaling-to-540-billion-parameters-for-breakthrough-performance/
+  availability:
+    - research
+  aa_url: 'https://artificialanalysis.ai/models/palm-2'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     Google's 540-billion-parameter language model, three times larger
@@ -52,11 +74,11 @@ public_view:
     never sold. Google had the technical capability before OpenAI's
     consumer launch but missed the product moment by 7 months.
   applications:
-    - product: "Med-PaLM (medical Q&A)"
-      company: "Google"
+    - product: Med-PaLM (medical Q&A)
+      company: Google
       year_deployed: 2023
-    - product: "PaLM API (deprecated 2024 in favor of Gemini)"
-      company: "Google"
+    - product: PaLM API (deprecated 2024 in favor of Gemini)
+      company: Google
       year_deployed: 2023
   investment_angle: |
     PaLM is Exhibit A in the case that "having the technology" and
@@ -71,20 +93,20 @@ public_view:
     Capability without distribution is not a competitive moat. The
     industry's current obsession with shipping cadence over technical
     novelty traces directly to this miss.
-
 citations:
   - type: paper
     key: chowdhery2022palm
-    title: "PaLM: Scaling Language Modeling with Pathways"
-    authors: ["Chowdhery, A.", "Narang, S.", "Devlin, J.", "et al."]
+    title: 'PaLM: Scaling Language Modeling with Pathways'
+    authors:
+      - 'Chowdhery, A.'
+      - 'Narang, S.'
+      - 'Devlin, J.'
+      - et al.
     year: 2022
-    venue: "JMLR"
-    arxiv: "2204.02311"
+    venue: JMLR
+    arxiv: '2204.02311'
+graph_featured: true
 ---
-
-## What it is
-
-A 540B-parameter decoder-only transformer trained on Google's Pathways infrastructure across 6144 TPU v4 chips — the largest single-model training run publicly disclosed at the time. Architecturally introduced multi-query attention (later universally adopted) and SwiGLU activations.
 
 ## How it compares to peers in 2022
 

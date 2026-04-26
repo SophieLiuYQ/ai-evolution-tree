@@ -13,10 +13,10 @@ const relTypeLabels: Record<string, string> = {
   distills: "Distills from",
   fine_tunes: "Fine-tunes",
   surpasses: "Surpasses",
-  competes_with: "Competes with",
+  competes_with: "Alternative",
   applies: "Applies",
   replaces: "Replaces",
-  open_alt_to: "Open alternative to",
+  open_alt_to: "Alternative",
 };
 
 const relColors: Record<string, string> = {
@@ -28,7 +28,7 @@ const relColors: Record<string, string> = {
   competes_with: "border-indigo-300 bg-indigo-50 text-indigo-800",
   applies: "border-teal-300 bg-teal-50 text-teal-800",
   replaces: "border-red-300 bg-red-50 text-red-800",
-  open_alt_to: "border-fuchsia-300 bg-fuchsia-50 text-fuchsia-800",
+  open_alt_to: "border-indigo-300 bg-indigo-50 text-indigo-800",
 };
 
 const find = (slug: string) => all.find((n) => n.data.slug === slug);

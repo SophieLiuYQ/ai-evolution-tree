@@ -1,51 +1,105 @@
 ---
 slug: deepseek-r1
-title: "DeepSeek R1 — Open-Weight Reasoning Model"
-date: 2025-01-23
+title: DeepSeek R1 — Open-Weight Reasoning Model
+date: '2025-01-23'
 era: reasoning
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: deepseek-v3
-    type: fine_tunes
-    note: "RL-only post-training on V3 base; reasoning capability emerges from rule-based rewards"
+    type: builds_on
+    note: >-
+      [fine_tunes] RL-only post-training on V3 base; reasoning capability
+      emerges from rule-based rewards
   - to: o1
     type: open_alt_to
-    note: "Open-weight reasoning model approaching o1 quality at fraction of training cost"
+    note: >-
+      Open-weight reasoning model approaching o1 quality at fraction of training
+      cost
   - to: chain-of-thought
-    type: applies
-    note: "RL-trained pure CoT reasoning emerges from rule-based rewards alone"
+    type: builds_on
+    note: >-
+      [applies] RL-trained pure CoT reasoning emerges from rule-based rewards
+      alone
   - to: qwq-32b
-    type: surpasses
-    note: "First fully-detailed open reasoning recipe; QwQ-32B-Preview hinted at it 8 weeks earlier"
+    type: competes_with
+    note: >-
+      [surpasses] First fully-detailed open reasoning recipe; QwQ-32B-Preview
+      hinted at it 8 weeks earlier
 authors:
-  - "DeepSeek-AI Team"
-org: "DeepSeek"
+  - DeepSeek-AI Team
+org: DeepSeek
 breakthrough_score: 9
 status: active
 model_spec:
-  parameters: "671B total / 37B active (MoE)"
-  architecture: "Mixture-of-experts decoder-only + GRPO RL on reasoning traces"
+  parameters: 671B total / 37B active (MoE)
+  architecture: Mixture-of-experts decoder-only + GRPO RL on reasoning traces
   context_window: 128000
-  training_compute: "~5.6M H800 GPU-hours (~$5M reported, contested)"
+  training_compute: '~5.6M H800 GPU-hours (~$5M reported, contested)'
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "AIME 2024"
-      score: "79.8%"
-      vs_baseline: "o1 83.3%, Claude 3.5 Sonnet 16.0%"
-    - name: "MATH-500"
-      score: "97.3%"
-      vs_baseline: "o1 96.4%"
-    - name: "Codeforces percentile"
-      score: "96.3rd"
-      vs_baseline: "o1 89th"
-    - name: "GPQA Diamond"
-      score: "71.5%"
-      vs_baseline: "o1 78.0%"
-  homepage: "https://api-docs.deepseek.com/news/news250120"
-  github: "https://github.com/deepseek-ai/DeepSeek-R1"
-
-title_zh: "DeepSeek R1 — 开放权重的推理模型"
+    - name: AIME 2024
+      score: 79.8%
+      vs_baseline: 'o1 83.3%, Claude 3.5 Sonnet 16.0%'
+    - name: MATH-500
+      score: 97.3%
+      vs_baseline: o1 96.4%
+    - name: Codeforces percentile
+      score: 96.3rd
+      vs_baseline: o1 89th
+    - name: GPQA Diamond
+      score: 71.5%
+      vs_baseline: o1 78.0%
+    - name: Intelligence · AA Intelligence Index
+      score: '27.10'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: Coding · AA Coding Index
+      score: '24.00'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: Coding · SciCode
+      score: 40.3% (6.6–40.3%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: Agentic · Terminal-Bench Hard
+      score: 15.9% (1.5–15.9%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: MMLU-Pro
+      score: 84.9% (26.9–84.9%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: GPQA
+      score: 81.3% (9.8–81.3%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: HLE
+      score: 14.9% (3.3–14.9%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+    - name: Price ($/M tokens)
+      score: $1.35 in / $4.20 out
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+  homepage: 'https://api-docs.deepseek.com/news/news250120'
+  github: 'https://github.com/deepseek-ai/DeepSeek-R1'
+  availability:
+    - open_weights
+  family: DeepSeek deepseek-r
+  variants:
+    - id: deepseek-r1-0120
+      label: DeepSeek R1 (Jan '25)
+      status: active
+    - id: deepseek-r1-qwen3-8b
+      label: DeepSeek R1 0528 Qwen3 8B
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-r1'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-R1-0528'
+title_zh: DeepSeek R1 — 开放权重的推理模型
 public_view_zh:
   plain_english: |
     一家中国 AI 实验室放出了一款开放权重的推理模型，质量
@@ -72,7 +126,6 @@ public_view_zh:
     技术口径能不能经受住更久的审视，认知层面的转变已经
     不可逆——每家美国前沿实验室现在都得回答：既然开源阵营
     以更低成本也能做到，你训练预算的正当性在哪？
-
 public_view:
   plain_english: |
     A Chinese AI lab released an open-weight reasoning model that
@@ -86,14 +139,14 @@ public_view:
     every assumption about how much you needed to spend to reach the
     frontier was being re-litigated in earnings calls.
   applications:
-    - product: "Self-hosted by every major inference platform"
-      company: "Together, Fireworks, Groq, etc."
+    - product: Self-hosted by every major inference platform
+      company: 'Together, Fireworks, Groq, etc.'
       year_deployed: 2025
-    - product: "DeepSeek chat (chat.deepseek.com)"
-      company: "DeepSeek"
+    - product: DeepSeek chat (chat.deepseek.com)
+      company: DeepSeek
       year_deployed: 2025
-    - product: "Open-source agentic frameworks (rebuilt around R1)"
-      company: "Various"
+    - product: Open-source agentic frameworks (rebuilt around R1)
+      company: Various
       year_deployed: 2025
   investment_angle: |
     R1's release was the largest single-day market shock in AI history.
@@ -114,28 +167,25 @@ public_view:
     frontier US lab now has to defend why their training spend is
     justified given the existence of open competitors at much lower
     reported cost.
-
 citations:
   - type: paper
     key: deepseek2025r1
-    title: "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning"
-    authors: ["DeepSeek-AI"]
+    title: >-
+      DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement
+      Learning
+    authors:
+      - DeepSeek-AI
     year: 2025
-    venue: "arXiv"
-    arxiv: "2501.12948"
+    venue: arXiv
+    arxiv: '2501.12948'
   - type: release
     key: deepseek2025r1release
-    title: "DeepSeek R1 release"
+    title: DeepSeek R1 release
     year: 2025
-    venue: "DeepSeek"
-    url: "https://api-docs.deepseek.com/news/news250120"
+    venue: DeepSeek
+    url: 'https://api-docs.deepseek.com/news/news250120'
+graph_featured: true
 ---
-
-## What it is
-
-A 671B-parameter Mixture-of-Experts decoder-only transformer (37B active) post-trained via reinforcement learning on reasoning tasks with verifiable rewards (math correctness, code execution). The technical contribution is the training recipe (reported as "GRPO" — Group Relative Policy Optimization), which trained reasoning capability from a base model with minimal supervised fine-tuning beforehand.
-
-The paper claims the reasoning behavior emerged purely from RL on rule-based rewards — the model was not trained on any human-labeled CoT data. If correct, this is a meaningful methodological discovery: reasoning capability can be elicited from base models with verifiable rewards alone, no expensive reasoning-trace dataset needed.
 
 ## R1 vs o1 — the comparison that moved markets
 

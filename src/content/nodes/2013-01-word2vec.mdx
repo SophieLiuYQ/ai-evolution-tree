@@ -1,34 +1,40 @@
 ---
 slug: word2vec
-title: "word2vec — Distributed Word Representations"
-date: 2013-01-16
+title: word2vec — Distributed Word Representations
+date: '2013-01-16'
 era: deep-learning-revival
-category: [nlp, theory]
+category:
+  - nlp
+  - theory
 relationships:
   - to: backpropagation
     type: builds_on
-    note: "Single-hidden-layer neural network trained by backprop on context prediction"
+    note: >-
+      Single-hidden-layer neural network trained by backprop on context
+      prediction
 authors:
-  - "Mikolov, T."
-  - "Chen, K."
-  - "Corrado, G."
-  - "Dean, J."
-org: "Google"
+  - 'Mikolov, T.'
+  - 'Chen, K.'
+  - 'Corrado, G.'
+  - 'Dean, J.'
+org: Google
 breakthrough_score: 9
 status: foundational
 model_spec:
-  parameters: "~100-300 dims per word × ~3M vocab ≈ 300M-900M (just embeddings)"
-  architecture: "Skip-gram or CBOW shallow neural net + negative sampling"
-  training_tokens: "~6B (Google News corpus)"
+  parameters: ~100-300 dims per word × ~3M vocab ≈ 300M-900M (just embeddings)
+  architecture: Skip-gram or CBOW shallow neural net + negative sampling
+  training_tokens: ~6B (Google News corpus)
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Analogy task accuracy (king−man+woman ≈ queen)"
-      score: "~75%"
-      vs_baseline: "first practical demonstration of vector arithmetic on word meanings"
-  homepage: "https://arxiv.org/abs/1301.3781"
-  github: "https://github.com/tmikolov/word2vec"
-
+    - name: Analogy task accuracy (king−man+woman ≈ queen)
+      score: ~75%
+      vs_baseline: first practical demonstration of vector arithmetic on word meanings
+  homepage: 'https://arxiv.org/abs/1301.3781'
+  github: 'https://github.com/tmikolov/word2vec'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     A 2013 method that turned every English word into a 300-dimensional
@@ -44,14 +50,14 @@ public_view:
     direction as from "Italy" to "Rome." Once you have the map,
     everything downstream gets easier.
   applications:
-    - product: "Google Search query understanding"
-      company: "Google"
+    - product: Google Search query understanding
+      company: Google
       year_deployed: 2013
-    - product: "Recommendation systems (item embeddings)"
-      company: "Spotify, Pinterest, etc."
+    - product: Recommendation systems (item embeddings)
+      company: 'Spotify, Pinterest, etc.'
       year_deployed: 2014
-    - product: "Every NLP pipeline 2013-2018"
-      company: "Industry-wide"
+    - product: Every NLP pipeline 2013-2018
+      company: Industry-wide
       year_deployed: 2013
   investment_angle: |
     word2vec is the conceptual root of "embeddings" as a product
@@ -67,32 +73,34 @@ public_view:
     high-dimensional vector representations are the right abstraction
     for meaning. word2vec is when that assumption became operationally
     proven for language.
-
 citations:
   - type: paper
     key: mikolov2013word2vec
-    title: "Efficient Estimation of Word Representations in Vector Space"
-    authors: ["Mikolov, T.", "Chen, K.", "Corrado, G.", "Dean, J."]
+    title: Efficient Estimation of Word Representations in Vector Space
+    authors:
+      - 'Mikolov, T.'
+      - 'Chen, K.'
+      - 'Corrado, G.'
+      - 'Dean, J.'
     year: 2013
-    venue: "ICLR Workshop"
-    arxiv: "1301.3781"
+    venue: ICLR Workshop
+    arxiv: '1301.3781'
   - type: paper
     key: mikolov2013negsampling
-    title: "Distributed Representations of Words and Phrases and their Compositionality"
-    authors: ["Mikolov, T.", "Sutskever, I.", "Chen, K.", "Corrado, G.", "Dean, J."]
+    title: >-
+      Distributed Representations of Words and Phrases and their
+      Compositionality
+    authors:
+      - 'Mikolov, T.'
+      - 'Sutskever, I.'
+      - 'Chen, K.'
+      - 'Corrado, G.'
+      - 'Dean, J.'
     year: 2013
-    venue: "NeurIPS"
-    arxiv: "1310.4546"
+    venue: NeurIPS
+    arxiv: '1310.4546'
+graph_featured: true
 ---
-
-## What it is
-
-Two related shallow neural network architectures for learning word embeddings:
-
-- **CBOW (Continuous Bag of Words)** — predict the target word from the context words around it
-- **Skip-gram** — predict the context words from the target word
-
-Both train a single hidden layer of weights that, after training, become the word embeddings. Trained efficiently (millions of vocabulary words on a single CPU in days) using **negative sampling** instead of full softmax.
 
 ## The famous analogy result
 

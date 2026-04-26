@@ -63,9 +63,11 @@ const fmtMonth = (d: Date) =>
                       {ms.context_window && (
                         <span>
                           ctx{" "}
-                          {ms.context_window >= 1000
-                            ? `${ms.context_window / 1000}k`
-                            : ms.context_window}
+                          {ms.context_window >= 1_000_000
+                            ? `${Math.round(ms.context_window / 1_000_000)}M`
+                            : ms.context_window >= 1000
+                              ? `${Math.round(ms.context_window / 1000)}k`
+                              : ms.context_window}
                         </span>
                       )}
                       {ms.training_tokens && (

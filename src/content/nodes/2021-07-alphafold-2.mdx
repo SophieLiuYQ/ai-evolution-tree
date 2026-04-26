@@ -1,41 +1,50 @@
 ---
 slug: alphafold-2
-title: "AlphaFold 2 — Protein Structure Prediction Solved"
-date: 2021-07-15
+title: AlphaFold 2 — Protein Structure Prediction Solved
+date: '2021-07-15'
 era: multimodal
-category: [theory]
+category:
+  - science
+  - generative
 relationships:
   - to: transformer
     type: builds_on
-    note: "Evoformer block applies attention to multiple sequence alignments — a transformer variant"
+    note: >-
+      Evoformer block applies attention to multiple sequence alignments — a
+      transformer variant
   - to: alphago
     type: builds_on
-    note: "Same DeepMind lineage; AlphaGo's research culture and infrastructure enabled AlphaFold's scale"
+    note: >-
+      Same DeepMind lineage; AlphaGo's research culture and infrastructure
+      enabled AlphaFold's scale
 authors:
-  - "Jumper, J."
-  - "Evans, R."
-  - "Pritzel, A."
-  - "Green, T."
-  - "et al."
-org: "DeepMind"
+  - 'Jumper, J.'
+  - 'Evans, R.'
+  - 'Pritzel, A.'
+  - 'Green, T.'
+  - et al.
+org: DeepMind
 breakthrough_score: 10
 status: foundational
 model_spec:
-  parameters: "~93M"
-  architecture: "Evoformer (transformer-style attention on MSA + pair representations) + structure module + iterative refinement"
-  training_compute: "~16 TPUv3 cores × ~weeks; ~170k experimentally-determined structures"
+  parameters: ~93M
+  architecture: >-
+    Evoformer (transformer-style attention on MSA + pair representations) +
+    structure module + iterative refinement
+  training_compute: ~16 TPUv3 cores × ~weeks; ~170k experimentally-determined structures
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "CASP14 median GDT score"
-      score: "92.4 (across all targets)"
-      vs_baseline: "next-best entry ~62; experimental accuracy threshold ~90"
-    - name: "Structures publicly released (post-launch)"
-      score: "200M+ predicted protein structures (AlphaFold DB)"
-      vs_baseline: "experimentally-determined structures: ~200k as of 2021"
-  homepage: "https://deepmind.google/technologies/alphafold/alphafold-2/"
-  github: "https://github.com/google-deepmind/alphafold"
-
+    - name: CASP14 median GDT score
+      score: 92.4 (across all targets)
+      vs_baseline: next-best entry ~62; experimental accuracy threshold ~90
+    - name: Structures publicly released (post-launch)
+      score: 200M+ predicted protein structures (AlphaFold DB)
+      vs_baseline: 'experimentally-determined structures: ~200k as of 2021'
+  github: 'https://github.com/google-deepmind/alphafold'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     DeepMind's protein structure prediction system that, in late 2020,
@@ -52,17 +61,17 @@ public_view:
     crystallography. AlphaFold did it in seconds, at human-experimental
     accuracy, for any protein.
   applications:
-    - product: "AlphaFold Protein Structure Database"
-      company: "DeepMind / EMBL-EBI"
+    - product: AlphaFold Protein Structure Database
+      company: DeepMind / EMBL-EBI
       year_deployed: 2021
-    - product: "Drug discovery pipelines (AbCellera, Recursion, Insilico)"
-      company: "Various biotech"
+    - product: 'Drug discovery pipelines (AbCellera, Recursion, Insilico)'
+      company: Various biotech
       year_deployed: 2022
-    - product: "Isomorphic Labs (DeepMind biotech spinout)"
-      company: "Isomorphic Labs"
+    - product: Isomorphic Labs (DeepMind biotech spinout)
+      company: Isomorphic Labs
       year_deployed: 2021
-    - product: "Academic research worldwide"
-      company: "All biology researchers"
+    - product: Academic research worldwide
+      company: All biology researchers
       year_deployed: 2021
   investment_angle: |
     AlphaFold is the canonical example of "AI as scientific
@@ -81,31 +90,26 @@ public_view:
     a foundational scientific discipline. The Nobel Prize award
     in 2024 made the recognition official: this is a Nobel-class
     contribution to science, not just to AI.
-
 citations:
   - type: paper
     key: jumper2021alphafold2
-    title: "Highly accurate protein structure prediction with AlphaFold"
-    authors: ["Jumper, J.", "Evans, R.", "Pritzel, A.", "et al."]
+    title: Highly accurate protein structure prediction with AlphaFold
+    authors:
+      - 'Jumper, J.'
+      - 'Evans, R.'
+      - 'Pritzel, A.'
+      - et al.
     year: 2021
-    venue: "Nature"
-    doi: "10.1038/s41586-021-03819-2"
+    venue: Nature
+    doi: 10.1038/s41586-021-03819-2
   - type: release
     key: deepmind2021alphafolddb
-    title: "AlphaFold Protein Structure Database"
+    title: AlphaFold Protein Structure Database
     year: 2021
-    venue: "DeepMind / EMBL-EBI"
-    url: "https://alphafold.ebi.ac.uk/"
+    venue: DeepMind / EMBL-EBI
+    url: 'https://alphafold.ebi.ac.uk/'
+graph_featured: true
 ---
-
-## What it is
-
-A neural-network system that takes an amino acid sequence as input and produces predicted 3D atomic coordinates for the folded protein. Architecturally:
-
-1. **Multiple Sequence Alignment (MSA) input** — homologous sequences from related species, providing evolutionary signal about which residues co-vary
-2. **Evoformer** — 48 transformer-style blocks that update both an MSA representation and a pair representation (between-residue features)
-3. **Structure module** — produces atomic coordinates from the learned features, with iterative refinement
-4. **End-to-end training** — backpropagation through the entire pipeline from sequence to structure
 
 ## CASP14 — the moment biology accepted AI
 

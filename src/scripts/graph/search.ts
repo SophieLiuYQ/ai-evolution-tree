@@ -155,6 +155,9 @@ export function attachSearchHandlers() {
           input!.value = "";
           dropdown!.classList.add(HIDE_CLASS);
           scrollToNode(slug);
+          document.dispatchEvent(
+            new CustomEvent("ai-tree:select", { detail: { slug } }),
+          );
         });
         if (i === 0) btn.classList.add("first-hit");
       });
@@ -176,6 +179,9 @@ export function attachSearchHandlers() {
         input.value = "";
         dropdown.classList.add(HIDE_CLASS);
         scrollToNode(first.slug);
+        document.dispatchEvent(
+          new CustomEvent("ai-tree:select", { detail: { slug: first.slug } }),
+        );
       }
     }
   });

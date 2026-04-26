@@ -1,41 +1,47 @@
 ---
 slug: whisper
-title: "Whisper — Open Multilingual Speech Recognition"
-date: 2022-09-21
+title: Whisper — Open Multilingual Speech Recognition
+date: '2022-09-21'
 era: multimodal
-category: [audio, generative]
+category:
+  - audio
+  - generative
+  - multimodal
 relationships:
   - to: transformer
     type: builds_on
-    note: "Encoder-decoder transformer applied to speech (mel-spectrogram tokens)"
+    note: Encoder-decoder transformer applied to speech (mel-spectrogram tokens)
 authors:
-  - "Radford, A."
-  - "Kim, J. W."
-  - "Xu, T."
-  - "Brockman, G."
-  - "McLeavey, C."
-  - "Sutskever, I."
-org: "OpenAI"
+  - 'Radford, A.'
+  - 'Kim, J. W.'
+  - 'Xu, T.'
+  - 'Brockman, G.'
+  - 'McLeavey, C.'
+  - 'Sutskever, I.'
+org: OpenAI
 breakthrough_score: 8
 status: foundational
 model_spec:
-  parameters: "tiny 39M / base 74M / small 244M / medium 769M / large 1.55B"
-  architecture: "Encoder-decoder transformer; 80-channel mel-spectrogram input → token output"
-  training_tokens: "680,000 hours multilingual web audio (filtered)"
+  parameters: tiny 39M / base 74M / small 244M / medium 769M / large 1.55B
+  architecture: Encoder-decoder transformer; 80-channel mel-spectrogram input → token output
+  training_tokens: '680,000 hours multilingual web audio (filtered)'
   release_type: open_weights
-  modalities: [audio, text]
+  modalities:
+    - audio
+    - text
   benchmarks:
-    - name: "Word Error Rate (English, LibriSpeech test-clean)"
-      score: "2.5% (large model)"
-      vs_baseline: "near-human; matches commercial systems trained on much more curated data"
-    - name: "Multilingual coverage"
-      score: "99 languages with usable accuracy"
-      vs_baseline: "Google Speech-to-Text ~125 languages but commercial closed"
-    - name: "Robustness (background noise, accents)"
-      score: "outperforms 14/15 prior systems on cross-domain test sets"
-  homepage: "https://openai.com/index/whisper/"
-  github: "https://github.com/openai/whisper"
-
+    - name: 'Word Error Rate (English, LibriSpeech test-clean)'
+      score: 2.5% (large model)
+      vs_baseline: near-human; matches commercial systems trained on much more curated data
+    - name: Multilingual coverage
+      score: 99 languages with usable accuracy
+      vs_baseline: Google Speech-to-Text ~125 languages but commercial closed
+    - name: 'Robustness (background noise, accents)'
+      score: outperforms 14/15 prior systems on cross-domain test sets
+  homepage: 'https://openai.com/index/whisper/'
+  github: 'https://github.com/openai/whisper'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     OpenAI's open-source speech recognition model, released
@@ -52,17 +58,17 @@ public_view:
     could run on their own laptop, undercutting commercial APIs
     in the process.
   applications:
-    - product: "Otter / Fireflies / Granola / Read.ai (meeting transcription)"
-      company: "Various"
+    - product: Otter / Fireflies / Granola / Read.ai (meeting transcription)
+      company: Various
       year_deployed: 2023
-    - product: "Whisper API (OpenAI hosted version)"
-      company: "OpenAI"
+    - product: Whisper API (OpenAI hosted version)
+      company: OpenAI
       year_deployed: 2023
-    - product: "Subtitle generation across podcast / YouTube tools"
-      company: "Various"
+    - product: Subtitle generation across podcast / YouTube tools
+      company: Various
       year_deployed: 2023
-    - product: "Local transcription apps (MacWhisper, etc.)"
-      company: "Various indie"
+    - product: 'Local transcription apps (MacWhisper, etc.)'
+      company: Various indie
       year_deployed: 2023
   investment_angle: |
     Whisper killed the standalone speech-to-text API as a viable
@@ -81,28 +87,28 @@ public_view:
     much of consumer-facing AI audio infrastructure would have
     been gated by commercial-API economics rather than commodity
     open-weights.
-
 citations:
   - type: paper
     key: radford2022whisper
-    title: "Robust Speech Recognition via Large-Scale Weak Supervision"
-    authors: ["Radford, A.", "Kim, J. W.", "Xu, T.", "Brockman, G.", "McLeavey, C.", "Sutskever, I."]
+    title: Robust Speech Recognition via Large-Scale Weak Supervision
+    authors:
+      - 'Radford, A.'
+      - 'Kim, J. W.'
+      - 'Xu, T.'
+      - 'Brockman, G.'
+      - 'McLeavey, C.'
+      - 'Sutskever, I.'
     year: 2022
-    venue: "arXiv"
-    arxiv: "2212.04356"
+    venue: arXiv
+    arxiv: '2212.04356'
   - type: release
     key: openai2022whisper
-    title: "Introducing Whisper"
+    title: Introducing Whisper
     year: 2022
-    venue: "OpenAI Blog"
-    url: "https://openai.com/index/whisper/"
+    venue: OpenAI Blog
+    url: 'https://openai.com/index/whisper/'
+graph_featured: true
 ---
-
-## What it is
-
-A standard encoder-decoder transformer (80M-1.55B parameters across 5 sizes) trained on speech transcription. Input: 30-second audio chunks converted to log-Mel spectrograms (80 channels). Output: text tokens. Multitask trained — the same model handles transcription, translation, language identification, and voice activity detection.
-
-The contribution is data scale + open release, not architecture. 680k hours of web-scraped audio is much larger than prior open speech datasets (LibriSpeech ~1k hours; Common Voice ~10k hours). The "weak supervision" framing — using audio + paired text from the web without per-example quality filtering — was the methodological argument: scale + diversity beats curation.
 
 ## How Whisper compares to peers
 

@@ -1,26 +1,66 @@
 ---
 slug: pi-zero
-title: "π₀ — Physical Intelligence's Open Robot Foundation"
-date: 2024-10-31
+title: π₀ — Physical Intelligence's Open Robot Foundation
+date: '2024-10-31'
 era: agents
-category: [agents, multimodal, generative]
+category:
+  - agents
+  - multimodal
+  - generative
+  - cv
 relationships:
   - to: gemini-robotics
     type: open_alt_to
-    note: "Open-weight VLA via openpi; Pi differentiates on flow-matching action generation"
+    note: >-
+      Open-weight VLA via openpi; Pi differentiates on flow-matching action
+      generation
+  - to: claude-3
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Physical Intelligence Team"
-org: "Physical Intelligence"
+  - Physical Intelligence Team
+org: Physical Intelligence
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "3B"
-  architecture: "VLA with flow-matching action head"
+  parameters: 3B
+  architecture: VLA with flow-matching action head
   release_type: open_weights
-  modalities: [vision, generative]
-  homepage: "https://www.physicalintelligence.company/blog/pi0"
-  github: "https://github.com/Physical-Intelligence/openpi"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://www.physicalintelligence.company/blog/pi0'
+  github: 'https://github.com/Physical-Intelligence/openpi'
+  availability:
+    - open_weights
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '60.20'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: Coding · AA Coding Index
+      score: '59.10'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: Coding · SciCode
+      score: 58.9% (0.0–58.9%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: Agentic · Terminal-Bench Hard
+      score: 60.6% (0.0–60.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: MMLU-Pro
+      score: 89.8% (5.5–89.8%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: GPQA
+      score: 94.1% (9.8–94.1%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: HLE
+      score: 44.7% (1.2–44.7%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $30.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
 public_view:
   plain_english: |
     Physical Intelligence's flagship vision-language-action model —
@@ -33,14 +73,14 @@ public_view:
     startup robots can fine-tune for their specific gripper /
     workspace, instead of every team training from scratch.
   applications:
-    - product: "openpi (open-source robot stack)"
-      company: "Physical Intelligence"
+    - product: openpi (open-source robot stack)
+      company: Physical Intelligence
       year_deployed: 2024
-    - product: "Pi Robots (commercial humanoid)"
-      company: "Physical Intelligence"
+    - product: Pi Robots (commercial humanoid)
+      company: Physical Intelligence
       year_deployed: 2024
-    - product: "Academic robotics research"
-      company: "Multiple universities"
+    - product: Academic robotics research
+      company: Multiple universities
       year_deployed: 2024
   investment_angle: |
     Physical Intelligence raised $400M+ at $2B+ valuation on the
@@ -53,14 +93,14 @@ public_view:
     was closed (Google's RT, Tesla's, Figure's). Pi proved you could
     open-source the architecture and still build a business on
     hardware + integration + commercial fine-tuning.
-
 citations:
   - type: paper
     key: pi2024pi0
-    title: "π₀: A Vision-Language-Action Flow Model for General Robot Control"
+    title: 'π₀: A Vision-Language-Action Flow Model for General Robot Control'
     year: 2024
-    arxiv: "2410.24164"
-    url: "https://arxiv.org/abs/2410.24164"
+    arxiv: '2410.24164'
+    url: 'https://arxiv.org/abs/2410.24164'
+graph_featured: true
 ---
 
 ## Pi family timeline

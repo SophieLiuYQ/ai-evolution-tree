@@ -1,26 +1,35 @@
 ---
 slug: nvidia-groot
-title: "NVIDIA Isaac GR00T N1 — Open Humanoid Foundation"
-date: 2025-03-18
+title: NVIDIA Isaac GR00T N1 — Open Humanoid Foundation
+date: '2025-03-18'
 era: agents
-category: [agents, multimodal, generative]
+category:
+  - agents
+  - multimodal
+  - generative
+  - cv
 relationships:
   - to: pi-zero
     type: competes_with
-    note: "Open-weight VLA peer; GR00T integrates with NVIDIA's Isaac robotics + Cosmos world-model stack"
+    note: >-
+      Open-weight VLA peer; GR00T integrates with NVIDIA's Isaac robotics +
+      Cosmos world-model stack
 authors:
-  - "NVIDIA Robotics Team"
-org: "Nvidia"
+  - NVIDIA Robotics Team
+org: Nvidia
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "2.2B"
-  architecture: "VLA with vision + language + action tokens"
+  parameters: 2.2B
+  architecture: VLA with vision + language + action tokens
   release_type: open_weights
-  modalities: [vision, generative]
-  homepage: "https://developer.nvidia.com/isaac/gr00t"
-  github: "https://github.com/NVIDIA/Isaac-GR00T"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://developer.nvidia.com/isaac/gr00t'
+  github: 'https://github.com/NVIDIA/Isaac-GR00T'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     NVIDIA's open vision-language-action model for humanoid robots —
@@ -33,14 +42,14 @@ public_view:
     the software (GR00T + Isaac), sell the hardware (GPUs + Jetson +
     forthcoming robot accelerators).
   applications:
-    - product: "NVIDIA Isaac Lab / Sim"
-      company: "Nvidia"
+    - product: NVIDIA Isaac Lab / Sim
+      company: Nvidia
       year_deployed: 2025
-    - product: "GR00T integration on partner humanoids"
-      company: "Multiple"
+    - product: GR00T integration on partner humanoids
+      company: Multiple
       year_deployed: 2025
-    - product: "Cosmos world models (Predict / Reason / Policy)"
-      company: "Nvidia"
+    - product: Cosmos world models (Predict / Reason / Policy)
+      company: Nvidia
       year_deployed: 2025
   investment_angle: |
     NVIDIA's robotics stack is cross-promoted with their AI stack —
@@ -53,14 +62,14 @@ public_view:
     embedded compute platform (Jetson). NVIDIA is positioning to be
     upstream of every robotics company the way they are for every AI
     company.
-
 citations:
   - type: release
     key: nvidia2025groot
-    title: "Isaac GR00T N1"
+    title: Isaac GR00T N1
     year: 2025
-    venue: "NVIDIA Developer Blog"
-    url: "https://developer.nvidia.com/blog/announcing-isaac-gr00t-n1/"
+    venue: NVIDIA Developer Blog
+    url: 'https://developer.nvidia.com/blog/announcing-isaac-gr00t-n1/'
+graph_featured: true
 ---
 
 ## NVIDIA's robotics stack

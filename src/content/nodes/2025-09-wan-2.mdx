@@ -1,30 +1,40 @@
 ---
 slug: wan-2
-title: "Wan 2.x — Alibaba's Open-Source Video Family"
-date: 2025-09-19
+title: Wan 2.x — Alibaba's Open-Source Video Family
+date: '2025-09-19'
 era: multimodal
-category: [generative, multimodal]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: hunyuan-video
     type: competes_with
-    note: "Open-weight Chinese video peer; Wan ships under Apache 2.0 across 2.2 / 2.5 / 2.6 / 2.7 with Thinking Mode"
+    note: >-
+      Open-weight Chinese video peer; Wan ships under Apache 2.0 across 2.2 /
+      2.5 / 2.6 / 2.7 with Thinking Mode
 authors:
-  - "Alibaba Wan Team"
-org: "Alibaba"
+  - Alibaba Wan Team
+org: Alibaba
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "14B (Wan 2.2)"
-  architecture: "DiT (diffusion transformer) with Thinking Mode (2.7)"
+  parameters: 14B (Wan 2.2)
+  architecture: DiT (diffusion transformer) with Thinking Mode (2.7)
   release_type: open_weights
-  modalities: [vision, generative]
+  modalities:
+    - vision
+    - generative
   benchmarks:
-    - name: "VBench"
-      score: "84.7%"
-  homepage: "https://wan.video/"
-  github: "https://github.com/Wan-Video/Wan2.2"
-
-title_zh: "Wan 2.x — 阿里开源视频家族（通义万相）"
+    - name: Generation · Image Arena Elo
+      score: '1179'
+      vs_baseline: 'Rank #10 of 48 · Top #10 of 48 · AA · Image Arena'
+      source_url: 'https://artificialanalysis.ai/text-to-image'
+  homepage: 'https://wan.video/'
+  github: 'https://github.com/Wan-Video/Wan2.2'
+  availability:
+    - open_weights
+title_zh: Wan 2.x — 阿里开源视频家族（通义万相）
 public_view_zh:
   plain_english: |
     阿里的开源视频模型家族，从 Wan 2.2 一路走到 2.5 / 2.6 / 2.7，
@@ -43,7 +53,6 @@ public_view_zh:
     当下 VBench 上最强的全开源视频模型，把腾讯 HunyuanVideo
     等开源对手逼着追赶；也让"开源视频生成"从玩票变成媒体 /
     代理商真正可采买的选项。
-
 public_view:
   plain_english: |
     Alibaba's open-source video family — Wan 2.2 → 2.5 → 2.6 → 2.7 —
@@ -54,14 +63,14 @@ public_view:
     What Qwen is to text, Wan is to video — Alibaba's fully-open
     play in a closed-dominated market.
   applications:
-    - product: "Tongyi Wanxiang (Alibaba consumer)"
-      company: "Alibaba"
+    - product: Tongyi Wanxiang (Alibaba consumer)
+      company: Alibaba
       year_deployed: 2025
-    - product: "ModelScope hosted"
-      company: "Alibaba"
+    - product: ModelScope hosted
+      company: Alibaba
       year_deployed: 2025
-    - product: "Hugging Face / fal.ai self-hosted"
-      company: "Multiple"
+    - product: Hugging Face / fal.ai self-hosted
+      company: Multiple
       year_deployed: 2025
   investment_angle: |
     Alibaba's open video play, parallel to Qwen's open text play.
@@ -72,14 +81,14 @@ public_view:
     Currently the strongest fully-open video model on VBench. Pushed
     HunyuanVideo and other open competitors to keep up. Made open
     video generation a real procurement option for media / agencies.
-
 citations:
   - type: release
     key: alibaba2025wan
-    title: "Wan 2.5 Release"
+    title: Wan 2.5 Release
     year: 2025
-    venue: "Alibaba Wan"
-    url: "https://github.com/Wan-Video/Wan2.2"
+    venue: Alibaba Wan
+    url: 'https://github.com/Wan-Video/Wan2.2'
+graph_featured: true
 ---
 
 ## Wan timeline

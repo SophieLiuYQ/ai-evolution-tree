@@ -1,30 +1,69 @@
 ---
 slug: olmo-2
-title: "OLMo 2 — Allen AI's Fully Open Foundation"
-date: 2024-11-26
+title: OLMo 2 — Allen AI's Fully Open Foundation
+date: '2024-11-26'
 era: scale-era
-category: [nlp, generative, training]
+category:
+  - nlp
+  - generative
+  - training
 relationships:
   - to: llama-3
     type: open_alt_to
-    note: "Fully-open alternative to Llama; releases data + weights + training code + intermediate checkpoints"
+    note: >-
+      Fully-open alternative to Llama; releases data + weights + training code +
+      intermediate checkpoints
 authors:
-  - "Allen Institute for AI"
-org: "Allen AI"
+  - Allen Institute for AI
+org: Allen AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "7B / 13B / 32B dense"
-  architecture: "Decoder-only transformer"
+  parameters: 7B / 13B / 32B dense
+  architecture: Decoder-only transformer
   context_window: 4096
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU (OLMo 2 32B)"
-      score: "63.4%"
-  homepage: "https://allenai.org/olmo"
-  github: "https://github.com/allenai/OLMo"
-
+    - name: MMLU (OLMo 2 32B)
+      score: 63.4%
+    - name: Intelligence · AA Intelligence Index
+      score: '10.60'
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: Coding · AA Coding Index
+      score: '2.70'
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: Coding · SciCode
+      score: 8.0% (3.7–8.0%)
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.0%
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: MMLU-Pro
+      score: 51.1% (28.2–51.1%)
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: GPQA
+      score: 32.8% (28.8–32.8%)
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: HLE
+      score: 5.5% (3.7–5.5%)
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+  homepage: 'https://allenai.org/olmo'
+  github: 'https://github.com/allenai/OLMo'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+  modalities_in:
+    - text
+  modalities_out:
+    - text
 public_view:
   plain_english: |
     The Allen Institute's truly-open language model — not just weights,
@@ -38,14 +77,14 @@ public_view:
     it." The full reproducibility difference matters for science even
     when product capability is similar.
   applications:
-    - product: "Academic research (most-cited open base)"
-      company: "Multiple universities"
+    - product: Academic research (most-cited open base)
+      company: Multiple universities
       year_deployed: 2024
-    - product: "Tulu 3 instruction family"
-      company: "Allen AI"
+    - product: Tulu 3 instruction family
+      company: Allen AI
       year_deployed: 2024
-    - product: "Molmo multimodal sibling"
-      company: "Allen AI"
+    - product: Molmo multimodal sibling
+      company: Allen AI
       year_deployed: 2024
   investment_angle: |
     OLMo's economic impact is in the academic + government tier where
@@ -58,14 +97,14 @@ public_view:
     Llama, Mistral, and Qwen open releases really are. Ai2's continued
     pressure (Tulu 3 405B, Molmo, OLMoE) anchors the open-science end
     of the model spectrum.
-
 citations:
   - type: paper
     key: ai2024olmo2
-    title: "OLMo 2: Open Language Models v2"
+    title: 'OLMo 2: Open Language Models v2'
     year: 2024
-    arxiv: "2501.00656"
-    url: "https://arxiv.org/abs/2501.00656"
+    arxiv: '2501.00656'
+    url: 'https://arxiv.org/abs/2501.00656'
+graph_featured: true
 ---
 
 ## What "fully open" means

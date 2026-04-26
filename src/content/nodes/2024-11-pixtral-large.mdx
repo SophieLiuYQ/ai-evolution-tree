@@ -1,35 +1,67 @@
 ---
 slug: pixtral-large
-title: "Pixtral Large — Mistral's 124B Multimodal Frontier"
-date: 2024-11-18
+title: Pixtral Large — Mistral's 124B Multimodal Frontier
+date: '2024-11-18'
 era: multimodal
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: mistral-large-2
     type: builds_on
-    note: "Vision encoder bolted onto Mistral Large 2 base; matches frontier multimodal benchmarks"
+    note: >-
+      Vision encoder bolted onto Mistral Large 2 base; matches frontier
+      multimodal benchmarks
   - to: clip
     type: builds_on
-    note: "Vision-text alignment lineage from CLIP"
+    note: Vision-text alignment lineage from CLIP
 authors:
-  - "Mistral AI Team"
-org: "Mistral AI"
+  - Mistral AI Team
+org: Mistral AI
 breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "124B (123B text + 1B vision encoder)"
-  architecture: "Mistral Large 2 + dedicated vision encoder"
+  parameters: 124B (123B text + 1B vision encoder)
+  architecture: Mistral Large 2 + dedicated vision encoder
   context_window: 128000
   release_type: open_weights
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
   benchmarks:
-    - name: "MathVista"
-      score: "69.4%"
-      vs_baseline: "GPT-4o 63.8%, Claude 3.5 Sonnet 67.7%"
-    - name: "MMMU"
-      score: "64.0%"
-  homepage: "https://mistral.ai/news/pixtral-large"
-
+    - name: MathVista
+      score: 69.4%
+      vs_baseline: 'GPT-4o 63.8%, Claude 3.5 Sonnet 67.7%'
+    - name: MMMU
+      score: 64.0%
+    - name: Intelligence · AA Intelligence Index
+      score: '14.00'
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+    - name: Coding · SciCode
+      score: 29.2%
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+    - name: MMLU-Pro
+      score: 70.1%
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+    - name: GPQA
+      score: 50.5%
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+    - name: HLE
+      score: 3.6%
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+    - name: Speed · Output tok/s
+      score: '52'
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $6.00 out
+      source_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+  homepage: 'https://mistral.ai/news/pixtral-large'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
 public_view:
   plain_english: |
     Mistral's frontier-tier multimodal model — Mistral Large 2 with a
@@ -41,11 +73,11 @@ public_view:
     A specialized eye that feeds detailed observations into a large
     general-purpose mind.
   applications:
-    - product: "Le Chat (vision)"
-      company: "Mistral AI"
+    - product: Le Chat (vision)
+      company: Mistral AI
       year_deployed: 2024
-    - product: "Pixtral 12B (smaller open variant)"
-      company: "Mistral AI"
+    - product: Pixtral 12B (smaller open variant)
+      company: Mistral AI
       year_deployed: 2024
   investment_angle: |
     Vision capabilities have become table stakes for serious LLM
@@ -57,14 +89,14 @@ public_view:
     document QA) could beat closed frontier models on specific tasks
     while shipping open weights — particularly for math-heavy visual
     benchmarks.
-
 citations:
   - type: release
     key: mistral2024pixtral
-    title: "Pixtral Large"
+    title: Pixtral Large
     year: 2024
-    venue: "Mistral AI Blog"
-    url: "https://mistral.ai/news/pixtral-large/"
+    venue: Mistral AI Blog
+    url: 'https://mistral.ai/news/pixtral-large/'
+graph_featured: true
 ---
 
 ## What it shipped

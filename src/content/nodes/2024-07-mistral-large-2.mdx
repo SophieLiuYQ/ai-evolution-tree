@@ -1,31 +1,63 @@
 ---
 slug: mistral-large-2
-title: "Mistral Large 2 — France's Closed-Frontier Flagship"
-date: 2024-07-24
+title: Mistral Large 2 — France's Closed-Frontier Flagship
+date: '2024-07-24'
 era: scale-era
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: mixtral
-    type: scales
-    note: "Mistral's flagship dense model alongside the Mixtral MoE family; 123B dense for closed API"
+    type: builds_on
+    note: >-
+      [scales] Mistral's flagship dense model alongside the Mixtral MoE family;
+      123B dense for closed API
 authors:
-  - "Mistral AI Team"
-org: "Mistral AI"
+  - Mistral AI Team
+org: Mistral AI
 breakthrough_score: 6
 status: superseded
 model_spec:
-  parameters: "123B dense"
-  architecture: "Decoder-only transformer"
+  parameters: 123B dense
+  architecture: Decoder-only transformer
   context_window: 128000
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
+  homepage: 'https://mistral.ai/news/mistral-large-2407'
+  availability:
+    - api
+    - product
   benchmarks:
-    - name: "MMLU"
-      score: "84.0%"
-    - name: "HumanEval"
-      score: "92.0%"
-  homepage: "https://mistral.ai/news/mistral-large-2407"
-
+    - name: Intelligence · AA Intelligence Index
+      score: '15.10'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: Coding · AA Coding Index
+      score: '13.80'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: Coding · SciCode
+      score: 29.2% (27.1–29.2%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: Agentic · Terminal-Bench Hard
+      score: 6.1%
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: MMLU-Pro
+      score: 69.7% (68.3–69.7%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: GPQA
+      score: 48.6% (47.2–48.6%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: HLE
+      score: 4.0% (3.2–4.0%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: Speed · Output tok/s
+      score: '41'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $6.00 out
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+  aa_url: 'https://artificialanalysis.ai/models/mistral-large-2'
 public_view:
   plain_english: |
     Mistral's July 2024 flagship — a 123-billion-parameter dense model
@@ -38,14 +70,14 @@ public_view:
     European-hosted, with weights you can audit if you have a research
     license. Less censored, more open about training data origins.
   applications:
-    - product: "Le Chat (chat.mistral.ai)"
-      company: "Mistral AI"
+    - product: Le Chat (chat.mistral.ai)
+      company: Mistral AI
       year_deployed: 2024
-    - product: "Mistral La Plateforme API"
-      company: "Mistral AI"
+    - product: Mistral La Plateforme API
+      company: Mistral AI
       year_deployed: 2024
-    - product: "Microsoft Azure (model-as-a-service)"
-      company: "Microsoft"
+    - product: Microsoft Azure (model-as-a-service)
+      company: Microsoft
       year_deployed: 2024
   investment_angle: |
     Mistral is the European sovereign-AI bet. Mistral Large 2 anchored
@@ -57,19 +89,15 @@ public_view:
     Established that a non-US, non-Chinese lab could ship a frontier
     model. Mistral Large 2 was Europe's first independent frontier
     LLM and the foundation of the EU's AI sovereignty argument.
-
 citations:
   - type: release
     key: mistral2024large2
-    title: "Large Enough — Mistral Large 2"
+    title: Large Enough — Mistral Large 2
     year: 2024
-    venue: "Mistral AI Blog"
-    url: "https://mistral.ai/news/mistral-large-2407/"
+    venue: Mistral AI Blog
+    url: 'https://mistral.ai/news/mistral-large-2407/'
+graph_featured: true
 ---
-
-## What it is
-
-A 123B dense transformer with a 128K context window, native multilingual support across 11 languages, and strong code performance (92% HumanEval at release).
 
 ## Mistral product hierarchy
 

@@ -1,29 +1,38 @@
 ---
 slug: devin
-title: "Devin — First Autonomous Software Engineer Agent"
-date: 2024-03-12
+title: Devin — First Autonomous Software Engineer Agent
+date: '2024-03-12'
 era: agents
-category: [agents, generative, code]
+category:
+  - agents
+  - generative
+  - code
+  - multimodal
 relationships:
   - to: react-agents
     type: builds_on
-    note: "ReAct-pattern agent loop scaled to long-horizon SWE tasks; Cognition built the harness around frontier LLMs"
+    note: >-
+      ReAct-pattern agent loop scaled to long-horizon SWE tasks; Cognition built
+      the harness around frontier LLMs
 authors:
-  - "Cognition Team"
-org: "Cognition"
+  - Cognition Team
+org: Cognition
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "harness over frontier LLMs (Claude / GPT)"
-  architecture: "agent loop with shell, browser, editor, planner"
+  parameters: harness over frontier LLMs (Claude / GPT)
+  architecture: 'agent loop with shell, browser, editor, planner'
   release_type: product
-  modalities: [text, code]
+  modalities:
+    - text
+    - code
   benchmarks:
-    - name: "SWE-bench (initial demo)"
-      score: "13.86%"
-      vs_baseline: "GPT-4 RAG: 1.96%"
-  homepage: "https://cognition.ai/blog/introducing-devin"
-
+    - name: SWE-bench (initial demo)
+      score: 13.86%
+      vs_baseline: 'GPT-4 RAG: 1.96%'
+  homepage: 'https://cognition.ai/blog/introducing-devin'
+  availability:
+    - product
 public_view:
   plain_english: |
     Cognition AI's autonomous SWE agent — released as a demo in
@@ -38,11 +47,11 @@ public_view:
     work — opens a ticket, plans, codes, runs tests, fixes errors,
     and commits.
   applications:
-    - product: "Devin (cognition.ai)"
-      company: "Cognition"
+    - product: Devin (cognition.ai)
+      company: Cognition
       year_deployed: 2024
-    - product: "Enterprise pilots (banks, hyperscalers)"
-      company: "Multiple"
+    - product: 'Enterprise pilots (banks, hyperscalers)'
+      company: Multiple
       year_deployed: 2024
   investment_angle: |
     Cognition raised $200M+ at $4B valuation post-launch. Devin's
@@ -56,14 +65,14 @@ public_view:
     (Cursor Composer, Windsurf Cascade, Claude Code, Codex CLI) is
     a response to Devin's framing of "agent in a sandbox" as the
     right product shape.
-
 citations:
   - type: release
     key: cognition2024devin
-    title: "Introducing Devin, the first AI software engineer"
+    title: 'Introducing Devin, the first AI software engineer'
     year: 2024
-    venue: "Cognition Labs Blog"
-    url: "https://www.cognition.ai/blog/introducing-devin"
+    venue: Cognition Labs Blog
+    url: 'https://www.cognition.ai/blog/introducing-devin'
+graph_featured: true
 ---
 
 ## Why Devin mattered

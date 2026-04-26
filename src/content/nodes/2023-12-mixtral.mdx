@@ -1,42 +1,69 @@
 ---
 slug: mixtral-8x7b
-title: "Mixtral 8x7B — Open Sparse Mixture-of-Experts"
-date: 2023-12-11
+title: Mixtral 8x7B — Open Sparse Mixture-of-Experts
+date: '2023-12-11'
 era: scale-era
-category: [nlp, generative, architecture]
+category:
+  - nlp
+  - generative
+  - architecture
 relationships:
   - to: llama-2
     type: builds_on
-    note: "Inherits Mistral 7B base architecture; adds MoE feed-forward layers"
+    note: Inherits Mistral 7B base architecture; adds MoE feed-forward layers
 authors:
-  - "Jiang, A. Q."
-  - "Sablayrolles, A."
-  - "Roux, A."
-  - "Mensch, A."
-  - "et al."
-org: "Mistral AI"
+  - 'Jiang, A. Q.'
+  - 'Sablayrolles, A.'
+  - 'Roux, A.'
+  - 'Mensch, A.'
+  - et al.
+org: Mistral AI
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "46.7B total / 12.9B active per forward pass"
-  architecture: "8 experts × 7B; top-2 routing per token; MoE in FFN layers only"
+  parameters: 46.7B total / 12.9B active per forward pass
+  architecture: 8 experts × 7B; top-2 routing per token; MoE in FFN layers only
   context_window: 32768
-  training_tokens: "undisclosed"
+  training_tokens: undisclosed
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU"
-      score: "70.6%"
-      vs_baseline: "Llama 2 70B 68.9%, GPT-3.5 70.0%"
-    - name: "HumanEval"
-      score: "40.2%"
-      vs_baseline: "Llama 2 70B 29.9%"
-    - name: "GSM8K (math)"
-      score: "60.4%"
-      vs_baseline: "Llama 2 70B 56.8%"
-  homepage: "https://mistral.ai/news/mixtral-of-experts"
-  github: "https://github.com/mistralai/mistral-src"
-
+    - name: MMLU
+      score: 70.6%
+      vs_baseline: 'Llama 2 70B 68.9%, GPT-3.5 70.0%'
+    - name: HumanEval
+      score: 40.2%
+      vs_baseline: Llama 2 70B 29.9%
+    - name: GSM8K (math)
+      score: 60.4%
+      vs_baseline: Llama 2 70B 56.8%
+    - name: Intelligence · AA Intelligence Index
+      score: '7.70'
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+    - name: Coding · SciCode
+      score: 2.8%
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+    - name: MMLU-Pro
+      score: 38.7%
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+    - name: GPQA
+      score: 29.2%
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+    - name: HLE
+      score: 4.5%
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+    - name: Price ($/M tokens)
+      score: $0.45 in / $0.70 out
+      source_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+  homepage: 'https://mistral.ai/news/mixtral-of-experts'
+  github: 'https://github.com/mistralai/mistral-src'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
 public_view:
   plain_english: |
     A French startup's open-weight model that activates only 13B of its
@@ -51,11 +78,11 @@ public_view:
     router decides which two are best suited to answer this particular
     question. Same total knowledge, much faster answers.
   applications:
-    - product: "Le Chat (Mistral's consumer interface)"
-      company: "Mistral AI"
+    - product: Le Chat (Mistral's consumer interface)
+      company: Mistral AI
       year_deployed: 2024
-    - product: "Hosted inference at Together, Anyscale, Fireworks"
-      company: "Various"
+    - product: 'Hosted inference at Together, Anyscale, Fireworks'
+      company: Various
       year_deployed: 2023
   investment_angle: |
     Mistral AI raised $415M at a $2B valuation within 6 months of
@@ -73,37 +100,27 @@ public_view:
     open release (DeepSeek V2/V3, Qwen-MoE, Snowflake Arctic) traces
     its strategy to this launch. Marked the transition of open-source
     LLM development from "Llama clones" to architectural diversity.
-
 citations:
   - type: paper
     key: jiang2023mixtral
-    title: "Mixtral of Experts"
-    authors: ["Jiang, A. Q.", "Sablayrolles, A.", "Roux, A.", "Mensch, A.", "et al."]
+    title: Mixtral of Experts
+    authors:
+      - 'Jiang, A. Q.'
+      - 'Sablayrolles, A.'
+      - 'Roux, A.'
+      - 'Mensch, A.'
+      - et al.
     year: 2023
-    venue: "arXiv"
-    arxiv: "2401.04088"
+    venue: arXiv
+    arxiv: '2401.04088'
   - type: release
     key: mistral2023mixtral
-    title: "Mixtral of Experts (release)"
+    title: Mixtral of Experts (release)
     year: 2023
-    venue: "Mistral AI"
-    url: "https://mistral.ai/news/mixtral-of-experts/"
+    venue: Mistral AI
+    url: 'https://mistral.ai/news/mixtral-of-experts/'
+graph_featured: true
 ---
-
-## What it is
-
-A sparse Mixture-of-Experts (MoE) transformer where each feed-forward layer contains 8 separate "expert" subnetworks; for each token, a learned router picks the top 2 experts to route through. Total parameters: 46.7B. Active parameters per token: 12.9B.
-
-```
-Input token → Attention → Router → [Expert 1, Expert 2, ..., Expert 8]
-                              │
-                              ↓ (top 2 selected)
-                         Expert 3 + Expert 7
-                              ↓
-                         Weighted sum → Output token
-```
-
-The MoE is in the feed-forward layers only; attention layers are dense (shared across experts).
 
 ## How Mixtral compares to peers
 

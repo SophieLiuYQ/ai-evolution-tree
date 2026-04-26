@@ -1,39 +1,86 @@
 ---
 slug: kimi-k2
-title: "Kimi K2 — Moonshot's Open MoE Reasoning"
-date: 2025-07-11
+title: Kimi K2 — Moonshot's Open MoE Reasoning
+date: '2025-07-11'
 era: reasoning
-category: [nlp, generative, agents]
+category:
+  - nlp
+  - generative
+  - agents
 relationships:
   - to: kimi-chat
-    type: scales
-    note: "Successor to Kimi product line; first Moonshot open-weight foundation model"
+    type: builds_on
+    note: >-
+      [scales] Successor to Kimi product line; first Moonshot open-weight
+      foundation model
   - to: deepseek-v3
     type: builds_on
-    note: "MoE architecture in the DeepSeek V3 / Mixtral lineage"
+    note: MoE architecture in the DeepSeek V3 / Mixtral lineage
+  - to: grok-4
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Moonshot AI Team"
-org: "Moonshot AI"
+  - Moonshot AI Team
+org: Moonshot AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "~1T total / ~32B active"
-  architecture: "Sparse MoE + extended-context attention + reasoning post-training"
+  parameters: ~1T total / ~32B active
+  architecture: Sparse MoE + extended-context attention + reasoning post-training
   context_window: 200000
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "MMLU"
-      score: "~89%"
-      vs_baseline: "DeepSeek V3 88.5%, Llama 3.1 405B 88.6%"
-    - name: "SWE-bench Verified"
-      score: "~75%"
-      vs_baseline: "Claude Sonnet 4 73.6%, DeepSeek V3 ~67%"
-    - name: "AIME 2024"
-      score: "~85%"
-  homepage: "https://moonshotai.github.io/Kimi-K2/"
-  github: "https://github.com/MoonshotAI/Kimi-K2"
-
+    - name: Preference · LMArena Rank
+      score: '#1'
+      vs_baseline: 'Rank #1 of 189 · Top 1% · LMArena'
+      source_url: 'https://lmarena.ai/leaderboard'
+    - name: Vision · MMMU-Pro
+      score: 73.1%
+      vs_baseline: 'Rank #9 of 26 · Top #9 of 26 · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
+    - name: Intelligence · AA Intelligence Index
+      score: '53.90'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: Coding · AA Coding Index
+      score: '47.10'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: Coding · SciCode
+      score: 53.5% (30.7–53.5%)
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: Agentic · Terminal-Bench Hard
+      score: 43.9% (15.9–43.9%)
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: MMLU-Pro
+      score: 84.8% (81.9–84.8%)
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: GPQA
+      score: 91.1% (76.6–91.1%)
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: HLE
+      score: 35.9% (6.3–35.9%)
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: Speed · Output tok/s
+      score: '126'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+    - name: Price ($/M tokens)
+      score: $0.95 in / $4.00 out
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-6'
+  homepage: 'https://moonshotai.github.io/Kimi-K2/'
+  github: 'https://github.com/MoonshotAI/Kimi-K2'
+  availability:
+    - open_weights
+    - api
+    - product
+  aa_url: 'https://artificialanalysis.ai/models/kimi-k2'
+  modalities_in:
+    - text
+    - image
+    - video
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/moonshotai/Kimi-K2.5'
 public_view:
   plain_english: |
     Moonshot AI's first open-weight foundation model, released July
@@ -49,14 +96,14 @@ public_view:
     plateaued, K2 reset the company narrative around foundation-
     model capability that any developer could download.
   applications:
-    - product: "Kimi K2 hosted on Moonshot API"
-      company: "Moonshot AI"
+    - product: Kimi K2 hosted on Moonshot API
+      company: Moonshot AI
       year_deployed: 2025
-    - product: "Hugging Face / Together / Fireworks hosting"
-      company: "Various"
+    - product: Hugging Face / Together / Fireworks hosting
+      company: Various
       year_deployed: 2025
-    - product: "Kimi consumer app (continued)"
-      company: "Moonshot AI"
+    - product: Kimi consumer app (continued)
+      company: Moonshot AI
       year_deployed: 2024
   investment_angle: |
     Kimi K2's release was Moonshot's recovery move after a
@@ -75,19 +122,15 @@ public_view:
     Baichuan, and Stepfun all maintain meaningful open-weight
     presence in 2025-26. The "Chinese open ecosystem" is a
     multi-lab phenomenon, not a single-vendor story.
-
 citations:
   - type: release
     key: moonshot2025k2
-    title: "Kimi K2 release"
+    title: Kimi K2 release
     year: 2025
-    venue: "Moonshot AI"
-    url: "https://github.com/MoonshotAI/Kimi-K2"
+    venue: Moonshot AI
+    url: 'https://github.com/MoonshotAI/Kimi-K2'
+graph_featured: true
 ---
-
-## What it is
-
-A trillion-parameter open-weight Mixture-of-Experts foundation model from Moonshot AI, released July 2025. Architecturally similar to DeepSeek V3 (sparse MoE in the modern style), with Moonshot-specific training data emphasizing Chinese-English bilingual quality and agentic tool use.
 
 ## Kimi K2 vs concurrent open peers (mid-2025)
 

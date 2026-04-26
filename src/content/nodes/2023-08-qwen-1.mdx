@@ -1,38 +1,48 @@
 ---
 slug: qwen-1
-title: "Qwen-7B / Qwen-14B — Alibaba's First Major Open Model"
-date: 2023-08-03
+title: Qwen-7B / Qwen-14B — Alibaba's First Major Open Model
+date: '2023-08-03'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: llama-2
     type: builds_on
-    note: "Decoder-only transformer broadly in Llama style; trained on heavily Chinese-filtered web"
+    note: >-
+      Decoder-only transformer broadly in Llama style; trained on heavily
+      Chinese-filtered web
   - to: chatglm
     type: competes_with
-    note: "Direct domestic competitor in the Chinese open-LLM market"
+    note: Direct domestic competitor in the Chinese open-LLM market
 authors:
-  - "Qwen Team, Alibaba"
-org: "Alibaba"
+  - 'Qwen Team, Alibaba'
+org: Alibaba
 breakthrough_score: 7
 status: superseded
 model_spec:
-  parameters: "7B / 14B (later: 72B)"
-  architecture: "Decoder-only transformer with RoPE, SwiGLU, RMSNorm"
+  parameters: '7B / 14B (later: 72B)'
+  architecture: 'Decoder-only transformer with RoPE, SwiGLU, RMSNorm'
   context_window: 8192
-  training_tokens: "2.4T (heavily filtered Chinese + English + code)"
+  training_tokens: 2.4T (heavily filtered Chinese + English + code)
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "C-Eval (Chinese)"
-      score: "63.5% (Qwen-14B)"
-      vs_baseline: "Llama 2 13B 32.5%, ChatGLM2 51.7%"
-    - name: "MMLU (English)"
-      score: "66.3% (Qwen-14B)"
-      vs_baseline: "Llama 2 13B 54.8%"
-  homepage: "https://qwenlm.github.io/blog/qwen/"
-  github: "https://github.com/QwenLM/Qwen"
-
+    - name: C-Eval (Chinese)
+      score: 63.5% (Qwen-14B)
+      vs_baseline: 'Llama 2 13B 32.5%, ChatGLM2 51.7%'
+    - name: MMLU (English)
+      score: 66.3% (Qwen-14B)
+      vs_baseline: Llama 2 13B 54.8%
+  homepage: 'https://qwenlm.github.io/blog/qwen/'
+  github: 'https://github.com/QwenLM/Qwen'
+  availability:
+    - open_weights
+  aa_url: 'https://artificialanalysis.ai/models/qwen1.5-110b-chat'
+  hf_url: 'https://huggingface.co/Qwen/Qwen-72B-Chat'
+  modalities_in:
+    - text
 public_view:
   plain_english: |
     Alibaba's first publicly-released open-weight foundation model
@@ -47,14 +57,14 @@ public_view:
     Llama 2 played for Meta, with the same kind of commercial-license
     bet on ecosystem traction.
   applications:
-    - product: "Tongyi Qianwen (Alibaba consumer chat product)"
-      company: "Alibaba"
+    - product: Tongyi Qianwen (Alibaba consumer chat product)
+      company: Alibaba
       year_deployed: 2023
-    - product: "Aliyun Bailian (enterprise model marketplace)"
-      company: "Alibaba Cloud"
+    - product: Aliyun Bailian (enterprise model marketplace)
+      company: Alibaba Cloud
       year_deployed: 2023
-    - product: "Hundreds of community fine-tunes on Hugging Face"
-      company: "Various"
+    - product: Hundreds of community fine-tunes on Hugging Face
+      company: Various
       year_deployed: 2023
   investment_angle: |
     Qwen was Alibaba's strategic answer to Baidu's Ernie and ByteDance's
@@ -72,26 +82,26 @@ public_view:
     DeepSeek, ByteDance Doubao (partial), and Tencent Hunyuan. The
     pattern is structurally different from US hyperscalers (where Meta
     is the only major open-weight publisher).
-
 citations:
   - type: paper
     key: bai2023qwen
-    title: "Qwen Technical Report"
-    authors: ["Bai, J.", "Bai, S.", "Chu, Y.", "et al."]
+    title: Qwen Technical Report
+    authors:
+      - 'Bai, J.'
+      - 'Bai, S.'
+      - 'Chu, Y.'
+      - et al.
     year: 2023
-    venue: "arXiv"
-    arxiv: "2309.16609"
+    venue: arXiv
+    arxiv: '2309.16609'
   - type: release
     key: alibaba2023qwen
-    title: "Qwen-7B Open Source Release"
+    title: Qwen-7B Open Source Release
     year: 2023
-    venue: "Alibaba"
-    url: "https://github.com/QwenLM/Qwen"
+    venue: Alibaba
+    url: 'https://github.com/QwenLM/Qwen'
+graph_featured: true
 ---
-
-## What it is
-
-A foundation model family from Alibaba's DAMO Academy / Tongyi Lab, released open-weight in two sizes (7B and 14B) on August 3, 2023, with a 72B variant added in November 2023. Architecturally Llama-2-style with Alibaba-specific tokenizer optimizations for Chinese (vocab ~152k including Chinese characters and common BPE merges).
 
 ## Qwen vs concurrent open models (Q3 2023)
 

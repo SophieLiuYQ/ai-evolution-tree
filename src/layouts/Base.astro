@@ -121,6 +121,11 @@ const isActive = (p: string) =>
             data-i18n="nav.timeline">Timeline</a
           >
           <a
+            href="/company/"
+            class={`rounded-md px-3 py-1.5 ${isActive("/company") ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
+            data-i18n="nav.companies">Companies</a
+          >
+          <a
             href="/about/"
             class={`rounded-md px-3 py-1.5 ${isActive("/about") ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
             data-i18n="nav.about">About</a
@@ -167,14 +172,6 @@ const isActive = (p: string) =>
     <main class="mx-auto max-w-6xl px-6 py-8">
       <slot />
     </main>
-
-    <footer
-      class="mt-20 border-t border-[var(--border)] bg-white py-6 text-center text-sm text-[var(--fg-muted)]"
-    >
-      <p data-i18n="footer.license">
-        Code: MIT · Content: CC-BY-SA 4.0 · A community-curated tree of AI advancements.
-      </p>
-    </footer>
 
     <style is:global>
       /* Language toggle — shared styling for the nav-corner toggle

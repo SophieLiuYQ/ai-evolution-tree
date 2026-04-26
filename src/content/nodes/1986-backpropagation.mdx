@@ -1,24 +1,27 @@
 ---
 slug: backpropagation
-title: "Backpropagation for Multi-Layer Networks"
-date: 1986-10-09
+title: Backpropagation for Multi-Layer Networks
+date: '1986-10-09'
 era: foundations
-category: [theory, training]
+category:
+  - theory
+  - training
+  - nlp
 relationships:
   - to: perceptron
     type: builds_on
-    note: "Generalizes single-neuron weight updates to arbitrary depth via chain rule"
+    note: Generalizes single-neuron weight updates to arbitrary depth via chain rule
 authors:
-  - "Rumelhart, D. E."
-  - "Hinton, G. E."
-  - "Williams, R. J."
-org: "UC San Diego / CMU"
+  - 'Rumelhart, D. E.'
+  - 'Hinton, G. E.'
+  - 'Williams, R. J.'
+org: UC San Diego / CMU
 breakthrough_score: 10
 status: foundational
-
 model_spec:
-  homepage: "https://www.nature.com/articles/323533a0"
-
+  homepage: 'https://www.nature.com/articles/323533a0'
+  modalities:
+    - text
 public_view:
   plain_english: |
     A way to train networks with multiple layers of neurons by efficiently
@@ -32,8 +35,8 @@ public_view:
     was responsible, and sending a calibrated correction to every one
     simultaneously.
   applications:
-    - product: "Every deep learning system since 2012"
-      company: "Everyone"
+    - product: Every deep learning system since 2012
+      company: Everyone
       year_deployed: 2012
   investment_angle: |
     The learning algorithm underneath ~100% of modern AI value creation.
@@ -46,30 +49,30 @@ public_view:
     to stack many layers and learn curved ones — which is to say, to learn
     anything. It is the load-bearing piece underneath every image model,
     every language model, and every recommendation system you use.
-
 citations:
   - type: paper
     key: rumelhart1986learning
-    title: "Learning representations by back-propagating errors"
-    authors: ["Rumelhart, D. E.", "Hinton, G. E.", "Williams, R. J."]
+    title: Learning representations by back-propagating errors
+    authors:
+      - 'Rumelhart, D. E.'
+      - 'Hinton, G. E.'
+      - 'Williams, R. J.'
     year: 1986
-    venue: "Nature"
-    doi: "10.1038/323533a0"
-    url: "https://www.nature.com/articles/323533a0"
+    venue: Nature
+    doi: 10.1038/323533a0
+    url: 'https://www.nature.com/articles/323533a0'
   - type: paper
     key: werbos1974beyond
-    title: "Beyond Regression: New Tools for Prediction and Analysis in the Behavioral Sciences"
-    authors: ["Werbos, P."]
+    title: >-
+      Beyond Regression: New Tools for Prediction and Analysis in the Behavioral
+      Sciences
+    authors:
+      - 'Werbos, P.'
     year: 1974
-    venue: "Harvard PhD Thesis"
-    url: "https://www.researchgate.net/publication/35657389"
+    venue: Harvard PhD Thesis
+    url: 'https://www.researchgate.net/publication/35657389'
+graph_featured: true
 ---
-
-## What it is
-
-Backpropagation is the application of the chain rule of calculus to compute the gradient of a neural network's loss with respect to every weight in the network, in a single backward pass whose cost is proportional to the forward pass.
-
-The 1986 Rumelhart-Hinton-Williams paper was not the first derivation — Werbos (1974) and Linnainmaa (1970) got there earlier — but it was the paper that made the community see the algorithm as a general-purpose, practical training procedure for multi-layer networks.
 
 ## How it works
 

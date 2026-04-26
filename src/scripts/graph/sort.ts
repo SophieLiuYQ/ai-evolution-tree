@@ -58,6 +58,7 @@ export function attachSortHandlers() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (
       saved === "chronological" ||
+      saved === "byFamily" ||
       saved === "byOrg" ||
       saved === "byLicense"
     ) {

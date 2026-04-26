@@ -3,7 +3,13 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Tree from "../components/Tree.astro";
 
-const nodes = await getCollection("nodes");
+const allNodes = await getCollection("nodes");
+const hasFeatured = allNodes.some((n) => n.data.graph_featured);
+const nodes = allNodes.filter((n) => {
+  if (n.data.graph_hidden) return false;
+  if (hasFeatured) return !!n.data.graph_featured;
+  return true;
+});
 ---
 
 <Base title="Timeline · AI Evolution Tree">

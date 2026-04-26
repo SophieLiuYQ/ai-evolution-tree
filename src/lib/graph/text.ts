@@ -7,6 +7,16 @@ export function clip(s: string, max: number): string {
   return s.length > max ? s.slice(0, max - 1) + "…" : s;
 }
 
+// Display-only casing normalization for common model acronyms.
+// (Keeps content editable while making the graph typography consistent.)
+export function normalizeTitleCasing(title: string): string {
+  let s = String(title ?? "");
+  // gpt-5, gpt5, gpt 5 → GPT-5/GPT5/GPT 5
+  s = s.replace(/\bgpt(?=[-\s]?\d)/gi, "GPT");
+  s = s.replace(/\bgpt\b/gi, "GPT");
+  return s;
+}
+
 // Strip verbose parenthetical variants ("(base)", "(big)") so the most
 // representative number fits without overflowing
 export function simplifyParams(p: string): string {
@@ -17,10 +27,12 @@ export function simplifyParams(p: string): string {
 }
 
 export function fmtCtx(c: number): string {
-  // Always round to integer — never show "32.768k", show "33k"
-  if (c >= 1_000_000) return `${Math.round(c / 1_000_000)}M ctx`;
-  if (c >= 1000) return `${Math.round(c / 1000)}k ctx`;
-  return `${c} ctx`;
+  // Always round to integer — never show "32.768k", show "33k". Use
+  // compact "k" / "M" suffix; the calling context already labels the
+  // field as Context, so no need to repeat "ctx" / "tokens" here.
+  if (c >= 1_000_000) return `${Math.round(c / 1_000_000)}M`;
+  if (c >= 1000) return `${Math.round(c / 1000)}k`;
+  return `${c}`;
 }
 
 export function fmtSpec(
@@ -94,4 +106,3 @@ export function fitAxisLabel(
   }
   return { lines, fontSize: fs };
 }
-

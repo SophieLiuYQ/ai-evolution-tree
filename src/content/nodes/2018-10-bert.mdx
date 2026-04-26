@@ -1,45 +1,52 @@
 ---
 slug: bert
-title: "BERT — Bidirectional Encoder Representations from Transformers"
-date: 2018-10-11
+title: BERT — Bidirectional Encoder Representations from Transformers
+date: '2018-10-11'
 era: transformer
-category: [nlp, training, architecture]
+category:
+  - nlp
+  - training
+  - architecture
 relationships:
   - to: transformer
     type: builds_on
-    note: "Encoder-only stack from the original transformer"
+    note: Encoder-only stack from the original transformer
   - to: gpt-1
     type: competes_with
-    note: "Bidirectional masked LM vs left-to-right; outperformed GPT-1 on GLUE by ~7.7 points"
+    note: >-
+      Bidirectional masked LM vs left-to-right; outperformed GPT-1 on GLUE by
+      ~7.7 points
 authors:
-  - "Devlin, J."
-  - "Chang, M.-W."
-  - "Lee, K."
-  - "Toutanova, K."
-org: "Google"
+  - 'Devlin, J.'
+  - 'Chang, M.-W.'
+  - 'Lee, K.'
+  - 'Toutanova, K.'
+org: Google
 breakthrough_score: 9
 status: foundational
 model_spec:
-  parameters: "110M (base) / 340M (large)"
-  architecture: "Encoder-only transformer, masked LM + next-sentence prediction"
+  parameters: 110M (base) / 340M (large)
+  architecture: 'Encoder-only transformer, masked LM + next-sentence prediction'
   context_window: 512
-  training_tokens: "~3.3B (BooksCorpus + English Wikipedia)"
-  training_compute: "~64 TPUv2 chips × 4 days (large)"
+  training_tokens: ~3.3B (BooksCorpus + English Wikipedia)
+  training_compute: ~64 TPUv2 chips × 4 days (large)
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "GLUE (avg)"
-      score: "80.5 (large)"
-      vs_baseline: "GPT-1 72.8, prior task SOTA ~75"
-    - name: "SQuAD v1.1 F1"
-      score: "93.2"
-      vs_baseline: "human 91.2 — first system to surpass human"
-    - name: "MultiNLI accuracy"
-      score: "86.7"
-      vs_baseline: "GPT-1 82.1"
-  homepage: "https://arxiv.org/abs/1810.04805"
-  github: "https://github.com/google-research/bert"
-
+    - name: GLUE (avg)
+      score: 80.5 (large)
+      vs_baseline: 'GPT-1 72.8, prior task SOTA ~75'
+    - name: SQuAD v1.1 F1
+      score: '93.2'
+      vs_baseline: human 91.2 — first system to surpass human
+    - name: MultiNLI accuracy
+      score: '86.7'
+      vs_baseline: GPT-1 82.1
+  homepage: 'https://arxiv.org/abs/1810.04805'
+  github: 'https://github.com/google-research/bert'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     Google's transformer-based language model that read text in both
@@ -51,14 +58,14 @@ public_view:
     treated sentences like a crossword puzzle, looking at all the
     surrounding context to fill in masked words.
   applications:
-    - product: "Google Search ranking"
-      company: "Google"
+    - product: Google Search ranking
+      company: Google
       year_deployed: 2019
-    - product: "Hugging Face Transformers (catalyst)"
-      company: "Hugging Face"
+    - product: Hugging Face Transformers (catalyst)
+      company: Hugging Face
       year_deployed: 2018
-    - product: "Bing Search"
-      company: "Microsoft"
+    - product: Bing Search
+      company: Microsoft
       year_deployed: 2019
   investment_angle: |
     BERT made transformer pretraining the dominant NLP paradigm and
@@ -72,24 +79,22 @@ public_view:
     industry to "transformers everywhere." Its open release set the
     norm that NLP weights would be public — a norm OpenAI later broke
     with GPT-3 to build a business.
-
 citations:
   - type: paper
     key: devlin2018bert
-    title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
-    authors: ["Devlin, J.", "Chang, M.-W.", "Lee, K.", "Toutanova, K."]
+    title: >-
+      BERT: Pre-training of Deep Bidirectional Transformers for Language
+      Understanding
+    authors:
+      - 'Devlin, J.'
+      - 'Chang, M.-W.'
+      - 'Lee, K.'
+      - 'Toutanova, K.'
     year: 2018
-    venue: "NAACL 2019"
-    arxiv: "1810.04805"
+    venue: NAACL 2019
+    arxiv: '1810.04805'
+graph_featured: true
 ---
-
-## What it is
-
-An encoder-only transformer pretrained with two objectives:
-1. **Masked Language Modeling (MLM)** — randomly mask 15% of input tokens, predict them from bidirectional context.
-2. **Next Sentence Prediction (NSP)** — given two sentences, predict whether B follows A. (Later work, RoBERTa, showed this objective was unnecessary.)
-
-The bidirectional context was the key insight — every token sees every other token in the input, unlike GPT-1's left-to-right.
 
 ## How it compares to GPT-1
 

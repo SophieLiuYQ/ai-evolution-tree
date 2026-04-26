@@ -1,25 +1,34 @@
 ---
 slug: figure-helix
-title: "Figure Helix — Humanoid VLA"
-date: 2025-02-20
+title: Figure Helix — Humanoid VLA
+date: '2025-02-20'
 era: agents
-category: [agents, multimodal, generative]
+category:
+  - agents
+  - multimodal
+  - generative
+  - cv
 relationships:
   - to: gemini-robotics
     type: competes_with
-    note: "Closed-source vertically integrated VLA; Figure builds both the brain (Helix) and body (Figure 02/03)"
+    note: >-
+      Closed-source vertically integrated VLA; Figure builds both the brain
+      (Helix) and body (Figure 02/03)
 authors:
-  - "Figure AI Team"
-org: "Figure AI"
+  - Figure AI Team
+org: Figure AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "undisclosed"
-  architecture: "Two-system VLA: System 1 (fast control) + System 2 (slow reasoning)"
+  parameters: undisclosed
+  architecture: 'Two-system VLA: System 1 (fast control) + System 2 (slow reasoning)'
   release_type: product
-  modalities: [vision, generative]
-  homepage: "https://www.figure.ai/news/helix"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://www.figure.ai/news/helix'
+  availability:
+    - product
 public_view:
   plain_english: |
     Figure's vision-language-action model for the Figure 02 and 03
@@ -32,11 +41,11 @@ public_view:
     robot — one fast reflexive layer, one slow deliberate layer,
     working together.
   applications:
-    - product: "Figure 02 humanoid (BMW factory)"
-      company: "Figure AI"
+    - product: Figure 02 humanoid (BMW factory)
+      company: Figure AI
       year_deployed: 2024
-    - product: "Figure 03 home humanoid"
-      company: "Figure AI"
+    - product: Figure 03 home humanoid
+      company: Figure AI
       year_deployed: 2025
   investment_angle: |
     Figure raised $675M at $2.6B valuation in early 2024, then
@@ -49,14 +58,14 @@ public_view:
     cloud-hosted models like Gemini Robotics can't match for
     latency. Established the two-system control pattern that other
     humanoid teams have begun adopting.
-
 citations:
   - type: release
     key: figure2025helix
-    title: "Helix: A Vision-Language-Action Model for Generalist Humanoid Control"
+    title: 'Helix: A Vision-Language-Action Model for Generalist Humanoid Control'
     year: 2025
-    venue: "Figure AI Blog"
-    url: "https://www.figure.ai/news/helix"
+    venue: Figure AI Blog
+    url: 'https://www.figure.ai/news/helix'
+graph_featured: true
 ---
 
 ## Humanoid landscape

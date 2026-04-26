@@ -1,31 +1,39 @@
 ---
 slug: mcp
-title: "Model Context Protocol — Open Tool / Context Standard"
-date: 2024-11-25
+title: Model Context Protocol — Open Tool / Context Standard
+date: '2024-11-25'
 era: agents
-category: [agents]
+category:
+  - agents
+  - nlp
 relationships:
   - to: react-agents
     type: builds_on
-    note: "Standardizes the tool-calling pattern ReAct established; protocol-level rather than per-app"
+    note: >-
+      Standardizes the tool-calling pattern ReAct established; protocol-level
+      rather than per-app
   - to: claude-3-5-sonnet
-    type: applies
-    note: "Initial reference implementation in Claude Desktop and developer tooling"
+    type: builds_on
+    note: >-
+      [applies] Initial reference implementation in Claude Desktop and developer
+      tooling
 authors:
-  - "Anthropic Team + community"
-org: "Anthropic"
+  - Anthropic Team + community
+org: Anthropic
 breakthrough_score: 7
 status: active
 model_spec:
   release_type: open_weights
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Servers / integrations published (community)"
-      score: ">5,000 by Q3 2025; >15,000 by early 2026"
-      vs_baseline: "first protocol with substantial multi-vendor adoption in agentic AI"
-  homepage: "https://modelcontextprotocol.io/"
-  github: "https://github.com/modelcontextprotocol"
-
+    - name: Servers / integrations published (community)
+      score: '>5,000 by Q3 2025; >15,000 by early 2026'
+      vs_baseline: first protocol with substantial multi-vendor adoption in agentic AI
+  homepage: 'https://modelcontextprotocol.io/'
+  github: 'https://github.com/modelcontextprotocol'
+  availability:
+    - open_weights
 public_view:
   plain_english: |
     An open protocol Anthropic released in November 2024 for
@@ -43,17 +51,19 @@ public_view:
     across the industry. MCP plays the same role for the
     AI-to-tool integration layer.
   applications:
-    - product: "Claude Desktop (first reference implementation)"
-      company: "Anthropic"
+    - product: Claude Desktop (first reference implementation)
+      company: Anthropic
       year_deployed: 2024
-    - product: "Cursor / Windsurf / Zed (IDE integrations)"
-      company: "Various"
+    - product: Cursor / Windsurf / Zed (IDE integrations)
+      company: Various
       year_deployed: 2024
-    - product: "ChatGPT (MCP support added 2025)"
-      company: "OpenAI"
+    - product: ChatGPT (MCP support added 2025)
+      company: OpenAI
       year_deployed: 2025
-    - product: "Thousands of community MCP servers (Slack, Linear, GitHub, databases, etc.)"
-      company: "Open ecosystem"
+    - product: >-
+        Thousands of community MCP servers (Slack, Linear, GitHub, databases,
+        etc.)
+      company: Open ecosystem
       year_deployed: 2024
   investment_angle: |
     MCP's adoption trajectory was the surprise of late-2024 / 2025
@@ -76,30 +86,21 @@ public_view:
     something else) is the open question — but its current
     momentum makes it the de facto standard for agent
     integration in 2025-26.
-
 citations:
   - type: release
     key: anthropic2024mcp
-    title: "Introducing the Model Context Protocol"
+    title: Introducing the Model Context Protocol
     year: 2024
-    venue: "Anthropic"
-    url: "https://www.anthropic.com/news/model-context-protocol"
+    venue: Anthropic
+    url: 'https://www.anthropic.com/news/model-context-protocol'
   - type: release
     key: mcp_spec
-    title: "MCP Specification"
+    title: MCP Specification
     year: 2024
-    venue: "modelcontextprotocol.io"
-    url: "https://modelcontextprotocol.io/"
+    venue: modelcontextprotocol.io
+    url: 'https://modelcontextprotocol.io/'
+graph_featured: true
 ---
-
-## What it is
-
-An open client-server protocol for AI applications to access tools, data, and prompts from external services. Released by Anthropic on November 25, 2024 with reference SDKs in Python and TypeScript and an open specification.
-
-Architecture:
-- **MCP Server** — exposes tools (callable functions), resources (readable data), and prompts (reusable prompt templates) via a standard JSON-RPC schema
-- **MCP Client** — embedded in an AI app (Claude Desktop, Cursor, ChatGPT, etc.); connects to one or more MCP servers and presents their offerings to the model
-- **Model** — calls tools / reads resources via the client, with the protocol abstracting over which specific server is providing the capability
 
 ## Why MCP succeeded where prior standards stalled
 

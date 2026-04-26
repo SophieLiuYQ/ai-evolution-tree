@@ -1,37 +1,44 @@
 ---
 slug: chain-of-thought
-title: "Chain-of-Thought Prompting (CoT)"
-date: 2022-01-28
+title: Chain-of-Thought Prompting (CoT)
+date: '2022-01-28'
 era: reasoning
-category: [nlp, training, theory]
+category:
+  - nlp
+  - training
+  - theory
 relationships:
   - to: gpt-3
-    type: applies
-    note: "Discovered as an emergent capability of GPT-3-class models at >60B parameters"
+    type: builds_on
+    note: >-
+      [applies] Discovered as an emergent capability of GPT-3-class models at
+      >60B parameters
 authors:
-  - "Wei, J."
-  - "Wang, X."
-  - "Schuurmans, D."
-  - "Bosma, M."
-  - "Ichter, B."
-  - "Xia, F."
-  - "Chi, E."
-  - "Le, Q."
-  - "Zhou, D."
-org: "Google"
+  - 'Wei, J.'
+  - 'Wang, X.'
+  - 'Schuurmans, D.'
+  - 'Bosma, M.'
+  - 'Ichter, B.'
+  - 'Xia, F.'
+  - 'Chi, E.'
+  - 'Le, Q.'
+  - 'Zhou, D.'
+org: Google
 breakthrough_score: 8
 status: foundational
 model_spec:
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "GSM8K (PaLM 540B + CoT vs standard)"
-      score: "57% vs 18% (3.2× improvement)"
-      vs_baseline: "demonstrates emergent reasoning at scale"
-    - name: "SVAMP (PaLM + CoT)"
-      score: "~80% vs ~70% standard prompting"
-  homepage: "https://arxiv.org/abs/2201.11903"
-
+    - name: GSM8K (PaLM 540B + CoT vs standard)
+      score: 57% vs 18% (3.2× improvement)
+      vs_baseline: demonstrates emergent reasoning at scale
+    - name: SVAMP (PaLM + CoT)
+      score: ~80% vs ~70% standard prompting
+  homepage: 'https://arxiv.org/abs/2201.11903'
+  availability:
+    - research
 public_view:
   plain_english: |
     A prompting technique that simply asks the model to "show its
@@ -44,11 +51,11 @@ public_view:
     asking them to write out the multiplication. Same brain, same
     knowledge — vastly better answer when given room to reason.
   applications:
-    - product: "Default behavior in every modern chat LLM"
-      company: "All providers"
+    - product: Default behavior in every modern chat LLM
+      company: All providers
       year_deployed: 2023
-    - product: "Foundational technique behind o1, R1, Claude reasoning"
-      company: "OpenAI, DeepSeek, Anthropic, Google"
+    - product: 'Foundational technique behind o1, R1, Claude reasoning'
+      company: 'OpenAI, DeepSeek, Anthropic, Google'
       year_deployed: 2024
   investment_angle: |
     CoT is the simplest, most-cited prompting technique in AI history
@@ -64,39 +71,32 @@ public_view:
     model's computation at inference time. This three-axis view
     (params × data × inference compute) is now the standard frame for
     LLM capability planning.
-
 citations:
   - type: paper
     key: wei2022cot
-    title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
-    authors: ["Wei, J.", "Wang, X.", "Schuurmans, D.", "et al."]
+    title: Chain-of-Thought Prompting Elicits Reasoning in Large Language Models
+    authors:
+      - 'Wei, J.'
+      - 'Wang, X.'
+      - 'Schuurmans, D.'
+      - et al.
     year: 2022
-    venue: "NeurIPS"
-    arxiv: "2201.11903"
+    venue: NeurIPS
+    arxiv: '2201.11903'
   - type: paper
     key: kojima2022zero
-    title: "Large Language Models are Zero-Shot Reasoners"
-    authors: ["Kojima, T.", "Gu, S. S.", "Reid, M.", "Matsuo, Y.", "Iwasawa, Y."]
+    title: Large Language Models are Zero-Shot Reasoners
+    authors:
+      - 'Kojima, T.'
+      - 'Gu, S. S.'
+      - 'Reid, M.'
+      - 'Matsuo, Y.'
+      - 'Iwasawa, Y.'
     year: 2022
-    venue: "NeurIPS"
-    arxiv: "2205.11916"
+    venue: NeurIPS
+    arxiv: '2205.11916'
+graph_featured: true
 ---
-
-## What it is
-
-A prompting technique: instead of asking "Q: [problem] A:", ask "Q: [problem] A: Let's think step by step." or provide few-shot examples that include reasoning chains. The model then emits its reasoning before the final answer, and the final answer is substantially more accurate on multi-step problems.
-
-```
-Standard prompt:
-  Q: Roger has 5 tennis balls. He buys 2 more cans, each with 3 balls.
-     How many balls does Roger have now?
-  A: 11.    ← often wrong
-
-Chain-of-thought prompt:
-  Q: [same]
-  A: Roger started with 5 balls. 2 cans × 3 balls = 6 new balls.
-     5 + 6 = 11 balls. The answer is 11.    ← much higher accuracy
-```
 
 ## Why this matters mechanically
 

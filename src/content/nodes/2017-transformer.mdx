@@ -1,38 +1,42 @@
 ---
 slug: transformer
-title: "Attention Is All You Need (Transformer)"
-date: 2017-06-12
+title: Attention Is All You Need (Transformer)
+date: '2017-06-12'
 era: transformer
-category: [nlp, architecture]
+category:
+  - nlp
+  - architecture
 relationships:
   - to: backpropagation
     type: builds_on
-    note: "Standard differentiable architecture trained by gradient descent"
+    note: Standard differentiable architecture trained by gradient descent
 authors:
-  - "Vaswani, A."
-  - "Shazeer, N."
-  - "Parmar, N."
-  - "Uszkoreit, J."
-  - "et al."
-org: "Google Brain"
+  - 'Vaswani, A.'
+  - 'Shazeer, N.'
+  - 'Parmar, N.'
+  - 'Uszkoreit, J.'
+  - et al.
+org: Google Brain
 breakthrough_score: 10
 status: foundational
 model_spec:
-  parameters: "65M (base) / 213M (big)"
-  architecture: "Encoder-decoder, multi-head self-attention, sinusoidal positional encoding"
+  parameters: 65M (base) / 213M (big)
+  architecture: 'Encoder-decoder, multi-head self-attention, sinusoidal positional encoding'
   context_window: 512
   release_type: paper
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "WMT'14 EN-DE BLEU"
-      score: "28.4 (big)"
-      vs_baseline: "prior SOTA ConvS2S 26.4"
-    - name: "WMT'14 EN-FR BLEU"
-      score: "41.8 (big)"
-      vs_baseline: "prior SOTA 41.2 — at fraction of training cost"
-  homepage: "https://arxiv.org/abs/1706.03762"
-  github: "https://github.com/tensorflow/tensor2tensor"
-
+    - name: WMT'14 EN-DE BLEU
+      score: 28.4 (big)
+      vs_baseline: prior SOTA ConvS2S 26.4
+    - name: WMT'14 EN-FR BLEU
+      score: 41.8 (big)
+      vs_baseline: prior SOTA 41.2 — at fraction of training cost
+  homepage: 'https://arxiv.org/abs/1706.03762'
+  github: 'https://github.com/tensorflow/tensor2tensor'
+  availability:
+    - research
 public_view:
   plain_english: |
     A neural network architecture that processes all words in a sentence
@@ -45,14 +49,14 @@ public_view:
     lays the whole sentence on a table and lets every word look at every
     other word at once, weighing which ones matter most.
   applications:
-    - product: "Google Translate (neural rewrite)"
-      company: "Google"
+    - product: Google Translate (neural rewrite)
+      company: Google
       year_deployed: 2018
-    - product: "BERT (search ranking)"
-      company: "Google"
+    - product: BERT (search ranking)
+      company: Google
       year_deployed: 2019
-    - product: "GPT-3 / ChatGPT / Claude / Gemini / every modern LLM"
-      company: "Various"
+    - product: GPT-3 / ChatGPT / Claude / Gemini / every modern LLM
+      company: Various
       year_deployed: 2020
   investment_angle: |
     The single architectural decision underpinning the entire 2020s LLM
@@ -69,37 +73,33 @@ public_view:
     2017 paper is the technical root of what you are dealing with. Every
     debate about "AI safety," "AI value," or "AI moats" implicitly
     assumes a transformer.
-
 citations:
   - type: paper
     key: vaswani2017attention
-    title: "Attention Is All You Need"
-    authors: ["Vaswani, A.", "Shazeer, N.", "Parmar, N.", "Uszkoreit, J.", "et al."]
+    title: Attention Is All You Need
+    authors:
+      - 'Vaswani, A.'
+      - 'Shazeer, N.'
+      - 'Parmar, N.'
+      - 'Uszkoreit, J.'
+      - et al.
     year: 2017
-    venue: "NeurIPS"
-    arxiv: "1706.03762"
-    doi: "10.48550/arXiv.1706.03762"
-    url: "https://arxiv.org/abs/1706.03762"
+    venue: NeurIPS
+    arxiv: '1706.03762'
+    doi: 10.48550/arXiv.1706.03762
+    url: 'https://arxiv.org/abs/1706.03762'
   - type: paper
     key: bahdanau2014attention
-    title: "Neural Machine Translation by Jointly Learning to Align and Translate"
-    authors: ["Bahdanau, D.", "Cho, K.", "Bengio, Y."]
+    title: Neural Machine Translation by Jointly Learning to Align and Translate
+    authors:
+      - 'Bahdanau, D.'
+      - 'Cho, K.'
+      - 'Bengio, Y.'
     year: 2014
-    venue: "ICLR 2015"
-    arxiv: "1409.0473"
+    venue: ICLR 2015
+    arxiv: '1409.0473'
+graph_featured: true
 ---
-
-## What it is
-
-A transformer is a sequence-processing neural network whose core operation is **scaled dot-product attention**:
-
-$$
-\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{Q K^\top}{\sqrt{d_k}}\right) V
-$$
-
-Each token in the input is projected into three vectors — a query $Q$, a key $K$, and a value $V$. The output for each token is a weighted average of *all* tokens' values, weighted by the dot-product similarity between this token's query and every token's key.
-
-The architecture stacks attention layers + feed-forward layers + residual connections + layer normalization. Crucially, computation across positions is **parallel** — there is no recurrent dependency between positions, which means a transformer can process a sequence of length $n$ in $O(\log n)$ depth on parallel hardware, vs. $O(n)$ for an RNN.
 
 ## How it works
 

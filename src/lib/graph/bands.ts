@@ -1,12 +1,30 @@
-// ===== Year band colors (warm → cool gradient)
-export function bandColor(idx: number, total: number): string {
-  const t = total <= 1 ? 0 : idx / (total - 1);
-  const hue = 45 + t * 190;
-  return `hsl(${hue}, 50%, 96.5%)`;
+type BandKey = string | number;
+
+// ===== Year band styling (subtle neutral + frontier highlight)
+//
+// The reference UI uses near-white rows with one soft green "frontier"
+// band to anchor attention. We compute the frontier year in the view
+// (latest year strictly < current year) and highlight that band.
+export function bandColor(
+  key: BandKey,
+  idx: number,
+  frontierKey?: BandKey,
+): string {
+  if (frontierKey != null && key === frontierKey) {
+    return "var(--graph-band-highlight, var(--accent-soft))";
+  }
+  // Alternating ultra-light stripes (barely visible; avoids rainbow).
+  return idx % 2 === 0
+    ? "transparent"
+    : "var(--graph-band-alt, rgba(15, 23, 42, 0.012))";
 }
 
-export function bandHeader(idx: number, total: number): string {
-  const t = total <= 1 ? 0 : idx / (total - 1);
-  const hue = 45 + t * 190;
-  return `hsl(${hue}, 55%, 50%)`;
+export function bandHeader(
+  key: BandKey,
+  frontierKey?: BandKey,
+): string {
+  if (frontierKey != null && key === frontierKey) {
+    return "var(--accent)";
+  }
+  return "var(--fg-muted)";
 }

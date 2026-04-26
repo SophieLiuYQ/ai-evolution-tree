@@ -8,6 +8,7 @@ import {
   fmtMonth,
   fmtSpec,
   META_MAX,
+  normalizeTitleCasing,
   TITLE_MAX,
 } from "../../lib/graph/text";
 
@@ -18,7 +19,7 @@ const { p } = Astro.props;
 const d = p.node.data;
 const x = p.x - p.width / 2;
 const y = p.y - p.height / 2;
-const titleClipped = clip(d.title, TITLE_MAX);
+const titleClipped = clip(normalizeTitleCasing(d.title), TITLE_MAX);
 const specText = fmtSpec(d.model_spec);
 const metaText = clip(`${fmtMonth(d.date)} · ${normalizeOrg(d.org)}`, META_MAX);
 // Two-bucket license signal for the LegendPanel "License" filter. Same
@@ -35,35 +36,37 @@ const license =
 <a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug} data-cats={normalizeCategories(d.category).join(" ")} data-license={license} data-org={normalizeOrg(d.org)}>
   <g class="node" transform={`translate(${x}, ${y})`}>
     {/* Invisible hover-bay extends the link's hit area into the right gap
-        so the mouse can reach the external zoom + pin buttons without
+        so the mouse can reach the external pin button without
         leaving .node-link (would hide them mid-travel). */}
     <rect class="hover-bay" x="-2" y="-2" width={p.width + 150} height={p.height + 4} fill="transparent" pointer-events="all" />
 
-    <rect class="card-border" width={p.width} height={p.height} rx="6" fill="white" stroke={stroke(p.org)} stroke-width="1.25" />
+    <rect class="card-border" width={p.width} height={p.height} rx="6" fill="var(--graph-surface)" stroke={stroke(p.org)} stroke-width="1.25" />
     <rect x="0" y="0" width="6" height={p.height} rx="2" fill={fill(p.org)} />
     <rect x="0" y="0" width="2" height={p.height} rx="1" fill={stroke(p.org)} />
 
     <text x="14" y="18" font-size="11" font-family="ui-monospace, monospace" fill={stroke(p.org)} font-weight="700">{metaText}</text>
-    <text x="14" y="36" font-size="13" font-family="ui-sans-serif, system-ui" fill="#1e293b" font-weight="600">{titleClipped}</text>
+    <text x="14" y="36" font-size="13" font-family="ui-sans-serif, system-ui" fill="var(--graph-fg)" font-weight="600">{titleClipped}</text>
     {specText && (
-      <text x="14" y="53" font-size="11" font-family="ui-monospace, monospace" fill="#64748b">{specText}</text>
+      <text x="14" y="53" font-size="11" font-family="ui-monospace, monospace" fill="var(--graph-muted)">{specText}</text>
     )}
 
     {/* External action buttons (hover-revealed, see GRAPH_DESIGN.md §VII).
         fill-opacity="1" + opacity="1" defensively defeat any inherited
         opacity from the link's hover-fade JS. */}
-    <g class="zoom-btn" data-zoom-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2 - 14})`} role="button" aria-label="Open lineage view">
-      <rect x="0" y="-11" width="130" height="22" rx="11" fill="white" fill-opacity="1" stroke="#475569" stroke-width="1.2" />
-      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="#1e293b" fill-opacity="1" letter-spacing="0.3">zoom</text>
-    </g>
-    <g class="pin-btn" data-pin-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2 + 14})`} role="button" aria-label="Pin this lineage path">
-      <rect x="0" y="-11" width="130" height="22" rx="11" fill="white" fill-opacity="1" stroke="#475569" stroke-width="1.2" />
-      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="#1e293b" fill-opacity="1" letter-spacing="0.2">highlight this path</text>
+    <g class="pin-btn" data-pin-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2})`} role="button" aria-label="Pin this lineage path">
+      <rect x="0" y="-11" width="130" height="22" rx="11" fill="var(--graph-surface)" fill-opacity="1" stroke="var(--graph-btn-border)" stroke-width="1.2" />
+      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="var(--graph-fg)" fill-opacity="1" letter-spacing="0.2">highlight this path</text>
     </g>
   </g>
 </a>
 
 <style>
+  .node-link {
+    --graph-surface: var(--bg-soft);
+    --graph-fg: var(--fg);
+    --graph-muted: var(--fg-muted);
+    --graph-btn-border: var(--border-strong);
+  }
   .node-link {
     cursor: pointer;
     text-decoration: none; /* kill default <a> underline that bleeds onto SVG text */
@@ -112,33 +115,35 @@ const license =
     stroke-width: 5;
     animation: search-pulse 0.7s ease-in-out 3;
   }
+
+  /* Inspector selection highlight — steady emphasis (no animation) so
+     the chosen card reads as the context for the right-side panel. */
+  .node-link.selected-card .node > rect.card-border {
+    stroke-width: 4.5;
+    filter: drop-shadow(0 0 10px rgba(15, 23, 42, 0.25));
+  }
   @keyframes search-pulse {
     0%, 100% { filter: drop-shadow(0 0 0 transparent); }
     50% { filter: drop-shadow(0 0 12px var(--highlight-shadow, rgba(15, 23, 42, 0.45))); }
   }
 
-  /* ===== Per-card action buttons (zoom + pin) — outside the card,
+  /* ===== Per-card action buttons (pin) — outside the card,
      hover-revealed via the parent .node-link. ===== */
-  .zoom-btn,
   .pin-btn {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.12s ease;
   }
-  .zoom-btn { cursor: zoom-in; }
   .pin-btn { cursor: pointer; }
-  .node-link:hover .zoom-btn,
   .node-link:hover .pin-btn {
     opacity: 1;
     pointer-events: all;
   }
   /* Hover state: invert to dark fill */
-  .zoom-btn:hover rect,
   .pin-btn:hover rect {
-    fill: #1e293b;
-    stroke: #1e293b;
+    fill: var(--fg);
+    stroke: var(--fg);
   }
-  .zoom-btn:hover text,
   .pin-btn:hover text { fill: white; }
   /* Pin active: stays visible + accent-colored even after mouseleave */
   .pin-btn.active {
@@ -154,8 +159,7 @@ const license =
   /* While ANY card is pinned (.has-pin on the figure), suppress the
      hover-reveal on every NON-pinned card. The pinned card keeps its
      active pin button via the rule above; user can't accidentally
-     trigger zoom/pin on neighbors while studying the pinned lineage. */
-  :global(.ai-tree-graph.has-pin) .node-link:not(.pinned-card):hover .zoom-btn,
+     trigger pin on neighbors while studying the pinned lineage. */
   :global(.ai-tree-graph.has-pin) .node-link:not(.pinned-card):hover .pin-btn {
     opacity: 0 !important;
     pointer-events: none !important;

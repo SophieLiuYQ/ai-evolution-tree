@@ -1,40 +1,97 @@
 ---
 slug: llama-4
-title: "Llama 4 — Meta's MoE Open Frontier"
-date: 2025-04-05
+title: Llama 4 — Meta's MoE Open Frontier
+date: '2025-04-05'
 era: scale-era
-category: [nlp, multimodal, generative, agents]
+category:
+  - nlp
+  - multimodal
+  - generative
+  - agents
+  - cv
 relationships:
   - to: llama-3
-    type: scales
-    note: "First Llama with native MoE; Maverick/Scout sizes; multimodal native"
+    type: builds_on
+    note: >-
+      [scales] First Llama with native MoE; Maverick/Scout sizes; multimodal
+      native
   - to: deepseek-v3
     type: competes_with
-    note: "Open MoE frontier competitor; Llama 4 Behemoth targets DeepSeek V3 quality at higher params"
+    note: >-
+      Open MoE frontier competitor; Llama 4 Behemoth targets DeepSeek V3 quality
+      at higher params
+  - to: grok-3
+    type: open_alt_to
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
 authors:
-  - "Meta AI Team"
-org: "Meta AI"
+  - Meta AI Team
+org: Meta AI
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "Scout 109B/17B active · Maverick 400B/17B active · Behemoth ~2T (preview)"
-  architecture: "Sparse MoE + native multimodal (early-fusion vision tokens)"
+  parameters: Scout 109B/17B active · Maverick 400B/17B active · Behemoth ~2T (preview)
+  architecture: Sparse MoE + native multimodal (early-fusion vision tokens)
   context_window: 10000000
-  training_tokens: "~30T (Behemoth)"
+  training_tokens: ~30T (Behemoth)
   release_type: open_weights
-  modalities: [text, vision]
+  modalities:
+    - text
+    - vision
+  homepage: 'https://ai.meta.com/blog/llama-4-multimodal-intelligence/'
+  github: 'https://github.com/meta-llama/llama-models'
+  availability:
+    - open_weights
+    - product
   benchmarks:
-    - name: "MMLU (Maverick)"
-      score: "~85%"
-      vs_baseline: "Llama 3.1 405B 88.6%, DeepSeek V3 88.5%"
-    - name: "Context window (Scout)"
-      score: "10M tokens"
-      vs_baseline: "longest open-weight context at release"
-    - name: "Active params / total (Maverick)"
-      score: "~24× sparser than dense"
-  homepage: "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
-  github: "https://github.com/meta-llama/llama-models"
-
+    - name: Coding · HumanEval
+      score: 87.9%
+      vs_baseline: 'Rank #9 of 15 · Top #9 of 15 · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/models'
+    - name: Intelligence · AA Intelligence Index
+      score: '18.40'
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: Coding · AA Coding Index
+      score: '15.60'
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: Coding · SciCode
+      score: 33.1% (17.0–33.1%)
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: Agentic · Terminal-Bench Hard
+      score: 6.8% (1.5–6.8%)
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: MMLU-Pro
+      score: 80.9% (75.2–80.9%)
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: GPQA
+      score: 67.1% (58.7–67.1%)
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: HLE
+      score: 4.8% (4.3–4.8%)
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: Speed · Output tok/s
+      score: '119'
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+    - name: Price ($/M tokens)
+      score: $0.35 in / $0.85 out
+      source_url: 'https://artificialanalysis.ai/models/llama-4-maverick'
+  family: Meta Llama
+  variants:
+    - id: llama-4-behemoth
+      label: Llama 4 Behemoth (training / teacher)
+      status: active
+    - id: llama-4-maverick
+      label: Llama 4 Maverick
+      status: active
+    - id: llama-4-scout
+      label: Llama 4 Scout
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/llama-4-scout'
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct'
 public_view:
   plain_english: |
     Meta's first MoE-native Llama generation, released April 2025
@@ -50,11 +107,11 @@ public_view:
     count. Whether the bet paid off is contested — Llama 4 didn't
     blow open the open-frontier the way Llama 3.1 405B did.
   applications:
-    - product: "WhatsApp / Instagram / Facebook Meta AI assistant"
-      company: "Meta"
+    - product: WhatsApp / Instagram / Facebook Meta AI assistant
+      company: Meta
       year_deployed: 2025
-    - product: "Together / Fireworks / Groq hosted inference"
-      company: "Various"
+    - product: Together / Fireworks / Groq hosted inference
+      company: Various
       year_deployed: 2025
   investment_angle: |
     Llama 4's mixed reception was a setback for the "Meta keeps
@@ -73,27 +130,17 @@ public_view:
     reach) didn't translate to an obvious win in the generation
     after Llama 3 — pointing to either a methodological gap or a
     talent / strategy gap that Meta is now actively trying to close.
-
 citations:
   - type: release
     key: meta2025llama4
-    title: "The Llama 4 herd: The beginning of a new era of natively multimodal AI innovation"
+    title: >-
+      The Llama 4 herd: The beginning of a new era of natively multimodal AI
+      innovation
     year: 2025
-    venue: "Meta AI Blog"
-    url: "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
+    venue: Meta AI Blog
+    url: 'https://ai.meta.com/blog/llama-4-multimodal-intelligence/'
+graph_featured: true
 ---
-
-## What it is
-
-Three foundation models released April 5, 2025:
-
-| Variant | Total params | Active params | Context | Notes |
-|---|---|---|---|---|
-| **Llama 4 Scout** | 109B | 17B | 10M | longest open context |
-| **Llama 4 Maverick** | 400B | 17B | 1M | flagship multimodal |
-| **Llama 4 Behemoth** | ~2T (rumored) | ~288B | 256k (preview) | "teacher" for distillation, not released |
-
-Architectural differences vs Llama 3: native Mixture-of-Experts (vs Llama 3's dense-only); native early-fusion multimodal (vision tokens enter the same residual stream as text, vs bolt-on vision encoders); much longer contexts via interleaved RoPE + iRoPE attention variants.
 
 ## How Llama 4 compares (Q2 2025)
 

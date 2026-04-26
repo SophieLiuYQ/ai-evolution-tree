@@ -280,11 +280,10 @@ const viewBoxW = W;
     overflow: hidden;
   }
   .lineage-svg {
-    /* Card components embed their own hover rules + zoom/pin buttons.
+    /* Card components embed their own hover rules + pin button.
        Inside LineageZoom those buttons don't wire up (no main-graph JS),
        so suppress them with display:none. */
   }
-  .lineage-svg :global(.zoom-btn),
   .lineage-svg :global(.pin-btn) {
     display: none !important;
   }

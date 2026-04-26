@@ -1,40 +1,49 @@
 ---
 slug: instructgpt
-title: "InstructGPT — Training LMs to Follow Instructions with Human Feedback"
-date: 2022-01-27
+title: InstructGPT — Training LMs to Follow Instructions with Human Feedback
+date: '2022-01-27'
 era: alignment
-category: [nlp, safety, training]
+category:
+  - nlp
+  - safety
+  - training
 relationships:
   - to: gpt-3
-    type: fine_tunes
-    note: "RLHF on top of GPT-3 base; smaller 1.3B InstructGPT preferred over 175B GPT-3"
+    type: builds_on
+    note: >-
+      [fine_tunes] RLHF on top of GPT-3 base; smaller 1.3B InstructGPT preferred
+      over 175B GPT-3
   - to: rlhf-preferences
-    type: applies
-    note: "First production-scale application of Christiano et al. 2017 RLHF"
+    type: builds_on
+    note: >-
+      [applies] First production-scale application of Christiano et al. 2017
+      RLHF
 authors:
-  - "Ouyang, L."
-  - "Wu, J."
-  - "Jiang, X."
-  - "Almeida, D."
-  - "Wainwright, C."
-  - "et al."
-org: "OpenAI"
+  - 'Ouyang, L.'
+  - 'Wu, J.'
+  - 'Jiang, X.'
+  - 'Almeida, D.'
+  - 'Wainwright, C.'
+  - et al.
+org: OpenAI
 breakthrough_score: 9
 status: foundational
 model_spec:
-  parameters: "1.3B / 6B / 175B (RLHF on GPT-3 family)"
-  architecture: "GPT-3 + supervised fine-tuning + reward model + PPO RL fine-tuning"
+  parameters: 1.3B / 6B / 175B (RLHF on GPT-3 family)
+  architecture: GPT-3 + supervised fine-tuning + reward model + PPO RL fine-tuning
   context_window: 2048
   release_type: api
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "Human-rater preference vs GPT-3 175B"
-      score: "1.3B InstructGPT preferred 85% of the time"
-      vs_baseline: "smaller, more aligned model > larger, raw model"
-    - name: "TruthfulQA truthful%"
-      score: "+10 to +25 pts vs base"
-  homepage: "https://openai.com/index/instruction-following/"
-
+    - name: Human-rater preference vs GPT-3 175B
+      score: 1.3B InstructGPT preferred 85% of the time
+      vs_baseline: 'smaller, more aligned model > larger, raw model'
+    - name: TruthfulQA truthful%
+      score: +10 to +25 pts vs base
+  homepage: 'https://openai.com/index/instruction-following/'
+  availability:
+    - api
 public_view:
   plain_english: |
     The training recipe — supervised fine-tuning followed by reinforcement
@@ -48,11 +57,11 @@ public_view:
     every direction, and put them through a year of customer-service
     training. Same brain, vastly more useful.
   applications:
-    - product: "ChatGPT (productized 10 months later)"
-      company: "OpenAI"
+    - product: ChatGPT (productized 10 months later)
+      company: OpenAI
       year_deployed: 2022
-    - product: "Default OpenAI API behavior post-2022"
-      company: "OpenAI"
+    - product: Default OpenAI API behavior post-2022
+      company: OpenAI
       year_deployed: 2022
   investment_angle: |
     The most operationally important post-training paper of the LLM era.
@@ -65,24 +74,20 @@ public_view:
     InstructGPT, not GPT-3, is what people interact with when they use a
     "language model" today. The recipe in this paper is why the chat
     box on chat.openai.com is helpful instead of a chaotic autocomplete.
-
 citations:
   - type: paper
     key: ouyang2022instructgpt
-    title: "Training Language Models to Follow Instructions with Human Feedback"
-    authors: ["Ouyang, L.", "Wu, J.", "Jiang, X.", "et al."]
+    title: Training Language Models to Follow Instructions with Human Feedback
+    authors:
+      - 'Ouyang, L.'
+      - 'Wu, J.'
+      - 'Jiang, X.'
+      - et al.
     year: 2022
-    venue: "NeurIPS"
-    arxiv: "2203.02155"
+    venue: NeurIPS
+    arxiv: '2203.02155'
+graph_featured: true
 ---
-
-## What it is
-
-A three-step post-training pipeline applied to GPT-3:
-
-1. **SFT** (Supervised Fine-Tuning) — train on human-written demonstrations of the desired output for a sample of API prompts.
-2. **RM** (Reward Model training) — collect human rankings between pairs of model outputs; train a 6B reward model to predict which output a human prefers.
-3. **PPO** (Proximal Policy Optimization) — RL fine-tune the SFT model to maximize the reward model's score, with a KL penalty against the SFT model to prevent reward hacking.
 
 ## The "1.3B beats 175B" headline
 

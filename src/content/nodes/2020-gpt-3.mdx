@@ -1,48 +1,73 @@
 ---
 slug: gpt-3
-title: "GPT-3 — Language Models are Few-Shot Learners"
-date: 2020-05-28
+title: GPT-3 — Language Models are Few-Shot Learners
+date: '2020-05-28'
 era: scale-era
-category: [nlp, generative]
+category:
+  - nlp
+  - generative
 relationships:
   - to: transformer
     type: builds_on
-    note: "Decoder-only transformer, no architectural change vs GPT-2"
+    note: 'Decoder-only transformer, no architectural change vs GPT-2'
   - to: gpt-2
-    type: scales
-    note: "117× more parameters (1.5B → 175B); demonstrates few-shot in-context learning emerges"
+    type: builds_on
+    note: >-
+      [scales] 117× more parameters (1.5B → 175B); demonstrates few-shot
+      in-context learning emerges
   - to: scaling-laws
-    type: applies
-    note: "Empirical validation of Kaplan et al. compute-optimal scaling"
+    type: builds_on
+    note: '[applies] Empirical validation of Kaplan et al. compute-optimal scaling'
 authors:
-  - "Brown, T. B."
-  - "Mann, B."
-  - "Ryder, N."
-  - "Subbiah, M."
-  - "et al."
-org: "OpenAI"
+  - 'Brown, T. B.'
+  - 'Mann, B.'
+  - 'Ryder, N.'
+  - 'Subbiah, M.'
+  - et al.
+org: OpenAI
 breakthrough_score: 10
 status: foundational
 model_spec:
-  parameters: "175B"
-  architecture: "Decoder-only transformer, 96 layers, 12288 hidden, sparse + dense attention"
+  parameters: 175B
+  architecture: 'Decoder-only transformer, 96 layers, 12288 hidden, sparse + dense attention'
   context_window: 2048
-  training_tokens: "~300B (filtered Common Crawl + WebText2 + Books + Wikipedia)"
-  training_compute: "~3.14e23 FLOP, ~$5M (2020 USD) on V100s"
+  training_tokens: ~300B (filtered Common Crawl + WebText2 + Books + Wikipedia)
+  training_compute: '~3.14e23 FLOP, ~$5M (2020 USD) on V100s'
   release_type: api
-  modalities: [text]
+  modalities:
+    - text
   benchmarks:
-    - name: "LAMBADA (zero-shot)"
-      score: "76.2%"
-      vs_baseline: "prior SOTA 68.0%"
-    - name: "TriviaQA (one-shot)"
-      score: "68.0%"
-      vs_baseline: "GPT-2 ~30%"
-    - name: "Arithmetic 2-digit add"
-      score: "100%"
-      vs_baseline: "GPT-2 effectively 0%"
-  homepage: "https://openai.com/index/language-models-are-few-shot-learners/"
-
+    - name: LAMBADA (zero-shot)
+      score: 76.2%
+      vs_baseline: prior SOTA 68.0%
+    - name: TriviaQA (one-shot)
+      score: 68.0%
+      vs_baseline: GPT-2 ~30%
+    - name: Arithmetic 2-digit add
+      score: 100%
+      vs_baseline: GPT-2 effectively 0%
+    - name: Intelligence · AA Intelligence Index
+      score: '9.00'
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+    - name: Coding · AA Coding Index
+      score: '10.70'
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+    - name: MMLU-Pro
+      score: 46.2%
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+    - name: GPQA
+      score: 29.7%
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+    - name: Speed · Output tok/s
+      score: '99'
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+    - name: Price ($/M tokens)
+      score: $0.50 in / $1.50 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+  homepage: 'https://openai.com/index/language-models-are-few-shot-learners/'
+  availability:
+    - api
+  aa_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
 public_view:
   plain_english: |
     A language model that became dramatically more capable than its
@@ -56,17 +81,17 @@ public_view:
     could read a one-page job description and do the work passably well
     on the first try.
   applications:
-    - product: "GitHub Copilot"
-      company: "GitHub / OpenAI"
+    - product: GitHub Copilot
+      company: GitHub / OpenAI
       year_deployed: 2021
-    - product: "Jasper / Copy.ai (marketing copy)"
-      company: "Various"
+    - product: Jasper / Copy.ai (marketing copy)
+      company: Various
       year_deployed: 2021
-    - product: "OpenAI API platform"
-      company: "OpenAI"
+    - product: OpenAI API platform
+      company: OpenAI
       year_deployed: 2020
-    - product: "ChatGPT (built on GPT-3.5)"
-      company: "OpenAI"
+    - product: ChatGPT (built on GPT-3.5)
+      company: OpenAI
       year_deployed: 2022
   investment_angle: |
     The empirical result that triggered the LLM gold rush. By demonstrating
@@ -84,30 +109,32 @@ public_view:
     (per-token), interface model (text-in, text-out), and capability
     framing (few-shot prompting). Without this paper, the 2022–2026 AI
     investment cycle does not happen on the same timeline.
-
 citations:
   - type: paper
     key: brown2020gpt3
-    title: "Language Models are Few-Shot Learners"
-    authors: ["Brown, T. B.", "Mann, B.", "Ryder, N.", "et al."]
+    title: Language Models are Few-Shot Learners
+    authors:
+      - 'Brown, T. B.'
+      - 'Mann, B.'
+      - 'Ryder, N.'
+      - et al.
     year: 2020
-    venue: "NeurIPS"
-    arxiv: "2005.14165"
-    url: "https://arxiv.org/abs/2005.14165"
+    venue: NeurIPS
+    arxiv: '2005.14165'
+    url: 'https://arxiv.org/abs/2005.14165'
   - type: paper
     key: kaplan2020scaling
-    title: "Scaling Laws for Neural Language Models"
-    authors: ["Kaplan, J.", "McCandlish, S.", "Henighan, T.", "et al."]
+    title: Scaling Laws for Neural Language Models
+    authors:
+      - 'Kaplan, J.'
+      - 'McCandlish, S.'
+      - 'Henighan, T.'
+      - et al.
     year: 2020
-    venue: "arXiv"
-    arxiv: "2001.08361"
+    venue: arXiv
+    arxiv: '2001.08361'
+graph_featured: true
 ---
-
-## What it is
-
-GPT-3 is a 175-billion-parameter autoregressive transformer language model trained on ~300B tokens of internet text. Architecturally it is mostly identical to GPT-2 (a decoder-only transformer with sparse attention variants); the contribution is **scale** plus the empirical demonstration of **in-context learning**.
-
-In-context learning: rather than fine-tuning the model on a new task, you describe the task in the prompt and provide a few examples ("few-shot"). The model then completes the pattern. This worked surprisingly well across translation, question-answering, arithmetic, code generation, and dozens of other tasks the model was never explicitly trained on.
 
 ## How it works
 

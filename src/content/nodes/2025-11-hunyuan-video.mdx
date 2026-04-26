@@ -1,26 +1,33 @@
 ---
 slug: hunyuan-video
-title: "HunyuanVideo 1.5 — Open-Source Video on a 4090"
-date: 2025-11-10
+title: HunyuanVideo 1.5 — Open-Source Video on a 4090
+date: '2025-11-10'
 era: multimodal
-category: [generative, multimodal]
+category:
+  - generative
+  - multimodal
+  - cv
 relationships:
   - to: sora-preview
     type: open_alt_to
-    note: "Open-weight competitor to Sora; HunyuanVideo runs on a single RTX 4090"
+    note: Open-weight competitor to Sora; HunyuanVideo runs on a single RTX 4090
 authors:
-  - "Tencent Hunyuan Team"
-org: "Tencent"
+  - Tencent Hunyuan Team
+org: Tencent
 breakthrough_score: 7
 status: active
 model_spec:
-  parameters: "8.3B"
-  architecture: "DiT (diffusion transformer) for video"
+  parameters: 8.3B
+  architecture: DiT (diffusion transformer) for video
   release_type: open_weights
-  modalities: [vision, generative]
-  homepage: "https://hunyuan.tencent.com/video"
-  github: "https://github.com/Tencent-Hunyuan/HunyuanVideo"
-
+  modalities:
+    - vision
+    - generative
+  homepage: 'https://hunyuan.tencent.com/video'
+  github: 'https://github.com/Tencent-Hunyuan/HunyuanVideo'
+  availability:
+    - open_weights
+    - api
 public_view:
   plain_english: |
     Tencent's open-weight video model — only 8.3B parameters, designed
@@ -33,14 +40,14 @@ public_view:
     forkable, and forever changing the calculus of who can build
     video tools.
   applications:
-    - product: "ComfyUI / Diffusers self-hosted"
-      company: "Multiple"
+    - product: ComfyUI / Diffusers self-hosted
+      company: Multiple
       year_deployed: 2025
-    - product: "fal.ai / Replicate hosted"
-      company: "Multiple"
+    - product: fal.ai / Replicate hosted
+      company: Multiple
       year_deployed: 2025
-    - product: "Tencent Cloud API"
-      company: "Tencent"
+    - product: Tencent Cloud API
+      company: Tencent
       year_deployed: 2025
   investment_angle: |
     Tencent's open-source video play parallels Hunyuan-Large in text
@@ -53,20 +60,20 @@ public_view:
     models were either too small (talking-head only) or required
     8×A100 setups. HunyuanVideo fits the entire frontier-quality
     pipeline on a $1500 GPU.
-
 citations:
   - type: release
     key: tencent2025hunyuanvideo
-    title: "HunyuanVideo 1.5 Release"
+    title: HunyuanVideo 1.5 Release
     year: 2025
-    venue: "Tencent Hunyuan"
-    url: "https://aivideo.hunyuan.tencent.com/"
+    venue: Tencent Hunyuan
+    url: 'https://aivideo.hunyuan.tencent.com/'
   - type: paper
     key: hunyuanvideo2024
-    title: "HunyuanVideo Technical Report"
+    title: HunyuanVideo Technical Report
     year: 2024
-    arxiv: "2412.03603"
-    url: "https://arxiv.org/abs/2412.03603"
+    arxiv: '2412.03603'
+    url: 'https://arxiv.org/abs/2412.03603'
+graph_featured: true
 ---
 
 ## What's distinctive
