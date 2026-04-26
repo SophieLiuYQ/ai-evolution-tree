@@ -24,7 +24,7 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/mdx": "^4.2.0",
     "@astrojs/sitemap": "^3.3.0",
-    "@dagrejs/dagre": "^1.1.4",
+    "@dagrejs/dagre": "^3.0.0",
     "@tailwindcss/vite": "^4.1.7",
     "astro": "^5.7.10",
     "gray-matter": "^4.0.3",
