@@ -1,12 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
-import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const ASCII_PATH = join(__dirname, "..", "..", "ascii-art.txt");
-const asciiArt = await readFile(ASCII_PATH, "utf-8");
+import asciiArt from "../assets/ascii-art.txt?raw";
 
 // Floating model labels — anchored close to the tree art so their leader
 // lines stay short and the labels read as "annotating" the canvas, not
