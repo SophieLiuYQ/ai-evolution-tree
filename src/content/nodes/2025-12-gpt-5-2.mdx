@@ -1,0 +1,130 @@
+---
+slug: gpt-5-2
+title: GPT-5.2 — Long-Horizon Agentic Work (Instant / Thinking / Pro)
+date: '2025-12-11'
+era: frontier
+category:
+  - nlp
+  - multimodal
+  - generative
+  - reasoning
+  - agents
+  - audio
+  - cv
+relationships:
+  - to: gpt-5-1
+    type: builds_on
+    note: >-
+      [scales] Major iteration on GPT-5 series: stronger long-horizon tool use
+      and professional work
+  - to: gemini-3-pro
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
+authors:
+  - OpenAI Team
+org: OpenAI
+breakthrough_score: 8
+status: superseded
+model_spec:
+  parameters: undisclosed
+  architecture: >-
+    Improved adaptive reasoning + stronger tool-calling; marketed for
+    long-running professional tasks
+  family: OpenAI GPT
+  release_type: api
+  modalities:
+    - text
+    - vision
+    - audio
+  variants:
+    - id: gpt-5-2-medium
+      label: GPT-5.2 (medium)
+      status: active
+    - id: gpt-5-2-non-reasoning
+      label: GPT-5.2 (Non-reasoning)
+      status: active
+    - id: gpt-5-2-codex
+      label: GPT-5.2 Codex (xhigh)
+      status: active
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '51.30'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #18 of 496'
+    - name: Coding · AA Coding Index
+      score: '48.70'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #13 of 496'
+    - name: Coding · SciCode
+      score: 54.6% (40.4–54.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #7 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 47.0% (31.8–47.0%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #17 of 496'
+    - name: MMLU-Pro
+      score: 87.4% (81.4–87.4%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #11 of 496'
+    - name: GPQA
+      score: 90.3% (71.2–90.3%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #14 of 496'
+    - name: HLE
+      score: 35.4% (7.3–35.4%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #14 of 496'
+    - name: Speed · Output tok/s
+      score: '75'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #183 of 496'
+    - name: Price ($/M tokens)
+      score: $1.75 in / $14.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+      vs_baseline: 'Rank #433 of 496'
+  homepage: 'https://openai.com/index/introducing-gpt-5-2'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+  context_window: 400000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+public_view:
+  plain_english: >
+    GPT-5.2 pushed the GPT-5 line toward “do the work” tasks: long documents,
+    multi-step plans, tool calling, and producing real artifacts like
+    spreadsheets and presentations. It shipped as a series—Instant for speed,
+    Thinking for depth, Pro for maximum quality—tightening the product pattern
+    of one family covering multiple operating points.
+  analogy: >
+    A power tool with multiple gears: same machine, different settings depending
+    on whether you need speed or torque.
+  applications:
+    - product: ChatGPT (paid tiers model picker)
+      company: OpenAI
+      year_deployed: 2025
+    - product: OpenAI API (agents and workflows)
+      company: OpenAI
+      year_deployed: 2025
+  investment_angle: >
+    GPT-5.2 made “agentic productivity” a first-class sell: vendors weren’t just
+    selling chat quality, but end-to-end task completion. That shifts
+    competition toward tool ecosystems, workflow reliability, and enterprise
+    integration—not only raw model IQ.
+  why_it_matters: >
+    It cemented the modern UX: one model family with multiple tiers
+    (Instant/Thinking/Pro) and rapid generation updates.
+citations:
+  - type: release
+    key: openai_gpt52
+    title: Introducing GPT-5.2
+    year: 2025
+    url: 'https://openai.com/index/introducing-gpt-5-2'
+graph_featured: true
+---
+
+## Model naming (ChatGPT ↔ API)
+
+OpenAI mapped ChatGPT “Instant / Thinking / Pro” surfaces onto separate API model ids, making “one family, multiple operating points” explicit in developer workflows.

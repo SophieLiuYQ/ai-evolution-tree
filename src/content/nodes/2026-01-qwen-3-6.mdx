@@ -1,0 +1,112 @@
+---
+slug: qwen-3-6
+title: Qwen 3.6 — Series
+date: '2026-04-24T20:37:23.522Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: qwen-3-5
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Alibaba Team
+org: Alibaba
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Alibaba qwen
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '37.10'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #14 of 81 · Non-reasoning'
+    - name: Coding · AA Coding Index
+      score: '26.60'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #30 of 81 · Non-reasoning'
+    - name: Coding · SciCode
+      score: 37.3%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #24 of 81 · Non-reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 21.2%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #33 of 81 · Non-reasoning'
+    - name: GPQA
+      score: 82.9%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #7 of 81 · Non-reasoning'
+    - name: HLE
+      score: 13.6%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #10 of 81 · Non-reasoning'
+    - name: Speed · Output tok/s
+      score: '62'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #44 of 81 · Non-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.60 in / $3.60 out
+      source_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+      vs_baseline: 'Rank #58 of 81 · Non-reasoning'
+  variants:
+    - id: qwen3-6-27b-non-reasoning
+      label: Qwen3.6 27B (Non-reasoning)
+      status: active
+    - id: qwen3-6-27b
+      label: Qwen3.6 27B (Reasoning)
+      status: active
+    - id: qwen3-6-35b-a3b-non-reasoning
+      label: Qwen3.6 35B A3B (Non-reasoning)
+      status: active
+    - id: qwen3-6-35b-a3b
+      label: Qwen3.6 35B A3B (Reasoning)
+      status: active
+    - id: qwen3-6-max
+      label: Qwen3.6 Max Preview
+      status: active
+    - id: qwen3-6-plus
+      label: Qwen3.6 Plus
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+  context_window: 256000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  parameters: 27.8B
+public_view:
+  plain_english: >-
+    Qwen 3.6 is an API model from Alibaba. It’s positioned for hard reasoning
+    and planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Qwen3.6 27B (Non-reasoning) (API / product surface)
+      company: Alibaba
+      year_deployed: 2026
+    - product: Developer tooling built on Qwen3.6 27B (Non-reasoning)
+      company: Alibaba
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_alibaba_qwen3_6_27b_non_reasoning
+    title: Qwen3.6 27B (Non-reasoning)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/qwen3-6-27b-non-reasoning'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

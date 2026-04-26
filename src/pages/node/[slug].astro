@@ -241,6 +241,7 @@ const archCompact = (s?: string): string => {
 
 // ===== Capability cards (left half of row 2) =====
 const normalizedCats = normalizeCategories(d.category ?? []);
+const normalizedCatSet = new Set(normalizedCats);
 type Capability = { icon: string; title: string; desc: string; color: string };
 const CAP_LIBRARY: Record<string, Capability> = {
   reasoning: {
@@ -312,16 +313,19 @@ for (const k of normalizedCats) {
 if (longDocFromCtx && !capabilityKeys.includes("nlp")) capabilityKeys.unshift("nlp");
 const capabilities = capabilityKeys.slice(0, 4).map((k) => CAP_LIBRARY[k]);
 
-// ===== Performance: top 3 benchmarks =====
+// ===== Performance: benchmarks =====
 type Bench = { name: string; score: string; vs_baseline?: string; source_url?: string };
-function parseRank(vs?: string): { rank: number; total: number } | null {
+type RankMeta = { rank: number; total: number; scope?: string | null };
+function parseRank(vs?: string): RankMeta | null {
   if (!vs) return null;
   const m = vs.match(/Rank #(\d+)\s+of\s+(\d+)/i);
   if (!m) return null;
   const rank = parseInt(m[1], 10);
   const total = parseInt(m[2], 10);
   if (!Number.isFinite(rank) || !Number.isFinite(total) || total <= 0) return null;
-  return { rank, total };
+  const rest = vs.slice(m.index! + m[0].length).trim();
+  const scope = rest ? rest.replace(/^[·•,\-\s]+/, "").trim() : null;
+  return { rank, total, scope: scope || null };
 }
 
 type ScoreMeta = {
@@ -363,26 +367,113 @@ function formatTopPct(rank: number, total: number): string {
   return `Top ${Math.round(pct)}%`;
 }
 const allBench = (spec?.benchmarks ?? []) as Bench[];
-// Pick up to 3 headline rows. Prefer rank-style leaderboards (Rank #X of Y),
-// otherwise fall back to percent-based scores. This ensures models like GPT-5
-// (AA indexes are not percentages) still show 3 rows here.
-const headlineBench = allBench
-  .map((b) => ({
-    ...b,
-    rank: parseRank(b.vs_baseline),
-    scoreMeta: parseScoreMeta(b.score),
-  }))
-  .filter((b) => b.rank !== null || b.scoreMeta.value !== null)
-  .sort((a, b) => {
-    const ar = a.rank ? a.rank.rank / a.rank.total : null;
-    const br = b.rank ? b.rank.rank / b.rank.total : null;
-    if (ar !== null && br !== null) return ar - br;
-    if (ar !== null) return -1;
-    if (br !== null) return 1;
-    // Neither has rank: higher score value is better
-    return (b.scoreMeta.value ?? -Infinity) - (a.scoreMeta.value ?? -Infinity);
-  })
-  .slice(0, 3);
+type DecoratedBench = Bench & { rank: { rank: number; total: number } | null; scoreMeta: ScoreMeta };
+function decorateBench(benchArr: Bench[]): DecoratedBench[] {
+  return benchArr.map((b) => ({ ...b, rank: parseRank(b.vs_baseline), scoreMeta: parseScoreMeta(b.score) }));
+}
+
+function benchBucket(name: string): "general" | "reasoning" | "coding" | "agentic" | "multimodal" | "cost" | "other" {
+  if (/^Intelligence\s*·/i.test(name) || /MMLU/i.test(name) || /Open LLM Leaderboard/i.test(name)) return "general";
+  if (/GPQA/i.test(name) || /HLE/i.test(name) || /\bAIME\b/i.test(name) || /\bMATH\b/i.test(name)) return "reasoning";
+  if (/^Coding\s*·/i.test(name) || /HumanEval/i.test(name) || /SWE-?bench/i.test(name) || /Codeforces/i.test(name)) return "coding";
+  if (/^Agentic\s*·/i.test(name) || /Terminal-?Bench/i.test(name)) return "agentic";
+  if (/MMMU/i.test(name) || /Vision/i.test(name) || /Image/i.test(name) || /Video/i.test(name) || /Audio/i.test(name)) return "multimodal";
+  if (/^Speed\s*·/i.test(name) || /^Price\b/i.test(name) || /Latency/i.test(name)) return "cost";
+  return "other";
+}
+
+function sortBench(a: DecoratedBench, b: DecoratedBench) {
+  const ar = a.rank ? a.rank.rank / a.rank.total : null;
+  const br = b.rank ? b.rank.rank / b.rank.total : null;
+  if (ar !== null && br !== null) return ar - br;
+  if (ar !== null) return -1;
+  if (br !== null) return 1;
+  return (b.scoreMeta.value ?? -Infinity) - (a.scoreMeta.value ?? -Infinity);
+}
+
+function pickKeyBenchmarks(benchArr: Bench[], cats: Set<string>): DecoratedBench[] {
+  const decorated = decorateBench(benchArr).filter((b) => b.rank !== null || b.scoreMeta.value !== null);
+  const byName = new Map(decorated.map((b) => [b.name.toLowerCase(), b]));
+  const picked: DecoratedBench[] = [];
+  const takeByExact = (name: string) => {
+    const b = byName.get(name.toLowerCase());
+    if (b && !picked.some((x) => x.name === b.name)) picked.push(b);
+  };
+
+  takeByExact("Intelligence · AA Intelligence Index");
+  takeByExact("Speed · Output tok/s");
+  takeByExact("Price ($/M tokens)");
+
+  const taskCandidates: string[] = [];
+  if (cats.has("agents")) taskCandidates.push("Agentic · Terminal-Bench Hard");
+  if (cats.has("coding")) taskCandidates.push("Coding · SciCode", "Coding · AA Coding Index");
+  if (cats.has("multimodal") || cats.has("cv") || cats.has("audio")) taskCandidates.push("MMMU");
+  taskCandidates.push("GPQA", "MMLU-Pro");
+
+  for (const name of taskCandidates) {
+    const hit = decorated.find((b) => b.name.toLowerCase() === name.toLowerCase() || b.name.toLowerCase().includes(name.toLowerCase()));
+    if (hit && !picked.some((x) => x.name === hit.name)) {
+      picked.push(hit);
+      break;
+    }
+  }
+
+  // Fill any remaining slots with strongest remaining rows.
+  for (const b of decorated.sort(sortBench)) {
+    if (picked.length >= 4) break;
+    if (picked.some((x) => x.name === b.name)) continue;
+    picked.push(b);
+  }
+  return picked.slice(0, 4);
+}
+
+function groupBenchmarks(benchArr: Bench[]): Array<{ bucket: string; items: DecoratedBench[] }> {
+  const decorated = decorateBench(benchArr).filter((b) => b.rank !== null || b.scoreMeta.value !== null);
+  const buckets = new Map<string, DecoratedBench[]>();
+  for (const b of decorated) {
+    const key = benchBucket(b.name);
+    const label =
+      key === "general" ? "General" :
+      key === "reasoning" ? "Reasoning" :
+      key === "coding" ? "Coding" :
+      key === "agentic" ? "Agentic" :
+      key === "multimodal" ? "Multimodal" :
+      key === "cost" ? "Cost & Speed" :
+      "Other";
+    const arr = buckets.get(label) ?? [];
+    arr.push(b);
+    buckets.set(label, arr);
+  }
+
+  const order = ["General", "Reasoning", "Coding", "Agentic", "Multimodal", "Cost & Speed", "Other"];
+  return order
+    .map((k) => ({ bucket: k, items: (buckets.get(k) ?? []).sort(sortBench) }))
+    .filter((g) => g.items.length > 0);
+}
+
+function tierFromRank(rank: RankMeta | null): "budget" | "mid" | "premium" | null {
+  if (!rank || rank.total <= 0) return null;
+  const p = rank.rank / rank.total;
+  if (p <= 1 / 3) return "budget";
+  if (p <= 2 / 3) return "mid";
+  return "premium";
+}
+
+function takeawayLine(benchArr: Bench[], cats: Set<string>): string | null {
+  const key = pickKeyBenchmarks(benchArr, cats);
+  if (!key.length) return null;
+  const task = key.find((b) => !["general", "cost"].includes(benchBucket(b.name)));
+  const price = key.find((b) => /^Price\b/i.test(b.name));
+  const speed = key.find((b) => /^Speed\s*·/i.test(b.name));
+
+  const parts: string[] = [];
+  if (task) parts.push(`Best at: ${benchBucket(task.name) === "agentic" ? "Agentic" : benchBucket(task.name) === "coding" ? "Coding" : benchBucket(task.name) === "reasoning" ? "Reasoning" : "Multimodal"}`);
+  const priceTier = tierFromRank(price?.rank ?? null);
+  if (priceTier) parts.push(`Price tier: ${priceTier}`);
+  const speedTier = tierFromRank(speed?.rank ?? null);
+  if (speedTier) parts.push(`Speed tier: ${speedTier}`);
+  return parts.length ? parts.join(" · ") : null;
+}
 
 // ===== Variant surfaces (versioned / tiered) =====
 type Variant = {
@@ -860,14 +951,23 @@ const heroDescriptionZh = summaryZh;
       </div>
     </section>
 
-    {/* ============== Performance (3-up) ============== */}
-    {headlineBench.length > 0 && (
+    {/* ============== Performance (Benchmarks) ============== */}
+    {allBench.length > 0 && (
       <section class="panel perf-panel" data-variant-scope>
         <div class="perf-head-row">
           <h2 class="block-heading">Benchmark Performance</h2>
           <span class="block-sub-inline">All scores from authoritative leaderboards (click "source" to verify)</span>
           <a href="#tech-details" class="perf-see-all">View all benchmarks →</a>
         </div>
+        <details class="perf-how">
+          <summary>How to read this</summary>
+          <ul>
+            <li><b>Rank</b> shows position among models measured by the same source.</li>
+            <li><b>Range</b> is min–max across modes/variants (e.g. high/xhigh/thinking).</li>
+            <li><b>Index</b> scores are not percentages (higher is better).</li>
+            <li><b>Confidence</b> is a heuristic based on available metadata.</li>
+          </ul>
+        </details>
         {hasVariants && (
           <div class="variant-strip" role="tablist" aria-label="Model variants">
             {variantOptions.map((v) => (
@@ -901,11 +1001,14 @@ const heroDescriptionZh = summaryZh;
 
         {variantOptions.map((v) => {
           const benchArr = variantBench.get(v.id) ?? allBench;
-          const head = pickHeadline(benchArr);
+          const key = pickKeyBenchmarks(benchArr, normalizedCatSet);
+          const groups = groupBenchmarks(benchArr);
+          const takeaway = takeawayLine(benchArr, normalizedCatSet);
           return (
             <div data-variant-block={v.id} hidden={v.id !== "auto"}>
-              <div class={head.length === 3 ? "perf-grid three" : head.length === 2 ? "perf-grid two" : "perf-grid one"}>
-                {head.map((b) => (
+              {takeaway && <div class="perf-takeaway">{takeaway}</div>}
+              <div class={key.length === 4 ? "perf-grid four" : key.length === 3 ? "perf-grid three" : key.length === 2 ? "perf-grid two" : "perf-grid one"}>
+                {key.map((b) => (
                   <div class="perf-card">
                     <div class="perf-name-row">
                       <span class="perf-name">{b.name}</span>
@@ -956,7 +1059,7 @@ const heroDescriptionZh = summaryZh;
                         <div class="perf-meta">
                           {r && (
                             <span class="perf-meta-chip" title="Leaderboard position.">
-                              Rank {r.rank} / {r.total} · {top}
+                              Rank {r.rank} / {r.total} · {top}{r.scope ? ` · ${r.scope}` : ""}
                             </span>
                           )}
                           {range && (
@@ -973,6 +1076,26 @@ const heroDescriptionZh = summaryZh;
                   </div>
                 ))}
               </div>
+              {groups.length > 1 && (
+                <details class="perf-more">
+                  <summary>Grouped benchmarks</summary>
+                  <div class="perf-buckets">
+                    {groups.map((g) => (
+                      <div class="perf-bucket">
+                        <div class="perf-bucket-title">{g.bucket}</div>
+                        <div class="perf-bucket-items">
+                          {g.items.slice(0, 2).map((b) => (
+                            <div class="perf-bucket-row">
+                              <span class="perf-bucket-name">{b.name}</span>
+                              <span class="perf-bucket-score">{b.score.replace(/\s*\([^)]*\)\s*/g, "").trim()}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
             </div>
           );
         })}
@@ -1512,12 +1635,75 @@ const heroDescriptionZh = summaryZh;
     display: grid;
     gap: 16px;
   }
+  .perf-grid.four { grid-template-columns: repeat(4, 1fr); }
   .perf-grid.three { grid-template-columns: repeat(3, 1fr); }
   .perf-grid.two { grid-template-columns: repeat(2, 1fr); }
   .perf-grid.one { grid-template-columns: 1fr; }
   @media (max-width: 880px) {
-    .perf-grid.three, .perf-grid.two { grid-template-columns: 1fr; }
+    .perf-grid.four, .perf-grid.three, .perf-grid.two { grid-template-columns: 1fr; }
   }
+  .perf-how {
+    margin: 6px 0 12px;
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+  .perf-how summary {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 650;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .perf-how ul {
+    margin: 8px 0 0 18px;
+    line-height: 1.5;
+  }
+  .perf-takeaway {
+    margin: 2px 0 12px;
+    font-size: 12.5px;
+    color: #334155;
+    font-weight: 650;
+  }
+  .perf-more {
+    margin-top: 10px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 10px;
+  }
+  .perf-more summary {
+    cursor: pointer;
+    user-select: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .perf-buckets {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 880px) {
+    .perf-buckets { grid-template-columns: 1fr; }
+  }
+  .perf-bucket-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--fg-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .perf-bucket-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 12px;
+    color: #0f172a;
+  }
+  .perf-bucket-name { color: #334155; }
+  .perf-bucket-score { font-weight: 700; color: #0f172a; }
   .perf-card {
     /* Compact card — no extra background, panel already provides chrome */
     padding: 6px 4px;

@@ -1,0 +1,96 @@
+---
+slug: gemma-4-e2b
+title: Gemma 4 E2B (Reasoning)
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+relationships:
+  - to: gemma-4-e2b-non-reasoning
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Google / DeepMind Team
+org: Google
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: 'MoE Transformer — 2.3B active of 5.1B total, reasoning mode'
+  family: Google / DeepMind gemma
+  release_type: api
+  modalities:
+    - text
+  homepage: 'https://deepmind.google/'
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '15.20'
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+      vs_baseline: 'Rank #81 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '9.00'
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+      vs_baseline: 'Rank #81 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 20.9% (20.4–20.9%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+      vs_baseline: 'Rank #81 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 3.0% (2.3–3.0%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+      vs_baseline: 'Rank #76 of 96 · Reasoning'
+    - name: GPQA
+      score: 43.3% (40.5–43.3%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+      vs_baseline: 'Rank #89 of 96 · Reasoning'
+    - name: HLE
+      score: 4.8% (4.5–4.8%)
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+      vs_baseline: 'Rank #84 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+  aa_url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+  parameters: 2.3B active · 5.1B total
+  context_window: 128000
+  modalities_in:
+    - text
+    - image
+    - audio
+    - video
+  modalities_out:
+    - text
+    - image
+public_view:
+  plain_english: >-
+    Gemma 4 E2B (Reasoning) is an API model from Google. It’s positioned for
+    general text tasks—work that benefits from iteration, not just one-shot
+    answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Gemma 4 E2B (Reasoning) (API / product surface)
+      company: Google / DeepMind
+      year_deployed: 2026
+    - product: Developer tooling built on Gemma 4 E2B (Reasoning)
+      company: Google / DeepMind
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_google_gemma_4_e2b
+    title: Gemma 4 E2B (Reasoning)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/gemma-4-e2b'
+graph_hidden: true
+---
+## Notes
+
+TODO: Replace this placeholder with real specs, relationships, and benchmark-backed comparisons.

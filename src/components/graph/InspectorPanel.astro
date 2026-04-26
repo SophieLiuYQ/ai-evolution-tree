@@ -1,0 +1,230 @@
+---
+// Right-side inspector panel for the /tree/ page.
+// Empty shell; populated by client JS on node selection.
+---
+
+<aside class="tree-inspector" data-open="false" aria-label="Selected node details">
+  <div class="inspector-header">
+    <div class="inspector-title-wrap">
+      <div class="inspector-kicker" id="inspector-org">Select a node</div>
+      <div class="inspector-title" id="inspector-title">Details</div>
+    </div>
+    <button class="inspector-close" type="button" aria-label="Close inspector" title="Close">
+      ×
+    </button>
+  </div>
+
+  <div class="inspector-body">
+    <div class="inspector-meta" id="inspector-meta" hidden></div>
+
+    <p class="inspector-desc" id="inspector-desc">
+      Click a node in the graph to explore its summary, benchmarks, and lineage.
+    </p>
+
+    <div class="inspector-section" id="inspector-bench-section" hidden>
+      <div class="inspector-section-title">Key benchmarks</div>
+      <ul class="inspector-list" id="inspector-bench"></ul>
+      <a class="inspector-link" id="inspector-bench-link" href="#" hidden>
+        View full model page →
+      </a>
+    </div>
+
+    <div class="inspector-section" id="inspector-lineage-section" hidden>
+      <div class="inspector-section-title">Lineage</div>
+      <div class="inspector-subtitle">Parents</div>
+      <ul class="inspector-list" id="inspector-parents"></ul>
+      <div class="inspector-subtitle">Children</div>
+      <ul class="inspector-list" id="inspector-children"></ul>
+    </div>
+
+    <div class="inspector-footer" hidden id="inspector-footer">
+      <a class="inspector-cta" id="inspector-open" href="#">
+        Open full page
+      </a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .tree-inspector {
+    width: 360px;
+    flex: 0 0 360px;
+    max-height: 100%;
+    border-left: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--fg);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .inspector-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+  .inspector-kicker {
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .inspector-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-top: 4px;
+  }
+  .inspector-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    color: var(--fg-muted);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .inspector-close:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-sunk);
+    color: var(--fg);
+  }
+
+  .inspector-body {
+    padding: 12px 14px 14px 14px;
+    overflow: auto;
+    min-height: 0;
+  }
+  .inspector-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 10px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+  .inspector-meta strong { color: var(--fg); font-weight: 650; }
+  .inspector-desc {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg);
+  }
+
+  .inspector-section {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .inspector-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 8px;
+  }
+  .inspector-subtitle {
+    font-size: 11px;
+    font-weight: 650;
+    color: var(--fg-muted);
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+  .inspector-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .inspector-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--fg);
+  }
+  .inspector-list li a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .inspector-list li a:hover { text-decoration: underline; }
+  .inspector-list .right {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--fg-muted);
+    font-size: 11px;
+    flex: 0 0 auto;
+  }
+  .inspector-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--accent-2, var(--accent));
+    text-decoration: none;
+  }
+  .inspector-link:hover { text-decoration: underline; }
+
+  .inspector-footer {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .inspector-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .inspector-cta.secondary {
+    border-color: var(--border-strong);
+    background: var(--bg-soft);
+    color: var(--fg);
+  }
+  .inspector-cta.secondary:hover {
+    border-color: var(--accent);
+  }
+
+  @media (max-width: 980px) {
+    .tree-inspector {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+slug: gpt-5-3-instant
+title: GPT-5.3 Instant — Better Everyday Chat (Less “Caveats”)
+date: '2026-03-03'
+era: frontier
+category:
+  - nlp
+  - generative
+  - reasoning
+relationships:
+  - to: gpt-5-2
+    type: builds_on
+    note: >-
+      [scales] Instant-tier iteration focused on tone, relevance, and fewer
+      unnecessary refusals
+authors:
+  - OpenAI Team
+org: OpenAI
+breakthrough_score: 6
+status: superseded
+model_spec:
+  parameters: undisclosed
+  architecture: >-
+    Instant-tier update focused on conversational flow and judgment around
+    refusals
+  family: OpenAI GPT
+  release_type: product
+  modalities:
+    - text
+  homepage: 'https://openai.com/index/gpt-5-3-instant/'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5'
+  context_window: 922000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '60.20'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: Coding · AA Coding Index
+      score: '59.10'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: Coding · SciCode
+      score: 56.6% (29.1–56.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 60.6% (6.8–60.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: MMLU-Pro
+      score: 87.4% (55.6–87.4%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #11 of 496'
+    - name: GPQA
+      score: 93.5% (42.8–93.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: HLE
+      score: 44.3% (4.1–44.3%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: Speed · Output tok/s
+      score: '96'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #144 of 496'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $30.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #485 of 496'
+public_view:
+  plain_english: >
+    GPT-5.3 Instant was an iteration aimed less at benchmark leaps and more at
+    the “feel” of ChatGPT: fewer preachy disclaimers, fewer unnecessary
+    refusals, and more direct answers when a request is safe. It’s a reminder
+    that product quality in LLMs often comes from judgment, tone, and retrieval
+    synthesis—not only raw capability scores.
+  analogy: >
+    A customer-support rep who stops reading policy aloud and starts solving
+    your problem.
+  applications:
+    - product: ChatGPT (default Instant model)
+      company: OpenAI
+      year_deployed: 2026
+  investment_angle: >
+    This kind of release is “retention engineering”: improving day-to-day UX can
+    matter more than a small benchmark win. It also makes model iteration safer
+    to deploy—small changes, fast feedback, and reversible rollouts.
+  why_it_matters: >
+    It shows “generation” isn’t only bigger models—sometimes it’s a better
+    default behavior that users notice immediately.
+citations:
+  - type: release
+    key: openai_gpt53_instant
+    title: 'GPT-5.3 Instant: Smoother, more useful everyday conversations'
+    year: 2026
+    url: 'https://openai.com/index/gpt-5-3-instant/'
+graph_featured: true
+---
+
+## What improved
+
+- Fewer unnecessary refusals and disclaimers
+- More to-the-point conversational answers
+- Better synthesis when using web results

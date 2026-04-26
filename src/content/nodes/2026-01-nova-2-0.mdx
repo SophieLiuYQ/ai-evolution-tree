@@ -1,0 +1,128 @@
+---
+slug: nova-2-0
+title: Nova 2.0 — Series
+date: '2026-04-24T20:37:23.509Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: nova-pro
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Amazon Team
+org: Amazon
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Amazon nova
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '34.50'
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #104 of 496'
+    - name: Coding · AA Coding Index
+      score: '23.40'
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #160 of 496'
+    - name: Coding · SciCode
+      score: 36.9% (24.0–36.9%)
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #146 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 17.4% (3.8–17.4%)
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #154 of 496'
+    - name: MMLU-Pro
+      score: 81.8% (74.3–81.8%)
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #84 of 496'
+    - name: GPQA
+      score: 81.1% (60.3–81.1%)
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #91 of 496'
+    - name: HLE
+      score: 10.9% (3.0–10.9%)
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #132 of 496'
+    - name: Speed · Output tok/s
+      score: '189'
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #34 of 496'
+    - name: Price ($/M tokens)
+      score: $0.30 in / $2.50 out
+      source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      vs_baseline: 'Rank #318 of 496'
+  variants:
+    - id: nova-2-0-lite-reasoning
+      label: Nova 2.0 Lite (high)
+      status: active
+    - id: nova-2-0-lite-reasoning-low
+      label: Nova 2.0 Lite (low)
+      status: active
+    - id: nova-2-0-lite-reasoning-medium
+      label: Nova 2.0 Lite (medium)
+      status: active
+    - id: nova-2-0-lite
+      label: Nova 2.0 Lite (Non-reasoning)
+      status: active
+    - id: nova-2-0-omni-reasoning-low
+      label: Nova 2.0 Omni (low)
+      status: active
+    - id: nova-2-0-omni-reasoning-medium
+      label: Nova 2.0 Omni (medium)
+      status: active
+    - id: nova-2-0-omni
+      label: Nova 2.0 Omni (Non-reasoning)
+      status: active
+    - id: nova-2-0-pro-reasoning-low
+      label: Nova 2.0 Pro Preview (low)
+      status: active
+    - id: nova-2-0-pro-reasoning-medium
+      label: Nova 2.0 Pro Preview (medium)
+      status: active
+    - id: nova-2-0-pro
+      label: Nova 2.0 Pro Preview (Non-reasoning)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/nova-2-0-lite'
+  context_window: 256000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+public_view:
+  plain_english: >-
+    Nova 2.0 is an API model from Amazon. It’s positioned for hard reasoning and
+    planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Nova 2.0 Lite (low) (API / product surface)
+      company: Amazon
+      year_deployed: 2026
+    - product: Developer tooling built on Nova 2.0 Lite (low)
+      company: Amazon
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_amazon_nova_2_0_lite_reasoning_low
+    title: Nova 2.0 Lite (low)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning-low'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

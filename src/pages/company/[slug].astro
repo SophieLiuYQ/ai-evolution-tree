@@ -1,0 +1,250 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const companies = await getCollection("companies");
+  return companies.map((c) => ({
+    params: { slug: c.data.slug },
+    props: { company: c },
+  }));
+}
+
+const { company } = Astro.props;
+const { Content } = await render(company);
+const c = company.data;
+
+const nodes = await getCollection("nodes");
+const nodeSlugSet = new Set(nodes.map((n) => n.data.slug));
+const companyAllNodes = nodes.filter((n) => c.orgs.includes(n.data.org));
+const companyHiddenNodes = companyAllNodes.filter((n) => n.data.graph_hidden);
+const companyFeaturedNodes = companyAllNodes
+  .filter((n) => !n.data.graph_hidden && n.data.graph_featured)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const companyNodes = companyAllNodes
+  .filter((n) => !n.data.graph_hidden && !n.data.graph_featured)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const bySeries = new Map<string, typeof companyNodes>();
+for (const n of companyNodes) {
+  const key = n.data.model_spec?.family ?? "Other";
+  const prev = bySeries.get(key);
+  if (prev) prev.push(n);
+  else bySeries.set(key, [n]);
+}
+const seriesEntries = [...bySeries.entries()].sort((a, b) => {
+  if (a[0] === "Other") return 1;
+  if (b[0] === "Other") return -1;
+  return a[0].localeCompare(b[0]);
+});
+
+const parseScore = (score: string): number | null => {
+  const m = score.match(/-?\d+(\.\d+)?/);
+  if (!m) return null;
+  const n = Number(m[0]);
+  return Number.isFinite(n) ? n : null;
+};
+
+type BenchRow = { name: string; best: number; sample: string; slug: string };
+const benchBest = new Map<string, BenchRow>();
+for (const n of companyNodes) {
+  const benches = n.data.model_spec?.benchmarks ?? [];
+  for (const b of benches) {
+    const val = parseScore(b.score);
+    if (val == null) continue;
+    const prev = benchBest.get(b.name);
+    if (!prev || val > prev.best) {
+      benchBest.set(b.name, { name: b.name, best: val, sample: b.score, slug: n.data.slug });
+    }
+  }
+}
+const benchRows = [...benchBest.values()].sort((a, b) => b.best - a.best).slice(0, 8);
+
+const missingSpec = companyNodes.filter((n) => !n.data.model_spec);
+const missingBench = companyNodes.filter((n) => (n.data.model_spec?.benchmarks?.length ?? 0) === 0);
+const missingCatalog = (c.catalog ?? []).filter((m) => m.node_slug && !nodeSlugSet.has(m.node_slug));
+---
+
+<Base title={`${c.name} · AI Evolution Tree`} description={c.summary}>
+  <article class="prose-node max-w-none">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/" data-i18n="nav.home">Home</a>
+      <span class="bc-sep">›</span>
+      <a href="/company/" data-i18n="company.title">Companies</a>
+      <span class="bc-sep">›</span>
+      <span class="bc-current">{c.name}</span>
+    </nav>
+
+    <h1>{c.name}</h1>
+    <p>
+      <span class={c.summary_zh ? "lang-en has-zh" : "lang-en"}>{c.summary}</span>
+      {c.summary_zh && <span class="lang-zh">{c.summary_zh}</span>}
+    </p>
+    {c.homepage && (
+      <p>
+        <a href={c.homepage} target="_blank" rel="noopener" data-i18n="detail.officialSite">
+          Official site ↗
+        </a>
+      </p>
+    )}
+
+    <h2 data-i18n="company.models">Models in the tree</h2>
+    <p>
+      <strong>{companyFeaturedNodes.length}</strong>{" "}
+      <span data-i18n="company.featuredCount">featured nodes</span>
+      {" · "}
+      <strong>{companyNodes.length}</strong>{" "}
+      <span data-i18n="company.otherCount">other nodes</span>
+      {" (from "}
+      {c.orgs.join(", ")}
+      {")"}.
+      {companyHiddenNodes.length > 0 && (
+        <>
+          {" "}
+          <span>
+            (<strong>{companyHiddenNodes.length}</strong>{" "}
+            <span data-i18n="company.hidden">collapsed variants hidden from the graph</span>)
+          </span>
+        </>
+      )}
+    </p>
+
+    {companyFeaturedNodes.length > 0 && (
+      <>
+        <h3 data-i18n="company.featured">Featured (graph/timeline)</h3>
+        <ul style="margin: 0 0 1rem 0;">
+          {companyFeaturedNodes.slice(0, 24).map((n) => (
+            <li>
+              <a href={`/node/${n.data.slug}/`}>{n.data.title}</a>
+              {" — "}
+              <span>{n.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>
+            </li>
+          ))}
+          {companyFeaturedNodes.length > 24 && <li><em>…and {companyFeaturedNodes.length - 24} more</em></li>}
+        </ul>
+      </>
+    )}
+
+    <h3 data-i18n="company.series">Series</h3>
+    {seriesEntries.map(([series, list]) => (
+      <section style="margin-bottom: 1rem;">
+        <h4 style="margin: 0 0 0.35rem 0;">{series}</h4>
+        <ul style="margin: 0;">
+          {list.slice(0, 12).map((n) => (
+            <li>
+              <a href={`/node/${n.data.slug}/`}>{n.data.title}</a>
+              {" — "}
+              <span>{n.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>
+            </li>
+          ))}
+          {list.length > 12 && <li><em>…and {list.length - 12} more</em></li>}
+        </ul>
+      </section>
+    ))}
+
+    {companyNodes.length > 0 && (
+      <details style="margin: 1rem 0;">
+        <summary data-i18n="company.all">All nodes (not on graph)</summary>
+        <ul style="margin: 0.75rem 0 0 0;">
+          {companyNodes.slice(0, 200).map((n) => (
+            <li>
+              <a href={`/node/${n.data.slug}/`}>{n.data.title}</a>
+              {" — "}
+              <span>{n.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>
+            </li>
+          ))}
+          {companyNodes.length > 200 && <li><em>…and {companyNodes.length - 200} more</em></li>}
+        </ul>
+      </details>
+    )}
+
+    {benchRows.length > 0 && (
+      <>
+        <h2 data-i18n="company.bench">Benchmark snapshot</h2>
+        <p data-i18n="company.bench.note">
+          Best score within this company’s nodes (not a normalized cross-benchmark ranking).
+        </p>
+        <ul>
+          {benchRows.map((r) => (
+            <li>
+              <strong>{r.name}:</strong> {r.sample} (from <a href={`/node/${r.slug}/`}>{r.slug}</a>)
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {(missingSpec.length > 0 || missingBench.length > 0) && (
+      <>
+        <h2 data-i18n="company.todo">Missing info (auto-detected)</h2>
+        {missingSpec.length > 0 && (
+          <>
+            <h3 data-i18n="company.todo.spec">No `model_spec`</h3>
+            <ul>
+              {missingSpec.slice(0, 12).map((n) => (
+                <li><a href={`/node/${n.data.slug}/`}>{n.data.title}</a></li>
+              ))}
+              {missingSpec.length > 12 && <li><em>…and {missingSpec.length - 12} more</em></li>}
+            </ul>
+          </>
+        )}
+        {missingBench.length > 0 && (
+          <>
+            <h3 data-i18n="company.todo.bench">No benchmarks</h3>
+            <ul>
+              {missingBench.slice(0, 12).map((n) => (
+                <li><a href={`/node/${n.data.slug}/`}>{n.data.title}</a></li>
+              ))}
+              {missingBench.length > 12 && <li><em>…and {missingBench.length - 12} more</em></li>}
+            </ul>
+          </>
+        )}
+      </>
+    )}
+
+    {(c.catalog?.length ?? 0) > 0 && (
+      <>
+        <h2 data-i18n="company.catalog">Official catalog (manual)</h2>
+        {missingCatalog.length > 0 && (
+          <p>
+            <strong>{missingCatalog.length}</strong>{" "}
+            <span data-i18n="company.catalog.missing">catalog items are not yet nodes.</span>
+          </p>
+        )}
+        <ul>
+          {c.catalog!.map((m) => (
+            <li>
+              <code>{m.id}</code>
+              {m.label ? ` — ${m.label}` : ""}
+              {m.released_at ? ` (${m.released_at.toLocaleDateString("en-US", { year: "numeric", month: "short" })})` : ""}
+              {m.node_slug && (
+                <>
+                  {" — "}
+                  {nodeSlugSet.has(m.node_slug) ? (
+                    <a href={`/node/${m.node_slug}/`}>in tree</a>
+                  ) : (
+                    <span>missing node</span>
+                  )}
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {c.sources && c.sources.length > 0 && (
+      <>
+        <h2 data-i18n="company.sources">Sources</h2>
+        <ul>
+          {c.sources.map((u) => (
+            <li><a href={u} target="_blank" rel="noopener">{u}</a></li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    <h2 data-i18n="company.notes">Notes</h2>
+    <Content />
+  </article>
+</Base>

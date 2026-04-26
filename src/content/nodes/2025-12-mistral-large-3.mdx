@@ -1,0 +1,107 @@
+---
+slug: mistral-large-3
+title: Mistral Large 3 (v25.12)
+date: '2025-12-02T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+  - multimodal
+  - cv
+relationships:
+  - to: mistral-large-2
+    type: builds_on
+    note: '[scales] Next generation in the series'
+  - to: mistral-medium-3-1
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Mistral AI Team
+org: Mistral AI
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Dense Transformer
+  family: Mistral AI mistral-large
+  release_type: api
+  modalities:
+    - text
+    - vision
+  homepage: 'https://mistral.ai/'
+  api_model: mistral-large-2512
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '22.80'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #209 of 496'
+    - name: Coding · AA Coding Index
+      score: '22.70'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #165 of 496'
+    - name: Coding · SciCode
+      score: 36.2% (20.8–36.2%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #161 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 15.9% (6.1–15.9%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #163 of 496'
+    - name: MMLU-Pro
+      score: 80.7% (51.5–80.7%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #104 of 496'
+    - name: GPQA
+      score: 68.0% (35.1–68.0%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #213 of 496'
+    - name: HLE
+      score: 4.1% (3.2–4.1%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #394 of 496'
+    - name: Speed · Output tok/s
+      score: '56'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #217 of 496'
+    - name: Price ($/M tokens)
+      score: $0.50 in / $1.50 out
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-3'
+      vs_baseline: 'Rank #312 of 496'
+  aa_url: 'https://artificialanalysis.ai/models/mistral-large'
+  hf_url: 'https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512'
+  context_window: 256000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  parameters: 41B active
+public_view:
+  plain_english: >-
+    Mistral Large 3 (v25.12) is an API model from Mistral AI. It’s positioned
+    for vision + text tasks—work that benefits from iteration, not just one-shot
+    answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Mistral Large 3 (v25.12) (API / product surface)
+      company: Mistral AI
+      year_deployed: 2026
+    - product: Developer tooling built on Mistral Large 3 (v25.12)
+      company: Mistral AI
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_mistral_mistral_large_3
+    title: Mistral Large 3 (v25.12)
+    year: 2025
+    url: 'https://docs.mistral.ai/models/mistral-large-3-25-12'
+graph_featured: true
+---
+## Notes
+
+TODO: Replace this placeholder with real specs, relationships, and benchmark-backed comparisons.

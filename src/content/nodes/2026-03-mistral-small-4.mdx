@@ -1,0 +1,105 @@
+---
+slug: mistral-small-4
+title: Mistral Small 4 (v26.03)
+date: '2026-03-16T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: mistral-small-3
+    type: builds_on
+    note: '[scales] Next generation in the series'
+  - to: mistral-large-3
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Mistral AI Team
+org: Mistral AI
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Dense Transformer
+  family: Mistral AI mistral-small
+  release_type: api
+  modalities:
+    - text
+  homepage: 'https://mistral.ai/'
+  api_model: mistral-small-2603
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '27.80'
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #46 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '24.30'
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #47 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 38.0% (13.4–38.0%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #45 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 17.4% (6.8–17.4%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #46 of 96 · Reasoning'
+    - name: MMLU-Pro
+      score: 68.1% (41.9–68.1%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #58 of 96 · Reasoning'
+    - name: GPQA
+      score: 76.9% (30.2–76.9%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #49 of 96 · Reasoning'
+    - name: HLE
+      score: 9.5% (3.7–9.5%)
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #58 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '167'
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #11 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $0.15 in / $0.60 out
+      source_url: 'https://artificialanalysis.ai/models/mistral-small-4'
+      vs_baseline: 'Rank #42 of 96 · Reasoning'
+  aa_url: 'https://artificialanalysis.ai/models/mistral-small'
+  hf_url: 'https://huggingface.co/mistralai/Mistral-Small-4-119B-2603'
+  context_window: 256000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  parameters: 6.5B active
+public_view:
+  plain_english: >-
+    Mistral Small 4 (v26.03) is an API model from Mistral AI. It’s positioned
+    for hard reasoning and planning—work that benefits from iteration, not just
+    one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Mistral Small 4 (v26.03) (API / product surface)
+      company: Mistral AI
+      year_deployed: 2026
+    - product: Developer tooling built on Mistral Small 4 (v26.03)
+      company: Mistral AI
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_mistral_mistral_small_4
+    title: Mistral Small 4 (v26.03)
+    year: 2026
+    url: 'https://docs.mistral.ai/models/mistral-small-4-0-26-03'
+graph_featured: true
+---
+## Notes
+
+TODO: Replace this placeholder with real specs, relationships, and benchmark-backed comparisons.

@@ -1,0 +1,105 @@
+---
+slug: claude-4-5
+title: Claude 4.5 — Series
+date: '2026-04-24T20:37:23.529Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: claude-21
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Anthropic Team
+org: Anthropic
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Anthropic Claude
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '43.00'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #19 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '38.60'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #18 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 44.7%
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #15 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 35.6%
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #18 of 96 · Reasoning'
+    - name: MMLU-Pro
+      score: 87.5%
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #5 of 96 · Reasoning'
+    - name: GPQA
+      score: 83.4%
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #27 of 96 · Reasoning'
+    - name: HLE
+      score: 17.3%
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #29 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '60'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #48 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      vs_baseline: 'Rank #92 of 96 · Reasoning'
+  variants:
+    - id: claude-4-5-haiku
+      label: Claude 4.5 Haiku (Non-reasoning)
+      status: active
+    - id: claude-4-5-haiku-reasoning
+      label: Claude 4.5 Haiku (Reasoning)
+      status: active
+    - id: claude-4-5-sonnet
+      label: Claude 4.5 Sonnet (Non-reasoning)
+      status: active
+    - id: claude-4-5-sonnet-thinking
+      label: Claude 4.5 Sonnet (Reasoning)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+public_view:
+  plain_english: >-
+    Claude 4.5 is an API model from Anthropic. It’s positioned for hard
+    reasoning and planning—work that benefits from iteration, not just one-shot
+    answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Claude 4.5 Haiku (Reasoning) (API / product surface)
+      company: Anthropic
+      year_deployed: 2026
+    - product: Developer tooling built on Claude 4.5 Haiku (Reasoning)
+      company: Anthropic
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_anthropic_claude_4_5_haiku_reasoning
+    title: Claude 4.5 Haiku (Reasoning)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

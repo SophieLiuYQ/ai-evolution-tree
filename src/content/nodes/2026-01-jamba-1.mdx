@@ -1,0 +1,106 @@
+---
+slug: jamba-1
+title: Jamba 1 — Series
+date: '2026-04-24T23:33:28.486Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: jamba-1-7
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - AI21 Labs Team
+org: AI21 Labs
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: AI21 Labs jamba
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '8.10'
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #455 of 496'
+    - name: Coding · AA Coding Index
+      score: '3.10'
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #370 of 496'
+    - name: Coding · SciCode
+      score: 9.3%
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #415 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.0%
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #496 of 496'
+    - name: MMLU-Pro
+      score: 38.8%
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #322 of 496'
+    - name: GPQA
+      score: 32.2%
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #421 of 496'
+    - name: HLE
+      score: 4.5%
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+      vs_baseline: 'Rank #349 of 496'
+    - name: Speed · Output tok/s
+      score: '49'
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-large'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $8.00 out
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-7-large'
+  variants:
+    - id: jamba-1-5
+      label: Jamba 1.5
+      status: active
+    - id: jamba-1-6
+      label: Jamba 1.6
+      status: active
+    - id: jamba-1-7
+      label: Jamba 1.7
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/jamba-1-7-mini'
+  parameters: 94B active
+  context_window: 256000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/ai21labs/AI21-Jamba-Large-1.7'
+public_view:
+  plain_english: >-
+    Jamba 1 is an API model from AI21 Labs. It’s positioned for hard reasoning
+    and planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Jamba 1.5 Large (API / product surface)
+      company: AI21 Labs
+      year_deployed: 2026
+    - product: Developer tooling built on Jamba 1.5 Large
+      company: AI21 Labs
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_ai21_labs_jamba_1_5_large
+    title: Jamba 1.5 Large
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/jamba-1-5-large'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

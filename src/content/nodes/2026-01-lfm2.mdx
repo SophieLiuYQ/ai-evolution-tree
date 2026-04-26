@@ -1,0 +1,102 @@
+---
+slug: lfm2
+title: Lfm2 — Series
+date: '2026-04-24T20:37:23.549Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: lfm2-5
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Liquid AI Team
+org: Liquid AI
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Liquid AI lfm
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Speed · Output tok/s
+      score: '126.00'
+      source_url: 'https://artificialanalysis.ai/models/lfm2-24b-a2b'
+    - name: MMLU-Pro
+      score: 50.5% (50.5–50.5%)
+      source_url: 'https://artificialanalysis.ai/models/lfm2-8b-a1b'
+    - name: GPQA
+      score: 33.9%
+      source_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+      vs_baseline: 'Rank #407 of 496'
+    - name: Coding · SciCode
+      score: 4.2%
+      source_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+      vs_baseline: 'Rank #437 of 496'
+    - name: Intelligence · AA Intelligence Index
+      score: '8.10'
+      source_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+      vs_baseline: 'Rank #455 of 496'
+    - name: HLE
+      score: 6.1%
+      source_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+      vs_baseline: 'Rank #231 of 496'
+    - name: Coding · AA Coding Index
+      score: '1.40'
+      source_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+      vs_baseline: 'Rank #386 of 496'
+    - name: Price ($/M tokens)
+      score: '0.03'
+      source_url: 'https://artificialanalysis.ai/models/lfm2-24b-a2b'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.0%
+      source_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+      vs_baseline: 'Rank #496 of 496'
+  variants:
+    - id: lfm2
+      label: Lfm2
+      status: active
+    - id: lfm2-5
+      label: Lfm2 5
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/lfm2-5-1-2b-thinking'
+  context_window: 32768
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  parameters: 2.3B active
+  hf_url: 'https://huggingface.co/LiquidAI/LFM2-24B-A2B'
+public_view:
+  plain_english: >-
+    Lfm2 is an API model from Liquid AI. It’s positioned for hard reasoning and
+    planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: LFM2 24B A2B (API / product surface)
+      company: Liquid AI
+      year_deployed: 2026
+    - product: Developer tooling built on LFM2 24B A2B
+      company: Liquid AI
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_liquid_ai_lfm2_24b_a2b
+    title: LFM2 24B A2B
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/lfm2-24b-a2b'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

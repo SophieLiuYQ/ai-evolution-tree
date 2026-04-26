@@ -40,15 +40,8 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
 ---
 
 <aside class="edge-legend overflow-y-auto border-r border-slate-200 bg-slate-50 px-4 py-4">
-  <a href="/tree/" class="block text-base font-bold leading-tight text-slate-900" title="AI Evolution Tree — back to graph">
-    🌳 <span class="text-[var(--accent)]">AI Tree</span>
-  </a>
-  <p class="mt-1 text-[10.5px] leading-snug text-slate-500" data-i18n="tree.brandSub">
-    Tech tree of ML/AI breakthroughs. Time → right.
-  </p>
-
   {/* Search — type a model name, jump to its card on the active pane */}
-  <div class="tree-search relative mt-4">
+  <div class="tree-search relative">
     <input
       id="tree-search-input"
       type="search"
@@ -74,16 +67,6 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   >
     <button type="button" data-orient="v" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="true" title="Vertical layout" data-i18n="tree.orient.vertical">▼ Vertical</button>
     <button type="button" data-orient="h" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Horizontal layout" data-i18n="tree.orient.horizontal">▶ Horizontal</button>
-  </div>
-
-  {/* Layout toggle — reflect evolution as family lanes */}
-  <div
-    class="sort-toggle mt-3 flex items-stretch gap-1 rounded-md border border-slate-300 bg-white p-1"
-    role="tablist"
-    aria-label="Layout"
-  >
-    <button type="button" data-sort="chronological" class="sort-btn flex-1 rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="true" title="Chronological layout">Date</button>
-    <button type="button" data-sort="byFamily" class="sort-btn flex-1 rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Group into model-series evolution lanes">Series</button>
   </div>
 
   {/* Compact-view toggle — repack visible cards into a tight grid that
@@ -400,18 +383,20 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   .hover\\:bg-slate-100:hover { background-color: rgba(15, 23, 42, 0.04) !important; }
   .orient-btn[aria-selected="true"] {
     background: var(--accent);
-    color: white;
+    color: white !important;
   }
   .sort-btn[aria-selected="true"] {
     background: var(--accent);
-    color: white;
+    color: white !important;
   }
   /* Active state for Compact view toggle — fills when pressed so it
      reads as an on/off switch, not a regular button. */
   #compact-toggle[aria-pressed="true"] {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
+    /* Important: the theme-bridge `.bg-white { ... !important }`
+       override would otherwise wipe out the active fill. */
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: white !important;
   }
   /* AND/OR mode toggle next to the Node types heading. Same active-fill
      pattern as the orient toggle. */
@@ -423,7 +408,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   }
   .node-filter-mode-btn[aria-selected="true"] {
     background: var(--accent);
-    color: white;
+    color: white !important;
   }
   .node-filter-mode-btn:hover:not([aria-selected="true"]) {
     background: rgba(15, 23, 42, 0.04);

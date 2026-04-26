@@ -38,32 +38,37 @@ model_spec:
     - enterprise
   benchmarks:
     - name: Intelligence · AA Intelligence Index
-      score: 57.28 (31.05–57.28)
-      vs_baseline: 'Rank #2 of 86 · Top 5% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/models'
+      score: '57.30'
+      vs_baseline: 'Rank #2 of 96 · Reasoning'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
     - name: Coding · SciCode
-      score: 54.5% (34.4–54.5%)
-      vs_baseline: 'Rank #2 of 85 · Top 5% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+      score: 54.5% (50.1–54.5%)
+      vs_baseline: 'Rank #2 of 96 · Reasoning'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
     - name: Agentic · Terminal-Bench Hard
-      score: 54.5% (27.3–54.5%)
-      vs_baseline: 'Rank #2 of 84 · Top 5% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/evaluations/terminalbench-hard'
+      score: 54.5% (51.5–54.5%)
+      vs_baseline: 'Rank #1 of 96 · Reasoning'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
     - name: Coding · AA Coding Index
       score: '52.50'
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+      vs_baseline: 'Rank #2 of 96 · Reasoning'
     - name: GPQA
       score: 91.4% (88.5–91.4%)
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+      vs_baseline: 'Rank #2 of 96 · Reasoning'
     - name: HLE
       score: 39.6% (31.2–39.6%)
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+      vs_baseline: 'Rank #2 of 96 · Reasoning'
     - name: Speed · Output tok/s
       score: '62'
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+      vs_baseline: 'Rank #46 of 96 · Reasoning'
     - name: Price ($/M tokens)
       score: $5.00 in / $25.00 out
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-7'
+      vs_baseline: 'Rank #95 of 96 · Reasoning'
   family: Anthropic claude-opus
   variants:
     - id: claude-opus-4-7-non-reasoning
@@ -73,11 +78,10 @@ model_spec:
 title_zh: Claude Opus 4.7 —— 编程能力又炸了（也是写这份文档的模型）
 public_view_zh:
   plain_english: |
-    Anthropic 2026 年 4 月 16 日发布的最新旗舰，写这份文档的
-    就是它本人。最吃到红利的场景是智能体编程：SWE-bench Pro
-    从 Opus 4.6 的 53.4% 抬到 64.3%，重新拿回开源可用智能体
-    编程榜的头名。同时持续自主运行拉到 16+ 小时，终于把
-    8–12 小时附近上下文漂移的老毛病压了下来。
+    Opus 4.7 是 Anthropic 在 2026 年初发布的旗舰级模型之一，
+    主打长上下文与“能推进任务”的智能体式工作流：把目标拆成步骤、
+    调用工具、反复检查再继续。它更像是给工程与知识工作者用的执行引擎，
+    而不是只做一次性问答的聊天模型。
   analogy: |
     到了 Opus 4.7 这档，可以真把 AI 当一个同事用了——你周五
     下午把一个项目扔给它，周末下线，周一回来审它合好的提交。
@@ -97,19 +101,11 @@ public_view_zh:
     2026 Q1 数据显示入门级软件工程岗位同比在萎缩，时间线
     刚好对上 Opus 4.x 的规模部署——有人叫好，也有 36氪 那种
     「Anthropic 把模型越带越笨」的反面报道，争议在继续。
-  modalities_in:
-    - text
-    - image
-  modalities_out:
-    - text
 public_view:
-  plain_english: |
-    The most recent Anthropic flagship as of April 2026, released
-    in early Q1 2026. The model behind most current agentic AI
-    workflows in production. Notable for sustained autonomous
-    operation crossing 16-hour sessions and substantially
-    improved reliability on long-horizon tasks (the previous
-    blocker was drift across the 8-12 hour mark).
+  plain_english: >-
+    Claude Opus 4.7 is an API model from Anthropic. It’s positioned for tool use
+    and multi-step workflows and vision + text tasks—work that benefits from
+    iteration, not just one-shot answers.
   analogy: |
     Opus 4.7 is the "AI as a real teammate" tier — you can hand
     it a Friday afternoon project, leave for the weekend, and
@@ -160,7 +156,7 @@ graph_featured: true
 | Gemini 3 | 2025-Q4 | Google | longest context, multimodal video |
 | Llama 5 | 2026-Q1 | Meta | open frontier, MoE depth |
 | DeepSeek V4 | 2026-Q1 | DeepSeek | open frontier, cost leader |
-| **Opus 4.7** | **2026-02** | **Anthropic** | **agentic reliability (16hr sessions)** |
+| **Opus 4.7** | **2026-02** | **Anthropic** | **agentic + long-context workflows** |
 
 No single model dominates all dimensions in 2026. The market has stratified by use-case rather than converged on one provider — chat (GPT-5), research (Gemini 3), agents (Opus 4.7), open infrastructure (DeepSeek V4 / Llama 5).
 

@@ -1,0 +1,116 @@
+---
+slug: gemini-2-0
+title: Gemini 2.0 — Series
+date: '2026-04-24T20:37:23.517Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: gemini-2-5
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Google / DeepMind Team
+org: Google
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Google / DeepMind Gemini
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '18.10'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+      vs_baseline: 'Rank #261 of 496'
+    - name: Coding · AA Coding Index
+      score: '25.50'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+      vs_baseline: 'Rank #140 of 496'
+    - name: Coding · SciCode
+      score: 31.2%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+      vs_baseline: 'Rank #226 of 496'
+    - name: MMLU-Pro
+      score: 80.5%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+      vs_baseline: 'Rank #110 of 496'
+    - name: GPQA
+      score: 62.2%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+      vs_baseline: 'Rank #253 of 496'
+    - name: HLE
+      score: 6.8%
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+      vs_baseline: 'Rank #212 of 496'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-flash-thinking-exp-0121'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-flash-thinking-exp-0121'
+  variants:
+    - id: gemini-2-0-flash-experimental
+      label: Gemini 2.0 Flash (experimental)
+      status: active
+    - id: gemini-2-0-flash
+      label: Gemini 2.0 Flash (Feb '25)
+      status: active
+    - id: gemini-2-0-flash-thinking-exp-1219
+      label: Gemini 2.0 Flash Thinking Experimental (Dec '24)
+      status: active
+    - id: gemini-2-0-flash-thinking-exp-0121
+      label: Gemini 2.0 Flash Thinking Experimental (Jan '25)
+      status: active
+    - id: gemini-2-0-flash-lite-001
+      label: Gemini 2.0 Flash-Lite (Feb '25)
+      status: active
+    - id: gemini-2-0-flash-lite-preview
+      label: Gemini 2.0 Flash-Lite (Preview)
+      status: active
+    - id: gemini-2-0-pro-experimental-02-05
+      label: Gemini 2.0 Pro Experimental (Feb '25)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/gemini-2-0-pro-experimental-02-05'
+  context_window: 1000000
+  modalities_in:
+    - text
+    - image
+    - video
+    - audio
+  modalities_out:
+    - text
+    - image
+    - audio
+public_view:
+  plain_english: >-
+    Gemini 2.0 is an API model from Google. It’s positioned for hard reasoning
+    and planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Gemini 2.0 Flash (experimental) (API / product surface)
+      company: Google / DeepMind
+      year_deployed: 2026
+    - product: Developer tooling built on Gemini 2.0 Flash (experimental)
+      company: Google / DeepMind
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_google_gemini_2_0_flash_experimental
+    title: Gemini 2.0 Flash (experimental)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/gemini-2-0-flash-experimental'
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

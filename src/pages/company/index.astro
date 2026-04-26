@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+const companies = (await getCollection("companies")).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
+---
+
+<Base title="Companies · AI Evolution Tree" description="Company pages grouping models into series and evolution timelines.">
+  <article class="prose-node max-w-none">
+    <h1 data-i18n="company.title">Companies</h1>
+    <p data-i18n="company.subtitle">
+      Browse model evolution by company. Each company page auto-lists the models already in the tree and aggregates benchmark snapshots.
+    </p>
+
+    <ul>
+      {companies.map((c) => (
+        <li>
+          <a href={`/company/${c.data.slug}/`}>{c.data.name}</a>
+          {" — "}
+          <span>{c.data.summary}</span>
+        </li>
+      ))}
+    </ul>
+  </article>
+</Base>
+

@@ -1,0 +1,130 @@
+---
+slug: gpt-5-5
+title: GPT-5.5 — Agentic “Do the Work” Model (Thinking / Pro)
+date: '2026-04-23'
+era: frontier
+category:
+  - nlp
+  - multimodal
+  - generative
+  - reasoning
+  - agents
+  - cv
+relationships:
+  - to: gpt-5-4
+    type: builds_on
+    note: >-
+      [scales] Next frontier generation with stronger agentic coding and tool
+      use
+authors:
+  - OpenAI Team
+org: OpenAI
+breakthrough_score: 9
+status: active
+model_spec:
+  parameters: undisclosed
+  architecture: >-
+    Frontier model optimized for multi-step tool use and long-running work;
+    marketed as “carry more of the work itself”
+  family: OpenAI GPT
+  release_type: api
+  modalities:
+    - text
+    - vision
+  variants:
+    - id: gpt-5-5-high
+      label: GPT-5.5 (high)
+      status: active
+    - id: gpt-5-5-low
+      label: GPT-5.5 (low)
+      status: active
+    - id: gpt-5-5-medium
+      label: GPT-5.5 (medium)
+      status: active
+    - id: gpt-5-5-non-reasoning
+      label: GPT-5.5 (Non-reasoning)
+      status: active
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '60.20'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: Coding · AA Coding Index
+      score: '59.10'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: Coding · SciCode
+      score: 56.1% (47.3–56.1%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #5 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 60.6% (49.2–60.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: GPQA
+      score: 93.5% (76.8–93.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: HLE
+      score: 44.3% (12.6–44.3%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: Speed · Output tok/s
+      score: '96'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #144 of 496'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $30.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #485 of 496'
+  homepage: 'https://openai.com/index/introducing-gpt-5-5/'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+  context_window: 922000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+public_view:
+  plain_english: >
+    GPT-5.5 is OpenAI’s “agent” model: it’s built to take a messy goal, turn it
+    into steps, use tools, and keep iterating until the work is done. It’s most
+    valuable when the task isn’t one prompt → one answer (coding changes,
+    multi-source research, long documents, or workflows that need checking and
+    follow‑ups), and less about casual chat. Expect higher cost and latency
+    than lighter models in exchange for better persistence and tool use.
+  analogy: >
+    Give it a ticket, not a question: it breaks the work down and closes the
+    loop.
+  applications:
+    - product: ChatGPT (Thinking/Pro tiers)
+      company: OpenAI
+      year_deployed: 2026
+    - product: 'OpenAI API (agents, workflows)'
+      company: OpenAI
+      year_deployed: 2026
+  investment_angle: >
+    If models can reliably execute workflows across tools, the bottleneck shifts
+    to distribution (where the agent runs) and integration (what it can touch).
+    The economic unit becomes a completed task, not a message.
+  why_it_matters: >
+    It’s a step toward “LLM as operator”: planning + tool use + persistence, not
+    just generation quality.
+public_view_zh:
+  plain_english: >
+    GPT-5.5 是 OpenAI 主打“能把事做完”的 Agent 模型：它更擅长把一个复杂目标拆成步骤，
+    调用工具/接口，反复检查与迭代，直到交付结果。它在需要多轮推进的工作里更有价值（改代码、
+    多来源调研、长文档处理、需要自检与回访的流程），而不是单纯闲聊。代价是更高的成本与更慢的
+    响应，但换来更强的持续执行与工具使用能力。
+citations:
+  - type: release
+    key: openai_gpt55
+    title: Introducing GPT-5.5
+    year: 2026
+    url: 'https://openai.com/index/introducing-gpt-5-5/'
+graph_featured: true
+---
+
+## Notes
+
+GPT-5.5 shipped with Thinking/Pro surfaces and continued the GPT-5 pattern: one family, multiple operating points.

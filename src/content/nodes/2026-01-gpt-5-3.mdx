@@ -1,0 +1,104 @@
+---
+slug: gpt-5-3
+title: GPT 5.3 — Series
+date: '2026-04-24T20:37:23.554Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: gpt-5-4-nano
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - OpenAI Team
+org: OpenAI
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: OpenAI GPT
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '60.20'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: Coding · AA Coding Index
+      score: '59.10'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: Coding · SciCode
+      score: 56.6% (29.1–56.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 60.6% (6.8–60.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 496'
+    - name: MMLU-Pro
+      score: 87.4% (55.6–87.4%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #11 of 496'
+    - name: GPQA
+      score: 93.5% (42.8–93.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: HLE
+      score: 44.3% (4.1–44.3%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #3 of 496'
+    - name: Speed · Output tok/s
+      score: '96'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #144 of 496'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $30.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #485 of 496'
+  variants:
+    - id: gpt-5-3-codex
+      label: GPT‑5.3‑Codex
+      status: active
+    - id: gpt-5-3-codex-spark
+      label: GPT‑5.3‑Codex‑Spark (preview)
+      status: active
+  homepage: 'https://openai.com/index/introducing-gpt-5-3-codex-spark/'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5'
+  context_window: 922000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+public_view:
+  plain_english: >-
+    GPT 5.3 is an API model from OpenAI. It’s positioned for hard reasoning and
+    planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: GPT‑5.3‑Codex‑Spark (preview) (API / product surface)
+      company: OpenAI
+      year_deployed: 2026
+    - product: Developer tooling built on GPT‑5.3‑Codex‑Spark (preview)
+      company: OpenAI
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_openai_gpt_5_3_codex_spark
+    title: GPT‑5.3‑Codex‑Spark (preview)
+    year: 2026
+    url: 'https://openai.com/index/introducing-gpt-5-3-codex-spark/'
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

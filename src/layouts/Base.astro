@@ -15,6 +15,18 @@ const {
 const path = Astro.url.pathname;
 const isActive = (p: string) =>
   p === "/" ? path === "/" : path.startsWith(p);
+
+// On /tree/ the LegendPanel is a 360px-wide left column. Keep the
+// header brand visually anchored to that column (centered ~180px from
+// the viewport edge) and drop the nav items so the brand reads as a
+// single workspace title rather than competing with the dense filters
+// directly beneath it.
+const isTreePage = path === "/tree/" || path.startsWith("/tree/");
+// Landing page also hides the right-side nav (the hero + CTA carries
+// the navigation already; duplicating the menu in the header just
+// adds chrome). Brand stays in its normal centered-container position.
+const isLanding = path === "/";
+const hideHeaderNav = isTreePage || isLanding;
 ---
 
 <!doctype html>
@@ -23,6 +35,7 @@ const isActive = (p: string) =>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -99,12 +112,24 @@ const isActive = (p: string) =>
     </script>
   </head>
   <body class="min-h-screen">
-    <header class="sticky top-0 z-20 border-b border-[var(--border)] bg-white/85 backdrop-blur">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-        <a href="/" class="text-lg font-semibold tracking-tight">
-          🌳 <span class="text-[var(--accent)]">AI Evolution Tree</span>
+    <header class={`sticky top-0 z-20 border-b border-[var(--border)] bg-white/85 backdrop-blur${isTreePage ? " is-tree" : ""}`}>
+      <nav class={`flex items-center py-3 ${isTreePage ? "tree-nav justify-start" : "mx-auto max-w-6xl justify-between px-6"}`}>
+        <a
+          href="/"
+          class={`flex items-center gap-2 text-lg font-semibold tracking-tight${isTreePage ? " tree-brand" : ""}`}
+          style={isTreePage ? "width:360px;justify-content:center;" : undefined}
+        >
+          <img
+            src="/logo.png"
+            alt="AI Evolution Tree"
+            width="28"
+            height="28"
+            class="h-7 w-7 rounded-md"
+            loading="eager"
+          />
+          <span class="text-[var(--accent)]">AI Evolution Tree</span>
         </a>
-        <div class="flex items-center gap-1 text-sm">
+        <div class={`flex items-center gap-1 text-sm${hideHeaderNav ? " hidden" : ""}`}>
           <a
             href="/"
             class={`rounded-md px-3 py-1.5 ${path === "/" ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}

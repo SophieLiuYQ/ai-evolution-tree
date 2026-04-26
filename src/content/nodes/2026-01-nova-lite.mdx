@@ -1,0 +1,92 @@
+---
+slug: nova-lite
+title: Nova Lite
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+relationships:
+  - to: nova-2-0-pro
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Amazon Team
+org: Amazon
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Dense Transformer
+  family: Amazon nova-lite
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '12.70'
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #362 of 496'
+    - name: Coding · AA Coding Index
+      score: '5.10'
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #351 of 496'
+    - name: Coding · SciCode
+      score: 13.9%
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #391 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.8%
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #338 of 496'
+    - name: MMLU-Pro
+      score: 59.0%
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #268 of 496'
+    - name: GPQA
+      score: 43.3%
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #362 of 496'
+    - name: HLE
+      score: 4.6%
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #342 of 496'
+    - name: Speed · Output tok/s
+      score: '219'
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #18 of 496'
+    - name: Price ($/M tokens)
+      score: $0.06 in / $0.24 out
+      source_url: 'https://artificialanalysis.ai/models/nova-lite'
+      vs_baseline: 'Rank #195 of 496'
+  aa_url: 'https://artificialanalysis.ai/models/nova-lite'
+  context_window: 300000
+  modalities_in:
+    - image
+public_view:
+  plain_english: >-
+    Nova Lite is an API model from Amazon. It’s positioned for general text
+    tasks—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Nova Lite (API / product surface)
+      company: Amazon
+      year_deployed: 2026
+    - product: Developer tooling built on Nova Lite
+      company: Amazon
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_amazon_nova_lite
+    title: Nova Lite
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/nova-lite'
+---
+## Notes
+
+TODO: Replace this placeholder with real specs, relationships, and benchmark-backed comparisons.

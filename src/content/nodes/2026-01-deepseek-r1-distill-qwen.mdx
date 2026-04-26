@@ -1,0 +1,98 @@
+---
+slug: deepseek-r1-distill-qwen
+title: DeepSeek r1 distill qwen — Series
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: deepseek-r1-distill-qwen-32b
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - DeepSeek Team
+org: DeepSeek
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: DeepSeek deepseek-r
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '17.20'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+      vs_baseline: 'Rank #272 of 496'
+    - name: Coding · SciCode
+      score: 37.6%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+      vs_baseline: 'Rank #135 of 496'
+    - name: MMLU-Pro
+      score: 73.9%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+      vs_baseline: 'Rank #196 of 496'
+    - name: GPQA
+      score: 61.5%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+      vs_baseline: 'Rank #258 of 496'
+    - name: HLE
+      score: 5.5%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+      vs_baseline: 'Rank #254 of 496'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+  variants:
+    - id: deepseek-r1-distill-qwen-1-5b
+      label: DeepSeek R1 Distill Qwen 1.5B
+      status: active
+    - id: deepseek-r1-distill-qwen-14b
+      label: DeepSeek R1 Distill Qwen 14B
+      status: active
+    - id: deepseek-r1-distill-qwen-32b
+      label: DeepSeek R1 Distill Qwen 32B
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-32b'
+  parameters: 32B
+  context_window: 128000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+public_view:
+  plain_english: >-
+    DeepSeek r1 distill qwen is an API model from DeepSeek. It’s positioned for
+    hard reasoning and planning—work that benefits from iteration, not just
+    one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: DeepSeek R1 Distill Qwen 1.5B (API / product surface)
+      company: DeepSeek
+      year_deployed: 2026
+    - product: Developer tooling built on DeepSeek R1 Distill Qwen 1.5B
+      company: DeepSeek
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_deepseek_deepseek_r1_distill_qwen_1_5b
+    title: DeepSeek R1 Distill Qwen 1.5B
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-qwen-1-5b'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

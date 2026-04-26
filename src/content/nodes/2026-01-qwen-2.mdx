@@ -1,0 +1,93 @@
+---
+slug: qwen-2
+title: Qwen 2 — Series
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: qwen-1-5
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Alibaba Team
+org: Alibaba
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Alibaba qwen-chat
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '11.70'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+      vs_baseline: 'Rank #387 of 496'
+    - name: Coding · SciCode
+      score: 22.9%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+      vs_baseline: 'Rank #336 of 496'
+    - name: MMLU-Pro
+      score: 62.2%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+      vs_baseline: 'Rank #265 of 496'
+    - name: GPQA
+      score: 37.1%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+      vs_baseline: 'Rank #396 of 496'
+    - name: HLE
+      score: 3.7%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+      vs_baseline: 'Rank #434 of 496'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+  variants:
+    - id: qwen-chat-14b
+      label: Qwen Chat 14B
+      status: active
+    - id: qwen-chat-72b
+      label: Qwen Chat 72B
+      status: active
+    - id: qwen2-72b-instruct
+      label: Qwen2 Instruct 72B
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+  context_window: 131072
+  hf_url: 'https://huggingface.co/Qwen/Qwen2-72B-Instruct'
+  parameters: 72B
+public_view:
+  plain_english: >-
+    Qwen 2 is an API model from Alibaba. It’s positioned for hard reasoning and
+    planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Qwen Chat 14B (API / product surface)
+      company: Alibaba
+      year_deployed: 2026
+    - product: Developer tooling built on Qwen Chat 14B
+      company: Alibaba
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_alibaba_qwen_chat_14b
+    title: Qwen Chat 14B
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/qwen-chat-14b'
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

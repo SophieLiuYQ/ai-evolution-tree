@@ -1,0 +1,97 @@
+---
+slug: deepseek-v3-1-terminus
+title: DeepSeek V3.1 Terminus (Non-reasoning)
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+relationships:
+  - to: deepseek-v3-1-terminus-reasoning
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - DeepSeek Team
+org: DeepSeek
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: MoE Transformer — 37B active of 685B total
+  family: DeepSeek deepseek-v
+  release_type: api
+  modalities:
+    - text
+  homepage: 'https://www.deepseek.com/'
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '33.90'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #36 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '33.70'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #29 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 40.6% (32.1–40.6%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #29 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 31.8% (30.3–31.8%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #25 of 96 · Reasoning'
+    - name: MMLU-Pro
+      score: 85.1% (83.6–85.1%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #11 of 96 · Reasoning'
+    - name: GPQA
+      score: 79.2% (75.1–79.2%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #37 of 96 · Reasoning'
+    - name: HLE
+      score: 15.2% (8.4–15.2%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #32 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus'
+    - name: Price ($/M tokens)
+      score: $1.64 in / $2.75 out
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
+      vs_baseline: 'Rank #68 of 96 · Reasoning'
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus'
+  parameters: 37B active · 685B total
+  context_window: 128000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+public_view:
+  plain_english: >-
+    DeepSeek V3.1 Terminus (Non-reasoning) is an API model from DeepSeek. It’s
+    positioned for general text tasks—work that benefits from iteration, not
+    just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: DeepSeek V3.1 Terminus (Non-reasoning) (API / product surface)
+      company: DeepSeek
+      year_deployed: 2026
+    - product: Developer tooling built on DeepSeek V3.1 Terminus (Non-reasoning)
+      company: DeepSeek
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_deepseek_deepseek_v3_1_terminus
+    title: DeepSeek V3.1 Terminus (Non-reasoning)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus'
+graph_hidden: true
+---
+## Notes
+
+TODO: Replace this placeholder with real specs, relationships, and benchmark-backed comparisons.

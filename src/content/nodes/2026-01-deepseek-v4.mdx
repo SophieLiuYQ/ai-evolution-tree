@@ -1,0 +1,114 @@
+---
+slug: deepseek-v4
+title: DeepSeek v4 — Series
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: deepseek-v4-pro-high
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - DeepSeek Team
+org: DeepSeek
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: DeepSeek deepseek-v
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '49.80'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #8 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '43.30'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #9 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 46.4%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #9 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 41.7%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #9 of 96 · Reasoning'
+    - name: GPQA
+      score: 90.5%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #4 of 96 · Reasoning'
+    - name: HLE
+      score: 33.5%
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #6 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '38'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #62 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $1.74 in / $3.48 out
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+      vs_baseline: 'Rank #75 of 96 · Reasoning'
+  variants:
+    - id: deepseek-v4-flash-high
+      label: 'DeepSeek V4 Flash (Reasoning, High Effort)'
+      status: active
+    - id: deepseek-v4-pro-high
+      label: 'DeepSeek V4 Pro (Reasoning, High Effort)'
+      status: active
+    - id: deepseek-chat
+      label: deepseek-chat (legacy alias → V4-Flash non-thinking)
+      status: active
+    - id: deepseek-reasoner
+      label: deepseek-reasoner (legacy alias → V4-Flash thinking)
+      status: active
+    - id: deepseek-v4-flash
+      label: DeepSeek-V4 Flash (Preview)
+      status: active
+    - id: deepseek-v4-pro
+      label: DeepSeek-V4 Pro (Preview)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
+  context_window: 1000000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  parameters: 49B active
+  hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro'
+public_view:
+  plain_english: >-
+    DeepSeek v4 is an API model from DeepSeek. It’s positioned for hard
+    reasoning and planning—work that benefits from iteration, not just one-shot
+    answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: 'DeepSeek V4 Flash (Reasoning, High Effort) (API / product surface)'
+      company: DeepSeek
+      year_deployed: 2026
+    - product: 'Developer tooling built on DeepSeek V4 Flash (Reasoning, High Effort)'
+      company: DeepSeek
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_deepseek_deepseek_v4_flash_high
+    title: 'DeepSeek V4 Flash (Reasoning, High Effort)'
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

@@ -1,0 +1,117 @@
+---
+slug: gemini-3
+title: Gemini 3 — Series
+date: '2026-04-24T20:37:23.523Z'
+era: frontier
+category:
+  - nlp
+  - cv
+  - multimodal
+relationships:
+  - to: gemini-3-1
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Google / DeepMind Team
+org: Google
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Google / DeepMind Gemini
+  release_type: api
+  modalities:
+    - text
+    - vision
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '46.40'
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #14 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '42.60'
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #10 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 50.6%
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #4 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 38.6%
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #13 of 96 · Reasoning'
+    - name: MMLU-Pro
+      score: 89.0%
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #3 of 96 · Reasoning'
+    - name: GPQA
+      score: 89.8%
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #5 of 96 · Reasoning'
+    - name: HLE
+      score: 34.7%
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #5 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '200'
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #6 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $0.50 in / $3.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #64 of 96 · Reasoning'
+  variants:
+    - id: gemini-3-deep-think
+      label: Gemini 3 Deep Think
+      status: active
+    - id: gemini-3-flash
+      label: Gemini 3 Flash
+      status: active
+    - id: gemini-3-flash-reasoning
+      label: Gemini 3 Flash Preview (Reasoning)
+      status: active
+    - id: gemini-3-pro-image
+      label: Gemini 3 Pro Image
+      status: active
+    - id: gemini-3-pro-low
+      label: Gemini 3 Pro Preview (low)
+      status: active
+  homepage: 'https://deepmind.google/models/model-cards'
+  aa_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+  context_window: 1000000
+  modalities_in:
+    - text
+    - image
+    - video
+    - audio
+  modalities_out:
+    - text
+public_view:
+  plain_english: >-
+    Gemini 3 is an API model from Google. It’s positioned for vision + text
+    tasks—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Gemini 3 Pro Image (API / product surface)
+      company: Google / DeepMind
+      year_deployed: 2026
+    - product: Developer tooling built on Gemini 3 Pro Image
+      company: Google / DeepMind
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_google_gemini_3_pro_image
+    title: Gemini 3 Pro Image
+    year: 2025
+    url: 'https://deepmind.google/models/model-cards'
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

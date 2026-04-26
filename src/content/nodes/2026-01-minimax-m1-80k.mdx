@@ -1,0 +1,96 @@
+---
+slug: minimax-m1-80k
+title: MiniMax M1 80k
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+relationships:
+  - to: minimax-m1-40k
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - MiniMax Team
+org: MiniMax
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: 'MoE Transformer — 45.9B active of 456B total, reasoning mode'
+  family: MiniMax minimax-m
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '24.40'
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #190 of 496'
+    - name: Coding · AA Coding Index
+      score: '14.50'
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #241 of 496'
+    - name: Coding · SciCode
+      score: 37.4%
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #138 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 3.0%
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #293 of 496'
+    - name: MMLU-Pro
+      score: 81.6%
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #85 of 496'
+    - name: GPQA
+      score: 69.7%
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #198 of 496'
+    - name: HLE
+      score: 8.2%
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #180 of 496'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+    - name: Price ($/M tokens)
+      score: $0.55 in / $2.20 out
+      source_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      vs_baseline: 'Rank #336 of 496'
+  aa_url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+  context_window: 1000000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  parameters: 45.9B active
+  hf_url: 'https://huggingface.co/MiniMaxAI/MiniMax-M1-80k'
+public_view:
+  plain_english: >-
+    MiniMax M1 80k is an API model from MiniMax. It’s positioned for general
+    text tasks—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: MiniMax M1 80k (API / product surface)
+      company: MiniMax
+      year_deployed: 2026
+    - product: Developer tooling built on MiniMax M1 80k
+      company: MiniMax
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_minimax_minimax_m1_80k
+    title: MiniMax M1 80k
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+graph_hidden: true
+---
+## Notes
+
+TODO: Replace this placeholder with real specs, relationships, and benchmark-backed comparisons.

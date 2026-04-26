@@ -1,0 +1,137 @@
+---
+slug: gpt-5-1
+title: 'GPT-5.1 — Faster, Warmer GPT-5 Iteration'
+date: '2025-11-12'
+era: frontier
+category:
+  - nlp
+  - multimodal
+  - generative
+  - reasoning
+  - agents
+  - audio
+  - cv
+relationships:
+  - to: gpt-5
+    type: builds_on
+    note: >-
+      [scales] Iterative update: faster, more token-efficient reasoning and
+      improved UX tone
+  - to: gemini-3-pro
+    type: competes_with
+    note: 'Auto: overlap on capability + modality + timeframe + price tier'
+authors:
+  - OpenAI Team
+org: OpenAI
+breakthrough_score: 7
+status: superseded
+model_spec:
+  parameters: undisclosed
+  architecture: >-
+    GPT-5 router + improved adaptive reasoning; adds explicit no-reasoning mode
+    for developers
+  family: OpenAI GPT
+  release_type: api
+  modalities:
+    - text
+    - vision
+    - audio
+  variants:
+    - id: gpt-5-1-non-reasoning
+      label: GPT-5.1 (Non-reasoning)
+      status: active
+    - id: gpt-5-1-codex
+      label: GPT-5.1 Codex (high)
+      status: active
+    - id: gpt-5-1-codex-mini
+      label: GPT-5.1 Codex mini (high)
+      status: active
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '47.70'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #31 of 496'
+    - name: Coding · AA Coding Index
+      score: '44.70'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #27 of 496'
+    - name: Coding · SciCode
+      score: 43.3% (36.5–43.3%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #54 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 45.5% (22.7–45.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #22 of 496'
+    - name: MMLU-Pro
+      score: 87.0% (80.1–87.0%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #14 of 496'
+    - name: GPQA
+      score: 87.3% (64.3–87.3%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #32 of 496'
+    - name: HLE
+      score: 26.5% (5.2–26.5%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #39 of 496'
+    - name: Speed · Output tok/s
+      score: '136'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #95 of 496'
+    - name: Price ($/M tokens)
+      score: $1.25 in / $10.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      vs_baseline: 'Rank #417 of 496'
+  homepage: 'https://openai.com/index/gpt-5-1-for-developers/'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+  context_window: 272000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+public_view:
+  plain_english: >
+    GPT-5.1 was OpenAI’s first “fast follow” iteration on GPT-5: less
+    token-heavy thinking on easy tasks, smoother day‑to‑day chat, and better
+    instruction following. It kept the same “one surface with adaptive
+    reasoning” product idea, but tuned the tradeoff between speed and depth and
+    added a developer-facing no‑reasoning option for latency.
+  analogy: >
+    Like a major point update to an OS: fewer stalls, better defaults, and a
+    cleaner feel—without changing what the platform is.
+  applications:
+    - product: ChatGPT (default routing)
+      company: OpenAI
+      year_deployed: 2025
+    - product: OpenAI API (agentic + coding)
+      company: OpenAI
+      year_deployed: 2025
+  investment_angle: >
+    GPT-5.1 signaled that frontier progress would ship as continuous “small
+    version bumps,” not only big launches. For teams, that means model risk
+    becomes operational (rollouts, regressions, routing) and vendors compete on
+    iteration cadence and reliability as much as raw benchmark wins.
+  why_it_matters: >
+    It normalized versioned GPT-5 generations (5.1 → 5.2 → 5.3/5.4/5.5) and set
+    expectations for rapid product iteration in the same model line.
+citations:
+  - type: release
+    key: openai_gpt51_devs
+    title: Introducing GPT-5.1 for developers
+    year: 2025
+    url: 'https://openai.com/index/gpt-5-1-for-developers/'
+  - type: blog
+    key: openai_gpt51_syscard
+    title: GPT-5.1 Instant and GPT-5.1 Thinking System Card Addendum
+    year: 2025
+    url: 'https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/'
+graph_featured: true
+---
+
+## What changed vs GPT‑5
+
+- Faster, more token-efficient “thinking” on easy tasks
+- Clearer separation of “instant” vs “thinking” surfaces
+- Developer control for disabling reasoning in latency-sensitive workflows

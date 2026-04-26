@@ -1,0 +1,149 @@
+---
+slug: qwen-3-5
+title: Qwen 3.5 — Series
+date: '2026-04-24T20:37:23.497Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: qwen3-8b-instruct
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Alibaba Team
+org: Alibaba
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Alibaba qwen
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '45.00'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #16 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '41.30'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #12 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 42.0% (41.1–42.0%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #25 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 40.9% (35.6–40.9%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #11 of 96 · Reasoning'
+    - name: GPQA
+      score: 89.3% (86.1–89.3%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #8 of 96 · Reasoning'
+    - name: HLE
+      score: 27.3% (18.8–27.3%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #15 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '51'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #52 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $0.60 in / $3.60 out
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+      vs_baseline: 'Rank #73 of 96 · Reasoning'
+  variants:
+    - id: qwen3-5-0-8b-non-reasoning
+      label: Qwen3.5 0.8B (Non-reasoning)
+      status: active
+    - id: qwen3-5-0-8b
+      label: Qwen3.5 0.8B (Reasoning)
+      status: active
+    - id: qwen3-5-122b-a10b-non-reasoning
+      label: Qwen3.5 122B A10B (Non-reasoning)
+      status: active
+    - id: qwen3-5-122b-a10b
+      label: Qwen3.5 122B A10B (Reasoning)
+      status: active
+    - id: qwen3-5-27b-non-reasoning
+      label: Qwen3.5 27B (Non-reasoning)
+      status: active
+    - id: qwen3-5-27b
+      label: Qwen3.5 27B (Reasoning)
+      status: active
+    - id: qwen3-5-2b-non-reasoning
+      label: Qwen3.5 2B (Non-reasoning)
+      status: active
+    - id: qwen3-5-2b
+      label: Qwen3.5 2B (Reasoning)
+      status: active
+    - id: qwen3-5-35b-a3b-non-reasoning
+      label: Qwen3.5 35B A3B (Non-reasoning)
+      status: active
+    - id: qwen3-5-35b-a3b
+      label: Qwen3.5 35B A3B (Reasoning)
+      status: active
+    - id: qwen3-5-397b-a17b-non-reasoning
+      label: Qwen3.5 397B A17B (Non-reasoning)
+      status: active
+    - id: qwen3-5-397b-a17b
+      label: Qwen3.5 397B A17B (Reasoning)
+      status: active
+    - id: qwen3-5-4b-non-reasoning
+      label: Qwen3.5 4B (Non-reasoning)
+      status: active
+    - id: qwen3-5-4b
+      label: Qwen3.5 4B (Reasoning)
+      status: active
+    - id: qwen3-5-9b-non-reasoning
+      label: Qwen3.5 9B (Non-reasoning)
+      status: active
+    - id: qwen3-5-9b
+      label: Qwen3.5 9B (Reasoning)
+      status: active
+    - id: qwen3-5-omni-flash
+      label: Qwen3.5 Omni Flash
+      status: active
+    - id: qwen3-5-omni-plus
+      label: Qwen3.5 Omni Plus
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
+  context_window: 262144
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  parameters: 17B active
+  hf_url: 'https://huggingface.co/Qwen/Qwen3.5-397B-A17B'
+public_view:
+  plain_english: >-
+    Qwen 3.5 is an API model from Alibaba. It’s positioned for hard reasoning
+    and planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Qwen3.5 0.8B (Non-reasoning) (API / product surface)
+      company: Alibaba
+      year_deployed: 2026
+    - product: Developer tooling built on Qwen3.5 0.8B (Non-reasoning)
+      company: Alibaba
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_alibaba_qwen3_5_0_8b_non_reasoning
+    title: Qwen3.5 0.8B (Non-reasoning)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/qwen3-5-0-8b-non-reasoning'
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

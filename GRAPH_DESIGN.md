@@ -21,7 +21,7 @@ src/
 ├─ components/
 │  ├─ Graph.astro                 ← shell: imports children + payload + CSS
 │  └─ graph/
-│     ├─ LegendPanel.astro        ← left aside (title, controls, legend)
+│     ├─ LegendPanel.astro        ← left aside (controls + filters)
 │     ├─ OrientPane.astro         ← one SVG pane (h or v)
 │     └─ Card.astro               ← per-node card group + pin button
 ├─ lib/graph/                     ← BUILD-time TypeScript (Astro frontmatter)
@@ -132,15 +132,13 @@ Native scroll is universal and well-debugged. Lock the visual contract
 
 ## II. Layout topology
 
-### Sort mode — year stays primary, sort key becomes the second axis
+### Sort mode — chronological only (for now)
 
 Year is **always** the primary axis (rows in v-orient, columns in
-h-orient). The sort selector controls the SECONDARY axis:
-
-| Sort | Primary axis (always year) | Secondary axis (cards positioned along) |
-|---|---|---|
-| chronological | year rows/cols | within-row date spread (no extra axis labels) |
-| byFamily | year rows/cols | model-family lanes (evolution swimlanes) |
+h-orient). As of 2026-04-26, the tree UI exposes **only one** sort
+mode: **chronological** (within-year spread by date). Prior experiments
+with “Series/byFamily” lanes were removed from the left panel to keep
+the primary graph legible and reduce UI surface area.
 
 **Removed `byType` (2026-04-20):** the single-bucket `modelType(cats, slug)` classifier was fundamentally lossy — a robotics VLA is *both* Agent AND Multimodal AND Generative, and forcing one bucket hid the overlap. Type is now rendered as *overlapping* tag pills in the node detail's `ModelSpec` section, not as a graph sort axis.
 
@@ -152,25 +150,8 @@ helps users understand dataset composition at a glance before filtering.
 **Removed `byOrg` and `byLicense` (2026-04-21):** the LegendPanel filter
 rows (Company, License) cover the same need — pick the subset you care
 about — without pinning the user to a fixed grouping axis. With only
-chronological surviving, the sort-mode UI (the "Sort within year"
-segmented control) was removed from the LegendPanel entirely; the
-`SortMode` type stays broader than `"chronological"` for backward
-compat in `layout.ts`, but `SORT_MODES` exposes only chronological so
-the 6-pane SSR matrix collapses to 2 (one per orient) and the cross-
-axis code paths (crossKeyOf, licenseKey, cross-bands rendering) are
-no longer reachable from the UI.
-
-**Reintroduced `byFamily` (2026-04-24):** fast-moving model lines (GPT,
-Claude, Gemini, etc.) evolve as *series* (versions + tiers + modes).
-`byFamily` makes that evolution legible by grouping nodes into stable
-lanes. Implementation contract:
-
-- Prefer `model_spec.family` when present (explicit, stable).
-- Otherwise fall back to a heuristic by (org, slug) for common families.
-- Non-product research nodes land in `Research / Methods`.
-
-This view is meant to answer: “what replaced what inside a product line?”
-while the default chronological view answers: “what happened in the field?”
+chronological in the UI, the sort-mode segmented control was removed
+from the LegendPanel entirely.
 
 **V-orient left-align (2026-04-21):** vertical chronological used to
 center cards within the year row (`subRowStartX = V_LEFT_PAD +
@@ -806,13 +787,11 @@ display granularity.
 
 Result: clean default view (only colored arrows), labels appear
 on-demand. Discoverability preserved via the **left-side legend
-panel** (200px fixed-width `<aside>` with one row per edge type,
-swatch + arrow head + label). The legend collapses to a top bar
-under 720px viewport. Sat in a bottom `<figcaption>` originally;
-moved to the side because (a) the canvas is the primary UI and
-deserves vertical space, (b) the legend is reference material the
-user glances at while hovering, so keeping it visible alongside the
-graph beats forcing them to scroll down to check a color.
+panel** (360px fixed-width `<aside>` with one row per edge type,
+swatch + arrow head + label). The panel intentionally carries **no
+local brand header** (branding lives in the sticky top nav) so the
+controls and filters stay above-the-fold. Under 720px viewport, the
+layout stacks vertically so the panel sits above the canvas.
 
 **Filter rows below the legend (2026-04-20):** the panel now hosts four
 parallel filter sections — **Edge types** (long-standing), **Capabilities**
@@ -828,6 +807,14 @@ Capabilities are driven by `category[]` tags. Some are inferred from
 `multimodal`, `nlp`), while others are hand-authored or migrated
 (`code`, `reasoning`, `agents`, `world_model`). This keeps the filter
 useful for both “what channel is this model” and “what is it good for”.
+
+**Theme bridge gotcha (2026-04-26):** the LegendPanel uses a small
+"theme bridge" that remaps Tailwind utility classes (e.g. `.bg-white`,
+`.text-slate-700`) onto CSS variables via `!important`. Any *active
+state* styling that needs to override those utilities (e.g.
+`#compact-toggle[aria-pressed="true"]`) must also use `!important`,
+otherwise the active fill can be wiped out (producing invisible
+white-on-cream text).
 
 **Compact view toggle (2026-04-21):** above the filter sections, a
 "Compact view" button swaps the SVG tree for a year-grouped tile grid

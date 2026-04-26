@@ -1,0 +1,111 @@
+---
+slug: llama-nemotron-super-49b
+title: Llama nemotron.super.49b — Series
+date: '2026-04-24T20:37:23.551Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships: []
+authors:
+  - Nvidia Team
+org: Nvidia
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Nvidia llama-nemotron-super
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '18.50'
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #69 of 96 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '9.40'
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #79 of 96 · Reasoning'
+    - name: Coding · SciCode
+      score: 28.2% (22.9–28.2%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #70 of 96 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 0.0%
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #96 of 96 · Reasoning'
+    - name: MMLU-Pro
+      score: 78.5% (69.8–78.5%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #45 of 96 · Reasoning'
+    - name: GPQA
+      score: 64.3% (51.7–64.3%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #73 of 96 · Reasoning'
+    - name: HLE
+      score: 6.5% (3.5–6.5%)
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      vs_baseline: 'Rank #73 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '50'
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-nemotron-super-49b-v1-5-reasoning
+    - name: Price ($/M tokens)
+      score: $0.10 in / $0.40 out
+      source_url: >-
+        https://artificialanalysis.ai/models/llama-nemotron-super-49b-v1-5-reasoning
+  variants:
+    - id: llama-nemotron-super-49b-v1-5
+      label: Llama Nemotron Super 49B v1.5 (Non-reasoning)
+      status: active
+    - id: llama-nemotron-super-49b-v1-5-reasoning
+      label: Llama Nemotron Super 49B v1.5 (Reasoning)
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b'
+  context_window: 128000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5'
+  parameters: 49B
+public_view:
+  plain_english: >-
+    Llama nemotron.super.49b is an API model from Nvidia. It’s positioned for
+    hard reasoning and planning—work that benefits from iteration, not just
+    one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: Llama Nemotron Super 49B v1.5 (Reasoning) (API / product surface)
+      company: Nvidia
+      year_deployed: 2026
+    - product: Developer tooling built on Llama Nemotron Super 49B v1.5 (Reasoning)
+      company: Nvidia
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_nvidia_llama_nemotron_super_49b_v1_5_r
+    title: Llama Nemotron Super 49B v1.5 (Reasoning)
+    year: 2026
+    url: >-
+      https://artificialanalysis.ai/models/llama-nemotron-super-49b-v1-5-reasoning
+graph_featured: true
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

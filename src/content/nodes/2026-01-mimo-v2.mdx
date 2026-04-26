@@ -1,0 +1,108 @@
+---
+slug: mimo-v2
+title: Mimo v2 — Series
+date: '2026-01-01T00:00:00.000Z'
+era: frontier
+category:
+  - nlp
+  - reasoning
+relationships:
+  - to: mimo-v2-pro
+    type: builds_on
+    note: Same-series previous release
+authors:
+  - Xiaomi Team
+org: Xiaomi
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Series node (collapsed variants).
+  family: Xiaomi mimo-v
+  release_type: api
+  modalities:
+    - text
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '49.20'
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+      vs_baseline: 'Rank #26 of 496'
+    - name: Coding · AA Coding Index
+      score: '41.40'
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+      vs_baseline: 'Rank #40 of 496'
+    - name: Coding · SciCode
+      score: 42.5%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+      vs_baseline: 'Rank #62 of 496'
+    - name: Agentic · Terminal-Bench Hard
+      score: 40.9%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+      vs_baseline: 'Rank #37 of 496'
+    - name: GPQA
+      score: 87.0%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+      vs_baseline: 'Rank #34 of 496'
+    - name: HLE
+      score: 28.3%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+      vs_baseline: 'Rank #29 of 496'
+    - name: Speed · Output tok/s
+      score: '0'
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+    - name: Price ($/M tokens)
+      score: $0.00 in / $0.00 out
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+  variants:
+    - id: mimo-v2-0206
+      label: MiMo-V2-Flash (Feb 2026)
+      status: active
+    - id: mimo-v2-flash
+      label: MiMo-V2-Flash (Non-reasoning)
+      status: active
+    - id: mimo-v2-flash-reasoning
+      label: MiMo-V2-Flash (Reasoning)
+      status: active
+    - id: mimo-v2-omni
+      label: MiMo-V2-Omni
+      status: active
+    - id: mimo-v2-omni-0327
+      label: MiMo-V2-Omni-0327
+      status: active
+    - id: mimo-v2-pro
+      label: MiMo-V2-Pro
+      status: active
+  aa_url: 'https://artificialanalysis.ai/models/mimo-v2-pro'
+  context_window: 1000000
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+public_view:
+  plain_english: >-
+    Mimo v2 is an API model from Xiaomi. It’s positioned for hard reasoning and
+    planning—work that benefits from iteration, not just one-shot answers.
+  analogy: Treat it like a versioned “engine upgrade” in the same product line.
+  applications:
+    - product: MiMo-V2-Flash (Feb 2026) (API / product surface)
+      company: Xiaomi
+      year_deployed: 2026
+    - product: Developer tooling built on MiMo-V2-Flash (Feb 2026)
+      company: Xiaomi
+      year_deployed: 2026
+  investment_angle: >-
+    Once models evolve as fast as software versions, the winners are the
+    platforms that can ship upgrades safely, measure regressions, and route
+    workloads to the best operating point.
+  why_it_matters: >-
+    Turning releases into nodes makes model evolution legible: you can compare
+    generations, link lineage, and track benchmarks as they change.
+citations:
+  - type: release
+    key: c_xiaomi_mimo_v2_0206
+    title: MiMo-V2-Flash (Feb 2026)
+    year: 2026
+    url: 'https://artificialanalysis.ai/models/mimo-v2-0206'
+---
+## Notes
+
+This is a collapsed series node. See the variant picker for SKU-level variants.

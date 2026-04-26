@@ -1,0 +1,392 @@
+---
+slug: openai
+name: OpenAI
+orgs:
+  - OpenAI
+homepage: 'https://openai.com/'
+summary: 'Frontier models and productized assistants (ChatGPT, API).'
+summary_zh: OpenAI 的前沿大模型与产品化助手（ChatGPT / API）。
+catalog:
+  - id: gpt-5.1
+    label: GPT‑5.1 (API)
+    kind: llm
+
+    api_model: gpt-5.1
+    node_slug: gpt-5-1
+    source_url: 'https://openai.com/index/gpt-5-1-for-developers/'
+  - id: gpt-5.2
+    label: GPT‑5.2 (Instant / Thinking / Pro)
+    kind: llm
+
+    api_model: gpt-5.2
+    node_slug: gpt-5-2
+    source_url: 'https://openai.com/index/introducing-gpt-5-2'
+  - id: gpt-5.3-instant
+    label: GPT‑5.3 Instant
+    kind: llm
+
+    api_model: gpt-5.3-chat-latest
+    node_slug: gpt-5-3-instant
+    source_url: 'https://openai.com/index/gpt-5-3-instant/'
+  - id: gpt-5.3-codex
+    label: GPT‑5.3‑Codex
+    kind: reasoning
+
+    source_url: 'https://openai.com/index/introducing-gpt-5-3-codex/'
+  - id: gpt-5.3-codex-spark
+    label: GPT‑5.3‑Codex‑Spark (preview)
+    kind: reasoning
+
+    source_url: 'https://openai.com/index/introducing-gpt-5-3-codex-spark/'
+  - id: gpt-5.4
+    label: GPT‑5.4 (Thinking / Pro)
+    kind: llm
+
+    api_model: gpt-5.4
+    node_slug: gpt-5-4
+    source_url: 'https://openai.com/index/introducing-gpt-5-4/'
+  - id: gpt-5.4-mini
+    label: GPT‑5.4 mini
+    kind: llm
+
+    api_model: gpt-5.4-mini
+    source_url: 'https://openai.com/index/introducing-gpt-5-4-mini-and-nano/'
+  - id: gpt-5.4-nano
+    label: GPT‑5.4 nano
+    kind: llm
+
+    api_model: gpt-5.4-nano
+    source_url: 'https://openai.com/index/introducing-gpt-5-4-mini-and-nano/'
+  - id: gpt-5.5
+    label: GPT‑5.5 (Thinking / Pro)
+    kind: llm
+
+    api_model: gpt-5.5
+    node_slug: gpt-5-5
+    source_url: 'https://openai.com/index/introducing-gpt-5-5/'
+  - id: gpt-5-4-mini
+    label: GPT-5.4 mini (xhigh)
+    kind: llm
+    node_slug: gpt-5-4-mini
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-mini'
+  - id: gpt-5-3-codex
+    label: GPT-5.3 Codex (xhigh)
+    kind: llm
+    node_slug: gpt-5-3-codex
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-3-codex'
+  - id: gpt-5-5-non-reasoning
+    label: GPT-5.5 (Non-reasoning)
+    kind: llm
+    node_slug: gpt-5-5-non-reasoning
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-5-non-reasoning'
+  - id: gpt-oss-120b
+    label: gpt-oss-120B (high)
+    kind: llm
+    node_slug: gpt-oss-120b
+    source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b'
+  - id: gpt-oss-120b-low
+    label: gpt-oss-120B (low)
+    kind: llm
+    node_slug: gpt-oss-120b-low
+    source_url: 'https://artificialanalysis.ai/models/gpt-oss-120b-low'
+  - id: gpt-oss-20b-low
+    label: gpt-oss-20B (low)
+    kind: llm
+    node_slug: gpt-oss-20b-low
+    source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
+  - id: gpt-oss-20b
+    label: gpt-oss-20B (high)
+    kind: llm
+    node_slug: gpt-oss-20b
+    source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b'
+  - id: gpt-5-4-mini-medium
+    label: GPT-5.4 mini (medium)
+    kind: llm
+    node_slug: gpt-5-4-mini-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-mini-medium'
+  - id: gpt-5-4-mini-non-reasoning
+    label: GPT-5.4 mini (Non-Reasoning)
+    kind: llm
+    node_slug: gpt-5-4-mini-non-reasoning
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-mini-non-reasoning'
+  - id: gpt-5-5
+    label: GPT-5.5 (xhigh)
+    kind: llm
+    node_slug: gpt-5-5
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+  - id: gpt-5-4-nano
+    label: GPT-5.4 nano (xhigh)
+    kind: llm
+    node_slug: gpt-5-4-nano
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-nano'
+  - id: gpt-5-4-pro
+    label: GPT-5.4 Pro (xhigh)
+    kind: llm
+    node_slug: gpt-5-4-pro
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-pro'
+  - id: gpt-5-4-non-reasoning
+    label: GPT-5.4 (Non-reasoning)
+    kind: llm
+    node_slug: gpt-5-4-non-reasoning
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-non-reasoning'
+  - id: gpt-5-4-nano-medium
+    label: GPT-5.4 nano (medium)
+    kind: llm
+    node_slug: gpt-5-4-nano-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-nano-medium'
+  - id: gpt-5-5-high
+    label: GPT-5.5 (high)
+    kind: llm
+    node_slug: gpt-5-5-high
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-5-high'
+  - id: gpt-5-5-low
+    label: GPT-5.5 (low)
+    kind: llm
+    node_slug: gpt-5-5-low
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-5-low'
+  - id: gpt-5-4-nano-non-reasoning
+    label: GPT-5.4 nano (Non-Reasoning)
+    kind: llm
+    node_slug: gpt-5-4-nano-non-reasoning
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4-nano-non-reasoning'
+  - id: o3
+    label: o3
+    kind: llm
+    node_slug: o3
+    source_url: 'https://artificialanalysis.ai/models/o3'
+  - id: gpt-5-5-medium
+    label: GPT-5.5 (medium)
+    kind: llm
+    node_slug: gpt-5-5-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-5-medium'
+  - id: gpt-5-4
+    label: GPT-5.4 (xhigh)
+    kind: llm
+    node_slug: gpt-5-4
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-4'
+  - id: o1
+    label: o1
+    kind: llm
+    node_slug: o1
+    source_url: 'https://artificialanalysis.ai/models/o1'
+  - id: o1-preview
+    label: o1-preview
+    kind: llm
+    node_slug: o1-preview
+    source_url: 'https://artificialanalysis.ai/models/o1-preview'
+  - id: o1-mini
+    label: o1-mini
+    kind: llm
+    node_slug: o1-mini
+    source_url: 'https://artificialanalysis.ai/models/o1-mini'
+  - id: gpt-4o-2024-08-06
+    label: GPT-4o (Aug '24)
+    kind: llm
+    node_slug: gpt-4o-2024-08-06
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
+  - id: gpt-4o-2024-05-13
+    label: GPT-4o (May '24)
+    kind: llm
+    node_slug: gpt-4o-2024-05-13
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-05-13'
+  - id: gpt-4-turbo
+    label: GPT-4 Turbo
+    kind: llm
+    node_slug: gpt-4-turbo
+    source_url: 'https://artificialanalysis.ai/models/gpt-4-turbo'
+  - id: gpt-4o
+    label: GPT-4o (Nov '24)
+    kind: llm
+    node_slug: gpt-4o
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o'
+  - id: gpt-4o-mini
+    label: GPT-4o mini
+    kind: llm
+    node_slug: gpt-4o-mini
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-mini'
+  - id: gpt-35-turbo
+    label: GPT-3.5 Turbo
+    kind: llm
+    node_slug: gpt-35-turbo
+    source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
+  - id: gpt-4o-realtime-dec-2024
+    label: GPT-4o Realtime (Dec '24)
+    kind: llm
+    node_slug: gpt-4o-realtime-dec-2024
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-realtime-dec-2024'
+  - id: gpt-5-1
+    label: GPT-5.1 (high)
+    kind: llm
+    node_slug: gpt-5-1
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
+  - id: o3-mini
+    label: o3-mini
+    kind: llm
+    node_slug: o3-mini
+    source_url: 'https://artificialanalysis.ai/models/o3-mini'
+  - id: gpt-4
+    label: GPT-4
+    kind: llm
+    node_slug: gpt-4
+    source_url: 'https://artificialanalysis.ai/models/gpt-4'
+  - id: gpt-5-minimal
+    label: GPT-5 (minimal)
+    kind: llm
+    node_slug: gpt-5-minimal
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-minimal'
+  - id: gpt-5-2-codex
+    label: GPT-5.2 Codex (xhigh)
+    kind: llm
+    node_slug: gpt-5-2-codex
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-2-codex'
+  - id: o4-mini
+    label: o4-mini (high)
+    kind: llm
+    node_slug: o4-mini
+    source_url: 'https://artificialanalysis.ai/models/o4-mini'
+  - id: gpt-5-nano-minimal
+    label: GPT-5 nano (minimal)
+    kind: llm
+    node_slug: gpt-5-nano-minimal
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-nano-minimal'
+  - id: gpt-5-nano
+    label: GPT-5 nano (high)
+    kind: llm
+    node_slug: gpt-5-nano
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-nano'
+  - id: gpt-4-1-mini
+    label: GPT-4.1 mini
+    kind: llm
+    node_slug: gpt-4-1-mini
+    source_url: 'https://artificialanalysis.ai/models/gpt-4-1-mini'
+  - id: gpt-4-1
+    label: GPT-4.1
+    kind: llm
+    node_slug: gpt-4-1
+    source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+  - id: gpt-5-medium
+    label: GPT-5 (medium)
+    kind: llm
+    node_slug: gpt-5-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-medium'
+  - id: o3-pro
+    label: o3-pro
+    kind: llm
+    node_slug: o3-pro
+    source_url: 'https://artificialanalysis.ai/models/o3-pro'
+  - id: gpt-5
+    label: GPT-5 (high)
+    kind: llm
+    node_slug: gpt-5
+    source_url: 'https://artificialanalysis.ai/models/gpt-5'
+  - id: gpt-5-low
+    label: GPT-5 (low)
+    kind: llm
+    node_slug: gpt-5-low
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-low'
+  - id: gpt-5-nano-medium
+    label: GPT-5 nano (medium)
+    kind: llm
+    node_slug: gpt-5-nano-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-nano-medium'
+  - id: gpt-4-1-nano
+    label: GPT-4.1 nano
+    kind: llm
+    node_slug: gpt-4-1-nano
+    source_url: 'https://artificialanalysis.ai/models/gpt-4-1-nano'
+  - id: gpt-4-5
+    label: GPT-4.5 (Preview)
+    kind: llm
+    node_slug: gpt-4-5
+    source_url: 'https://artificialanalysis.ai/models/gpt-4-5'
+  - id: gpt-5-1-non-reasoning
+    label: GPT-5.1 (Non-reasoning)
+    kind: llm
+    node_slug: gpt-5-1-non-reasoning
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
+  - id: o3-mini-high
+    label: o3-mini (high)
+    kind: llm
+    node_slug: o3-mini-high
+    source_url: 'https://artificialanalysis.ai/models/o3-mini-high'
+  - id: gpt-5-2-medium
+    label: GPT-5.2 (medium)
+    kind: llm
+    node_slug: gpt-5-2-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-2-medium'
+  - id: gpt-5-2-non-reasoning
+    label: GPT-5.2 (Non-reasoning)
+    kind: llm
+    node_slug: gpt-5-2-non-reasoning
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-2-non-reasoning'
+  - id: gpt-5-chatgpt
+    label: GPT-5 (ChatGPT)
+    kind: llm
+    node_slug: gpt-5-chatgpt
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-chatgpt'
+  - id: gpt-5-2
+    label: GPT-5.2 (xhigh)
+    kind: llm
+    node_slug: gpt-5-2
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-2'
+  - id: gpt-3-5-turbo-0613
+    label: GPT-3.5 Turbo (0613)
+    kind: llm
+    node_slug: gpt-3-5-turbo-0613
+    source_url: 'https://artificialanalysis.ai/models/gpt-3-5-turbo-0613'
+  - id: gpt-5-mini
+    label: GPT-5 mini (high)
+    kind: llm
+    node_slug: gpt-5-mini
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-mini'
+  - id: gpt-5-1-codex-mini
+    label: GPT-5.1 Codex mini (high)
+    kind: llm
+    node_slug: gpt-5-1-codex-mini
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-1-codex-mini'
+  - id: gpt-5-1-codex
+    label: GPT-5.1 Codex (high)
+    kind: llm
+    node_slug: gpt-5-1-codex
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-1-codex'
+  - id: gpt-4o-chatgpt-03-25
+    label: 'GPT-4o (March 2025, chatgpt-4o-latest)'
+    kind: llm
+    node_slug: gpt-4o-chatgpt-03-25
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-chatgpt-03-25'
+  - id: gpt-5-mini-medium
+    label: GPT-5 mini (medium)
+    kind: llm
+    node_slug: gpt-5-mini-medium
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-mini-medium'
+  - id: gpt-4o-chatgpt
+    label: GPT-4o (ChatGPT)
+    kind: llm
+    node_slug: gpt-4o-chatgpt
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-chatgpt'
+  - id: gpt-5-mini-minimal
+    label: GPT-5 mini (minimal)
+    kind: llm
+    node_slug: gpt-5-mini-minimal
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-mini-minimal'
+  - id: gpt-4o-mini-realtime-dec-2024
+    label: GPT-4o mini Realtime (Dec '24)
+    kind: llm
+    node_slug: gpt-4o-mini-realtime-dec-2024
+    source_url: 'https://artificialanalysis.ai/models/gpt-4o-mini-realtime-dec-2024'
+  - id: gpt-5-codex
+    label: GPT-5 Codex (high)
+    kind: llm
+    node_slug: gpt-5-codex
+    source_url: 'https://artificialanalysis.ai/models/gpt-5-codex'
+  - id: o1-pro
+    label: o1-pro
+    kind: llm
+    node_slug: o1-pro
+    source_url: 'https://artificialanalysis.ai/models/o1-pro'
+sources:
+  - 'https://openai.com/'
+  - 'https://openai.com/research/index/release/'
+---
+
+This page is auto-assembled from nodes in the tree whose `org` matches one of the `orgs` above.

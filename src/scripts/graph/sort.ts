@@ -56,27 +56,15 @@ export function attachSortHandlers() {
   let initial: SortMode = "chronological";
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (
-      saved === "chronological" ||
-      saved === "byFamily" ||
-      saved === "byOrg" ||
-      saved === "byLicense"
-    ) {
-      initial = saved;
-    } else if (saved === "byType") {
-      // Legacy value from before the "Type" sort mode was removed (2026-04-20).
-      // Migrate silently to chronological so a returning user doesn't land on
-      // an invalid mode.
+    // The /tree left panel no longer exposes "Series" sorting. To keep
+    // navigation predictable, force legacy saved values back to chronological.
+    if (saved !== "chronological" && saved != null) {
       initial = "chronological";
       try { localStorage.setItem(STORAGE_KEY, "chronological"); } catch {}
     }
   } catch {}
 
-  if (initial !== "chronological") {
-    setSortMode(initial, false);
-  } else {
-    updateActivePane();
-  }
+  updateActivePane();
 
   document.querySelectorAll<HTMLButtonElement>(".sort-btn").forEach((btn) => {
     btn.setAttribute(
