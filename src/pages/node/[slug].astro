@@ -1202,6 +1202,8 @@ const heroDescriptionZh = summaryZh;
     --accent-soft: rgba(31, 95, 63, 0.12);
     background: #f7f4ec;
   }
+  /* Header should match the paper palette on detail pages. (The right-side
+     nav links are hidden via Base.astro's `hideHeaderNav` on /node/*.) */
   :global(body:has(.model-page) > header) {
     background: rgba(247, 244, 236, 0.92) !important;
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);

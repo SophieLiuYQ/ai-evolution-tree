@@ -26,7 +26,10 @@ const isTreePage = path === "/tree/" || path.startsWith("/tree/");
 // the navigation already; duplicating the menu in the header just
 // adds chrome). Brand stays in its normal centered-container position.
 const isLanding = path === "/";
-const hideHeaderNav = isTreePage || isLanding;
+// Model detail pages are meant to read like editorial sheets; keep the
+// brand for orientation but drop the nav chrome.
+const isNodePage = path.startsWith("/node/");
+const hideHeaderNav = isTreePage || isLanding || isNodePage;
 ---
 
 <!doctype html>
