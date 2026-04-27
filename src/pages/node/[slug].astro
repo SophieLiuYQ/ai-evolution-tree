@@ -1185,7 +1185,10 @@ const heroDescriptionZh = summaryZh;
 </Base>
 
 <style>
-  .model-page { color: var(--fg); }
+  .model-page {
+    color: var(--fg);
+    --surface: var(--bg-soft);
+  }
 
   /* ============== Breadcrumb ============== */
   .breadcrumb {
@@ -1210,7 +1213,7 @@ const heroDescriptionZh = summaryZh;
   /* ============== HERO ============== */
   .hero {
     position: relative;
-    background: white;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
@@ -1256,7 +1259,7 @@ const heroDescriptionZh = summaryZh;
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.025em;
-    color: #0f172a;
+    color: var(--fg);
     margin: 0 0 12px;
   }
   .hero-tagline-pill {
@@ -1270,7 +1273,7 @@ const heroDescriptionZh = summaryZh;
     margin-bottom: 14px;
   }
   .hero-desc {
-    color: #334155;
+    color: var(--fg-muted);
     font-size: 14.5px;
     line-height: 1.6;
     margin: 0 0 16px;
@@ -1291,30 +1294,30 @@ const heroDescriptionZh = summaryZh;
     font-weight: 600;
     line-height: 1.2;
     border: 1px solid var(--border);
-    background: white;
-    color: #475569;
+    background: var(--surface);
+    color: var(--fg-muted);
     text-decoration: none;
     transition: background 0.12s ease;
   }
-  .pill:hover { background: #f8fafc; }
-  .pill-plain { color: #475569; }
+  .pill:hover { background: var(--bg-sunk); }
+  .pill-plain { color: var(--fg-muted); }
   .pill-org {
-    color: var(--pill-stroke, #475569);
-    background: var(--pill-fill, white);
-    border-color: var(--pill-stroke, #cbd5e1);
+    color: var(--pill-stroke, var(--fg-muted));
+    background: var(--pill-fill, var(--surface));
+    border-color: var(--pill-stroke, var(--border-strong));
     font-weight: 700;
   }
-  .pill-org:hover { background: var(--pill-fill, white); }
+  .pill-org:hover { background: var(--pill-fill, var(--surface)); }
   .pill-link {
-    color: #1d4ed8;
-    border-color: #bfdbfe;
-    background: #eff6ff;
+    color: var(--accent-2);
+    border-color: var(--accent-2-soft);
+    background: var(--accent-2-soft);
   }
-  .pill-link:hover { background: #dbeafe; }
+  .pill-link:hover { filter: brightness(0.97); }
   .pill-github {
-    color: #24292f;
-    border-color: #d0d7de;
-    background: #f6f8fa;
+    color: var(--fg);
+    border-color: var(--border-strong);
+    background: var(--bg-sunk);
   }
 
   /* ============== Hero RIGHT — spec table ============== */
@@ -1325,7 +1328,7 @@ const heroDescriptionZh = summaryZh;
     border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
-    background: #fcfcfc;
+    background: var(--surface);
   }
   .spec-row {
     display: grid;
@@ -1340,7 +1343,7 @@ const heroDescriptionZh = summaryZh;
   .spec-row-icon {
     width: 22px;
     height: 22px;
-    color: #64748b;
+    color: var(--fg-faint);
   }
   .spec-row-icon svg { width: 100%; height: 100%; }
   .spec-row-label {
@@ -1351,7 +1354,7 @@ const heroDescriptionZh = summaryZh;
   .spec-row-value {
     font-size: 14px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
     text-align: right;
     line-height: 1.35;
     /* Allow wrap so long MoE descriptions ("~1T total MoE (both Ling-1T
@@ -1364,7 +1367,7 @@ const heroDescriptionZh = summaryZh;
 
   /* ============== Generic panel + dual-row ============== */
   .panel {
-    background: white;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 18px 20px 20px;
@@ -1433,7 +1436,7 @@ const heroDescriptionZh = summaryZh;
   .capability-title {
     font-size: 13px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
     margin-bottom: 4px;
   }
   .capability-desc {
@@ -1480,7 +1483,7 @@ const heroDescriptionZh = summaryZh;
     right: 4px;
     top: 18px;
     height: 1px;
-    background: #cbd5e1;
+    background: var(--border-strong);
   }
   .ctx-tick {
     position: absolute;
@@ -1497,14 +1500,14 @@ const heroDescriptionZh = summaryZh;
     display: block;
     width: 1px;
     height: 8px;
-    background: #cbd5e1;
+    background: var(--border-strong);
     margin: 0 auto;
   }
   .ctx-tick-label {
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: #475569;
+    color: var(--fg-muted);
     margin-top: 8px;
     line-height: 1.1;
   }
@@ -1559,7 +1562,7 @@ const heroDescriptionZh = summaryZh;
     width: 14px;
     height: 14px;
     background: var(--marker-color, #047857);
-    border: 3px solid white;
+    border: 3px solid var(--surface);
     border-radius: 50%;
     margin: 0 auto;
     box-shadow: 0 0 0 1px var(--marker-color, #047857);
@@ -1589,16 +1592,16 @@ const heroDescriptionZh = summaryZh;
     margin: 2px 0 12px;
   }
   .variant-btn {
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
-    color: #0f172a;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--fg);
     border-radius: 999px;
     padding: 6px 10px;
     font-size: 12px;
     font-weight: 650;
     cursor: pointer;
   }
-  .variant-btn:hover { background: #f8fafc; }
+  .variant-btn:hover { background: var(--bg-sunk); }
   .variant-btn.variant-active {
     border-color: rgba(4, 120, 87, 0.35);
     background: rgba(16, 185, 129, 0.10);
@@ -1617,9 +1620,9 @@ const heroDescriptionZh = summaryZh;
     display: inline-block;
     padding: 2px 7px;
     border-radius: 999px;
-    border: 1px solid #e2e8f0;
-    background: #f1f5f9;
-    color: #0f172a;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-sunk);
+    color: var(--fg);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -1651,7 +1654,7 @@ const heroDescriptionZh = summaryZh;
     cursor: pointer;
     user-select: none;
     font-weight: 650;
-    color: #0f172a;
+    color: var(--fg);
     margin-bottom: 6px;
   }
   .perf-how ul {
@@ -1661,12 +1664,12 @@ const heroDescriptionZh = summaryZh;
   .perf-takeaway {
     margin: 2px 0 12px;
     font-size: 12.5px;
-    color: #334155;
+    color: var(--fg-muted);
     font-weight: 650;
   }
   .perf-more {
     margin-top: 10px;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--border);
     padding-top: 10px;
   }
   .perf-more summary {
@@ -1674,7 +1677,7 @@ const heroDescriptionZh = summaryZh;
     user-select: none;
     font-size: 12px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
   }
   .perf-buckets {
     margin-top: 10px;
@@ -1698,12 +1701,12 @@ const heroDescriptionZh = summaryZh;
     justify-content: space-between;
     gap: 10px;
     padding: 6px 0;
-    border-bottom: 1px dashed #e2e8f0;
+    border-bottom: 1px dashed var(--border);
     font-size: 12px;
-    color: #0f172a;
+    color: var(--fg);
   }
-  .perf-bucket-name { color: #334155; }
-  .perf-bucket-score { font-weight: 700; color: #0f172a; }
+  .perf-bucket-name { color: var(--fg-muted); }
+  .perf-bucket-score { font-weight: 700; color: var(--fg); }
   .perf-card {
     /* Compact card — no extra background, panel already provides chrome */
     padding: 6px 4px;
@@ -1718,13 +1721,13 @@ const heroDescriptionZh = summaryZh;
   .perf-name {
     font-size: 14px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
   }
   .perf-unit {
     font-size: 10px;
     font-weight: 700;
-    color: #0f172a;
-    background: #e2e8f0;
+    color: var(--fg);
+    background: var(--bg-sunk);
     padding: 2px 6px;
     border-radius: 999px;
     line-height: 1;
@@ -1751,7 +1754,7 @@ const heroDescriptionZh = summaryZh;
   .perf-bar-track {
     position: absolute;
     inset: 0;
-    background: #e5e7eb;
+    background: var(--border);
   }
   .perf-bar-range {
     position: absolute;
@@ -1762,7 +1765,7 @@ const heroDescriptionZh = summaryZh;
   }
   .perf-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #047857, #059669);
+    background: linear-gradient(90deg, var(--accent), #059669);
     border-radius: 999px;
     position: relative;
     z-index: 1;
@@ -1772,8 +1775,8 @@ const heroDescriptionZh = summaryZh;
     top: 50%;
     width: 12px;
     height: 12px;
-    background: #047857;
-    border: 3px solid white;
+    background: var(--accent);
+    border: 3px solid var(--surface);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
@@ -1782,7 +1785,7 @@ const heroDescriptionZh = summaryZh;
   .perf-bar-value {
     font-size: 16px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
     min-width: 70px;
     text-align: right;
   }
@@ -1804,18 +1807,18 @@ const heroDescriptionZh = summaryZh;
   }
   .perf-meta-chip {
     font-size: 10.5px;
-    color: #475569;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
+    color: var(--fg-muted);
+    background: var(--bg-sunk);
+    border: 1px solid var(--border);
     padding: 3px 8px;
     border-radius: 999px;
     line-height: 1.2;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
   }
-  .perf-conf { color: #0f172a; }
+  .perf-conf { color: var(--fg); }
   .perf-conf-high { border-color: rgba(4, 120, 87, 0.25); background: rgba(16, 185, 129, 0.08); }
   .perf-conf-medium { border-color: rgba(234, 179, 8, 0.25); background: rgba(234, 179, 8, 0.08); }
-  .perf-conf-low { border-color: rgba(148, 163, 184, 0.35); background: rgba(148, 163, 184, 0.12); color: #334155; }
+  .perf-conf-low { border-color: rgba(148, 163, 184, 0.35); background: rgba(148, 163, 184, 0.12); color: var(--fg-muted); }
   .perf-foot {
     margin: 14px 0 0;
     font-size: 11px;
@@ -1838,37 +1841,37 @@ const heroDescriptionZh = summaryZh;
     padding: 11px 12px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: white;
+    background: var(--surface);
   }
   .avail-pill.avail-available {
-    background: #ecfdf5;
-    border-color: #a7f3d0;
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(4, 120, 87, 0.25);
   }
   .avail-pill.avail-contact {
-    background: #f8fafc;
+    background: var(--bg-sunk);
   }
   .avail-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
-    background: #d1d5db;
-    box-shadow: inset 0 0 0 2px white;
-    border: 1px solid #d1d5db;
+    background: var(--border-strong);
+    box-shadow: inset 0 0 0 2px var(--surface);
+    border: 1px solid var(--border-strong);
   }
   .avail-pill.avail-available .avail-dot {
-    background: #10b981;
-    border-color: #059669;
+    background: var(--accent);
+    border-color: var(--accent);
   }
   .avail-pill.avail-contact .avail-dot {
-    background: #94a3b8;
-    border-color: #64748b;
+    background: var(--fg-faint);
+    border-color: var(--fg-faint);
   }
   .avail-text { min-width: 0; }
   .avail-label {
     font-size: 13px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
     line-height: 1.2;
   }
   .avail-sub {
@@ -1882,12 +1885,12 @@ const heroDescriptionZh = summaryZh;
   .pricing-title {
     font-size: 17px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
     margin-bottom: 6px;
   }
   .pricing-body {
     font-size: 12.5px;
-    color: #334155;
+    color: var(--fg-muted);
     line-height: 1.5;
     margin-bottom: 12px;
   }
@@ -1947,7 +1950,7 @@ const heroDescriptionZh = summaryZh;
     padding-bottom: 0;
     font-size: 15px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
   }
   .prose-panel .prose-cmp table {
     width: 100%;
@@ -1967,7 +1970,7 @@ const heroDescriptionZh = summaryZh;
   }
   .prose-panel .prose-cmp tbody td {
     padding: 11px 10px;
-    color: #334155;
+    color: var(--fg-muted);
     border-bottom: 1px solid var(--border);
   }
   .prose-panel .prose-cmp tbody tr:last-child td { border-bottom: none; }
@@ -1986,19 +1989,19 @@ const heroDescriptionZh = summaryZh;
   .prose-panel .prose-cmp ul,
   .prose-panel .prose-cmp ol {
     margin: 8px 0 12px 18px;
-    color: #334155;
+    color: var(--fg-muted);
   }
   .prose-panel .prose-cmp li { margin: 3px 0; }
   .prose-panel .prose-cmp p {
     margin: 8px 0;
-    color: #334155;
+    color: var(--fg-muted);
     line-height: 1.6;
   }
 
   .tech-details {
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: white;
+    background: var(--surface);
     margin: 16px 0 14px;
   }
   .tech-summary {
@@ -2013,7 +2016,7 @@ const heroDescriptionZh = summaryZh;
   .tech-summary-label {
     font-size: 14px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--fg);
   }
   .tech-summary-sub {
     font-size: 12.5px;
@@ -2030,7 +2033,7 @@ const heroDescriptionZh = summaryZh;
 
   .meta-authors {
     font-size: 12px;
-    color: #64748b;
+    color: var(--fg-faint);
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     margin: 18px 0 10px;
   }
