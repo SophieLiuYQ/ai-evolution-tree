@@ -24,7 +24,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.19.5
+          # Use a version that satisfies transitive engine constraints
+          # (e.g. `sitemap@9` currently requires >=20.19.5).
+          node-version: 22
           cache: npm
 
       - name: Install
