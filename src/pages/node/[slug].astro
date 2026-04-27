@@ -1190,6 +1190,24 @@ const heroDescriptionZh = summaryZh;
     --surface: var(--bg-soft);
   }
 
+  /* Page-scoped theme override — match the tree's "paper" palette so
+     detail pages feel like part of the same editorial system. */
+  :global(body:has(.model-page)) {
+    --bg: #f7f4ec;          /* canvas */
+    --bg-soft: #fbf9f3;     /* cards / panels */
+    --bg-sunk: #f3efe5;     /* subtle chips / sunk surfaces */
+    --border: rgba(15, 23, 42, 0.10);
+    --border-strong: rgba(15, 23, 42, 0.14);
+    --accent: #1f5f3f;
+    --accent-soft: rgba(31, 95, 63, 0.12);
+    background: #f7f4ec;
+  }
+  :global(body:has(.model-page) > header) {
+    background: rgba(247, 244, 236, 0.92) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(8px);
+  }
+
   /* ============== Breadcrumb ============== */
   .breadcrumb {
     display: flex;
