@@ -367,7 +367,7 @@ function formatTopPct(rank: number, total: number): string {
   return `Top ${Math.round(pct)}%`;
 }
 const allBench = (spec?.benchmarks ?? []) as Bench[];
-type DecoratedBench = Bench & { rank: { rank: number; total: number } | null; scoreMeta: ScoreMeta };
+type DecoratedBench = Bench & { rank: RankMeta | null; scoreMeta: ScoreMeta };
 function decorateBench(benchArr: Bench[]): DecoratedBench[] {
   return benchArr.map((b) => ({ ...b, rank: parseRank(b.vs_baseline), scoreMeta: parseScoreMeta(b.score) }));
 }

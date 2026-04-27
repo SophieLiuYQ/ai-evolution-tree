@@ -33,7 +33,10 @@ type NodeMeta = {
     parameters?: string;
     context_window?: number;
     release_type?: string;
+    availability?: string[];
     modalities?: string[];
+    modalities_in?: string[];
+    modalities_out?: string[];
     benchmarks?: Bench[];
   };
 };
