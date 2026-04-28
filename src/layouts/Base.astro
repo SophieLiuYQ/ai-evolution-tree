@@ -30,6 +30,10 @@ const isLanding = path === "/";
 // brand for orientation but drop the nav chrome.
 const isNodePage = path.startsWith("/node/");
 const hideHeaderNav = isTreePage || isLanding || isNodePage;
+
+// Cache-bust the logo when the asset changes (browsers aggressively
+// cache favicons / header images).
+const LOGO_VERSION = "2026-04-28";
 ---
 
 <!doctype html>
@@ -38,7 +42,7 @@ const hideHeaderNav = isTreePage || isLanding || isNodePage;
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" type="image/png" href={`/logo.png?v=${LOGO_VERSION}`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -123,7 +127,7 @@ const hideHeaderNav = isTreePage || isLanding || isNodePage;
           style={isTreePage ? "width:360px;justify-content:center;" : undefined}
         >
           <img
-            src="/logo.png"
+            src={`/logo.png?v=${LOGO_VERSION}`}
             alt="AI Evolution Tree"
             width="28"
             height="28"
