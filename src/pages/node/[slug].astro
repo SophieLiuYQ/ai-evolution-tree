@@ -429,7 +429,18 @@ function priceTierScore10(priceStr?: string): number | null {
   return clamp10((1 - Math.max(0, Math.min(1, x))) * 10);
 }
 
-type CapBar = { key: string; label: string; score: number };
+type CapBar = {
+  key: string;
+  label: string;
+  score: number;
+  // Per-row methodology shown under the label so a reader can see
+  // exactly which benchmark drove this number and how it was scaled.
+  method: {
+    source: string;       // benchmark name (e.g. "AA Intelligence Index", "SciCode")
+    formula: string;      // human-readable scaling (e.g. "÷ 70 × 10", "log scale 2k–2M")
+    url?: string;         // public methodology / leaderboard URL
+  };
+};
 type KV = { k: string; v: string };
 
 const outMods = new Set((spec?.modalities_out ?? spec?.modalities ?? []).map((m) => String(m).toLowerCase()));
@@ -595,27 +606,143 @@ const attrCards: AttrCard[] = (() => {
   return out.slice(0, 5);
 })();
 
+// Extract a CapBar score-set for any node's spec, using the same
+// formulas the current model uses. Reused by the global min/max sweep
+// below and by `capBars`. Each entry is null when the source benchmark
+// isn't available for that node.
+type CapScores = {
+  reasoning: number | null;
+  coding: number | null;
+  agentic: number | null;
+  context: number | null;
+  cost: number | null;
+};
+function capScoresForSpec(s: typeof spec | undefined): CapScores {
+  if (!s) return { reasoning: null, coding: null, agentic: null, context: null, cost: null };
+  const benches = (s.benchmarks ?? []) as Bench[];
+  const map = byBenchName(benches);
+  const num = (name: string): number | null => {
+    const v = map.get(name.toLowerCase())?.scoreMeta?.value ?? null;
+    return typeof v === "number" && Number.isFinite(v) ? v : null;
+  };
+  const pct = (name: string): number | null => {
+    const b = map.get(name.toLowerCase());
+    if (!b || b.scoreMeta.unit !== "pct") return null;
+    return typeof b.scoreMeta.value === "number" && Number.isFinite(b.scoreMeta.value) ? b.scoreMeta.value : null;
+  };
+  const aaI = num("Intelligence · AA Intelligence Index");
+  const sci = pct("Coding · SciCode");
+  const aaC = num("Coding · AA Coding Index");
+  const terH = pct("Agentic · Terminal-Bench Hard");
+  const priceS = map.get("price ($/m tokens)")?.score ?? null;
+
+  return {
+    reasoning: aaI !== null ? clamp10((aaI / 70) * 10) : null,
+    coding: sci !== null ? clamp10(sci / 10) : aaC !== null ? clamp10((aaC / 70) * 10) : null,
+    agentic: terH !== null ? clamp10(terH / 10) : null,
+    context: ctxScore10(s.context_window),
+    cost: priceTierScore10(priceS ?? undefined),
+  };
+}
+
+// Sweep the entire tree once to compute per-capability percentile
+// reference points (20th and 80th) plus this model's rank. Using
+// percentile boundaries instead of absolute min/max strips out the
+// long-tail of historical / mis-tagged nodes (e.g. AlexNet rated on
+// the AA Intelligence Index) so the visible range reflects the
+// middle-60% of the field.
+type CapStat = {
+  p20: number;          // 20th percentile (lower boundary)
+  p20Title: string;     // representative model AT or just below p20
+  p20Slug: string;
+  p80: number;          // 80th percentile (upper boundary)
+  p80Title: string;     // representative model AT or just above p80
+  p80Slug: string;
+  total: number;        // count of nodes that report this capability
+  rank: number | null;  // this model's rank (1 = best); null when this model has no value for this cap
+};
+const globalCapStats: Record<keyof CapScores, CapStat> = (() => {
+  // First pass: collect per-cap value lists.
+  const lists: Record<string, Array<{ value: number; title: string; slug: string }>> = {};
+  for (const n of allNodes) {
+    const s = n.data.model_spec;
+    if (!s) continue;
+    const sc = capScoresForSpec(s);
+    const titleSplit = n.data.title.match(/^(.+?)\s+[—–-]\s+/);
+    const shortTitle = titleSplit ? titleSplit[1] : n.data.title;
+    (Object.keys(sc) as (keyof CapScores)[]).forEach((k) => {
+      const v = sc[k];
+      if (v === null) return;
+      if (!lists[k]) lists[k] = [];
+      lists[k].push({ value: v, title: shortTitle, slug: n.data.slug });
+    });
+  }
+  // Second pass: derive p20 / p80 / rank per cap.
+  const thisSlug = d.slug;
+  const acc: Record<string, CapStat> = {};
+  for (const k of Object.keys(lists)) {
+    // Ascending so index 0 is the lowest score.
+    const sorted = lists[k].slice().sort((a, b) => a.value - b.value);
+    const n = sorted.length;
+    if (n === 0) continue;
+    const i20 = Math.min(n - 1, Math.floor(0.20 * n));
+    const i80 = Math.min(n - 1, Math.floor(0.80 * n));
+    // Rank: how many models score strictly above this one + 1.
+    const me = sorted.find((e) => e.slug === thisSlug);
+    const rank = me
+      ? sorted.filter((e) => e.value > me.value).length + 1
+      : null;
+    acc[k] = {
+      p20: sorted[i20].value,
+      p20Title: sorted[i20].title,
+      p20Slug: sorted[i20].slug,
+      p80: sorted[i80].value,
+      p80Title: sorted[i80].title,
+      p80Slug: sorted[i80].slug,
+      total: n,
+      rank,
+    };
+  }
+  return acc as Record<keyof CapScores, CapStat>;
+})();
+
+// Methodology constants — one per source benchmark. The `formula` field
+// is a short plain-English descriptor of how the 0–10 score was derived
+// (no math notation; just enough so a reader knows the source + shape).
+const METHOD_AA_INT     = { source: "AA Intelligence Index",   formula: "scaled to 10",                url: "https://artificialanalysis.ai/" };
+const METHOD_SCICODE    = { source: "SciCode",                  formula: "scaled to 10",               url: "https://scicode-bench.github.io/" };
+const METHOD_AA_CODE    = { source: "AA Coding Index",          formula: "scaled to 10",               url: "https://artificialanalysis.ai/" };
+const METHOD_TERMBENCH  = { source: "Terminal-Bench Hard",      formula: "scaled to 10",               url: "https://www.tbench.ai/" };
+const METHOD_CONTEXT    = { source: "Context window size",      formula: "log-scaled" };
+const METHOD_PRICE      = { source: "Input price ($/M tokens)", formula: "cheaper scores higher",       url: "https://artificialanalysis.ai/" };
+const METHOD_SPEED      = { source: "Output throughput",        formula: "log-scaled",                  url: "https://artificialanalysis.ai/" };
+
 const capBars: CapBar[] = (() => {
   const out: CapBar[] = [];
   if (isLLM) {
-    if (aaInt !== null) out.push({ key: "reasoning", label: "Reasoning", score: clamp10((aaInt / 70) * 10) });
-    if (sciCode !== null) out.push({ key: "coding", label: "Coding", score: clamp10(sciCode / 10) });
-    else if (aaCodingIdx !== null) out.push({ key: "coding", label: "Coding", score: clamp10((aaCodingIdx / 70) * 10) });
-    if (terminalHard !== null) out.push({ key: "agentic", label: "Agentic tasks", score: clamp10(terminalHard / 10) });
+    if (aaInt !== null) out.push({ key: "reasoning", label: "Reasoning", score: clamp10((aaInt / 70) * 10), method: METHOD_AA_INT });
+    if (sciCode !== null) out.push({ key: "coding", label: "Coding", score: clamp10(sciCode / 10), method: METHOD_SCICODE });
+    else if (aaCodingIdx !== null) out.push({ key: "coding", label: "Coding", score: clamp10((aaCodingIdx / 70) * 10), method: METHOD_AA_CODE });
+    if (terminalHard !== null) out.push({ key: "agentic", label: "Agentic tasks", score: clamp10(terminalHard / 10), method: METHOD_TERMBENCH });
     const ctx10 = ctxScore10(spec?.context_window);
-    if (ctx10 !== null) out.push({ key: "context", label: "Context / memory", score: ctx10 });
+    if (ctx10 !== null) out.push({ key: "context", label: "Context / memory", score: ctx10, method: METHOD_CONTEXT });
     const cost10 = priceTierScore10(priceStr ?? undefined);
-    if (cost10 !== null) out.push({ key: "cost", label: "Cost efficiency", score: cost10 });
+    if (cost10 !== null) out.push({ key: "cost", label: "Cost efficiency", score: cost10, method: METHOD_PRICE });
     return out.slice(0, 5);
   }
   // Media: show a compact generic set if we have any signals.
   if (isMediaOutput) {
-    if (aaInt !== null) out.push({ key: "quality", label: "Quality", score: clamp10((aaInt / 70) * 10) });
-    if (speedTok !== null) out.push({ key: "speed", label: "Speed", score: clamp10((Math.log10(Math.max(1, speedTok)) / 2) * 10) });
+    if (aaInt !== null) out.push({ key: "quality", label: "Quality", score: clamp10((aaInt / 70) * 10), method: METHOD_AA_INT });
+    if (speedTok !== null) out.push({ key: "speed", label: "Speed", score: clamp10((Math.log10(Math.max(1, speedTok)) / 2) * 10), method: METHOD_SPEED });
     const cost10 = priceTierScore10(priceStr ?? undefined);
-    if (cost10 !== null) out.push({ key: "cost", label: "Cost efficiency", score: cost10 });
-    // Placeholders when missing
-    while (out.length < 4) out.push({ key: `p${out.length}`, label: out.length === 0 ? "Quality" : out.length === 1 ? "Speed" : out.length === 2 ? "Control" : "Consistency", score: 5 });
+    if (cost10 !== null) out.push({ key: "cost", label: "Cost efficiency", score: cost10, method: METHOD_PRICE });
+    // Placeholders when missing — no source citation since these are filler.
+    while (out.length < 4) out.push({
+      key: `p${out.length}`,
+      label: out.length === 0 ? "Quality" : out.length === 1 ? "Speed" : out.length === 2 ? "Control" : "Consistency",
+      score: 5,
+      method: { source: "No data reported", formula: "placeholder" },
+    });
     return out.slice(0, 5);
   }
   return out;
@@ -629,6 +756,7 @@ const keySignals: KV[] = (() => {
   if (spec?.context_window) out.push({ k: "Context", v: fmtCtx(spec.context_window) ?? String(spec.context_window) });
   return out.slice(0, 3);
 })();
+
 
 // Curated review bullets (when the MDX has them) override the
 // auto-generated synthesis below. Source for the curated copy: real
@@ -869,14 +997,26 @@ for (const v of variants) variantBench.set(v.id, (v.benchmarks ?? allBench) as B
 function benchNote(name: string): string {
   if (/AIME/i.test(name)) return "Mathematical reasoning (with chain-of-thought)";
   if (/SWE-?bench/i.test(name)) return "Real-world software engineering";
-  if (/Humanity'?s Last Exam/i.test(name)) return "Hardest mixed reasoning benchmark";
+  if (/SciCode/i.test(name)) return "Scientific & research-grade coding";
+  if (/Terminal-?Bench/i.test(name)) return "Agentic command-line task completion";
+  if (/Humanity'?s Last Exam|HLE/i.test(name)) return "Hardest mixed reasoning benchmark";
+  if (/MMLU-Pro/i.test(name)) return "Hard expert knowledge (MMLU successor)";
   if (/MMLU/i.test(name)) return "Broad academic knowledge";
   if (/GPQA/i.test(name)) return "Graduate-level science Q&A";
   if (/HumanEval/i.test(name)) return "Function-level code synthesis";
-  if (/MATH\b/i.test(name)) return "High-school competition math";
+  if (/LiveCodeBench/i.test(name)) return "Recent competitive-coding problems";
+  if (/MATH\b|MathArena/i.test(name)) return "Competition mathematics";
   if (/MMMU/i.test(name)) return "Multimodal academic understanding";
   if (/Codeforces/i.test(name)) return "Competitive programming";
-  if (/Arena|Elo/i.test(name)) return "Human preference (head-to-head)";
+  if (/Arena|Elo|LMSYS|Chatbot/i.test(name)) return "Human preference (head-to-head)";
+  if (/Long\s*Context|Needle/i.test(name)) return "Long-context retrieval";
+  if (/^Coding\s*·\s*AA Coding/i.test(name)) return "AA aggregate coding index";
+  if (/^Intelligence\s*·\s*AA Intelligence/i.test(name)) return "AA aggregate intelligence index";
+  if (/Agentic\s*·/i.test(name)) return "Agent / tool-use task";
+  if (/IFEval/i.test(name)) return "Instruction-following eval";
+  if (/ARC-?AGI/i.test(name)) return "Novel-task abstract reasoning";
+  if (/OSWorld/i.test(name)) return "Computer-use / desktop automation";
+  if (/τ2|tau2/i.test(name)) return "Tool-use across domains";
   return "Standardized capability benchmark";
 }
 function benchVsLabel(vs?: string): string | null {
@@ -1453,37 +1593,116 @@ const kindPillLabel = (() => {
       </div>
     </section>
 
-    {/* ============== Capability / Performance (Decision-first) ============== */}
+    {/* ============== Capability / Performance (Range View) ============== */}
     {allBench.length > 0 && (
       <section class="panel cap-panel">
         <div class="cap-head-row">
-          <h2 class="block-heading">Capability / Performance</h2>
-          <span class="block-sub-inline">Human-readable signals (derived from linked leaderboards)</span>
-          <a href="#tech-details" class="perf-see-all">View all benchmarks →</a>
+          <h2 class="block-heading cap-heading">
+            Capability / Performance
+          </h2>
         </div>
+        <p class="cap-sub">Where this model sits relative to the middle 60% of models in the tree. All scores are 0–10 (higher is better).</p>
+
         <div class="cap-grid">
-          {capBars.map((b) => (
-            <div class="cap-row">
-              <div class="cap-name">{b.label}</div>
-              <div class="cap-bar">
-                <div class="cap-track"></div>
-                <div class="cap-fill" style={`width: ${(b.score / 10) * 100}%;`}></div>
-                <div class="cap-dot" style={`left: ${(b.score / 10) * 100}%;`}></div>
-              </div>
-              <div class="cap-score">{b.score.toFixed(1)}</div>
-            </div>
-          ))}
-        </div>
-        {keySignals.length > 0 && (
-          <div class="cap-signals">
-            {keySignals.map((s) => (
-              <div class="cap-signal">
-                <div class="cap-signal-k">{s.k}</div>
-                <div class="cap-signal-v">{s.v}</div>
-              </div>
-            ))}
+          <div class="cap-row cap-row-head">
+            <span></span>
+            <span class="cap-cell-min">Lower 20%</span>
+            <span class="cap-cell-bar"></span>
+            <span class="cap-cell-max">Upper 80%</span>
+            <span class="cap-cell-typical">This model</span>
           </div>
-        )}
+          {capBars.map((b) => {
+            // The `quality` key in media-output models reuses the reasoning
+            // data source (AA Intelligence Index), so borrow its stats.
+            const statKey = (b.key === "quality" ? "reasoning" : b.key) as keyof CapScores;
+            const stat = globalCapStats[statKey];
+            const score = b.score;
+            const p20Pct = stat ? (stat.p20 / 10) * 100 : 0;
+            const p80Pct = stat ? (stat.p80 / 10) * 100 : 100;
+            const myPct = (score / 10) * 100;
+            const segWidth = Math.max(0.5, p80Pct - p20Pct);
+            return (
+              <div class="cap-row">
+                <div class="cap-name">
+                  <div class="cap-name-main">{b.label}</div>
+                  <div class="cap-name-method">
+                    {b.method.url ? (
+                      <a href={b.method.url} target="_blank" rel="noopener" title={`Source: ${b.method.source}`}>
+                        {b.method.source}
+                      </a>
+                    ) : (
+                      <span title={`Source: ${b.method.source}`}>{b.method.source}</span>
+                    )}
+                    <span class="cap-name-formula"> · {b.method.formula}</span>
+                  </div>
+                </div>
+                <div class="cap-cell-min">
+                  {stat && (
+                    <span title={`20th percentile: ${stat.p20Title} (${stat.p20.toFixed(1)})`}>
+                      {stat.p20.toFixed(1)}
+                    </span>
+                  )}
+                </div>
+                <div class="cap-cell-bar">
+                  <div class="cap-bar">
+                    <div class="cap-track"></div>
+                    {stat && (
+                      <div class="cap-segment" style={`left: ${p20Pct}%; width: ${segWidth}%;`}></div>
+                    )}
+                    {stat && (
+                      <span
+                        class="cap-dot-range cap-dot-min"
+                        style={`left: ${p20Pct}%;`}
+                        title={`20th percentile: ${stat.p20Title} (${stat.p20.toFixed(1)}) — 20% of models score below this`}
+                      ></span>
+                    )}
+                    <span
+                      class="cap-dot-range cap-dot-typical"
+                      style={`left: ${myPct}%;`}
+                      title={`This model: ${score.toFixed(1)}`}
+                    ></span>
+                    {stat && (
+                      <span
+                        class="cap-dot-range cap-dot-max"
+                        style={`left: ${p80Pct}%;`}
+                        title={`80th percentile: ${stat.p80Title} (${stat.p80.toFixed(1)}) — 20% of models score above this`}
+                      ></span>
+                    )}
+                  </div>
+                </div>
+                <div class="cap-cell-max">
+                  {stat && (
+                    <span title={`80th percentile: ${stat.p80Title} (${stat.p80.toFixed(1)})`}>
+                      {stat.p80.toFixed(1)}
+                    </span>
+                  )}
+                </div>
+                <div class="cap-cell-typical">
+                  <span class="cap-typical-num">{score.toFixed(1)}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div class="cap-legend">
+          <span class="cap-legend-item">
+            <span class="cap-dot-range cap-dot-min"></span>
+            <span><strong>Lower 20%</strong> 20th percentile — 20% of models score below this</span>
+          </span>
+          <span class="cap-legend-item">
+            <span class="cap-dot-range cap-dot-typical"></span>
+            <span><strong>This model</strong> Where the current model lands</span>
+          </span>
+          <span class="cap-legend-item">
+            <span class="cap-dot-range cap-dot-max"></span>
+            <span><strong>Upper 80%</strong> 80th percentile — only 20% of models score above this</span>
+          </span>
+          <span class="cap-legend-note">
+            Percentile boundaries are computed across every model in the tree that reports the underlying benchmark for each capability.
+          </span>
+        </div>
+
       </section>
     )}
 
@@ -2553,62 +2772,212 @@ const kindPillLabel = (() => {
     text-decoration: none;
   }
   .perf-see-all:hover { text-decoration: underline; }
+  /* ============== Capability / Performance — Range View ============== */
+  .cap-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 850;
+    color: var(--fg);
+    text-transform: none;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .cap-heading-pill {
+    font-size: 11px;
+    font-weight: 800;
+    color: rgb(67, 56, 202);
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .cap-sub {
+    margin: 4px 0 14px;
+    font-size: 12.5px;
+    color: var(--fg-muted);
+    line-height: 1.5;
+    max-width: 78ch;
+  }
   .cap-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 4px;
+    gap: 0;
+    margin-top: 0;
   }
   .cap-row {
     display: grid;
-    grid-template-columns: 160px 1fr 44px;
-    gap: 12px;
+    grid-template-columns: 150px 80px minmax(160px, 2fr) 80px 92px;
     align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
   }
-  @media (max-width: 640px) {
-    .cap-row { grid-template-columns: 120px 1fr 44px; }
+  .cap-row:last-child { border-bottom: none; }
+  .cap-row-head {
+    padding: 0 0 8px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+    white-space: nowrap;
+  }
+  .cap-row-head .cap-cell-min,
+  .cap-row-head .cap-cell-max,
+  .cap-row-head .cap-cell-typical,
+  .cap-row-head .cap-cell-rank { text-align: center; }
+  @media (max-width: 880px) {
+    .cap-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 14px 0;
+    }
+    .cap-row-head { display: none; }
+    .cap-cell-min, .cap-cell-max { display: inline-block; min-width: 50px; }
   }
   .cap-name {
-    font-size: 12.5px;
-    font-weight: 750;
-    color: var(--fg);
+    min-width: 0;
   }
-  .cap-score {
+  .cap-name-main {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--fg);
+    line-height: 1.25;
+  }
+  .cap-name-method {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--fg-muted);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .cap-name-method a {
+    color: var(--accent-2);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .cap-name-method a:hover { text-decoration: underline; }
+  .cap-name-formula {
+    color: var(--fg-muted);
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.85;
+  }
+  .cap-cell-min {
+    text-align: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: rgb(220, 38, 38);
+  }
+  .cap-cell-max {
+    text-align: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: rgb(21, 128, 61);
+  }
+  .cap-cell-typical {
+    text-align: center;
+  }
+  .cap-cell-rank {
+    text-align: center;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 12.5px;
     color: var(--fg-muted);
-    text-align: right;
   }
+  .cap-typical-num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 14px;
+    font-weight: 850;
+    color: rgb(67, 56, 202);
+  }
+  .cap-rank-num { color: rgb(67, 56, 202); font-weight: 800; }
+  .cap-rank-of { color: var(--fg-muted); }
+  .cap-rank-empty { color: var(--fg-muted); }
+  .cap-ref-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .cap-ref-link:hover { text-decoration: underline; }
   .cap-bar {
     position: relative;
-    height: 12px;
+    height: 14px;
+    width: 100%;
   }
   .cap-track {
     position: absolute;
-    inset: 0;
+    inset: 5px 0;
     border-radius: 999px;
     background: var(--bg-sunk);
     border: 1px solid var(--border);
   }
-  .cap-fill {
+  .cap-segment {
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
+    top: 5px;
+    bottom: 5px;
     border-radius: 999px;
-    background: rgba(4, 120, 87, 0.45);
+    /* Red → amber → green, skipping blue/purple. Uses two stops near the
+       middle so the transition feels natural without a muddy mid-tone. */
+    background: linear-gradient(90deg,
+      rgba(220, 38, 38, 0.55) 0%,
+      rgba(245, 158, 11, 0.50) 50%,
+      rgba(34, 197, 94, 0.55) 100%);
   }
-  .cap-dot {
+  .cap-dot-range {
     position: absolute;
     top: 50%;
-    width: 10px;
-    height: 10px;
-    margin-top: -5px;
+    width: 11px;
+    height: 11px;
+    margin-top: -5.5px;
     border-radius: 999px;
-    background: var(--accent);
-    border: 2px solid var(--surface);
+    border: 2px solid white;
     transform: translateX(-50%);
-    box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.25);
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.15);
+    z-index: 1;
+    cursor: help;
+  }
+  .cap-dot-min { background: rgb(220, 38, 38); }
+  .cap-dot-typical { background: rgb(99, 102, 241); z-index: 2; }
+  .cap-dot-max { background: rgb(34, 197, 94); }
+
+  .cap-legend {
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: var(--bg-sunk);
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+    align-items: flex-start;
+    font-size: 12px;
+    color: var(--fg);
+    line-height: 1.4;
+  }
+  .cap-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cap-legend-item .cap-dot-range {
+    position: static;
+    transform: none;
+    margin: 0;
+    cursor: default;
+  }
+  .cap-legend-item strong {
+    margin-right: 4px;
+    font-weight: 800;
+    color: var(--fg);
+  }
+  .cap-legend-note {
+    flex-basis: 100%;
+    color: var(--fg-muted);
+    font-size: 11.5px;
+    font-style: italic;
   }
   .cap-signals {
     margin-top: 14px;
@@ -2640,6 +3009,7 @@ const kindPillLabel = (() => {
     font-weight: 750;
     color: var(--fg);
   }
+
 
   /* ============== Reviews: feels-like + use-cases (2-up) ============== */
   .review-row { grid-template-columns: 1fr 1fr; }

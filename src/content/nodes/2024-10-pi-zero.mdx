@@ -33,42 +33,6 @@ model_spec:
   github: 'https://github.com/Physical-Intelligence/openpi'
   availability:
     - open_weights
-  benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '60.20'
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #2 of 496'
-    - name: Coding · AA Coding Index
-      score: '59.10'
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #2 of 496'
-    - name: Coding · SciCode
-      score: 56.1% (47.3–56.1%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #5 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 60.6% (49.2–60.6%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #2 of 496'
-    - name: MMLU-Pro
-      score: 89.8% (5.5–89.8%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-    - name: GPQA
-      score: 93.5% (76.8–93.5%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #3 of 496'
-    - name: HLE
-      score: 44.3% (12.6–44.3%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #3 of 496'
-    - name: Speed · Output tok/s
-      score: '96'
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #144 of 496'
-    - name: Price ($/M tokens)
-      score: $5.00 in / $30.00 out
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      vs_baseline: 'Rank #485 of 496'
   sources:
     - name: Official
       type: official
@@ -80,33 +44,36 @@ model_spec:
       url: 'https://github.com/Physical-Intelligence/openpi'
       last_verified_at: '2026-04-29'
       confidence: high
-    - name: Artificial Analysis
-      type: independent
-      url: 'https://artificialanalysis.ai/models/gpt-5-5'
-      last_verified_at: '2026-04-29'
-      confidence: medium
-  last_verified_at: '2026-04-29'
+    - name: arXiv
+      type: official
+      url: 'https://arxiv.org/abs/2410.24164'
+      last_verified_at: '2026-04-30'
+      confidence: high
+  last_verified_at: '2026-04-30'
   reviews:
     feels_like:
-      - "Physical Intelligence's robot foundation model — separate field but adjacent open ecosystem."
-      - "72B variant outperforms GPT-4o (estimated 1T+ params) on image / chart / document understanding"
-      - "7B variant comes close to GPT-4o-class performance — 'tiny model performs as well as powerful big ones' (MIT Tech Review)"
-      - "Trained on a curated 600K-image dataset (PixMo) — quality-over-quantity proof point"
+      - "First open-weight Vision-Language-Action (VLA) model that genuinely competes with closed Google RT / Tesla / Figure stacks"
+      - "Flow-matching action head (instead of autoregressive tokens) — generates continuous robot trajectories with physical smoothness"
+      - "Folds laundry, busses dishes, packs groceries — the demo videos that convinced the field VLAs were real"
+      - "3B parameters — small enough to run on edge robot compute, not in a datacenter"
+      - "openpi GitHub repo lets any lab fine-tune for their gripper / arm / workspace"
+      - "Successors (π₀.₅ open-world; π*0.6 experience-based RL) keep extending the open VLA frontier"
     best_for:
-      - "Self-hosted vision tasks at fraction of API cost"
-      - "Research and academic work needing full data + code access"
-      - "Distillation experiments and small-VLM training baselines"
+      - "Robotics research and academic VLA work"
+      - "Startups building physical-AI products who need a foundation to fine-tune from"
+      - "Long-horizon manipulation tasks (multi-step household / warehouse routines)"
+      - "Distillation into smaller task-specific robot policies"
     not_ideal_for:
-      - "Frontier visual reasoning by mid-2025 — Gemini 2.5 / 3 Pro and Claude 4 vision lead"
-      - "Edge / single-laptop deployments at the 72B scale"
+      - "Pure language reasoning, coding, or chat — π₀ is a robot policy, not an LLM"
+      - "Tasks requiring out-of-distribution objects or scenes far from training data (improved in π₀.₅)"
+      - "Real-time loops below ~10 Hz on commodity robot CPUs (π₀-FAST helps but still constrained)"
     sources:
-      - name: "Allen AI — Molmo announcement"
-        url: "https://allenai.org/blog/molmo"
-      - name: "MIT Technology Review — tiny new open-source model performs"
-        url: "https://www.technologyreview.com/2024/09/25/1104465/a-tiny-new-open-source-ai-model-performs-as-well-as-powerful-big-ones/"
-      - name: "SiliconANGLE — Allen AI debuts Molmo"
-        url: "https://siliconangle.com/2024/09/25/allen-institute-ai-debuts-new-molmo-series-open-source-multimodal-models/"
-  aa_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      - name: "Physical Intelligence — π₀ blog"
+        url: "https://www.physicalintelligence.company/blog/pi0"
+      - name: "π₀ paper (arXiv)"
+        url: "https://arxiv.org/abs/2410.24164"
+      - name: "GitHub — Physical-Intelligence/openpi"
+        url: "https://github.com/Physical-Intelligence/openpi"
 public_view:
   plain_english: |
     Physical Intelligence's flagship vision-language-action model —

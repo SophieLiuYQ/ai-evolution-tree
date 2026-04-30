@@ -51,39 +51,39 @@ model_spec:
       vs_baseline: Llama 3.1 70B 68.0%
     - name: Intelligence · AA Intelligence Index
       score: '34.60'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #103 of 496'
     - name: Coding · AA Coding Index
       score: '31.90'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #96 of 496'
     - name: Coding · SciCode
       score: 42.8% (39.5–42.8%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #58 of 496'
     - name: Agentic · Terminal-Bench Hard
       score: 26.5%
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #105 of 496'
     - name: MMLU-Pro
       score: 86.2% (83.7–86.2%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #20 of 496'
     - name: GPQA
       score: 84.4% (82.2–84.4%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #58 of 496'
     - name: HLE
       score: 21.1% (15.4–21.1%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #62 of 496'
     - name: Speed · Output tok/s
       score: '129'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #101 of 496'
     - name: Price ($/M tokens)
       score: $1.25 in / $10.00 out
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #417 of 496'
   homepage: 'https://qwenlm.github.io/blog/qwen2.5/'
   github: 'https://github.com/QwenLM/Qwen2.5'
@@ -94,10 +94,10 @@ model_spec:
     - id: qwen-turbo
       label: Qwen2.5 Turbo
       status: active
-  aa_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+  aa_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
   modalities_in:
     - text
-  hf_url: 'https://huggingface.co/Qwen/Qwen-72B-Chat'
+  hf_url: 'https://huggingface.co/Qwen/Qwen2.5-72B-Instruct'
   sources:
     - name: Official
       type: official
@@ -111,18 +111,13 @@ model_spec:
       confidence: high
     - name: Artificial Analysis
       type: independent
-      url: 'https://artificialanalysis.ai/models/qwen'
-      last_verified_at: '2026-04-29'
+      url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      last_verified_at: '2026-04-30'
       confidence: medium
     - name: Hugging Face
       type: community
-      url: 'https://huggingface.co/Qwen/Qwen-72B-Chat'
-      last_verified_at: '2026-04-29'
-      confidence: medium
-    - name: Artificial Analysis
-      type: independent
-      url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      last_verified_at: '2026-04-29'
+      url: 'https://huggingface.co/Qwen/Qwen2.5-72B-Instruct'
+      last_verified_at: '2026-04-30'
       confidence: medium
   last_verified_at: '2026-04-29'
   modalities_out:
