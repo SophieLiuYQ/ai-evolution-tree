@@ -93,12 +93,53 @@ model_spec:
     - id: claude-4-sonnet-thinking
       label: Claude 4 Sonnet (Reasoning)
       status: active
-  aa_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6'
+  aa_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
   modalities_in:
     - text
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/news/claude-4'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Sustains hours-long agent loops without losing the thread — testers ran Opus 4 on 7+ hour autonomous coding sessions"
+      - "Best-in-class for real-world software engineering at release; SWE-bench Verified gains over Claude 3.7 Sonnet"
+      - "Native MCP support makes tool-using agents noticeably more reliable in production"
+      - "File editing and computer use feel meaningfully better than 3.7 — fewer 'almost works' debugging cycles"
+      - "Opus 4 is slower and more expensive than alternatives; reserve for the hardest tasks"
+      - "Sonnet 4 is the workhorse — same agentic strengths at a much friendlier price"
+    best_for:
+      - "AI-software-engineer products (Devin, Cursor, Cline) that need long-horizon autonomy"
+      - "Agentic workflows with tool use, file editing, and computer use"
+      - "Complex bug fixes that span multiple files / systems"
+      - "Multi-hour research or coding sessions where context retention matters"
+    not_ideal_for:
+      - "High-volume chat or simple Q&A (use Sonnet or Haiku)"
+      - "Strictly latency-sensitive applications — Opus is slower"
+      - "Fully offline / air-gapped deployments (API only)"
+    sources:
+      - name: "Anthropic — Claude 4 announcement"
+        url: "https://www.anthropic.com/news/claude-4"
+      - name: "16x Engineer — Claude 4 evaluation results"
+        url: "https://eval.16x.engineer/blog/claude-4-opus-sonnet-evaluation-results"
+      - name: "DataCamp — Claude 4 review"
+        url: "https://www.datacamp.com/blog/claude-4"
 public_view:
   plain_english: |
     Anthropic's first model family explicitly designed for sustained

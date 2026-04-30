@@ -71,6 +71,43 @@ model_spec:
     - text
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/allenai/Olmo-3.1-32B-Think'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://allenai.org/olmo'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/allenai/OLMo'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/olmo'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/allenai/Olmo-3.1-32B-Think'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/olmo-2-32b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Allen AI — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Allen AI's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     The Allen Institute's truly-open language model — not just weights,

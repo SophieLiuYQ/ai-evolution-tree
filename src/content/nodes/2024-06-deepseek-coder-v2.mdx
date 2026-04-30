@@ -63,6 +63,47 @@ model_spec:
     - open_weights
   aa_url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
   hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Instruct'
+  sources:
+    - name: GitHub
+      type: official
+      url: 'https://github.com/deepseek-ai/DeepSeek-Coder-V2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-coder-v2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First open-weights coding model to beat GPT-4 Turbo, Claude 3 Opus, and Gemini 1.5 Pro on code + math"
+      - "236B MoE / 21B active — derived from DeepSeek-V2 with 6T extra tokens of code/math pre-training"
+      - "HumanEval 90.2%, MBPP 76.2%, LiveCodeBench 43.4%, MATH 75.7% — frontier coding numbers at OSS price"
+      - "Programming language support jumped from 86 to 338; context extended from 16K to 128K"
+      - "16B Lite variant (2.4B active) brings most of the quality to a single-GPU deployment"
+      - "Set the playbook later refined into DeepSeek V3 / R1 / V4 — coding-specialist via continued pre-training"
+    best_for:
+      - "Self-hosted code-completion engines and IDE integrations"
+      - "Repository-level QA and refactor pipelines using open weights"
+      - "Multilingual code (338 languages) including niche legacy ones"
+      - "Cost-sensitive bulk inference for code review / lint suggestions"
+    not_ideal_for:
+      - "Frontier coding by mid-2025 — Claude Opus 4.5 / Sonnet 4.5 / DeepSeek V4 lead by wide margins"
+      - "Edge / single-consumer-GPU deployments at the 236B scale (use Lite)"
+      - "Non-coding chat — general dialogue is weaker than non-specialist DeepSeek models"
+    sources:
+      - name: "DeepSeek-Coder-V2 paper (arXiv)"
+        url: "https://arxiv.org/abs/2406.11931"
+      - name: "GitHub — DeepSeek-Coder-V2"
+        url: "https://github.com/deepseek-ai/DeepSeek-Coder-V2"
+      - name: "Artificial Analysis — DeepSeek-Coder-V2"
+        url: "https://artificialanalysis.ai/models/deepseek-coder-v2"
 public_view:
   plain_english: |
     DeepSeek's June 2024 coding model — 236B mixture-of-experts

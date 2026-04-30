@@ -59,6 +59,40 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/claude-4-sonnet-thinking'
       vs_baseline: 'Rank #92 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/claude-4-sonnet-thinking'
+  context_window: 1000000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4-sonnet-thinking'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Anthropic — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Anthropic's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Claude 4 Sonnet (Reasoning) is an API model from Anthropic. It’s positioned

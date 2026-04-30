@@ -78,6 +78,46 @@ model_spec:
     - text
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/stepfun-ai/Step3-VL-10B'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.stepfun.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/stepfun-ai/Step3'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/step3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/stepfun-ai/Step3-VL-10B'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/step-3-5-flash'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Vision-language model from Stepfun — see the linked sources below for benchmark and review coverage"
+      - "Tool-use and agent loops are the typical fit per the published model card"
+      - "Vision and multimodal tasks are the typical fit per the published model card"
+    best_for:
+      - "Agent / tool-use workflows that match the model's published benchmarks"
+      - "Vision tasks (charts, documents, images) per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     StepFun's July 2025 vision-language model — 321B parameters in a

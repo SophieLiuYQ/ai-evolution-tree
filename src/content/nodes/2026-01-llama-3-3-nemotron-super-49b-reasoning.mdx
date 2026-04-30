@@ -69,6 +69,45 @@ model_spec:
     - text
   hf_url: 'https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1'
   parameters: 49B
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/llama-3-3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: >-
+        https://artificialanalysis.ai/models/llama-3-3-nemotron-super-49b-reasoning
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Same architecture as 3.1 70B but post-training advances delivered notable reasoning + math gains"
+      - "92.1% on IFEval — beats Llama 3.1 405B (88.6) and GPT-4o (84.6) on instruction following"
+      - "MATH 77.0% (vs 67.8% for 3.1 70B); HumanEval 88.4%; MMLU Chat 86.0%"
+    best_for:
+      - "Open-weights production where 405B is too expensive but 8B is too weak"
+      - "Self-hosted RAG and code-completion stacks needing strong instruction-following"
+      - "Multilingual reasoning (MGSM 91.1%) at frontier-tier quality"
+    not_ideal_for:
+      - "Frontier reasoning by mid-2025 — Llama 4 family and competitors moved past it"
+      - "Multimodal tasks (text-only; vision lives in Llama 3.2 Vision / Llama 4)"
+    sources:
+      - name: "DataCamp — Llama 3.3 70B review"
+        url: "https://www.datacamp.com/blog/llama-3-3-70b"
+      - name: "Artificial Analysis — Llama 3.3 70B"
+        url: "https://artificialanalysis.ai/models/llama-3-3-instruct-70b"
+      - name: "Analytics Vidhya — Llama 3.3 70B is here, 25x cheaper"
+        url: "https://www.analyticsvidhya.com/blog/2024/12/meta-llama-3-3-70b/"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Llama 3.3 Nemotron Super 49B v1 (Reasoning) is an API model from Nvidia.

@@ -30,6 +30,28 @@ model_spec:
   github: 'https://github.com/microsoft/mattergen'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: >-
+        https://www.microsoft.com/en-us/research/blog/mattergen-a-new-paradigm-of-materials-design-with-generative-ai/
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/microsoft/mattergen'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Microsoft — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Microsoft's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Microsoft's January 2025 generative model for inorganic materials

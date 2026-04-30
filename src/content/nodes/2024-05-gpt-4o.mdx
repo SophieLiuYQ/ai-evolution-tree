@@ -79,9 +79,50 @@ model_spec:
     - id: gpt-4o-2024
       label: GPT 4o.2024
       status: active
-  aa_url: 'https://artificialanalysis.ai/models/gpt-4o'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
   modalities_in:
     - image
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/index/hello-gpt-4o/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-4o'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First end-to-end omni model — text, vision, audio share one neural net (not stitched pipelines)"
+      - "2x faster, half the price, and 5x higher rate limits than GPT-4 Turbo"
+      - "Native voice-to-voice latency around 320ms — close to human conversational rhythm (210ms)"
+      - "Realtime API (Oct 2024) opened up always-on voice assistants for developers"
+      - "Reasoning is solid but not o1-class — by 2025 it's the 'speed/cost tier', not the 'IQ tier'"
+      - "GPT-4o mini (Jul 2024) became the GPT-3.5 Turbo replacement at much better quality"
+    best_for:
+      - "Voice-first applications and real-time multimodal interfaces"
+      - "Cost-sensitive bulk inference where GPT-4-class quality is enough"
+      - "Image understanding workflows — strong vision pipeline at API price"
+      - "Replacing GPT-3.5/Turbo deployments with 4-tier quality at similar cost"
+    not_ideal_for:
+      - "Hard reasoning, math, or research — o1/o3/GPT-5 are the right tier"
+      - "Frontier-leaderboard coding (Claude 3.5 Sonnet+ outscored GPT-4o on SWE-bench by mid-2024)"
+      - "Self-hosted / open-weights workflows"
+    sources:
+      - name: "OpenAI — Hello GPT-4o"
+        url: "https://openai.com/index/hello-gpt-4o/"
+      - name: "TechCrunch — OpenAI debuts GPT-4o omni model"
+        url: "https://techcrunch.com/2024/05/13/openais-newest-model-is-gpt-4o/"
+      - name: "Wikipedia — GPT-4o"
+        url: "https://en.wikipedia.org/wiki/GPT-4o"
 public_view:
   plain_english: |
     OpenAI's successor to GPT-4, with a single unified model handling

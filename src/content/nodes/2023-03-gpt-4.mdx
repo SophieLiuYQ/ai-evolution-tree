@@ -79,9 +79,47 @@ model_spec:
     - id: gpt-4-turbo
       label: GPT-4 Turbo
       status: active
-  aa_url: 'https://artificialanalysis.ai/models/gpt-4'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-4-1'
   modalities_in:
     - image
+  modalities_out:
+    - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/index/gpt-4/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-4-1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Step-change in reasoning vs GPT-3.5 — top 10% on simulated bar exam vs 3.5's bottom 10%"
+      - "MMLU 86.4% in English; surpassed prior models in 24 of 26 other languages"
+      - "First widely-deployed model with image input (text output only) — multimodal era starts here"
+      - "19 percentage points fewer hallucinations than GPT-3.5 on adversarial factuality tests"
+      - "Genuinely creative and reliable on nuanced instructions where 3.5 broke"
+      - "OpenAI declined to publish parameter count or training details — closed-source standard set here"
+    best_for:
+      - "Professional knowledge work needing top-of-class reasoning at the time"
+      - "Code generation with chain-of-thought prompting"
+      - "Multilingual tasks across 26+ languages"
+      - "Image-input multimodal workflows once GPT-4V landed"
+    not_ideal_for:
+      - "Frontier work after Claude 3.5+ / GPT-4o / Llama 3 — quickly surpassed in 2024"
+      - "Cost-sensitive bulk inference — pricing dominant before GPT-4o cut it in half"
+      - "Self-hosted deployments — closed weights"
+    sources:
+      - name: "OpenAI — GPT-4 research page"
+        url: "https://openai.com/index/gpt-4-research/"
+      - name: "GPT-4 Technical Report (arXiv)"
+        url: "https://arxiv.org/abs/2303.08774"
+      - name: "MIT Press — How is ChatGPT's behavior changing"
+        url: "https://hdsr.mitpress.mit.edu/pub/y95zitmz"
 public_view:
   plain_english: |
     OpenAI's successor to GPT-3.5, launched as an API-gated upgrade to

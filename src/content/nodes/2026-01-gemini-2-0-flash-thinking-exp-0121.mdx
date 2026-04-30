@@ -60,6 +60,45 @@ model_spec:
     - text
     - image
     - audio
+  sources:
+    - name: Official
+      type: official
+      url: 'https://deepmind.google/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gemini-2-0'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gemini-2-0-flash-thinking-exp-0121'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Earlier reasoning preview — Gemini 2.5 Pro is the production successor."
+      - "Long context is the headline — 91.5% on 128k and 83.1% on 1M long-context retrieval, ahead of every other frontier model"
+      - "Independent testers confirm reliable retrieval up to ~800K tokens; the last 200K degrades"
+      - "Genuine 'put a whole codebase or book in the prompt' workflow — not theatre"
+    best_for:
+      - "Whole-codebase analysis, refactors across many files at once"
+      - "Long-form document QA (books, contracts, research papers)"
+      - "Multi-doc RAG replacement when context budget is generous"
+    not_ideal_for:
+      - "Pure agentic-coding leaderboards — Claude Opus 4.5 and DeepSeek V4 lead SWE-bench"
+      - "Cost-bound bulk inference past 200K tokens (price doubles)"
+    sources:
+      - name: "Artificial Analysis — Gemini 2.5 Pro analysis"
+        url: "https://artificialanalysis.ai/models/gemini-2-5-pro"
+      - name: "Google DeepMind — Gemini 2.5 technical report"
+        url: "https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf"
+      - name: "DataCamp — Gemini 2.5 Pro review"
+        url: "https://www.datacamp.com/blog/gemini-2-5-pro"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Gemini 2.0 Flash Thinking Experimental (Jan '25) is an API model from

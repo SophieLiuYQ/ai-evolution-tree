@@ -35,6 +35,44 @@ model_spec:
     - text
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://x.ai/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/grok-3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/grok-3-reasoning'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First xAI model trained on the Colossus supercluster — 10x compute of Grok-2"
+      - "AIME 2025 93.3% and GPQA 84.6% — credibly frontier-tier on math and graduate science"
+      - "Chatbot Arena Elo 1402 at release — not a benchmark stunt, real human-preference signal"
+    best_for:
+      - "Research and scientific Q&A where chain-of-thought matters"
+      - "Real-time information retrieval inside the X platform with full timeline access"
+      - "Math and competition-style coding (LiveCodeBench 79.4%)"
+    not_ideal_for:
+      - "Coding-agent leaderboards — Claude Opus 4.5 and DeepSeek V4 score higher on SWE-bench"
+      - "Workflows where benchmark transparency matters — release controversy is a real concern"
+    sources:
+      - name: "xAI — Grok 3 announcement"
+        url: "https://x.ai/news/grok-3"
+      - name: "TechCrunch — Did xAI lie about Grok 3 benchmarks?"
+        url: "https://techcrunch.com/2025/02/22/did-xai-lie-about-grok-3s-benchmarks/"
+      - name: "Artificial Analysis — Grok 3 analysis"
+        url: "https://artificialanalysis.ai/models/grok-3"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Grok 3 Reasoning Beta is an API model from xAI. It’s positioned for general

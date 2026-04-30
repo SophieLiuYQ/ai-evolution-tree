@@ -60,6 +60,29 @@ model_spec:
     - video
   modalities_out:
     - text
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/ernie-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/ernie-5-0-thinking-preview'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Baidu — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Baidu's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     ERNIE 5.0 Thinking Preview is an API model from Baidu. It’s positioned for

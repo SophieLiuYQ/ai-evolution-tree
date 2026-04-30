@@ -69,6 +69,53 @@ model_spec:
   availability:
     - open_weights
   aa_url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+  hf_url: 'https://huggingface.co/CohereForAI/c4ai-command-r-plus'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://cohere.com/blog/command-r-plus-microsoft-azure'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/command-r'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/CohereForAI/c4ai-command-r-plus'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/command-r-plus-04-2024'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Industry-leading RAG with in-line citations baked into the response — Cohere's signature differentiator"
+      - "104B params, 88.2% MMLU at release — competitive with GPT-4 Turbo on enterprise tasks"
+      - "Beats Claude 3 Sonnet, Mistral Large, and GPT-4 Turbo on Cohere's internal RAG / tool-use benchmarks"
+      - "Strong on Berkeley Function Calling and ToolTalk Hard — designed for multi-step agent flows"
+      - "Multilingual coverage in 10 major business languages (EN, FR, DE, ES, IT, JA, KO, AR, PT, ZH)"
+      - "Optimised for the enterprise sales motion — RAG citations matter more here than benchmark headlines"
+    best_for:
+      - "Enterprise RAG where citation accuracy and hallucination reduction matter most"
+      - "Multi-step tool-use agents in regulated industries"
+      - "Multilingual customer-facing assistants beyond English"
+      - "Workflows needing predictable, citation-backed enterprise output"
+    not_ideal_for:
+      - "Frontier-leaderboard reasoning by 2025 — newer Cohere Command-A and competitors lead"
+      - "Consumer / chatbot use cases where personality and creativity matter"
+      - "Coding-agent benchmarks (Claude Sonnet / GPT-5 stronger here)"
+    sources:
+      - name: "Cohere — Command R+ overview"
+        url: "https://cohere.com/blog/command-r-plus-microsoft-azure"
+      - name: "VentureBeat — Command R+ beats GPT-4 Turbo"
+        url: "https://venturebeat.com/ai/cohere-launches-command-r-a-powerful-llm-optimized-for-enterprise-ai"
+      - name: "Maginative — Command R+ RAG-optimised LLM"
+        url: "https://www.maginative.com/article/cohere-unveils-command-r-a-powerful-rag-optimized-llm-for-enterprise-ai/"
 public_view:
   plain_english: |
     Cohere's flagship open-weight model, released April 2024.

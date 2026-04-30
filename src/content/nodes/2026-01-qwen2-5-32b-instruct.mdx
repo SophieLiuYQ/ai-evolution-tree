@@ -53,6 +53,36 @@ model_spec:
   context_window: 128000
   modalities_in:
     - text
+  modalities_out:
+    - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.alibabagroup.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen2-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen2.5-32b-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Alibaba's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Qwen2.5 Instruct 32B is an API model from Alibaba. It’s positioned for

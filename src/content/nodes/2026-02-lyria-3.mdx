@@ -29,6 +29,23 @@ model_spec:
   availability:
     - api
     - product
+  sources:
+    - name: Official
+      type: official
+      url: 'https://deepmind.google/technologies/lyria/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Audio model from Google DeepMind — see the linked sources below for benchmark and review coverage"
+      - "Audio synthesis or transcription per the published model card"
+    best_for:
+      - "Audio synthesis / transcription tasks per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Google's music generation model — Lyria 3 and the realtime Lyria

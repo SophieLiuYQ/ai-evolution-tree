@@ -37,6 +37,29 @@ model_spec:
   github: 'https://github.com/tensorflow/tensor2tensor'
   availability:
     - research
+  reviews:
+    feels_like:
+      - "The architecture that enabled the modern AI era — every major LLM since 2018 is a Transformer descendant"
+      - "Replaced RNN/LSTM sequential processing with parallel self-attention — cut training time from weeks to days"
+      - "200K+ citations on Google Scholar — among the most cited ML papers of all time"
+      - "Originally framed for machine translation; the impact spread to virtually every sequence task"
+      - "Encoder-decoder design later split into encoder-only (BERT) and decoder-only (GPT) lineages"
+      - "Position encodings + multi-head attention + layer norm became the default kit for sequence modelling"
+    best_for:
+      - "Foundational paper to read before any other ML architecture work"
+      - "Citation in any work involving sequence-to-sequence modelling, language, or attention"
+      - "Teaching introductory NLP / deep learning courses"
+      - "Understanding why every frontier model in this tree exists"
+    not_ideal_for:
+      - "Use as a deployable model — this is an architecture paper, not a model checkpoint"
+      - "Cost-sensitive long-context inference without the post-2023 efficiency improvements"
+    sources:
+      - name: "Attention Is All You Need (arXiv)"
+        url: "https://arxiv.org/abs/1706.03762"
+      - name: "Google AI Blog — Transformer announcement"
+        url: "https://research.google/blog/transformer-a-novel-neural-network-architecture-for-language-understanding/"
+      - name: "Annotated Transformer (Harvard NLP)"
+        url: "https://nlp.seas.harvard.edu/2018/04/03/attention.html"
 public_view:
   plain_english: |
     A neural network architecture that processes all words in a sentence

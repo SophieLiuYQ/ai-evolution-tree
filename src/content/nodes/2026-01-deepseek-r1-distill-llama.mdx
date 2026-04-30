@@ -66,12 +66,52 @@ model_spec:
       label: DeepSeek R1 Distill Llama 8B
       status: active
   aa_url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-llama-70b'
-  parameters: 70B
+  parameters: 37B active
   context_window: 128000
   modalities_in:
     - text
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-R1-0528'
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-r1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/deepseek-ai/DeepSeek-R1-0528'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-r1-distill-llama-70b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Distilled smaller variant — R1 reasoning into Llama/Qwen base."
+      - "First open-weights reasoning model that genuinely competes with o1 — broke the closed-source moat"
+      - "~90% on advanced math benchmarks vs ~83% for GPT-4o; the chain-of-thought is fully visible"
+      - "Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training runs to reach the frontier"
+    best_for:
+      - "Math proofs, logic puzzles, and step-by-step derivations where explicit reasoning helps"
+      - "Coding and engineering tasks that benefit from chain-of-thought"
+      - "On-prem / air-gapped deployments where API models can't go"
+    not_ideal_for:
+      - "Casual chat, tone, or creative writing — ChatGPT/Claude feel more polished"
+      - "Multimodal tasks (image / vision) — text-only model"
+    sources:
+      - name: "MIT Technology Review — DeepSeek's top AI reasoning model despite sanctions"
+        url: "https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/"
+      - name: "BentoML — Complete guide to DeepSeek models V3, R1, V4"
+        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
+      - name: "DataCamp — DeepSeek vs ChatGPT comparison"
+        url: "https://www.datacamp.com/blog/deepseek-vs-chatgpt"
+  availability:
+    - api
 public_view:
   plain_english: >-
     DeepSeek r1 distill llama is an API model from DeepSeek. It’s positioned for

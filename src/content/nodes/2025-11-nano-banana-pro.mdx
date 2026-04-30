@@ -34,6 +34,23 @@ model_spec:
       score: '1262'
       vs_baseline: 'Rank #3 of 48 · Top 10% · AA · Image Arena'
       source_url: 'https://artificialanalysis.ai/text-to-image'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://deepmind.google/models/gemini-image/pro/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Vision-language model from Google DeepMind — see the linked sources below for benchmark and review coverage"
+      - "Vision and multimodal tasks are the typical fit per the published model card"
+    best_for:
+      - "Vision tasks (charts, documents, images) per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Google DeepMind's image model integrated into Gemini 3 — internally

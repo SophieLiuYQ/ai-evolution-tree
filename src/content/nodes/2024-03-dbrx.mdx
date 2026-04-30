@@ -72,6 +72,52 @@ model_spec:
     - open_weights
   aa_url: 'https://artificialanalysis.ai/models/dbrx'
   hf_url: 'https://huggingface.co/databricks/dbrx-instruct'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/databricks/dbrx'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/dbrx'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/databricks/dbrx-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Fine-grained MoE: 16 experts × 4 active vs Mixtral/Grok-1's 8×2 — more granular routing"
+      - "132B total / 36B active per token; beat Llama 2 70B, Mixtral, and Grok-1 on Databricks Gauntlet (30+ benchmarks)"
+      - "Beat GPT-3.5 on most benchmarks at release — open-source replacement for GPT-3.5 was the headline pitch"
+      - "Inference up to 2x faster than Llama 2 70B; ~40% the size of Grok-1 by parameter count"
+      - "Pre-training pipeline became 4x more compute-efficient — DBRX MoE-B beat LLaMA2-13B with 1.7x fewer FLOPs"
+      - "Aimed at the Databricks customer base — replace proprietary models with self-hosted on Mosaic AI"
+    best_for:
+      - "Databricks customers running self-hosted LLM workloads on Mosaic AI"
+      - "Fine-grained MoE research and routing experiments"
+      - "Replacing GPT-3.5-tier API calls with self-hosted inference"
+      - "Distillation source for smaller models trained on DBRX outputs"
+    not_ideal_for:
+      - "Frontier reasoning by 2025 — quickly surpassed by Llama 3.x, DeepSeek V3, Mixtral 8x22B, etc."
+      - "Single-GPU edge deployments — the 132B-total MoE needs serious memory"
+      - "Multimodal tasks (text-only)"
+    sources:
+      - name: "Databricks — Introducing DBRX"
+        url: "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm"
+      - name: "Databricks — Announcing DBRX (efficient open LLMs)"
+        url: "https://www.databricks.com/blog/announcing-dbrx-new-standard-efficient-open-source-customizable-llms"
+      - name: "Analytics Vidhya — DBRX taking on the giants"
+        url: "https://www.analyticsvidhya.com/blog/2024/03/databricks-dbrx/"
 public_view:
   plain_english: |
     Databricks' open-weight MoE model released March 2024 — the

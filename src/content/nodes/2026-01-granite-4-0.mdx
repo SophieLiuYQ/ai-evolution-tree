@@ -76,13 +76,41 @@ model_spec:
       label: Granite 4.0 Micro
       status: active
   aa_url: 'https://artificialanalysis.ai/models/granite-4-0-h-nano-1b'
-  context_window: 128000
+  context_window: 131072
   modalities_in:
     - text
   modalities_out:
     - text
   parameters: 9B active
   hf_url: 'https://huggingface.co/ibm-granite/granite-4.0-h-small'
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/granite-4-0'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/ibm-granite/granite-4.0-h-small'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/granite-4-0-h-nano-1b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from IBM — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within IBM's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Granite 4.0 is an API model from IBM. It’s positioned for hard reasoning and

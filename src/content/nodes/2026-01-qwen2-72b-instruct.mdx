@@ -52,6 +52,39 @@ model_spec:
   context_window: 131072
   hf_url: 'https://huggingface.co/Qwen/Qwen2-72B-Instruct'
   parameters: 72B
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.alibabagroup.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/Qwen/Qwen2-72B-Instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen2-72b-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Alibaba's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Qwen2 Instruct 72B is an API model from Alibaba. It’s positioned for general

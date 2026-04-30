@@ -33,6 +33,25 @@ model_spec:
   homepage: 'https://yiyan.baidu.com/'
   availability:
     - api
+  sources:
+    - name: Official
+      type: official
+      url: 'https://yiyan.baidu.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Vision-language model from Baidu — see the linked sources below for benchmark and review coverage"
+      - "Tool-use and agent loops are the typical fit per the published model card"
+      - "Vision and multimodal tasks are the typical fit per the published model card"
+    best_for:
+      - "Agent / tool-use workflows that match the model's published benchmarks"
+      - "Vision tasks (charts, documents, images) per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Baidu's flagship closed-API LLM, launched October 2023 as the

@@ -58,13 +58,51 @@ model_spec:
       score: $0.20 in / $0.50 out
       source_url: 'https://artificialanalysis.ai/models/grok-4-fast-reasoning'
       vs_baseline: 'Rank #43 of 96 · Reasoning'
-  aa_url: 'https://artificialanalysis.ai/models/grok-4-fast'
+  aa_url: 'https://artificialanalysis.ai/models/grok-4-fast-reasoning'
   context_window: 2000000
   modalities_in:
     - text
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://x.ai/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/grok-4'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/grok-4-fast-reasoning'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "AA Intelligence Index of 73 at release — leading frontier slot, ahead of o3 (70), Gemini 2.5 Pro (70), Claude 4 Opus (64)"
+      - "GPQA Diamond all-time high of 88%; Humanity's Last Exam 24%; AIME 2024 94%; MMLU-Pro 87%"
+      - "Leads Coding Index (LiveCodeBench + SciCode) and Math Index (AIME24 + MATH-500)"
+    best_for:
+      - "Math, science, and reasoning research where Grok 4 leads on raw benchmark numbers"
+      - "Real-time information lookup inside the X (Twitter) product with full timeline access"
+      - "Tool-using agents that benefit from extended reasoning + verifiable-rewards training"
+    not_ideal_for:
+      - "Customer-facing products where political-bias risk is a brand concern"
+      - "Workflows requiring system-prompt-free behaviour — RL tuning shows different defaults depending on scaffold"
+    sources:
+      - name: "xAI — Grok 4 model card (PDF)"
+        url: "https://data.x.ai/2025-08-20-grok-4-model-card.pdf"
+      - name: "Artificial Analysis — Grok 4"
+        url: "https://artificialanalysis.ai/models/grok-4"
+      - name: "Interconnects — Grok 4 an o3 look-alike in search"
+        url: "https://www.interconnects.ai/p/grok-4-an-o3-look-alike-in-search"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Grok 4 Fast (Non-reasoning) is an API model from xAI. It’s positioned for

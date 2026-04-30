@@ -58,6 +58,34 @@ model_spec:
     - text
   parameters: 12.7B active
   hf_url: 'https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16'
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/nemotron-super-v3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/nvidia-nemotron-3-super-120b-a12b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Nvidia — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Nvidia's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     NVIDIA Nemotron 3 Super 120B A12B (Reasoning) is an API model from Nvidia.

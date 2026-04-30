@@ -72,6 +72,47 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://molmo.allenai.org/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/allenai/molmo'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/molmo-7b-d'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "72B variant outperforms GPT-4o (estimated 1T+ params) on image / chart / document understanding"
+      - "7B variant comes close to GPT-4o-class performance — 'tiny model performs as well as powerful big ones' (MIT Tech Review)"
+      - "Trained on a curated 600K-image dataset (PixMo) — quality-over-quantity proof point"
+      - "All weights, training data, and inference code released — fully open, not just open-weights"
+      - "First open VLM that put Allen AI on equal footing with closed-source frontier"
+      - "Showed open-source vision is on par with proprietary in late 2024 — pivotal for the OSS narrative"
+    best_for:
+      - "Self-hosted vision tasks at fraction of API cost"
+      - "Research and academic work needing full data + code access"
+      - "Distillation experiments and small-VLM training baselines"
+      - "Document QA, chart analysis, and image understanding without sending data out"
+    not_ideal_for:
+      - "Frontier visual reasoning by mid-2025 — Gemini 2.5 / 3 Pro and Claude 4 vision lead"
+      - "Edge / single-laptop deployments at the 72B scale"
+      - "Audio / video tasks (Molmo is image + text only at this generation)"
+    sources:
+      - name: "Allen AI — Molmo announcement"
+        url: "https://allenai.org/blog/molmo"
+      - name: "MIT Technology Review — tiny new open-source model performs"
+        url: "https://www.technologyreview.com/2024/09/25/1104465/a-tiny-new-open-source-ai-model-performs-as-well-as-powerful-big-ones/"
+      - name: "SiliconANGLE — Allen AI debuts Molmo"
+        url: "https://siliconangle.com/2024/09/25/allen-institute-ai-debuts-new-molmo-series-open-source-multimodal-models/"
 public_view:
   plain_english: |
     Allen AI's open vision-language family — released September 2024

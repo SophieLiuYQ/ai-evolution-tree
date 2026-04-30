@@ -70,6 +70,58 @@ model_spec:
   availability:
     - open_weights
   aa_url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+  hf_url: 'https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://mistral.ai/news/mixtral-of-experts'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/mistralai/mistral-src'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/mixtral'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/mixtral-8x7b-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First major MoE open-weights release that actually worked for production — 46.7B total / 13B active per token"
+      - "6x faster inference than Llama 2 70B at equal-or-better quality on most benchmarks"
+      - "Outperformed GPT-3.5 on the LMSYS arena while being fully open-weight under Apache 2.0"
+      - "MT-Bench score earned 'best open-weights model as of December 2023'"
+      - "Vastly better than Llama 2 70B on math, code, and multilingual benchmarks"
+      - "Set the architectural template (router + sparse experts) followed by every later open MoE"
+    best_for:
+      - "Open-source production inference where Llama 2 70B was too slow"
+      - "Multilingual workloads (Mixtral was particularly strong outside English at release)"
+      - "Self-hosted RAG and code-completion stacks under Apache 2.0"
+      - "Research into MoE routing, distillation, and serving"
+    not_ideal_for:
+      - "Frontier reasoning by 2025 — superseded by Mixtral 8x22B, Llama 3.x, DeepSeek V3, Qwen 3"
+      - "Latency-sensitive single-GPU edge deployments (8 experts × 7B still demands meaningful VRAM)"
+      - "Vision / multimodal tasks — text only at this generation"
+    sources:
+      - name: "Mistral AI — Mixtral of Experts announcement"
+        url: "https://mistral.ai/news/mixtral-of-experts"
+      - name: "Mixtral of Experts paper (arXiv)"
+        url: "https://arxiv.org/abs/2401.04088"
+      - name: "InfoQ — Mixtral 8x7B outperforms GPT-3.5"
+        url: "https://www.infoq.com/news/2024/01/mistral-ai-mixtral/"
 public_view:
   plain_english: |
     A French startup's open-weight model that activates only 13B of its

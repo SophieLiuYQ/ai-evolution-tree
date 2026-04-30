@@ -34,6 +34,42 @@ model_spec:
   github: 'https://github.com/Tencent/Tencent-Hunyuan-Large'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: 'https://hunyuan.tencent.com/modelSquare/home/list'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/Tencent/Tencent-Hunyuan-Large'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Largest open-source Transformer-based MoE at release: 389B total / 52B active per token"
+      - "MMLU 88.4% — beat Llama 3.1 70B (79.3%) and matched Llama 3.1 405B at one-tenth the active params"
+      - "GSM8K 92.8% — surpassed Llama 3.1 405B's 89% on grade-school math"
+      - "Native 256K context window — long-doc QA at open-weights pricing"
+      - "1.5T of 7T training tokens were synthetic — first major open-weights model to lean this hard on synthetic"
+      - "Mixed-expert routing innovations carried into later open MoE work (DeepSeek V3, etc.)"
+    best_for:
+      - "Self-hosted enterprise deployments where 389B MoE is acceptable"
+      - "Long-context analysis (256K) on Chinese / English bilingual content"
+      - "Distillation source — synthetic-data heritage makes outputs friendly for student training"
+      - "Research on mixed-expert routing and synthetic-data scaling"
+    not_ideal_for:
+      - "Edge / single-GPU deployments — multi-node serving required"
+      - "Frontier reasoning by 2025 — DeepSeek V3, Qwen 3, Kimi K2 surpass it"
+      - "Multimodal tasks (text-only at this generation; vision is in Hunyuan-V or Hunyuan-Video)"
+    sources:
+      - name: "Hunyuan-Large paper (arXiv)"
+        url: "https://arxiv.org/abs/2411.02265"
+      - name: "Maginative — Tencent unveils Hunyuan-Large"
+        url: "https://www.maginative.com/article/tencent-unveils-hunyuan-large-an-open-source-moe-model-that-outperforms-llama/"
+      - name: "MarkTechPost — Hunyuan-Large MoE-A52B"
+        url: "https://www.marktechpost.com/2024/11/05/tencent-releases-hunyuan-large-hunyuan-moe-a52b-model-a-new-open-source-transformer-based-moe-model-with-a-total-of-389-billion-parameters-and-52-billion-active-parameters/"
 public_view:
   plain_english: |
     Tencent's first major open-weight large model — a 389-billion-

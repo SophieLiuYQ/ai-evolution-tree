@@ -72,6 +72,47 @@ model_spec:
   aa_url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
   modalities_in:
     - image
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/news/claude-3-5-sonnet'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-3-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-35-sonnet'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "The model that made AI coding actually trustworthy — produces working code nearly every time"
+      - "49% on SWE-bench Verified at release; ahead of o1-preview and significantly past prior versions (33%)"
+      - "Outperformed the larger Claude 3 Opus on most benchmarks while costing 80% less"
+      - "92.0% on HumanEval — edges GPT-4o (90.2%) on Python function tests"
+      - "Multi-step task completion 40-54% without human help — over half of long tasks still need course-correction"
+      - "Some users report needing more back-and-forth on long-form outputs"
+    best_for:
+      - "Front-end and back-end web development — the canonical 2024 coding copilot"
+      - "Refactors and feature work where reliability beats raw IQ"
+      - "Tools-and-agents stacks (Cline / Claude Dev / Cursor) — became the default model"
+      - "GitLab DevSecOps pipelines (10% reasoning gain, no slowdown)"
+    not_ideal_for:
+      - "Languages or frameworks outside its training distribution"
+      - "Multi-hour autonomous tasks — prefer Claude 4 family"
+      - "Hardest reasoning / math benchmarks — better on o1 / o3"
+    sources:
+      - name: "Anthropic — Claude 3.5 Sonnet announcement"
+        url: "https://www.anthropic.com/news/claude-3-5-sonnet"
+      - name: "16x Engineer — Is new Sonnet 3.5 best for coding?"
+        url: "https://prompt.16x.engineer/blog/new-claude-sonnet-35-coding"
+      - name: "Galileo — Claude 3.5 Sonnet capabilities & limits"
+        url: "https://galileo.ai/blog/claude-3-5-sonnet-complete-guide-ai-capabilities-analysis"
 public_view:
   plain_english: |
     A mid-tier Claude 3.5 model that, on release, beat the previous

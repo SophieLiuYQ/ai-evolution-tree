@@ -92,12 +92,53 @@ model_spec:
     - id: grok-3-reasoning
       label: Grok 3 Reasoning Beta
       status: active
-  aa_url: 'https://artificialanalysis.ai/models/grok-3'
+  aa_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
   modalities_in:
     - text
   modalities_out:
     - text
     - image
+  sources:
+    - name: Official
+      type: official
+      url: 'https://x.ai/news/grok-3'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/grok-3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First xAI model trained on the Colossus supercluster — 10x compute of Grok-2"
+      - "AIME 2025 93.3% and GPQA 84.6% — credibly frontier-tier on math and graduate science"
+      - "Chatbot Arena Elo 1402 at release — not a benchmark stunt, real human-preference signal"
+      - "TechCrunch flagged that the released graphs omitted o3-mini-high's cons@64 score, sparking benchmark trust debate"
+      - "Trained with reinforcement learning at unprecedented scale to refine chain-of-thought"
+      - "Most useful inside the X (Twitter) product — outside that surface the alternatives feel more polished"
+    best_for:
+      - "Research and scientific Q&A where chain-of-thought matters"
+      - "Real-time information retrieval inside the X platform with full timeline access"
+      - "Math and competition-style coding (LiveCodeBench 79.4%)"
+      - "Users who want a less-restricted model than ChatGPT/Claude defaults"
+    not_ideal_for:
+      - "Coding-agent leaderboards — Claude Opus 4.5 and DeepSeek V4 score higher on SWE-bench"
+      - "Workflows where benchmark transparency matters — release controversy is a real concern"
+      - "Multimodal-first applications — Grok 3 lags on image tasks vs Gemini 2.5 Pro / GPT-5"
+    sources:
+      - name: "xAI — Grok 3 announcement"
+        url: "https://x.ai/news/grok-3"
+      - name: "TechCrunch — Did xAI lie about Grok 3 benchmarks?"
+        url: "https://techcrunch.com/2025/02/22/did-xai-lie-about-grok-3s-benchmarks/"
+      - name: "Artificial Analysis — Grok 3 analysis"
+        url: "https://artificialanalysis.ai/models/grok-3"
 public_view:
   plain_english: |
     xAI's third-generation flagship model, released February 2025

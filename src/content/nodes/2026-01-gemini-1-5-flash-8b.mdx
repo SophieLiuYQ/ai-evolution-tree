@@ -53,6 +53,45 @@ model_spec:
   context_window: 1048576
   modalities_in:
     - image
+  sources:
+    - name: Official
+      type: official
+      url: 'https://deepmind.google/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gemini-1-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gemini-1-5-flash-8b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Flash tier of Gemini 1.5 — long context at lower cost."
+      - "First model where 1M-token context was a real product feature, not a benchmark headline"
+      - "99% needle-in-haystack accuracy at 1M tokens; 99.2% even at 10M in research configurations"
+      - "Multi-needle recall drops to ~60% — single fact retrieval is solid, multi-fact is harder"
+    best_for:
+      - "Whole-codebase analysis (30K+ lines) without tedious chunking pipelines"
+      - "Document QA over 1,500-page PDFs / batches of 100 emails"
+      - "Hour-long video summarisation and audio transcription QA"
+    not_ideal_for:
+      - "Tasks requiring multi-fact retrieval across long contexts (recall drops sharply)"
+      - "Pure short-context chat — Flash variants are cheaper and faster"
+    sources:
+      - name: "Google — Introducing Gemini 1.5"
+        url: "https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/"
+      - name: "Google — Gemini 1.5 Pro May 2024 update"
+        url: "https://blog.google/products-and-platforms/products/gemini/google-gemini-update-may-2024/"
+      - name: "Google Cloud — Needle in Haystack test"
+        url: "https://cloud.google.com/blog/products/ai-machine-learning/the-needle-in-the-haystack-test-and-how-gemini-pro-solves-it"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Gemini 1.5 Flash-8B is an API model from Google. It’s positioned for general

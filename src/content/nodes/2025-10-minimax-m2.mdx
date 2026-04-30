@@ -93,6 +93,46 @@ model_spec:
     - text
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/MiniMaxAI/MiniMax-M2.7'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.minimax.io/news/minimax-m2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/MiniMax-AI/MiniMax-M2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/MiniMax-M2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/MiniMaxAI/MiniMax-M2.7'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/minimax-m2-7'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from MiniMax — see the linked sources below for benchmark and review coverage"
+      - "Code-leaning workloads are the typical fit per the published model card"
+      - "Tool-use and agent loops are the typical fit per the published model card"
+    best_for:
+      - "Coding workflows that match the model's published benchmarks"
+      - "Agent / tool-use workflows that match the model's published benchmarks"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     MiniMax's October 2025 reasoning model — 230B total parameters but

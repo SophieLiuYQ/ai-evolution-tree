@@ -85,6 +85,47 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/news/claude-opus-4-6'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First Opus with 1M-token context window — the long-context gap to Gemini 2.5 Pro finally closes"
+      - "Tops Terminal-Bench 2.0 (65.4%), OSWorld (72.7%), BrowseComp (84.0%), Finance Agent (60.7%)"
+      - "53.1% on Humanity's Last Exam with tools — beats every other frontier model at release"
+      - "ARC-AGI-2 score of 68.8% — biggest single-jump on novel-problem-solving in any model so far"
+      - "Adaptive thinking + conversation compaction make multi-hour sessions much more stable"
+      - "SWE-bench Verified 80.8% (vs 80.9% on Opus 4.5) — coding plateaued; the gains are in agents and reasoning"
+    best_for:
+      - "Long-horizon agent loops with full 1M-token codebases or document corpora"
+      - "Web-research and browse-style agents (BrowseComp leader)"
+      - "Financial analysis, forecasting, and structured-data agent flows"
+      - "Office-style multi-step tasks (GDPVal-AA leader at 1606 Elo)"
+    not_ideal_for:
+      - "Latency-sensitive interactive chat — adaptive thinking adds time"
+      - "Pure SWE-bench coding — Opus 4.5 at the same score is cheaper"
+      - "Workloads where 200K context is plenty — paying for 1M isn't justified"
+    sources:
+      - name: "Anthropic — Claude Opus 4.6 announcement"
+        url: "https://www.anthropic.com/news/claude-opus-4-6"
+      - name: "Vellum — Opus 4.6 vs 4.5 benchmarks"
+        url: "https://www.vellum.ai/blog/claude-opus-4-6-benchmarks"
+      - name: "DataCamp — Claude Opus 4.6 review"
+        url: "https://www.datacamp.com/blog/claude-opus-4-6"
 public_view:
   plain_english: |
     Anthropic's December 2025 Opus refresh, with the headline

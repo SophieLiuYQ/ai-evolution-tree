@@ -61,6 +61,45 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5-2-codex'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Codex-specialised variant — tuned for SWE-bench Pro / coding agents."
+      - "Pro variant hits 93.2% on GPQA Diamond and 40.3% on FrontierMath Tier 1-3 — new state-of-the-art on hard math/science"
+      - "400K-token context window — biggest OpenAI window yet, designed for long-running agents"
+      - "GDPval state-of-the-art — outperforms industry professionals on well-specified tasks across 44 occupations"
+    best_for:
+      - "Hardest math/science research where Pro/Thinking modes pull ahead of every competitor"
+      - "Long-running professional agent workflows (400K context + GDPval-leading task quality)"
+      - "Knowledge work spanning 44 occupations — spreadsheets, presentations, multi-step projects"
+    not_ideal_for:
+      - "Casual chat or creative writing — Instant tier feels muted compared to GPT-5.1"
+      - "Cost-sensitive bulk inference — 40% price hike vs 5.1 with no automatic upgrade win"
+    sources:
+      - name: "OpenAI — Introducing GPT-5.2"
+        url: "https://openai.com/index/introducing-gpt-5-2/"
+      - name: "OpenAI — GPT-5.2 for science and math"
+        url: "https://openai.com/index/gpt-5-2-for-science-and-math/"
+      - name: "VERTU — GPT-5.2 paradox: rankings vs reality"
+        url: "https://vertu.com/lifestyle/gpt-5-2-hype-vs-reality-is-openais-latest-model-worth-the-upgrade/"
+  availability:
+    - api
 public_view:
   plain_english: >-
     GPT-5.2 Codex (xhigh) is an API model from OpenAI. It’s positioned for

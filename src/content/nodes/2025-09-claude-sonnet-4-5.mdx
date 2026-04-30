@@ -58,13 +58,56 @@ model_spec:
       score: $3.00 in / $15.00 out
       source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
       vs_baseline: 'Rank #92 of 96 · Reasoning'
-  aa_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6'
+  aa_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
   context_window: 100000
   modalities_in:
     - text
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  availability:
+    - api
+  reviews:
+    feels_like:
+      - "77.2% on SWE-bench Verified at release — highest-scoring Claude model in standard runs (82.0% with parallel compute)"
+      - "Sustains 30+ hour autonomous coding tasks — Anthropic's headline reliability claim"
+      - "61.4% on OSWorld for computer use, 100% AIME 2025 with Python tools, 83.4% GPQA Diamond"
+      - "Same price as Sonnet 4 ($3/$15) but matches Opus 4.1 quality at 1/5 the cost"
+      - "99.29% harmless-response rate while dropping over-refusal to 0.02% — the alignment dial moved both ways"
+      - "Anthropic positioned it as 'the best coding model in the world' at launch — a claim Opus 4.5 then took back two months later"
+    best_for:
+      - "Production agentic coding (Devin, Cursor, Cline, Claude Code) where reliability matters"
+      - "Long-running autonomous tasks (>30h) without losing the thread"
+      - "Cost-sensitive teams that want frontier coding without Opus pricing"
+      - "Computer-use / OSWorld automation pipelines"
+    not_ideal_for:
+      - "Hardest reasoning tasks — Opus 4.5/4.6 lead by ~7 points on AA Intelligence Index"
+      - "Workloads needing 1M-token context (Sonnet 4.5 ships 200K)"
+      - "Latency-critical chat — Haiku 4.5 is 2x faster at 1/3 the price"
+    sources:
+      - name: "Anthropic — Claude Sonnet 4.5 announcement"
+        url: "https://www.anthropic.com/news/claude-sonnet-4-5"
+      - name: "Anthropic — Sonnet 4.5 system card"
+        url: "https://www.anthropic.com/claude-sonnet-4-5-system-card"
+      - name: "Caylent — highest-scoring Claude on SWE-bench"
+        url: "https://caylent.com/blog/claude-sonnet-4-5-highest-scoring-claude-model-yet-on-swe-bench"
 public_view:
   plain_english: >-
     Claude Sonnet 4.5 is an API model from Anthropic. It’s positioned for

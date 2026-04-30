@@ -44,6 +44,26 @@ model_spec:
   homepage: 'https://openai.com/index/instruction-following/'
   availability:
     - api
+  reviews:
+    feels_like:
+      - "Introduced RLHF (reinforcement learning from human feedback) at scale — recipe behind ChatGPT, Claude, Gemini"
+      - "1.3B InstructGPT preferred over 175B GPT-3 on user prompts — alignment beat scale"
+      - "Three-step training: SFT on demos, reward model from comparisons, PPO against reward — still the standard template"
+      - "Direct precursor of ChatGPT (Nov 2022): same recipe with more conversational tuning"
+      - "TruthfulQA improvement of +10 to +25 points over base GPT-3 — measurable hallucination reduction"
+      - "Most cited alignment paper of the GPT era; sparked Constitutional AI and DPO follow-ups"
+    best_for:
+      - "Foundational reading on RLHF and modern instruction-tuning"
+      - "Citation in any work on alignment, preference modelling, or reward modelling"
+      - "Understanding why ChatGPT 'feels different' from raw GPT-3"
+    not_ideal_for:
+      - "Direct production use — long superseded by ChatGPT and successors"
+      - "Self-hosted / open-weights workflows (closed API only)"
+    sources:
+      - name: "OpenAI — Aligning language models to follow instructions"
+        url: "https://openai.com/index/instruction-following/"
+      - name: "InstructGPT paper (arXiv)"
+        url: "https://arxiv.org/abs/2203.02155"
 public_view:
   plain_english: |
     The training recipe — supervised fine-tuning followed by reinforcement

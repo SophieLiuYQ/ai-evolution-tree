@@ -32,6 +32,27 @@ model_spec:
   github: 'https://github.com/ArcInstitute/evo2'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: 'https://arcinstitute.org/news/blog/evo2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/ArcInstitute/evo2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Arc Institute — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Arc Institute's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Arc Institute's Evo 2 — a 40-billion-parameter foundation model

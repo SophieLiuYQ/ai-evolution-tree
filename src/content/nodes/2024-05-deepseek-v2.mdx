@@ -53,8 +53,49 @@ model_spec:
   github: 'https://github.com/deepseek-ai/DeepSeek-V2'
   availability:
     - open_weights
-  aa_url: 'https://artificialanalysis.ai/models/deepseek-v2'
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-v2-5'
   hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat'
+  sources:
+    - name: GitHub
+      type: official
+      url: 'https://github.com/deepseek-ai/DeepSeek-V2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-v2-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First DeepSeek model that the wider OSS community took seriously — 236B MoE with only 21B active per token"
+      - "Saved 42.5% training cost vs DeepSeek 67B, reduced KV cache 93.3%, boosted max throughput 5.76x"
+      - "DeepSeekMoE architecture (fine-grained experts + shared expert isolation) became the template"
+      - "128K context window at open-weights pricing — rare in mid-2024"
+      - "MMLU performance in the top open-source tier despite the small active-parameter footprint"
+      - "Foreshadowed V3 / R1 — proved the cost-efficient training playbook before it shocked Wall Street"
+    best_for:
+      - "Self-hosted Chinese / multilingual deployments where API access was politically risky"
+      - "Cost-sensitive bulk inference via budget providers"
+      - "MoE-architecture research and KV-cache optimisation experiments"
+      - "Long-context retrieval workflows (128K) at open-weights price"
+    not_ideal_for:
+      - "Frontier reasoning by 2025 — superseded by V3 / V3.1 / V4 generations"
+      - "Edge / single-GPU deployments (236B MoE still demands multi-GPU serving)"
+      - "Vision / multimodal tasks (DeepSeek-VL came separately)"
+    sources:
+      - name: "DeepSeek-V2 paper (arXiv)"
+        url: "https://arxiv.org/pdf/2405.04434"
+      - name: "BentoML — Complete guide to DeepSeek models"
+        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
+      - name: "Hugging Face — DeepSeek-V2-Chat"
+        url: "https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat"
 public_view:
   plain_english: |
     A Chinese AI lab's 236B-parameter Mixture-of-Experts model,

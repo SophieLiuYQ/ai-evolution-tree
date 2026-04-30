@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nari Labs</title>
+    <meta name="description" content="Nari Labs — realtime AI." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: "Geist Pixel Line";
+        src: url("https://unpkg.com/geist@1.7.0/dist/fonts/geist-pixel/GeistPixel-Line.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Geist Pixel Triangle";
+        src: url("https://unpkg.com/geist@1.7.0/dist/fonts/geist-pixel/GeistPixel-Triangle.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Geist Pixel Circle";
+        src: url("https://unpkg.com/geist@1.7.0/dist/fonts/geist-pixel/GeistPixel-Circle.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Geist Pixel Grid";
+        src: url("https://unpkg.com/geist@1.7.0/dist/fonts/geist-pixel/GeistPixel-Grid.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Geist Pixel Square";
+        src: url("https://unpkg.com/geist@1.7.0/dist/fonts/geist-pixel/GeistPixel-Square.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #f8f7f4;
+        --text: #1a1a1a;
+        --text-muted: #8a8880;
+        --border: #e8e6e1;
+        --serif: "Instrument Serif", Georgia, serif;
+        --sans: "DM Sans", system-ui, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 3rem;
+        position: sticky;
+        top: 0;
+        background: rgba(248, 247, 244, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 10;
+      }
+
+      .logo {
+        font-family: var(--serif);
+        font-size: 1.6rem;
+        letter-spacing: -0.01em;
+        color: var(--text);
+        text-decoration: none;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .logo:hover {
+        opacity: 0.7;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .nav-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-links .section-link {
+        font-family: var(--serif);
+        font-style: normal;
+        font-size: 1.3rem;
+      }
+
+      .nav-links svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+      }
+
+      .github-link {
+        gap: 0.4rem;
+      }
+
+      .star-count {
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+
+      .page {
+        min-height: calc(100vh - 6rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 3rem;
+        position: relative;
+      }
+
+      .hero {
+        text-align: center;
+        max-width: 880px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .bg-ai {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--serif);
+        font-style: italic;
+        font-size: clamp(14rem, 38vw, 32rem);
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0.06em;
+        /* Paper-cutout effect: letter fill slightly whiter than page bg,
+         SVG filter paints a real inset shadow + soft outer halo for a ghostly feel. */
+        color: #fefdfb;
+        opacity: 0.78;
+        -webkit-text-stroke: 0;
+        filter: url(#ai-inset) drop-shadow(0 0 28px rgba(255, 255, 255, 0.75))
+          drop-shadow(0 0 70px rgba(255, 255, 255, 0.35))
+          drop-shadow(0 0 80px rgba(26, 26, 26, 0.05));
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
+        white-space: nowrap;
+      }
+
+      h1,
+      h2 {
+        font-family: var(--serif);
+        font-size: clamp(3rem, 7vw, 5.5rem);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        margin-bottom: 1.75rem;
+      }
+
+      h1 em,
+      h2 em {
+        font-style: italic;
+      }
+
+      /* --- Word stack --- */
+      .words {
+        font-family: var(--serif);
+        font-size: clamp(3.25rem, 9vw, 7.5rem);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin-bottom: 2.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+      }
+
+      .word {
+        display: inline-block;
+        position: relative;
+        white-space: nowrap;
+      }
+
+      .word-row {
+        display: flex;
+      }
+
+      .row-realtime {
+        justify-content: flex-start;
+        transform: translateX(-6vw);
+      }
+      .row-interactive {
+        justify-content: center;
+      }
+      .row-multimodal {
+        justify-content: flex-end;
+        transform: translateX(6vw);
+      }
+
+      /* Realtime — motion blur trail */
+      .word-realtime {
+        color: var(--text);
+        text-shadow:
+          6px 0 0 rgba(26, 26, 26, 0.18),
+          14px 0 0 rgba(26, 26, 26, 0.09),
+          24px 0 0 rgba(26, 26, 26, 0.04);
+        animation: streak 1.9s cubic-bezier(0.7, 0, 0.2, 1) infinite;
+        transform-origin: left center;
+        will-change: transform, filter;
+      }
+
+      @keyframes streak {
+        0% {
+          transform: translateX(-14px);
+          filter: blur(1.2px);
+          opacity: 0.8;
+        }
+        12% {
+          transform: translateX(0);
+          filter: blur(0);
+          opacity: 1;
+        }
+        60% {
+          transform: translateX(0);
+          filter: blur(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-14px);
+          filter: blur(1.2px);
+          opacity: 0.8;
+        }
+      }
+
+      /* Interactive — per-letter z-depth wave */
+      .word-interactive {
+        font-style: italic;
+        color: var(--text);
+        cursor: default;
+        padding: 0.15em 0.3em;
+        perspective: 700px;
+        transform-style: preserve-3d;
+      }
+
+      .letter {
+        display: inline-block;
+        transform-style: preserve-3d;
+        will-change: transform, text-shadow;
+        transition: text-shadow 0.25s ease;
+      }
+
+      .letter.hot {
+        text-shadow: 0 6px 18px rgba(26, 26, 26, 0.18);
+      }
+
+      /* Multimodal — "Mult" in Instrument Serif italic but rendered as dotted circles via canvas;
+       "imodal." renders normally in italic serif */
+      .word-multimodal {
+        display: inline-block;
+        font-style: italic;
+        color: var(--text);
+      }
+
+      .word-multimodal .mm-dot {
+        display: inline-block;
+        height: 1.2em;
+        width: auto;
+        vertical-align: baseline;
+        animation: mmHueRoll 11s ease-in-out infinite;
+      }
+
+      /* Subtle temperature drift across the warm→cool grayscale */
+      @keyframes mmHueRoll {
+        0%,
+        100% {
+          filter: hue-rotate(-28deg);
+        }
+        50% {
+          filter: hue-rotate(32deg);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .row-realtime,
+        .row-interactive,
+        .row-multimodal {
+          justify-content: center;
+          transform: none;
+        }
+      }
+
+      .tagline {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        line-height: 1.6;
+        max-width: none;
+        white-space: nowrap;
+        margin: 0 auto;
+      }
+
+      /* Body copy under Vision / Team — more readable than the hero tagline */
+      .section-body {
+        font-family: var(--sans);
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        line-height: 1.65;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .section-body + .section-body {
+        margin-top: 1.6rem;
+      }
+
+      .section-body strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .section-body em {
+        font-family: var(--serif);
+        font-style: italic;
+        color: var(--text);
+        font-size: 1.15em;
+        letter-spacing: -0.01em;
+      }
+
+      .credentials {
+        list-style: none;
+        max-width: 520px;
+        margin: 2rem auto 0;
+        font-family: var(--sans);
+        font-size: 1.15rem;
+        color: var(--text-muted);
+        line-height: 1.9;
+        letter-spacing: 0;
+      }
+
+      .credentials em {
+        font-family: var(--serif);
+        font-style: normal;
+        font-weight: 700;
+        font-size: 1.3em;
+        color: var(--text);
+        margin-right: 0.15em;
+      }
+
+      .credentials a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: rgba(26, 26, 26, 0.25);
+        text-underline-offset: 2px;
+        transition:
+          color 0.2s,
+          text-decoration-color 0.2s;
+      }
+
+      .credentials a:hover {
+        color: var(--text);
+        text-decoration-color: var(--text);
+      }
+
+      .orb {
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(200, 180, 160, 0.12) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: drift 12s ease-in-out infinite;
+        z-index: 0;
+      }
+
+      @keyframes drift {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translate(-48%, -52%) scale(1.08);
+          opacity: 1;
+        }
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 3rem;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(248, 247, 244, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 10;
+      }
+
+      body {
+        padding-bottom: 5.5rem;
+      }
+
+      footer a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      footer a:hover {
+        color: var(--text);
+      }
+
+      .yc-badge {
+        display: inline-block;
+        background: #c4896b;
+        color: var(--bg);
+        font-family: var(--sans);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        padding: 0.18em 0.5em;
+        border-radius: 2.5px;
+        margin-left: 0.4rem;
+        vertical-align: 0.08em;
+        white-space: nowrap;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+
+      .yc-badge:hover {
+        background: #ff6600;
+        color: var(--bg) !important;
+      }
+
+      .heart {
+        color: #c4a07a;
+        display: inline-block;
+        transition:
+          color 0.2s,
+          transform 0.2s;
+        cursor: default;
+      }
+
+      .heart:hover {
+        color: #ff6600;
+        transform: scale(1.15);
+      }
+
+      @media (max-width: 600px) {
+        nav {
+          padding: 1.25rem 1.25rem;
+        }
+        footer {
+          position: relative;
+          padding: 1.5rem 1.25rem;
+        }
+        body {
+          padding-bottom: 0;
+        }
+        .page {
+          min-height: auto;
+          padding: 4rem 1.25rem;
+        }
+        .page:first-of-type {
+          min-height: calc(100vh - 4rem);
+          min-height: calc(100svh - 4rem);
+        }
+        .tagline {
+          white-space: normal;
+        }
+        .words {
+          font-size: clamp(2.5rem, 12vw, 4rem);
+        }
+        h2 {
+          font-size: clamp(2.2rem, 8vw, 3rem);
+        }
+        .section-body {
+          font-size: 1.05rem;
+        }
+        .credentials {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="#" class="logo" id="logo-link">Nari Labs</a>
+      <div class="nav-links">
+        <a href="#vision" class="section-link">Vision</a>
+        <a href="#team" class="section-link">Team</a>
+        <a href="mailto:toby@nari-labs.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2Zm8 9 8-5H4l8 5Zm-8-3.2V18h16V9.8l-8 5-8-5Z"
+            />
+          </svg>
+        </a>
+        <a
+          href="https://github.com/nari-labs"
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub"
+          class="github-link"
+        >
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10Z"
+            />
+          </svg>
+          <span class="star-count">20k+</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="orb"></div>
+
+    <svg
+      width="0"
+      height="0"
+      aria-hidden="true"
+      focusable="false"
+      style="position: absolute"
+    >
+      <defs>
+        <filter id="ai-inset" x="-15%" y="-15%" width="130%" height="130%">
+          <feFlood flood-color="#1a1a1a" flood-opacity="0.45" />
+          <feComposite in2="SourceAlpha" operator="out" />
+          <feGaussianBlur stdDeviation="2.5" />
+          <feOffset dx="0" dy="3" result="shadow" />
+          <feComposite in="shadow" in2="SourceAlpha" operator="in" />
+          <feMerge>
+            <feMergeNode in="SourceGraphic" />
+            <feMergeNode />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+
+    <svg
+      width="0"
+      height="0"
+      aria-hidden="true"
+      focusable="false"
+      style="position: absolute"
+    >
+      <defs>
+        <filter id="px-10" x="-20%" y="-20%" width="140%" height="140%">
+          <feFlood x="4" y="4" height="2" width="2" />
+          <feComposite width="10" height="10" />
+          <feTile result="a" />
+          <feComposite in="SourceGraphic" in2="a" operator="in" />
+          <feMorphology operator="dilate" radius="5" />
+        </filter>
+        <filter id="px-7" x="-20%" y="-20%" width="140%" height="140%">
+          <feFlood x="3" y="3" height="1.5" width="1.5" />
+          <feComposite width="7" height="7" />
+          <feTile result="a" />
+          <feComposite in="SourceGraphic" in2="a" operator="in" />
+          <feMorphology operator="dilate" radius="3.5" />
+        </filter>
+        <filter id="px-5" x="-20%" y="-20%" width="140%" height="140%">
+          <feFlood x="2" y="2" height="1" width="1" />
+          <feComposite width="5" height="5" />
+          <feTile result="a" />
+          <feComposite in="SourceGraphic" in2="a" operator="in" />
+          <feMorphology operator="dilate" radius="2.5" />
+        </filter>
+        <filter id="px-3" x="-20%" y="-20%" width="140%" height="140%">
+          <feFlood x="1" y="1" height="1" width="1" />
+          <feComposite width="3" height="3" />
+          <feTile result="a" />
+          <feComposite in="SourceGraphic" in2="a" operator="in" />
+          <feMorphology operator="dilate" radius="1.5" />
+        </filter>
+      </defs>
+    </svg>
+
+    <section class="page">
+      <div class="hero">
+        <div class="words" aria-label="Realtime. Interactive. Multimodal.">
+          <div class="bg-ai" aria-hidden="true">AI</div>
+          <div class="word-row row-realtime">
+            <span class="word word-realtime">Realtime.</span>
+          </div>
+          <div class="word-row row-interactive">
+            <span
+              class="word word-interactive"
+              id="interactive-word"
+              data-text="Interactive."
+            ></span>
+          </div>
+          <div class="word-row row-multimodal">
+            <span class="word word-multimodal" aria-label="Multimodal.">
+              <canvas
+                class="mm-dot"
+                id="mm-dot-canvas"
+                data-text="Multimodal."
+              ></canvas>
+            </span>
+          </div>
+        </div>
+        <p class="tagline">
+          We simulate the world using AI; starting with humans.
+        </p>
+      </div>
+    </section>
+
+    <section class="page" id="vision">
+      <div class="hero">
+        <h2>The <em>Vision</em>.</h2>
+        <p class="section-body">
+          We train <strong>multimodal models,</strong> build custom realtime
+          inference infrastructure, and ship <strong>novel product.</strong>
+        </p>
+        <p class="section-body">
+          We start with <strong>realtime humans.</strong><br />
+          Ultimately building software and hardware<br />to
+          <strong>simulate the world.</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="page" id="team">
+      <div class="hero">
+        <h2>Meet our <em>team</em>.</h2>
+        <ul class="credentials">
+          <li>
+            <em>2M 🤗</em>
+            <a
+              href="https://huggingface.co/nari-labs"
+              target="_blank"
+              rel="noopener"
+              >model</a
+            >
+            downloads
+          </li>
+          <li>Published on <em>ICLR, NeurIPS, CVPR</em></li>
+          <li>
+            <em>21.6K ⭐️</em> across
+            <a
+              href="https://github.com/nari-labs/dia"
+              target="_blank"
+              rel="noopener"
+              >Speech</a
+            >,
+            <a
+              href="https://github.com/weavel-ai/Ape"
+              target="_blank"
+              rel="noopener"
+              >Language</a
+            >, and
+            <a
+              href="https://github.com/maum-ai/faceshifter"
+              target="_blank"
+              rel="noopener"
+              >Vision</a
+            >
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <span
+        >&copy; 2026 Nari Labs
+        <a
+          href="https://www.ycombinator.com/"
+          target="_blank"
+          rel="noopener"
+          class="yc-badge"
+          >YC</a
+        ></span
+      >
+      <span
+        >Made with <span class="heart">&#9829;</span> from SF &amp; Seoul</span
+      >
+    </footer>
+
+    <script>
+      // Intercept nav section links: smooth-scroll to target without adding a hash to the URL.
+      document.querySelectorAll(".section-link").forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const href = a.getAttribute("href") || "";
+          if (!href.startsWith("#")) return;
+          const target = document.getElementById(href.slice(1));
+          if (!target) return;
+          e.preventDefault();
+          // Center the section's inner content (.hero) in the viewport
+          const content = target.querySelector(".hero") || target;
+          const r = content.getBoundingClientRect();
+          const y =
+            window.scrollY + r.top + r.height / 2 - window.innerHeight / 2;
+          window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+        });
+      });
+
+      // Logo → scroll to top
+      const logoLink = document.getElementById("logo-link");
+      if (logoLink) {
+        logoLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      // Multimodal: render italic serif → tiny dots on canvas. A sparkle wave sweeps
+      // across every ~5s turning each passing dot briefly hollow.
+      (function renderDottedSerif() {
+        const canvas = document.getElementById("mm-dot-canvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        let dots = []; // sampled positions
+        let grad = null; // gradient fill/stroke
+        let srcW = 0,
+          srcH = 0;
+        const DOT_R = 2.7;
+        const FONT_PX = 140;
+        const STEP = 6;
+
+        function sample() {
+          const text = canvas.dataset.text || "Multimodal.";
+          ctx.font = `italic ${FONT_PX}px "Instrument Serif", Georgia, serif`;
+          const m = ctx.measureText(text);
+          srcW = Math.ceil(m.width + 8);
+          srcH = Math.ceil(FONT_PX * 1.3);
+          canvas.width = srcW;
+          canvas.height = srcH;
+
+          ctx.font = `italic ${FONT_PX}px "Instrument Serif", Georgia, serif`;
+          ctx.fillStyle = "#000";
+          ctx.textBaseline = "alphabetic";
+          ctx.fillText(text, 4, Math.round(FONT_PX * 1.02));
+
+          const img = ctx.getImageData(0, 0, srcW, srcH);
+          const data = img.data;
+          dots = [];
+          for (let y = 0; y < srcH; y += STEP) {
+            for (let x = 0; x < srcW; x += STEP) {
+              const i = (y * srcW + x) * 4;
+              if (data[i + 3] > 128)
+                dots.push({ cx: x + STEP / 2, cy: y + STEP / 2 });
+            }
+          }
+
+          grad = ctx.createLinearGradient(0, 0, srcW, 0);
+          grad.addColorStop(0.0, "#3a2e24");
+          grad.addColorStop(0.25, "#32302a");
+          grad.addColorStop(0.5, "#2a2c2e");
+          grad.addColorStop(0.75, "#262a30");
+          grad.addColorStop(1.0, "#1e2430");
+        }
+
+        // Sparkle model:
+        //   - Burst duration: 900ms
+        //   - 3 steps × 300ms; each step, ~half of all dots are randomly hollow
+        //   - At step boundary, re-roll which half
+        //   - 5s gap between bursts
+        const STEP_MS = 300;
+        const STEPS = 3;
+        const BURST_MS = STEP_MS * STEPS;
+        const GAP_MS = 5000;
+
+        let burstStart = -Infinity;
+        let stepMasks = []; // stepMasks[step][dotIdx] = boolean
+        let rafPending = false;
+
+        function draw(now) {
+          ctx.clearRect(0, 0, srcW, srcH);
+          ctx.fillStyle = grad;
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.3;
+
+          const elapsed = now - burstStart;
+          const step = Math.floor(elapsed / STEP_MS);
+          const active = step >= 0 && step < STEPS;
+          const mask = active ? stepMasks[step] : null;
+
+          for (let k = 0; k < dots.length; k++) {
+            const d = dots[k];
+            ctx.beginPath();
+            ctx.arc(d.cx, d.cy, DOT_R, 0, Math.PI * 2);
+            if (mask && mask[k]) ctx.stroke();
+            else ctx.fill();
+          }
+        }
+
+        function tick(now) {
+          const elapsed = now - burstStart;
+          if (elapsed >= BURST_MS) {
+            draw(now); // static filled after burst ends
+            rafPending = false;
+            return;
+          }
+          draw(now);
+          requestAnimationFrame(tick);
+        }
+
+        function sparkleBurst() {
+          if (!dots.length) return;
+          stepMasks = [];
+          for (let s = 0; s < STEPS; s++) {
+            const mask = new Array(dots.length);
+            for (let k = 0; k < dots.length; k++)
+              mask[k] = Math.random() < 0.07;
+            stepMasks.push(mask);
+          }
+          burstStart = performance.now();
+          if (!rafPending) {
+            rafPending = true;
+            requestAnimationFrame(tick);
+          }
+        }
+
+        function init() {
+          sample();
+          draw(performance.now());
+          setTimeout(function loop() {
+            sparkleBurst();
+            setTimeout(loop, BURST_MS + GAP_MS);
+          }, 1200);
+        }
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(init);
+        } else {
+          init();
+        }
+        window.addEventListener("resize", () => {
+          sample();
+          draw(performance.now());
+        });
+      })();
+
+      (function () {
+        const word = document.getElementById("interactive-word");
+        if (!word) return;
+
+        const text = word.dataset.text || "Interactive.";
+        const letters = [];
+        text.split("").forEach((ch) => {
+          const s = document.createElement("span");
+          s.className = "letter";
+          s.textContent = ch === " " ? "\u00A0" : ch;
+          word.appendChild(s);
+          letters.push(s);
+        });
+
+        let centers = [];
+        function recalc() {
+          centers = letters.map((el) => {
+            const r = el.getBoundingClientRect();
+            return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
+          });
+        }
+        window.addEventListener("resize", recalc);
+        setTimeout(recalc, 0);
+        if (document.fonts && document.fonts.ready)
+          document.fonts.ready.then(recalc);
+
+        // Hover state + cursor position — updated only while pointer is over the word
+        let hovered = false;
+        let mx = 0,
+          my = 0;
+        word.addEventListener("pointerenter", (e) => {
+          hovered = true;
+          mx = e.clientX;
+          my = e.clientY;
+        });
+        word.addEventListener("pointermove", (e) => {
+          if (!hovered) return;
+          mx = e.clientX;
+          my = e.clientY;
+        });
+        word.addEventListener("pointerleave", () => {
+          hovered = false;
+        });
+
+        const PULSE_AMP = 44; // ambient pulse z amplitude (px)
+        const PULSE_WIDTH = 1.1; // gaussian sigma in letters
+        const PULSE_SPEED = 3.2; // letters per second (smoother than 5.2)
+        const PAUSE_FRAC = 0.35; // fraction of cycle resting off-screen
+        const HOT_RADIUS = 170; // px proximity range around cursor
+        const HOT_AMP = 58; // px z pull toward cursor
+        const BLEND_IN = 4.0; // lerp rate per second, non-hover → hover
+        const BLEND_OUT = 2.2; // lerp rate per second, hover → non-hover (slightly slower = graceful)
+        const Z_SMOOTH = 12; // per-letter z lerp rate per second
+
+        // Persistent per-letter animated z value (for smoothing)
+        const zState = letters.map(() => 0);
+        let hoverInf = 0; // 0 = ambient only, 1 = cursor only
+        let lastT = performance.now();
+
+        function tick(t) {
+          const dt = Math.min(0.05, (t - lastT) / 1000); // clamp for tab blur
+          lastT = t;
+
+          // Lerp hover influence toward target with separate in/out rates
+          const target = hovered ? 1 : 0;
+          const rate = hovered ? BLEND_IN : BLEND_OUT;
+          hoverInf += (target - hoverInf) * (1 - Math.exp(-rate * dt));
+
+          const s = t / 1000;
+          const ambientWeight = 1 - hoverInf;
+          const mouseWeight = hoverInf;
+
+          // Ambient traveling pulse (always computed — it's cheap)
+          const span = letters.length + 3;
+          const cycleLen = span + letters.length * PAUSE_FRAC;
+          const phase = (s * PULSE_SPEED) % cycleLen;
+          const pulseActive = phase < span;
+          const pulsePos = pulseActive ? phase - 1.5 : -9999;
+
+          for (let i = 0; i < letters.length; i++) {
+            const c = centers[i];
+            if (!c) continue;
+
+            // Ambient contribution
+            let ambientZ = 0;
+            if (pulseActive) {
+              const d = i - pulsePos;
+              ambientZ =
+                Math.exp(-(d * d) / (2 * PULSE_WIDTH * PULSE_WIDTH)) *
+                PULSE_AMP;
+            }
+
+            // Cursor contribution — only meaningful when hoverInf > 0
+            let mouseZ = 0;
+            if (hoverInf > 0.001) {
+              const dx = mx - c.cx,
+                dy = my - c.cy;
+              const pd = Math.hypot(dx, dy);
+              let hot = Math.max(0, 1 - pd / HOT_RADIUS);
+              hot = hot * hot * (3 - 2 * hot); // smoothstep
+              mouseZ = hot * HOT_AMP;
+            }
+
+            const targetZ = ambientZ * ambientWeight + mouseZ * mouseWeight;
+
+            // Critically-damped-ish exponential smoothing toward target for silky motion
+            zState[i] += (targetZ - zState[i]) * (1 - Math.exp(-Z_SMOOTH * dt));
+
+            letters[i].style.transform =
+              `translate3d(0, 0, ${zState[i].toFixed(2)}px)`;
+            if (zState[i] > 18) letters[i].classList.add("hot");
+            else letters[i].classList.remove("hot");
+          }
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      })();
+    </script>
+  </body>
+</html>

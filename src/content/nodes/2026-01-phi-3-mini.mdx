@@ -56,6 +56,44 @@ model_spec:
   context_window: 4096
   hf_url: 'https://huggingface.co/microsoft/Phi-3-mini-128k-instruct'
   parameters: 3.8B
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/phi-3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/microsoft/Phi-3-mini-128k-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/phi-3-mini'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Phi-3-mini (3.8B) runs entirely on a phone yet matches GPT-3.5-class quality on common reasoning benchmarks"
+      - "First widely-deployed open SLM that proved high-quality synthetic + filtered data beats raw scale"
+      - "Outperforms models same-size and one-tier-up on language, reasoning, coding, and math benchmarks"
+    best_for:
+      - "On-device / phone / laptop deployments where no GPU is available"
+      - "Edge inference for IoT, mobile apps, offline assistants"
+      - "Reasoning-driven workflows where fine-tuned synthetic data beats general-knowledge breadth"
+    not_ideal_for:
+      - "Broad-knowledge chat — limited factual recall by design"
+      - "Multilingual production beyond English"
+    sources:
+      - name: "Microsoft Azure — Introducing Phi-3"
+        url: "https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/"
+      - name: "Microsoft — One year of Phi"
+        url: "https://azure.microsoft.com/en-us/blog/one-year-of-phi-small-language-models-making-big-leaps-in-ai/"
+      - name: "Phi-3 Technical Report (arXiv)"
+        url: "https://arxiv.org/pdf/2404.14219"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Phi-3 Mini Instruct 3.8B is an API model from Microsoft. It’s positioned for

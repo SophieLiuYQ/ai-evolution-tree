@@ -65,6 +65,44 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Best-in-class on real-world coding — 80.9% on SWE-bench Verified, ahead of Gemini 3 Pro and GPT-5.1"
+      - "Reasoning index of 70 on Artificial Analysis — biggest single-jump from any prior Anthropic model"
+      - "Testers say it 'just gets it' on multi-system bugs without hand-holding"
+    best_for:
+      - "Software engineering on large, real codebases (SWE-bench leader)"
+      - "Multi-step agentic workflows with tool use (τ2-bench, MCP Atlas)"
+      - "Computer-use / OSWorld automation tasks where Opus 4.5 leads by a wide margin"
+    not_ideal_for:
+      - "High-volume, latency-sensitive workloads — use Sonnet 4.5 or Haiku 4.5"
+      - "Simple chat or casual Q&A — overkill"
+    sources:
+      - name: "Anthropic — Claude Opus 4.5 announcement"
+        url: "https://www.anthropic.com/news/claude-opus-4-5"
+      - name: "Artificial Analysis — Opus 4.5 benchmarks"
+        url: "https://artificialanalysis.ai/articles/claude-opus-4-5-benchmarks-and-analysis"
+      - name: "Vellum — Claude Opus 4.5 benchmarks"
+        url: "https://www.vellum.ai/blog/claude-opus-4-5-benchmarks"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Claude Opus 4.5 (Reasoning) is an API model from Anthropic. It’s positioned

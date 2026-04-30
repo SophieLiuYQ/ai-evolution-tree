@@ -47,6 +47,29 @@ model_spec:
   github: 'https://github.com/google-research/bert'
   availability:
     - open_weights
+  reviews:
+    feels_like:
+      - "First system to surpass human performance on SQuAD v1.1 — 93.2 F1 vs human 91.2"
+      - "Bidirectional encoder unlocked deep contextual representations — every NLP benchmark moved overnight"
+      - "Pre-train + fine-tune paradigm became the dominant training recipe for the next 4 years"
+      - "Google Search adopted BERT in 2019 — first transformer in production at planet scale"
+      - "Spawned RoBERTa, ALBERT, DistilBERT, and the entire encoder-only lineage that powers today's embeddings"
+      - "Encoder-only design was eventually overshadowed by decoder-only GPT family for generation tasks"
+    best_for:
+      - "Sentence-pair classification, NER, span extraction (the original BERT use cases)"
+      - "Building production search and embedding pipelines pre-2024"
+      - "Foundation for understanding every modern encoder model (mPNet, BGE, E5, etc.)"
+      - "Teaching transformer fundamentals via fine-tuning labs"
+    not_ideal_for:
+      - "Generative tasks (chat, code, long-form writing) — use GPT-style decoder models instead"
+      - "Frontier embedding work — newer models like BGE-M3, OpenAI text-embedding-3, Voyage outperform"
+    sources:
+      - name: "BERT paper (arXiv)"
+        url: "https://arxiv.org/abs/1810.04805"
+      - name: "Google AI Blog — BERT in Search"
+        url: "https://blog.google/products/search/search-language-understanding-bert/"
+      - name: "GitHub — google-research/bert"
+        url: "https://github.com/google-research/bert"
 public_view:
   plain_english: |
     Google's transformer-based language model that read text in both

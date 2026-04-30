@@ -62,6 +62,40 @@ model_spec:
     - image
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/Qwen/Qwen3.6-35B-A3B'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.alibabagroup.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/Qwen/Qwen3.6-35B-A3B'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen3-5-35b-a3b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Alibaba's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Qwen3.5 35B A3B (Reasoning) is an API model from Alibaba. It’s positioned

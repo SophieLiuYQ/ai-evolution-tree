@@ -43,6 +43,45 @@ model_spec:
     - text
   hf_url: 'https://huggingface.co/Qwen/Qwen1.5-110B-Chat'
   parameters: 110B
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen1-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/Qwen/Qwen1.5-110B-Chat'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwen1.5-110b-chat'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First-generation Qwen — historical; superseded by 2.5+."
+      - "First open-source model to top OpenCompass leaderboard — beat Llama 3.1 405B with 1/5 the parameters"
+      - "72B-Instruct: 74.2 on coding, 77 on math — outscored Claude 3.5 Sonnet (72.1) and GPT-4o (70.6) at release"
+      - "MMLU 85+, HumanEval 85+, MATH 80+ — frontier-tier across the board for an open-weights model"
+    best_for:
+      - "Self-hosted production where Llama 3.1 405B is too big to serve"
+      - "Multilingual deployments (29 languages with strong coverage)"
+      - "Fine-tuning on private code or technical corpora"
+    not_ideal_for:
+      - "Frontier reasoning by mid-2025 — Qwen 3 / DeepSeek R1 / Claude 4 series have moved past it"
+      - "Vision tasks (use Qwen 2.5-VL) or audio (use Qwen 2.5-Audio)"
+    sources:
+      - name: "Alibaba Cloud — Qwen 2.5: A Party of Foundation Models"
+        url: "https://www.alibabacloud.com/blog/qwen2-5-a-party-of-foundation-models_601782"
+      - name: "Qwen2.5 Technical Report (arXiv)"
+        url: "https://arxiv.org/abs/2412.15115"
+      - name: "Alibaba Cloud — Qwen 2.5 tops OpenCompass"
+        url: "https://www.alibabacloud.com/blog/alibaba-clouds-qwen-2-5-tops-opencompass-llm-leaderboard-as-the-first-open-source-champion_601701"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Qwen 1.5 is an API model from Alibaba. It’s positioned for hard reasoning

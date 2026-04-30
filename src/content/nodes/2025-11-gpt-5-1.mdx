@@ -91,6 +91,49 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/index/gpt-5-1-for-developers/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5-1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  availability:
+    - api
+  reviews:
+    feels_like:
+      - "Adaptive thinking — auto-tunes reasoning depth per task; not a fixed-tier release"
+      - "2-3x faster than GPT-5 on tool-heavy reasoning at similar or better quality (Balyasny eval)"
+      - "Uses ~half the tokens of leading competitors on agent flows for the same answer"
+      - "CodeRabbit: 'top model of choice for PR reviews' at release"
+      - "Cognition: 'noticeably better at understanding what you're asking and working with you to get it done'"
+      - "'No reasoning' mode for fast everyday answers; you don't pay for thinking when it's not needed"
+    best_for:
+      - "Production agent workflows where token cost / latency dominate"
+      - "PR review and code-discussion bots (CodeRabbit picked it as default)"
+      - "Cursor / Devin-style developer tools where adaptive depth matters"
+      - "Replacing GPT-5 in production where speed is the constraint"
+    not_ideal_for:
+      - "Hardest research-grade reasoning — GPT-5.2 Thinking and Pro are stronger"
+      - "Agentic-coding leaderboards on raw SWE-bench — Claude Opus 4.5 / 4.6 still lead"
+      - "Workloads where you want manual control over reasoning effort tier"
+    sources:
+      - name: "OpenAI — GPT-5.1 for developers"
+        url: "https://openai.com/index/gpt-5-1-for-developers/"
+      - name: "OpenAI — GPT-5.1 smarter, more conversational ChatGPT"
+        url: "https://openai.com/index/gpt-5-1/"
+      - name: "OpenAI — GPT-5.1 system card addendum"
+        url: "https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/"
 public_view:
   plain_english: >
     GPT-5.1 was OpenAI’s first “fast follow” iteration on GPT-5: less

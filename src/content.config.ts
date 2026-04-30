@@ -203,6 +203,27 @@ const benchmark = z.object({
   // nodes); ModelSpec.astro falls back to a per-benchmark default URL
   // pointing at one of the three sources when omitted.
   source_url: z.string().url().optional(),
+  // Optional provenance for this specific benchmark row (who reported it,
+  // what kind of source it is, and when we last verified it).
+  source: z
+    .object({
+      name: z.string().min(1),
+      type: z.enum(["official", "independent", "community", "derived"]),
+      url: z.string().url(),
+      last_verified_at: z.coerce.date().optional(),
+      confidence: z.enum(["high", "medium", "low"]).optional(),
+      notes: z.string().optional(),
+    })
+    .optional(),
+});
+
+const sourceRef = z.object({
+  name: z.string().min(1),
+  type: z.enum(["official", "independent", "community", "derived"]),
+  url: z.string().url(),
+  last_verified_at: z.coerce.date().optional(),
+  confidence: z.enum(["high", "medium", "low"]).optional(),
+  notes: z.string().optional(),
 });
 
 const modelVariant = z.object({
@@ -235,6 +256,11 @@ const modelSpec = z.object({
   release_type: z
     .enum(["paper", "api", "open_weights", "demo", "product"])
     .optional(),
+  // Human-facing summary for decision-first pages. Keep to 1–2 sentences.
+  best_for: z.string().min(1).optional(),
+  // Coarse pricing tier used for comparisons and quick filters.
+  // Exact pricing should live in linked sources (AA / official pricing docs).
+  price_tier: z.enum(["free", "cheap", "standard", "premium", "enterprise"]).optional(),
   // Multi-channel availability — a flagship model is rarely just one of
   // {API, app, open weights}. GPT-5 = api + product (ChatGPT). DeepSeek V3
   // = open_weights + api + product (chat.deepseek.com). Llama 4 = open
@@ -264,11 +290,72 @@ const modelSpec = z.object({
   // Hugging Face model/org page (if it exists), used to link out to
   // open weights cards, model cards, or collections.
   hf_url: z.string().url().optional(),
+  // Provenance for the model-level fields above (homepage/github/AA/HF,
+  // modalities, context, parameters, availability, etc.).
+  sources: z.array(sourceRef).optional(),
+  // When we last checked the model's spec (context, params, availability, etc.).
+  // This should reflect human-reviewed updates, not a crawl timestamp.
+  last_verified_at: z.coerce.date().optional(),
   // Variant surfaces inside a single model family (e.g. GPT‑5.2 Instant /
   // Thinking / Pro; or "Thinking/Max/High" product tiers). Pages use this
   // to let users switch which surface they're looking at without adding
   // separate graph nodes.
   variants: z.array(modelVariant).optional(),
+  // Output samples for media-output models (Lyria's "Listen to Lyria 3"
+  // strip, Suno's track demos, Sora's video reels, Flux's gallery).
+  // Each entry must point to a host the lab itself publishes (the lab's
+  // CDN, YouTube, Vimeo, Hugging Face, etc.) — we don't host samples
+  // ourselves. Up to ~6 are rendered; the page picks the kind based on
+  // modalities_out.
+  media_samples: z
+    .array(
+      z.object({
+        kind: z.enum(["audio", "image", "video"]),
+        title: z.string().min(1),
+        // Direct media URL (mp3 / mp4 / jpg / png / webm). Embedded
+        // YouTube links work for video samples too.
+        url: z.string().url(),
+        // Optional poster image for video; ignored for audio/image.
+        poster: z.string().url().optional(),
+        // Optional duration label for audio/video samples (e.g. "0:24").
+        duration: z.string().optional(),
+        // Optional prompt / caption shown under the title.
+        caption: z.string().max(140).optional(),
+      }),
+    )
+    .max(6)
+    .optional(),
+  // Editorially curated subjective bullets distilled from real reviews
+  // (Anthropic / OpenAI announcements, Artificial Analysis blog,
+  // TechCrunch, The Verge, Reddit r/LocalLLaMA, X threads, etc.).
+  // When present, these override the auto-generated bullets the page
+  // would otherwise synthesise from cap-bar scores.
+  //
+  // Tone goal: short, opinionated, scannable — one fact per bullet,
+  // ≤120 chars. The render pairs each list with a heading + icon
+  // matching the example mocks ("What it feels like" with quote icon,
+  // "Best use cases" with target icon).
+  reviews: z
+    .object({
+      // Subjective experience — strengths AND weaknesses, mixed.
+      feels_like: z.array(z.string().max(160)).max(8).optional(),
+      // Where this model excels.
+      best_for: z.array(z.string().max(160)).max(8).optional(),
+      // Where this model is the wrong choice.
+      not_ideal_for: z.array(z.string().max(160)).max(8).optional(),
+      // Optional citations the curator pulled from. Type/URL only —
+      // free-form name (e.g. "TechCrunch", "AA blog", "r/LocalLLaMA").
+      sources: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            url: z.string().url(),
+            quoted_at: z.coerce.date().optional(),
+          }),
+        )
+        .optional(),
+    })
+    .optional(),
 });
 
 const nodes = defineCollection({

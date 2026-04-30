@@ -65,6 +65,45 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "No-reasoning mode — fast path through GPT-5.1."
+      - "Adaptive thinking — auto-tunes reasoning depth per task; not a fixed-tier release"
+      - "2-3x faster than GPT-5 on tool-heavy reasoning at similar or better quality (Balyasny eval)"
+      - "Uses ~half the tokens of leading competitors on agent flows for the same answer"
+    best_for:
+      - "Production agent workflows where token cost / latency dominate"
+      - "PR review and code-discussion bots (CodeRabbit picked it as default)"
+      - "Cursor / Devin-style developer tools where adaptive depth matters"
+    not_ideal_for:
+      - "Hardest research-grade reasoning — GPT-5.2 Thinking and Pro are stronger"
+      - "Agentic-coding leaderboards on raw SWE-bench — Claude Opus 4.5 / 4.6 still lead"
+    sources:
+      - name: "OpenAI — GPT-5.1 for developers"
+        url: "https://openai.com/index/gpt-5-1-for-developers/"
+      - name: "OpenAI — GPT-5.1 smarter, more conversational ChatGPT"
+        url: "https://openai.com/index/gpt-5-1/"
+      - name: "OpenAI — GPT-5.1 system card addendum"
+        url: "https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/"
+  availability:
+    - api
 public_view:
   plain_english: >-
     GPT-5.1 (Non-reasoning) is an API model from OpenAI. It’s positioned for

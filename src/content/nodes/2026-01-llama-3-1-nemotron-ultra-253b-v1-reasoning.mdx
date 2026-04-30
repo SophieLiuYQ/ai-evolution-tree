@@ -74,6 +74,46 @@ model_spec:
     - text
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/meta-llama/Meta-Llama-3.1-405B'
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/llama-3-1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/meta-llama/Meta-Llama-3.1-405B'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: >-
+        https://artificialanalysis.ai/models/llama-3-1-nemotron-ultra-253b-v1-reasoning
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Llama 3.1 405B was the world's largest openly available foundation model at release"
+      - "Trained on 15T tokens across 16K+ H100 GPUs — Meta opted for dense decoder over MoE for training stability"
+      - "MMLU 87.3% (Instruct) — matched or beat GPT-4-Turbo (86.5%) and Claude 3 Opus (86.8%)"
+    best_for:
+      - "Self-hosted frontier-quality LLM deployments where you can spare ~8 H100s"
+      - "Distillation source for smaller open models (license-permissive synthetic data)"
+      - "Multilingual production work in the 8 supported languages"
+    not_ideal_for:
+      - "Single-GPU / edge deployments — 405B is too big without aggressive quantization"
+      - "Frontier reasoning by 2025 — Llama 3.3 70B and Llama 4 family supersede it"
+    sources:
+      - name: "Meta — Introducing Llama 3.1"
+        url: "https://ai.meta.com/blog/meta-llama-3-1/"
+      - name: "InfoQ — Meta releases Llama 3.1 405B"
+        url: "https://www.infoq.com/news/2024/07/meta-releases-llama31-405b/"
+      - name: "Vellum — Llama 3.1 405B vs closed-source competitors"
+        url: "https://www.vellum.ai/blog/evaluating-llama-3-1-405b-against-leading-closed-source-competitors"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Llama 3.1 Nemotron Ultra 253B v1 (Reasoning) is an API model from Nvidia.

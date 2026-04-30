@@ -54,6 +54,44 @@ model_spec:
   context_window: 128000
   modalities_in:
     - image
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-4o'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-4o-mini'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First end-to-end omni model — text, vision, audio share one neural net (not stitched pipelines)"
+      - "2x faster, half the price, and 5x higher rate limits than GPT-4 Turbo"
+      - "Native voice-to-voice latency around 320ms — close to human conversational rhythm (210ms)"
+    best_for:
+      - "Voice-first applications and real-time multimodal interfaces"
+      - "Cost-sensitive bulk inference where GPT-4-class quality is enough"
+      - "Image understanding workflows — strong vision pipeline at API price"
+    not_ideal_for:
+      - "Hard reasoning, math, or research — o1/o3/GPT-5 are the right tier"
+      - "Frontier-leaderboard coding (Claude 3.5 Sonnet+ outscored GPT-4o on SWE-bench by mid-2024)"
+    sources:
+      - name: "OpenAI — Hello GPT-4o"
+        url: "https://openai.com/index/hello-gpt-4o/"
+      - name: "TechCrunch — OpenAI debuts GPT-4o omni model"
+        url: "https://techcrunch.com/2024/05/13/openais-newest-model-is-gpt-4o/"
+      - name: "Wikipedia — GPT-4o"
+        url: "https://en.wikipedia.org/wiki/GPT-4o"
+  availability:
+    - api
 public_view:
   plain_english: >-
     GPT-4o mini is an API model from OpenAI. It’s positioned for general text

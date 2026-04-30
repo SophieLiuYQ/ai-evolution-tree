@@ -65,6 +65,51 @@ model_spec:
     - text
   modalities_out:
     - text
+  hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V3.2'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.deepseek.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-v3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/deepseek-ai/DeepSeek-V3.2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning-0925'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Refresh of V3 with reasoning capabilities folded in."
+      - "671B-param MoE (37B active per token) — the open-weights model that finally matched GPT-4 / Claude 3.5 Sonnet quality"
+      - "82.6% HumanEval (coding) and 90.2% MATH-500 — outperformed GPT-4o, Claude 3.5 Sonnet, and Llama 3 on each"
+      - "Trained for $5.576M on 2.788M H800 GPU hours — 1/100th of comparable proprietary training budgets"
+    best_for:
+      - "Self-hosted frontier-quality LLM for orgs that can't use proprietary APIs"
+      - "Math, coding, and general knowledge benchmarks at open-source price"
+      - "Fine-tuning and distillation into smaller production models"
+    not_ideal_for:
+      - "Edge / single-GPU deployments — the MoE size is large despite low active params"
+      - "Multimodal use cases — text-only"
+    sources:
+      - name: "DeepSeek V3 Technical Report (arXiv)"
+        url: "https://arxiv.org/abs/2412.19437"
+      - name: "BentoML — Complete guide to DeepSeek models"
+        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
+      - name: "Helicone — DeepSeek V3 release"
+        url: "https://www.helicone.ai/blog/deepseek-v3"
+  availability:
+    - api
 public_view:
   plain_english: >-
     DeepSeek V3.2 Exp (Reasoning) is an API model from DeepSeek. It’s positioned

@@ -91,12 +91,63 @@ model_spec:
     - id: deepseek-v3-0324
       label: DeepSeek V3 0324
       status: active
-  aa_url: 'https://artificialanalysis.ai/models/deepseek-v3'
+  aa_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
   modalities_in:
     - text
   modalities_out:
     - text
   hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V3.2'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://api-docs.deepseek.com/news/news1226'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/deepseek-ai/DeepSeek-V3'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-v3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/deepseek-ai/DeepSeek-V3.2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "671B-param MoE (37B active per token) — the open-weights model that finally matched GPT-4 / Claude 3.5 Sonnet quality"
+      - "82.6% HumanEval (coding) and 90.2% MATH-500 — outperformed GPT-4o, Claude 3.5 Sonnet, and Llama 3 on each"
+      - "Trained for $5.576M on 2.788M H800 GPU hours — 1/100th of comparable proprietary training budgets"
+      - "Auxiliary-loss-free load balancing was a real architectural innovation, not just scaling"
+      - "MoE inference needs 8+ H100s; not laptop-friendly even though the weights are open"
+      - "MMLU score of 88.5 was the highest open-source result at release"
+    best_for:
+      - "Self-hosted frontier-quality LLM for orgs that can't use proprietary APIs"
+      - "Math, coding, and general knowledge benchmarks at open-source price"
+      - "Fine-tuning and distillation into smaller production models"
+      - "Cost-sensitive bulk inference via budget providers"
+    not_ideal_for:
+      - "Edge / single-GPU deployments — the MoE size is large despite low active params"
+      - "Multimodal use cases — text-only"
+      - "Latency-sensitive interactive chat (better with smaller open models like Qwen 2.5)"
+    sources:
+      - name: "DeepSeek V3 Technical Report (arXiv)"
+        url: "https://arxiv.org/abs/2412.19437"
+      - name: "BentoML — Complete guide to DeepSeek models"
+        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
+      - name: "Helicone — DeepSeek V3 release"
+        url: "https://www.helicone.ai/blog/deepseek-v3"
 public_view:
   plain_english: |
     DeepSeek's December 2024 frontier release: a 671-billion-parameter

@@ -48,6 +48,30 @@ model_spec:
   availability:
     - open_weights
     - product
+  reviews:
+    feels_like:
+      - "First text-to-image model with DALL·E 2-class quality and permissive open weights"
+      - "Latent diffusion innovation — denoising in compressed latent space, not pixel space — made consumer-GPU inference viable"
+      - "Ran on <8GB VRAM at release — first generative model regular people could use locally"
+      - "Spawned an enormous ecosystem (LoRAs, ControlNet, AUTOMATIC1111, ComfyUI) within months"
+      - "Triggered the 'AI art' cultural moment of late 2022 along with Midjourney"
+      - "Lower default photorealism than DALL·E 2 / Midjourney v3 — but customisability completely flipped the trade-off"
+    best_for:
+      - "Self-hosted image generation pipelines (privacy / volume / customisation)"
+      - "Custom-style fine-tuning via LoRA / textual inversion / Dreambooth"
+      - "ControlNet-style guided generation requiring weight access"
+      - "Research and academic experimentation on diffusion models"
+    not_ideal_for:
+      - "Out-of-the-box photorealistic aesthetics — Midjourney still the default for that"
+      - "Reliable in-image text rendering (FLUX.2 and later models leapfrogged here)"
+      - "Production deployments without a community-finetuned LoRA / model card"
+    sources:
+      - name: "Stability AI — Stable Diffusion public release"
+        url: "https://stability.ai/news/stable-diffusion-public-release"
+      - name: "GitHub — CompVis/stable-diffusion"
+        url: "https://github.com/CompVis/stable-diffusion"
+      - name: "BentoML — Best open-source image generation models"
+        url: "https://www.bentoml.com/blog/a-guide-to-open-source-image-generation-models"
 public_view:
   plain_english: |
     An image generator released with open weights and a permissive

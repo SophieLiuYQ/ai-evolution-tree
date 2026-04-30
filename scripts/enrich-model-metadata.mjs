@@ -32,10 +32,15 @@ const DRY = argv.includes("--dry-run");
 const ONE_SLUG = argv.find((a) => a.startsWith("--slug="))?.split("=")[1];
 const VERBOSE = argv.includes("--verbose") || argv.includes("-v");
 const FULL = argv.includes("--full"); // allow filling context/modalities/params
+const WRITE_SOURCES = argv.includes("--sources"); // add model_spec.sources[] entries
+const AUTO_VERIFY = argv.includes("--auto-verify"); // set model_spec.last_verified_at when we touched spec
+const MIN_DATE_RAW = argv.find((a) => a.startsWith("--min-date="))?.split("=")[1];
+const MIN_DATE = MIN_DATE_RAW ? new Date(MIN_DATE_RAW) : new Date("2023-01-01");
 const log = (...a) => console.log(...a);
 const vlog = (...a) => VERBOSE && console.log(" ", ...a);
 
 const AA_BASE = "https://artificialanalysis.ai/models";
+const TODAY = new Date().toISOString().slice(0, 10);
 
 function stripUndefinedDeep(v) {
   if (v instanceof Date) return v.toISOString().slice(0, 10);
@@ -273,6 +278,21 @@ function isSeriesNode(fm, spec) {
   return false;
 }
 
+function normalizeSources(sources) {
+  if (!Array.isArray(sources)) return [];
+  return sources.filter((s) => s && typeof s === "object" && typeof s.url === "string");
+}
+
+function ensureSource(spec, entry) {
+  if (!spec.sources) spec.sources = [];
+  const existing = normalizeSources(spec.sources);
+  const url = String(entry.url).trim();
+  if (!url) return false;
+  if (existing.some((s) => String(s.url).trim() === url)) return false;
+  spec.sources.push(entry);
+  return true;
+}
+
 function pickBestRecordForSeries(aaByFamily, baseKey) {
   if (!baseKey) return null;
   let best = null;
@@ -320,6 +340,8 @@ async function main() {
   let aaLinked = 0;
   let githubFilled = 0;
   let homepageFilled = 0;
+  let sourcesAdded = 0;
+  let verifiedStamped = 0;
 
   for (const f of files) {
     const p = join(NODES_DIR, f);
@@ -327,6 +349,10 @@ async function main() {
     const { data: fm, content } = matter(raw);
 
     if (ONE_SLUG && fm.slug !== ONE_SLUG) continue;
+    if (!ONE_SLUG && fm?.date) {
+      const d = new Date(fm.date);
+      if (Number.isFinite(d.valueOf()) && d < MIN_DATE) continue;
+    }
 
     const prevSpec = fm.model_spec ? structuredClone(fm.model_spec) : null;
     const spec = prevSpec ? structuredClone(prevSpec) : {};
@@ -335,7 +361,11 @@ async function main() {
     // family link for this node (often already correct even when aa_url is stale).
     const aaFromBench = aaUrlFromBenchmarks(spec.benchmarks);
     const aaBenchFam = aaFromBench ? parseAAFamilyFromUrl(aaFromBench) : null;
-    const aaBenchOk = aaBenchFam ? aaByFamily.has(aaBenchFam) : false;
+    // Note: AA pages exist for both "model_family_slug" and per-model slugs.
+    // Our AA scrape only aggregates model_family_slug, so aaBenchFam may not
+    // exist in aaByFamily even though the URL is valid. Treat the benchmark URL
+    // itself as canonical for linking.
+    const aaBenchOk = !!aaBenchFam;
 
     // === Official / GitHub links (offline) ===
     if (!spec.homepage) {
@@ -389,14 +419,19 @@ async function main() {
       // 5) Fuzzy title match.
       (nameRec?.model_family_slug ? String(nameRec.model_family_slug) : null);
 
+    // Even if we can't map the AA URL to a scraped family record (AA also has
+    // per-model pages), keep the exact AA page referenced by benchmarks.
+    if (aaFromBench && (!spec.aa_url || spec.aa_url !== aaFromBench)) {
+      spec.aa_url = aaFromBench;
+    }
+
     const rec = fam ? (aaByFamily.get(fam) ?? nameRec) : (seriesRec ?? nameRec);
     if (rec) {
       const famSlug = String(rec.model_family_slug ?? fam ?? "").trim();
       if (famSlug) {
-        // Overwrite broken/stale aa_url when we have a better one.
-        if (!spec.aa_url || !famFromUrl || series || aaBenchOk) {
-          spec.aa_url = `${AA_BASE}/${famSlug}`;
-        }
+        // Prefer the exact per-model AA URL if it appeared in benchmark sources.
+        // Otherwise, fall back to the family slug from our AA scrape.
+        spec.aa_url = aaFromBench ?? `${AA_BASE}/${famSlug}`;
       }
       if (FULL) {
         const ctx = rec.context_window_tokens;
@@ -428,6 +463,62 @@ async function main() {
       aaLinked++;
     }
 
+    // === Provenance (offline, deterministic) ===
+    let sourcesChanged = false;
+    if (WRITE_SOURCES) {
+      if (typeof spec.homepage === "string") {
+        sourcesChanged =
+          ensureSource(spec, {
+            name: "Official",
+            type: "official",
+            url: spec.homepage,
+            last_verified_at: TODAY,
+            confidence: "high",
+          }) || sourcesChanged;
+      }
+      if (typeof spec.github === "string") {
+        const isOpen =
+          spec.release_type === "open_weights" ||
+          (Array.isArray(spec.availability) && spec.availability.includes("open_weights"));
+        sourcesChanged =
+          ensureSource(spec, {
+            name: "GitHub",
+            type: isOpen ? "official" : "community",
+            url: spec.github,
+            last_verified_at: TODAY,
+            confidence: isOpen ? "high" : "medium",
+          }) || sourcesChanged;
+      }
+      if (typeof spec.aa_url === "string") {
+        sourcesChanged =
+          ensureSource(spec, {
+            name: "Artificial Analysis",
+            type: "independent",
+            url: spec.aa_url,
+            last_verified_at: TODAY,
+            confidence: "medium",
+          }) || sourcesChanged;
+      }
+      if (typeof spec.hf_url === "string") {
+        sourcesChanged =
+          ensureSource(spec, {
+            name: "Hugging Face",
+            type: "community",
+            url: spec.hf_url,
+            last_verified_at: TODAY,
+            confidence: "medium",
+          }) || sourcesChanged;
+      }
+      if (sourcesChanged) sourcesAdded++;
+    }
+
+    if (AUTO_VERIFY) {
+      if (!spec.last_verified_at && sourcesChanged) {
+        spec.last_verified_at = TODAY;
+        verifiedStamped++;
+      }
+    }
+
     // Write back if anything changed.
     const hadSpec = !!prevSpec;
     const nextSpec = stripUndefinedDeep(spec);
@@ -449,6 +540,8 @@ async function main() {
   log(`  homepage filled: ${homepageFilled}`);
   log(`  github filled:   ${githubFilled}`);
   log(`  AA linked:       ${aaLinked}`);
+  log(`  sources added:   ${sourcesAdded}`);
+  log(`  verified set:    ${verifiedStamped}`);
   if (DRY) log("  DRY RUN — drop --dry-run to commit.");
 }
 

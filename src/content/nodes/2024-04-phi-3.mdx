@@ -81,6 +81,58 @@ model_spec:
       status: active
   aa_url: 'https://artificialanalysis.ai/models/phi-3-mini'
   hf_url: 'https://huggingface.co/microsoft/Phi-3-mini-128k-instruct'
+  sources:
+    - name: Official
+      type: official
+      url: >-
+        https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/microsoft/Phi-3CookBook'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/phi-3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/microsoft/Phi-3-mini-128k-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/phi-3-mini'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Phi-3-mini (3.8B) runs entirely on a phone yet matches GPT-3.5-class quality on common reasoning benchmarks"
+      - "First widely-deployed open SLM that proved high-quality synthetic + filtered data beats raw scale"
+      - "Outperforms models same-size and one-tier-up on language, reasoning, coding, and math benchmarks"
+      - "Available across Azure AI Studio, Hugging Face, and Ollama — meant for laptop / edge from day one"
+      - "Multilingual coverage is weaker than larger OSS models — primarily English-tuned"
+      - "Knowledge-heavy queries (history, trivia) clearly limited by parameter count"
+    best_for:
+      - "On-device / phone / laptop deployments where no GPU is available"
+      - "Edge inference for IoT, mobile apps, offline assistants"
+      - "Reasoning-driven workflows where fine-tuned synthetic data beats general-knowledge breadth"
+      - "Distillation targets and benchmark baselines for SLM research"
+    not_ideal_for:
+      - "Broad-knowledge chat — limited factual recall by design"
+      - "Multilingual production beyond English"
+      - "Tasks where frontier-tier reasoning matters (use Phi-4 or larger models)"
+    sources:
+      - name: "Microsoft Azure — Introducing Phi-3"
+        url: "https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/"
+      - name: "Microsoft — One year of Phi"
+        url: "https://azure.microsoft.com/en-us/blog/one-year-of-phi-small-language-models-making-big-leaps-in-ai/"
+      - name: "Phi-3 Technical Report (arXiv)"
+        url: "https://arxiv.org/pdf/2404.14219"
 public_view:
   plain_english: |
     Microsoft's series of small foundation models — 3.8B / 7B / 14B

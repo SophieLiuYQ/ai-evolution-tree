@@ -26,6 +26,37 @@ model_spec:
   homepage: 'https://openai.com/index/image-generation-api/'
   availability:
     - api
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/index/image-generation-api/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First natively multimodal image model — text and image inputs share the same transformer backbone, not a separate diffusion stack"
+      - "130M users created 700M images in the first week of the ChatGPT image rollout — extreme product-market fit"
+      - "Excels at text rendering, prompt adherence, and using GPT-4o's world-knowledge for grounded composition"
+      - "Still struggles with non-Latin scripts (Chinese / Japanese / Arabic) and small in-image text"
+      - "Available via ChatGPT, the Images 2.0 product, and the Responses API as gpt-image-1"
+      - "Successor GPT Image 1.5 (Dec 2025) generates 4x faster — original now feels slow at 10-30s per image"
+    best_for:
+      - "Conversational image generation inside ChatGPT — context carries from prompt to prompt"
+      - "Marketing graphics that need readable English text in the image"
+      - "Image editing with reference inputs (the multimodal input is a real product feature)"
+      - "Workflows that want to use one OpenAI account for text + image without juggling APIs"
+    not_ideal_for:
+      - "Languages using non-Latin characters where text-rendering hallucinates"
+      - "Latency-sensitive bulk generation (10-30s per image; competitors are faster)"
+      - "Pure aesthetic / illustration work where Midjourney V7 still has stylistic edge"
+    sources:
+      - name: "OpenAI — Introducing image generation in the API"
+        url: "https://openai.com/index/image-generation-api/"
+      - name: "OpenAI — Introducing 4o image generation"
+        url: "https://openai.com/index/introducing-4o-image-generation/"
+      - name: "InfoQ — Improved image generation in GPT-4o"
+        url: "https://www.infoq.com/news/2025/04/gpt-4o-images/"
 public_view:
   plain_english: |
     OpenAI's image generator integrated directly into ChatGPT and the

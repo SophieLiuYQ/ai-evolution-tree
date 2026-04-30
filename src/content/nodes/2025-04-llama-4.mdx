@@ -101,6 +101,57 @@ model_spec:
   modalities_out:
     - text
   hf_url: 'https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://ai.meta.com/blog/llama-4-multimodal-intelligence/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/meta-llama/llama-models'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/llama-4'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/llama-4-scout'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Meta's first MoE-native Llama and first natively multimodal open-weights generation"
+      - "Maverick (17B active / 128 experts) beats GPT-4o and Gemini 2.0 Flash on most benchmarks at release"
+      - "Scout (17B active / 16 experts) fits in a single H100 with a claimed 10M-token context window"
+      - "Benchmark numbers landed under a cloud — community questioned whether the LMArena score reflected the open-weight checkpoint"
+      - "Real-world testers found gaps between announcement claims and independent reproduction"
+      - "Despite controversy, the open weights gave the ecosystem a viable post-Llama-3 baseline"
+    best_for:
+      - "Self-hosted multimodal applications where API models can't go"
+      - "Long-context retrieval and document QA (especially Scout's 10M window)"
+      - "Fine-tuning on private data while staying inside Meta's open license"
+      - "Cost-sensitive multimodal inference at scale"
+    not_ideal_for:
+      - "Frontier-leaderboard reasoning — Claude 4, GPT-5, DeepSeek R1 score higher"
+      - "Edge / single-consumer-GPU deployments (even Scout needs an H100)"
+      - "Workflows where the LMArena-style controversy is a credibility risk"
+    sources:
+      - name: "Meta AI — Llama 4 herd announcement"
+        url: "https://ai.meta.com/blog/llama-4-multimodal-intelligence/"
+      - name: "Llama.com — Llama 4 model page"
+        url: "https://www.llama.com/models/llama-4/"
+      - name: "Analytics Vidhya — Meta Llama 4 benchmarks"
+        url: "https://www.analyticsvidhya.com/blog/2025/04/meta-llama-4/"
 public_view:
   plain_english: |
     Meta's first MoE-native Llama generation, released April 2025

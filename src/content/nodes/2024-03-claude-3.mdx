@@ -86,6 +86,47 @@ model_spec:
   aa_url: 'https://artificialanalysis.ai/models/claude-3-opus'
   modalities_in:
     - image
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/news/claude-3-family'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-3'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-3-opus'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Three tiers (Opus / Sonnet / Haiku) — first time the same family covered flagship-quality and ultra-fast in one release"
+      - "Opus Needle-in-Haystack: 99.4% recall average, 98.3% even at 200K tokens — long-context that genuinely works"
+      - "Opus 90.5% one-shot, 89.2% zero-shot — set new state-of-the-art on multiple expert benchmarks"
+      - "Haiku is the fastest and cheapest model in its intelligence tier as of 2024 — practical for high-volume tasks"
+      - "Sonnet 2x faster than Claude 2 / 2.1 with higher intelligence — became the default tier"
+      - "Opus felt notably more 'careful' than GPT-4 — safer refusals at the cost of occasional over-caution"
+    best_for:
+      - "Long-document analysis (200K context with reliable retrieval)"
+      - "Vision + text tasks where Opus / Sonnet outperform GPT-4V"
+      - "Deployments needing a tier-aware family (Haiku triage → Sonnet workflow → Opus hard cases)"
+      - "Customer-facing apps where Anthropic's safety tuning is a feature, not friction"
+    not_ideal_for:
+      - "Bleeding-edge reasoning by 2025 — superseded by Claude 3.5 / 3.7 / 4 family"
+      - "Self-hosted / open-weights deployments"
+      - "Tasks where Opus's caution/refusal patterns get in the way"
+    sources:
+      - name: "Anthropic — Introducing the next generation of Claude"
+        url: "https://www.anthropic.com/news/claude-3-family"
+      - name: "Anthropic — Claude 3 Model Card (PDF)"
+        url: "https://www-cdn.anthropic.com/de8ba9b01c9ab7cbabf5c33b80b7bbc618857627/Model_Card_Claude_3.pdf"
+      - name: "Encord — Claude 3 explained"
+        url: "https://encord.com/blog/claude-3-explained/"
 public_view:
   plain_english: |
     Anthropic's first three-tier model family — Opus (flagship,

@@ -16,6 +16,20 @@ status: active
 # Optional: keep node page, hide from /tree/ graph
 # graph_hidden: true
 model_spec:
+  # Human-facing one-liner: what is this model best for?
+  # Keep to 1–2 sentences (no benchmark numbers here).
+  # best_for: "Long-context coding and research agents."
+  # Coarse tier used for comparisons and alternative matching.
+  # price_tier: standard
+  # Optional: when the spec was last checked against official/AA/HF sources.
+  # last_verified_at: 2026-04-29
+  # Optional: provenance entries for the spec (official docs, AA, HF, paper, etc.)
+  # sources:
+  #   - name: "Official docs"
+  #     type: official
+  #     url: "https://example.com/model-page"
+  #     last_verified_at: 2026-04-29
+  #     confidence: high
   parameters: "10B"
   architecture: "decoder-only transformer with X mechanism"
   context_window: 8192

@@ -58,6 +58,30 @@ model_spec:
     - image
   modalities_out:
     - text
+  parameters: 42B active
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/mimo'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Xiaomi — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Xiaomi's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     MiMo-V2-Omni is an API model from Xiaomi. It’s positioned for general text

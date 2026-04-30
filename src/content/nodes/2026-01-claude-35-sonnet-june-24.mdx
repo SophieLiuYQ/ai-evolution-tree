@@ -54,6 +54,47 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/claude-35-sonnet-june-24'
       vs_baseline: 'Rank #472 of 496'
   aa_url: 'https://artificialanalysis.ai/models/claude-35-sonnet-june-24'
+  context_window: 100000
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-35-sonnet-june-24'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "The model that made AI coding actually trustworthy — produces working code nearly every time"
+      - "49% on SWE-bench Verified at release; ahead of o1-preview and significantly past prior versions (33%)"
+      - "Outperformed the larger Claude 3 Opus on most benchmarks while costing 80% less"
+    best_for:
+      - "Front-end and back-end web development — the canonical 2024 coding copilot"
+      - "Refactors and feature work where reliability beats raw IQ"
+      - "Tools-and-agents stacks (Cline / Claude Dev / Cursor) — became the default model"
+    not_ideal_for:
+      - "Languages or frameworks outside its training distribution"
+      - "Multi-hour autonomous tasks — prefer Claude 4 family"
+    sources:
+      - name: "Anthropic — Claude 3.5 Sonnet announcement"
+        url: "https://www.anthropic.com/news/claude-3-5-sonnet"
+      - name: "16x Engineer — Is new Sonnet 3.5 best for coding?"
+        url: "https://prompt.16x.engineer/blog/new-claude-sonnet-35-coding"
+      - name: "Galileo — Claude 3.5 Sonnet capabilities & limits"
+        url: "https://galileo.ai/blog/claude-3-5-sonnet-complete-guide-ai-capabilities-analysis"
+  availability:
+    - api
+  modalities_in:
+    - image
 public_view:
   plain_english: >-
     Claude 3.5 Sonnet (June '24) is an API model from Anthropic. It’s positioned

@@ -84,6 +84,43 @@ model_spec:
   modalities_out:
     - text
   hf_url: 'https://huggingface.co/openai/gpt-oss-120b'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/index/introducing-gpt-oss/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/openai/gpt-oss'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-oss'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/openai/gpt-oss-120b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from OpenAI — see the linked sources below for benchmark and review coverage"
+      - "Tool-use and agent loops are the typical fit per the published model card"
+    best_for:
+      - "Agent / tool-use workflows that match the model's published benchmarks"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     OpenAI's first open-weight language models since GPT-2 in 2019 —

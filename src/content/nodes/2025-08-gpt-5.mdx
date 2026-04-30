@@ -116,12 +116,53 @@ model_spec:
     - api
     - product
     - enterprise
-  aa_url: 'https://artificialanalysis.ai/models/gpt-5'
+  aa_url: 'https://artificialanalysis.ai/models/gpt-5-5'
   modalities_in:
     - text
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://openai.com/index/introducing-gpt-5/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Set a new ceiling on Artificial Analysis Intelligence Index (68 at High effort) at release"
+      - "94.6% on AIME 2025 without tools — math reasoning ahead of any prior frontier model"
+      - "74.9% SWE-bench Verified — strong but trails Claude Opus 4.5's 80.9% on coding"
+      - "23x token-cost spread between Minimal and High reasoning effort — pick effort by task carefully"
+      - "Comparable to or better than human experts in roughly half of cases across 40 occupations"
+      - "Pro tier with extended reasoning sets state-of-the-art on GPQA at 88.4% without tools"
+    best_for:
+      - "Hard math, science, and competition-style reasoning"
+      - "Multi-step research workflows where a single very-good model beats orchestration"
+      - "Replacing the o1/o3 + 4o mental switch — one model, four effort tiers"
+      - "Agent products that need both raw IQ and steerability"
+    not_ideal_for:
+      - "Tight latency / cost budgets — Minimal effort is GPT-4.1-class for 1/23 the cost of High"
+      - "Specialised coding agent loops — Claude Opus 4.5 still leads on real-repo SWE-bench"
+      - "Fully offline / open-weights deployments"
+    sources:
+      - name: "OpenAI — Introducing GPT-5"
+        url: "https://openai.com/index/introducing-gpt-5/"
+      - name: "Artificial Analysis — GPT-5 benchmarks & analysis"
+        url: "https://artificialanalysis.ai/articles/gpt-5-benchmarks-and-analysis"
+      - name: "Leon Furze — first impressions of GPT-5"
+        url: "https://leonfurze.com/2025/08/08/first-impressions-of-gpt-5/"
 title_zh: GPT-5 —— OpenAI 的第一个「大一统」模型
 public_view_zh:
   plain_english: |

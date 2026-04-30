@@ -28,6 +28,23 @@ model_spec:
   homepage: 'https://cartesia.ai/sonic'
   availability:
     - api
+  sources:
+    - name: Official
+      type: official
+      url: 'https://cartesia.ai/sonic'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Audio model from Cartesia — see the linked sources below for benchmark and review coverage"
+      - "Audio synthesis or transcription per the published model card"
+    best_for:
+      - "Audio synthesis / transcription tasks per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Cartesia's text-to-speech model — Sonic-3 hits 40–90 millisecond

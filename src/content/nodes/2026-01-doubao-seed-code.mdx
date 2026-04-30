@@ -59,6 +59,34 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/doubao-seed-code'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Matches GPT-4o and Claude 3.5 Sonnet on benchmarks at ~50x cheaper price — the headline claim"
+      - "Deep Thinking mode beats OpenAI o1-preview and o1 on AIME"
+      - "Outperformed DeepSeek-V3, GPT-4o, and Llama 3-405B on MMLU-Pro and GPQA"
+    best_for:
+      - "Cost-sensitive bulk inference at frontier-tier quality (5x cheaper than DeepSeek)"
+      - "Chinese-language production deployments via the Doubao consumer app"
+      - "Long-doc workflows leveraging the 256K context"
+    not_ideal_for:
+      - "Self-hosted / open-weights deployments — closed API only"
+      - "Workflows where regulatory restrictions on Chinese-cloud apply"
+    sources:
+      - name: "MarkTechPost — Doubao-1.5-Pro deep thinking mode"
+        url: "https://www.marktechpost.com/2025/01/25/bytedance-ai-introduces-doubao-1-5-pro-language-model-with-a-deep-thinking-mode-and-matches-gpt-4o-and-claude-3-5-sonnet-benchmarks-at-50x-cheaper/"
+      - name: "AIBase — ByteDance releases Doubao 1.5 Pro"
+        url: "https://www.aibase.com/news/14931"
+      - name: "FireXCore — Doubao 1.5 Pro guide"
+        url: "https://firexcore.com/blog/doubao-1-5-pro-bytedance-ai-model/"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Doubao Seed Code is an API model from ByteDance. It’s positioned for general

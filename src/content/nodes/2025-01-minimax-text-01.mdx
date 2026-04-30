@@ -44,6 +44,23 @@ model_spec:
   github: 'https://github.com/MiniMax-AI/MiniMax-01'
   availability:
     - open_weights
+  sources:
+    - name: GitHub
+      type: official
+      url: 'https://github.com/MiniMax-AI/MiniMax-01'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from MiniMax — see the linked sources below for benchmark and review coverage"
+      - "Tool-use and agent loops are the typical fit per the published model card"
+    best_for:
+      - "Agent / tool-use workflows that match the model's published benchmarks"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     A Shanghai startup's January 2025 open-weight model with a 4

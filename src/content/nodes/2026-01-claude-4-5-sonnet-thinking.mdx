@@ -59,6 +59,50 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
       vs_baseline: 'Rank #92 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+  context_window: 1000000
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "77.2% on SWE-bench Verified at release — highest-scoring Claude model in standard runs (82.0% with parallel compute)"
+      - "Sustains 30+ hour autonomous coding tasks — Anthropic's headline reliability claim"
+      - "61.4% on OSWorld for computer use, 100% AIME 2025 with Python tools, 83.4% GPQA Diamond"
+    best_for:
+      - "Production agentic coding (Devin, Cursor, Cline, Claude Code) where reliability matters"
+      - "Long-running autonomous tasks (>30h) without losing the thread"
+      - "Cost-sensitive teams that want frontier coding without Opus pricing"
+    not_ideal_for:
+      - "Hardest reasoning tasks — Opus 4.5/4.6 lead by ~7 points on AA Intelligence Index"
+      - "Workloads needing 1M-token context (Sonnet 4.5 ships 200K)"
+    sources:
+      - name: "Anthropic — Claude Sonnet 4.5 announcement"
+        url: "https://www.anthropic.com/news/claude-sonnet-4-5"
+      - name: "Anthropic — Sonnet 4.5 system card"
+        url: "https://www.anthropic.com/claude-sonnet-4-5-system-card"
+      - name: "Caylent — highest-scoring Claude on SWE-bench"
+        url: "https://caylent.com/blog/claude-sonnet-4-5-highest-scoring-claude-model-yet-on-swe-bench"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Claude 4.5 Sonnet (Reasoning) is an API model from Anthropic. It’s

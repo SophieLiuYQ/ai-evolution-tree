@@ -42,6 +42,30 @@ model_spec:
   github: 'https://github.com/openai/whisper'
   availability:
     - open_weights
+  reviews:
+    feels_like:
+      - "Trained on 680,000 hours of weakly-supervised audio — among the largest supervised speech datasets ever"
+      - "55% fewer errors than fine-tuned ASR models on broad/diverse data — best zero-shot ASR at release"
+      - "Robust to background noise: maintains performance below 10dB SNR where competitors fail"
+      - "99 languages officially supported, but only 50 of 82 evaluated have <20% WER — multilingual quality varies wildly"
+      - "Best on Romance languages, German, Japanese; weak on under-resourced languages"
+      - "Hallucinations and proper-noun mistakes are the main failure modes — not perfect, but free"
+    best_for:
+      - "Self-hosted transcription replacing Google / AWS / Rev / Otter for many workloads"
+      - "Podcast / video subtitle generation in 50+ languages"
+      - "Multilingual call-center analytics where API privacy matters"
+      - "Research baselines for ASR — open weights + paper made it the canonical citation"
+    not_ideal_for:
+      - "Real-time transcription at scale without aggressive optimisation (latency)"
+      - "Under-resourced languages where WER is still >20%"
+      - "Use cases needing speaker diarization out of the box (Whisper does ASR, not diarization)"
+    sources:
+      - name: "OpenAI — Introducing Whisper"
+        url: "https://openai.com/index/whisper/"
+      - name: "Whisper paper (PDF)"
+        url: "https://cdn.openai.com/papers/whisper.pdf"
+      - name: "GitHub — openai/whisper"
+        url: "https://github.com/openai/whisper"
 public_view:
   plain_english: |
     OpenAI's open-source speech recognition model, released

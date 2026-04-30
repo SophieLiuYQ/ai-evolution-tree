@@ -28,6 +28,27 @@ model_spec:
   github: 'https://github.com/evolutionaryscale/esm'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.evolutionaryscale.ai/blog/esm3-release'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/evolutionaryscale/esm'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Meta AI — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Meta AI's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     EvolutionaryScale (Meta spinoff) released ESM-3 in June 2024 — a

@@ -18,7 +18,11 @@
     "benchmarks:fetch": "node scripts/fetch-benchmarks.mjs",
     "benchmarks:dry": "node scripts/fetch-benchmarks.mjs --dry-run --verbose",
     "companies:bootstrap": "node scripts/bootstrap-companies.mjs",
-    "companies:import-aa": "node scripts/import-aa-catalog.mjs --dry-run"
+    "companies:import-aa": "node scripts/import-aa-catalog.mjs --dry-run",
+    "audit:model": "node scripts/audit-model-correctness.mjs",
+    "audit:model:strict": "node scripts/audit-model-correctness.mjs --strict",
+    "audit:model:recent": "node scripts/audit-model-correctness.mjs --min-date=2023-01-01",
+    "audit:model:recent:strict": "node scripts/audit-model-correctness.mjs --min-date=2023-01-01 --strict"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

@@ -52,8 +52,48 @@ model_spec:
       score: 4.2%
       source_url: 'https://artificialanalysis.ai/models/claude-21'
       vs_baseline: 'Rank #387 of 496'
-  aa_url: 'https://artificialanalysis.ai/models/claude-2'
+  aa_url: 'https://artificialanalysis.ai/models/claude-21'
   context_window: 200000
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-21'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Earlier Claude 2 generation — superseded by Claude 3+."
+      - "Three tiers (Opus / Sonnet / Haiku) — first time the same family covered flagship-quality and ultra-fast in one release"
+      - "Opus Needle-in-Haystack: 99.4% recall average, 98.3% even at 200K tokens — long-context that genuinely works"
+      - "Opus 90.5% one-shot, 89.2% zero-shot — set new state-of-the-art on multiple expert benchmarks"
+    best_for:
+      - "Long-document analysis (200K context with reliable retrieval)"
+      - "Vision + text tasks where Opus / Sonnet outperform GPT-4V"
+      - "Deployments needing a tier-aware family (Haiku triage → Sonnet workflow → Opus hard cases)"
+    not_ideal_for:
+      - "Bleeding-edge reasoning by 2025 — superseded by Claude 3.5 / 3.7 / 4 family"
+      - "Self-hosted / open-weights deployments"
+    sources:
+      - name: "Anthropic — Introducing the next generation of Claude"
+        url: "https://www.anthropic.com/news/claude-3-family"
+      - name: "Anthropic — Claude 3 Model Card (PDF)"
+        url: "https://www-cdn.anthropic.com/de8ba9b01c9ab7cbabf5c33b80b7bbc618857627/Model_Card_Claude_3.pdf"
+      - name: "Encord — Claude 3 explained"
+        url: "https://encord.com/blog/claude-3-explained/"
+  availability:
+    - api
+    - product
 public_view:
   plain_english: >-
     Claude 2.0 is an API model from Anthropic. It’s positioned for general text

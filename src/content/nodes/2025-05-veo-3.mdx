@@ -34,6 +34,37 @@ model_spec:
   availability:
     - api
     - product
+  sources:
+    - name: Official
+      type: official
+      url: 'https://deepmind.google/models/veo/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First Google video model with native synced audio — dialogue, effects, ambient soundscape from one model"
+      - "Sound is generated from raw pixels of the video itself, not stitched as a post-process"
+      - "Lip-syncing and dubbing are the standout strength — realistic conversation in generated scenes"
+      - "Up to 8s clips in 1080p; some configurations support 4K — covers draft and finished-quality use cases"
+      - "Audio sync only works on first attempt for ~25% of generations — needs iteration"
+      - "Best at scene composition / camera direction when prompts are detailed and structured"
+    best_for:
+      - "Cinematic short-form content where audio integration matters (ads, trailers, social)"
+      - "Character dialogue scenes — best lip-sync of any major video model at release"
+      - "Storyboard-to-finished-shot pipelines via Vertex AI for studio workflows"
+      - "Replacing two-model stacks (video + voice generation) with one"
+    not_ideal_for:
+      - "Long-form (>8s) coherent narrative shots"
+      - "Frame-perfect creative control — limited keyframe editing vs Runway / Kling"
+      - "Workloads where the 25% audio-on-first-try hit rate is unacceptable"
+    sources:
+      - name: "Google DeepMind — Veo product page"
+        url: "https://deepmind.google/models/veo/"
+      - name: "TechCrunch — Veo 3 generates videos and soundtracks"
+        url: "https://techcrunch.com/2025/05/20/googles-veo-3-can-generate-videos-and-soundtracks-to-go-along-with-them/"
+      - name: "Cybernews — Google Veo 3 review"
+        url: "https://cybernews.com/ai-tools/google-veo-3-review/"
 public_view:
   plain_english: |
     Google's third-generation text-to-video model, released May

@@ -117,7 +117,7 @@ This list **will evolve**. Schema PRs that add eras require consensus.
 Free-form tags. Common ones: `nlp`, `cv`, `rl`, `generative`, `architecture`, `training`, `inference`, `safety`, `theory`, `benchmark`, `dataset`, `infrastructure`. Try to reuse existing tags before inventing new ones.
 
 ### `parents` (array of slugs, required, may be empty)
-Slugs of other nodes that this work **directly builds on**. Not citations — *intellectual ancestors*. Guideline: max 3–5. If you find yourself listing 8 parents, you are conflating "cites" with "builds on."
+Deprecated. Use `relationships[]` instead.
 
 ### `relationships` (array, optional)
 Edges from this node to other nodes in the tree graph. Each entry:
@@ -184,6 +184,27 @@ Key fields (all optional unless noted):
 - `model_spec.aa_url` — Artificial Analysis model page (optional).
 - `model_spec.hf_url` — Hugging Face model page (optional).
 
+#### `model_spec.media_samples[]` (optional)
+For media-output models (audio / image / video), a small set of demo
+outputs rendered above the capability bars on the detail page. Layout
+mirrors the example mocks: 3 audio-with-waveform cards, an image
+gallery, or a video reel.
+
+Each sample:
+
+- `kind` — `audio | image | video`. Must match the model's primary
+  output modality; the page picks the dominant kind from
+  `modalities_out` and filters to that.
+- `title` (string, required) — short, scannable (e.g. "Cinematic Orchestra").
+- `url` (URL, required) — direct media URL (mp3 / mp4 / jpg / png / webm)
+  hosted by the lab itself. We don't host samples; only link to canonical
+  sources.
+- `poster` (URL, optional) — thumbnail for video samples.
+- `duration` (string, optional) — `"0:24"` style label.
+- `caption` (string ≤ 140 chars, optional) — prompt or short description.
+
+Up to 6 entries are rendered. Block hides itself when the array is empty.
+
 #### `model_spec.variants[]` (optional)
 Use variants to represent **versioned/tiered surfaces** inside a single model
 family without adding separate graph nodes (e.g. GPT‑5.2 Instant/Thinking/Pro).
@@ -202,6 +223,30 @@ Each variant:
 String used by `/tree/` “By Family” layout to place nodes into stable
 evolution lanes (e.g. `"OpenAI GPT"`, `"Anthropic Claude"`). If omitted,
 the tree falls back to a heuristic based on slug/org.
+
+#### `model_spec.best_for` (optional)
+One or two sentences in plain English describing the model’s primary use case.
+No benchmark numbers; avoid repeating fields shown elsewhere (modalities,
+context, parameters).
+
+#### `model_spec.price_tier` (optional)
+Coarse tier for UI grouping and “alternative” matching:
+`free | cheap | standard | premium | enterprise`.
+
+#### `model_spec.sources[]` (optional)
+Provenance entries for model-level spec fields (homepage/github/AA/HF links,
+modalities, context, parameters, availability, etc.). Each entry:
+
+- `name` — short label, e.g. "Official docs", "Artificial Analysis"
+- `type` — `official | independent | community | derived`
+- `url` — canonical source URL
+- `last_verified_at` (optional) — when we last verified against this source
+- `confidence` (optional) — `high | medium | low`
+- `notes` (optional) — short caveats
+
+#### `model_spec.last_verified_at` (optional)
+When the model spec was last checked and updated by a human editor. This should
+reflect reality (not an automated crawl timestamp).
 
 ### `graph_hidden` (boolean, optional)
 If true, the node still has a detail page at `/node/{slug}/` but is

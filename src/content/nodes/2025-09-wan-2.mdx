@@ -34,6 +34,28 @@ model_spec:
   github: 'https://github.com/Wan-Video/Wan2.2'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: 'https://wan.video/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/Wan-Video/Wan2.2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Vision-language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - "Vision and multimodal tasks are the typical fit per the published model card"
+    best_for:
+      - "Vision tasks (charts, documents, images) per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 title_zh: Wan 2.x — 阿里开源视频家族（通义万相）
 public_view_zh:
   plain_english: |

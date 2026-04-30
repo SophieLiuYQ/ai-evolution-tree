@@ -87,6 +87,45 @@ model_spec:
   modalities_out:
     - text
   hf_url: 'https://huggingface.co/baidu/ERNIE-4.5-300B-A47B-Paddle'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://yiyan.baidu.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/PaddlePaddle/ERNIE'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/ernie-4-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/baidu/ERNIE-4.5-300B-A47B-Paddle'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/ernie-4-5-300b-a47b'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Vision-language model from Baidu — see the linked sources below for benchmark and review coverage"
+      - "Tool-use and agent loops are the typical fit per the published model card"
+      - "Vision and multimodal tasks are the typical fit per the published model card"
+    best_for:
+      - "Agent / tool-use workflows that match the model's published benchmarks"
+      - "Vision tasks (charts, documents, images) per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     Baidu's June 2025 strategy reversal — they open-sourced ten

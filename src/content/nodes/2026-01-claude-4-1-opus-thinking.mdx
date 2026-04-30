@@ -65,6 +65,45 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4-1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-4-1-opus-thinking'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Mid-cycle refresh of Claude 4 — modest reasoning bumps."
+      - "Sustains hours-long agent loops without losing the thread — testers ran Opus 4 on 7+ hour autonomous coding sessions"
+      - "Best-in-class for real-world software engineering at release; SWE-bench Verified gains over Claude 3.7 Sonnet"
+      - "Native MCP support makes tool-using agents noticeably more reliable in production"
+    best_for:
+      - "AI-software-engineer products (Devin, Cursor, Cline) that need long-horizon autonomy"
+      - "Agentic workflows with tool use, file editing, and computer use"
+      - "Complex bug fixes that span multiple files / systems"
+    not_ideal_for:
+      - "High-volume chat or simple Q&A (use Sonnet or Haiku)"
+      - "Strictly latency-sensitive applications — Opus is slower"
+    sources:
+      - name: "Anthropic — Claude 4 announcement"
+        url: "https://www.anthropic.com/news/claude-4"
+      - name: "16x Engineer — Claude 4 evaluation results"
+        url: "https://eval.16x.engineer/blog/claude-4-opus-sonnet-evaluation-results"
+      - name: "DataCamp — Claude 4 review"
+        url: "https://www.datacamp.com/blog/claude-4"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Claude 4.1 Opus (Reasoning) is an API model from Anthropic. It’s positioned

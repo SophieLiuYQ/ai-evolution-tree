@@ -28,6 +28,42 @@ model_spec:
   availability:
     - open_weights
     - api
+  sources:
+    - name: Official
+      type: official
+      url: 'https://hunyuan.tencent.com/video'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/Tencent-Hunyuan/HunyuanVideo'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First open-weights video model genuinely competitive with Runway Gen-3 and Luma 1.6"
+      - "13B params (8.3B in HunyuanVideo-1.5) — runs on consumer GPUs unlike most frontier video models"
+      - "Human evaluators preferred Hunyuan's motion quality but Gen-3's visual quality — split decision"
+      - "Outperformed all 3 top Chinese commercial video models in blind professional review"
+      - "5-second clips at 480p / 580p / 720p — short-form social-video sweet spot"
+      - "Apache-2.0 weights are a big deal — first credible open alternative to closed video APIs"
+    best_for:
+      - "Self-hosted video generation pipelines (privacy / cost / customisation)"
+      - "Research and fine-tuning experiments on video diffusion"
+      - "Short social-media clips (5s, 720p) at zero per-clip cost after hardware"
+      - "Image-to-video workflows via the I2V variant"
+    not_ideal_for:
+      - "Long-form (>5s) coherent narrative clips"
+      - "Cinematic-quality work where Sora 2 / Veo 3 photorealism matters"
+      - "Synced audio generation — Hunyuan Video is silent (use Veo 3 or Kling 2.6 for sound)"
+    sources:
+      - name: "Tencent — HunyuanVideo GitHub"
+        url: "https://github.com/Tencent-Hunyuan/HunyuanVideo"
+      - name: "DeepLearning.AI — Tencent releases open-source HunyuanVideo"
+        url: "https://www.deeplearning.ai/the-batch/tencent-releases-hunyuanvideo-an-open-source-model-rivaling-commercial-video-generators/"
+      - name: "Hugging Face — HunyuanVideo-1.5"
+        url: "https://huggingface.co/tencent/HunyuanVideo-1.5"
 public_view:
   plain_english: |
     Tencent's open-weight video model — only 8.3B parameters, designed

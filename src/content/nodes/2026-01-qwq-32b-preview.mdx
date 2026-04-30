@@ -48,6 +48,44 @@ model_spec:
   aa_url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
   parameters: 32.8B
   context_window: 32768
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  hf_url: 'https://huggingface.co/Qwen/QwQ-32B'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.alibabagroup.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/qwq'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/Qwen/QwQ-32B'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/QwQ-32B-Preview'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Alibaba's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     QwQ 32B-Preview is an API model from Alibaba. It’s positioned for general

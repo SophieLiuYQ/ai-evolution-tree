@@ -69,6 +69,42 @@ model_spec:
   availability:
     - open_weights
   aa_url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://mistral.ai/news/pixtral-large'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/pixtral-large-2411'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "124B open-weights multimodal model built on Mistral Large 2 — frontier-level image understanding"
+      - "Best open-weights model on the LMSys Vision Leaderboard at release — beats nearest competitor by ~50 ELO"
+      - "Pixtral 12B (precursor) hit 52.5% on MMMU at 12B scale, beating much larger models"
+      - "Charts, figures, document QA, and instruction following are the noted strengths"
+      - "Inherits Mistral Large 2's text capabilities — multimodal without compromising text"
+      - "Inference 30-50% slower than text-only models at the same parameter count — vision encoder overhead"
+    best_for:
+      - "Open-weights vision tasks where Claude Sonnet / GPT-4o aren't acceptable"
+      - "Document QA, chart understanding, and figure analysis at frontier quality"
+      - "Self-hosted multimodal RAG and OCR-heavy workflows"
+      - "Research and academic work needing an open-weights vision baseline"
+    not_ideal_for:
+      - "Latency-sensitive vision workflows — encoder overhead is significant"
+      - "Edge / single-GPU deployments at 124B scale"
+      - "Tasks needing precise counting or fine-grained visual measurement (a noted weakness)"
+    sources:
+      - name: "Mistral AI — Pixtral Large announcement"
+        url: "https://mistral.ai/news/pixtral-large"
+      - name: "Pixtral 12B paper (arXiv)"
+        url: "https://arxiv.org/abs/2410.07073"
+      - name: "DEV Community — Benchmarking Pixtral Large vs 12B"
+        url: "https://dev.to/tunehqai/benchmarking-pixtral-large-vs-pixtral-12b-2l0e"
 public_view:
   plain_english: |
     Mistral's frontier-tier multimodal model — Mistral Large 2 with a

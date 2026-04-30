@@ -5,8 +5,10 @@ import CitationsBlock from "../../components/CitationsBlock.astro";
 import ModelSpec from "../../components/ModelSpec.astro";
 import RelationshipsBlock from "../../components/RelationshipsBlock.astro";
 import LineageZoom from "../../components/LineageZoom.astro";
+import OrgLogo from "../../components/OrgLogo.astro";
 import { stroke as orgStrokeColor, fill as orgFillColor, HIDDEN_EDGE_TYPES } from "../../lib/graph/constants";
 import { ORG_GITHUB } from "../../lib/org-links";
+import { ORG_CHAT_URL, ORG_PRODUCT_NAME } from "../../lib/org-logos";
 import { normalizeOrg } from "../../lib/org-display";
 import { normalizeCategories } from "../../lib/categories";
 import { benchSource } from "../../lib/benchmark-sources";
@@ -140,6 +142,13 @@ const denseLineage = parentCount + childCount > 4;
 
 // ===== Spec table data (right side of hero) =====
 const spec = d.model_spec;
+const fmtUpdatedLong = spec?.last_verified_at
+  ? spec.last_verified_at.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  : null;
 
 const fmtCtx = (n?: number) => {
   if (!n) return null;
@@ -371,6 +380,343 @@ type DecoratedBench = Bench & { rank: RankMeta | null; scoreMeta: ScoreMeta };
 function decorateBench(benchArr: Bench[]): DecoratedBench[] {
   return benchArr.map((b) => ({ ...b, rank: parseRank(b.vs_baseline), scoreMeta: parseScoreMeta(b.score) }));
 }
+
+function byBenchName(benchArr: Bench[]) {
+  const map = new Map<string, DecoratedBench>();
+  for (const b of decorateBench(benchArr)) {
+    map.set(String(b.name).toLowerCase(), b);
+  }
+  return map;
+}
+
+const benchByName = byBenchName(allBench);
+function benchNum(name: string): number | null {
+  const b = benchByName.get(name.toLowerCase());
+  const v = b?.scoreMeta?.value ?? null;
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+function benchPct(name: string): number | null {
+  const b = benchByName.get(name.toLowerCase());
+  if (!b || b.scoreMeta.unit !== "pct") return null;
+  const v = b.scoreMeta.value;
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+
+function clamp10(v: number): number {
+  return Math.max(0, Math.min(10, v));
+}
+
+function ctxScore10(ctx?: number): number | null {
+  if (!ctx || !Number.isFinite(ctx) || ctx <= 0) return null;
+  // 2k..2M (log scale) mapped to 0..10
+  const lo = Math.log10(2_000);
+  const hi = Math.log10(2_000_000);
+  const x = (Math.log10(ctx) - lo) / (hi - lo);
+  return clamp10(x * 10);
+}
+
+function priceTierScore10(priceStr?: string): number | null {
+  // Heuristic: lower price → higher score. Uses input $/M if parseable.
+  if (!priceStr) return null;
+  const m = String(priceStr).match(/\$([0-9]+(?:\.[0-9]+)?)\s*in/i);
+  if (!m) return null;
+  const inputPerM = parseFloat(m[1]);
+  if (!Number.isFinite(inputPerM) || inputPerM <= 0) return null;
+  // 0.5..20 $/M mapped (log) to 10..0
+  const lo = Math.log10(0.5);
+  const hi = Math.log10(20);
+  const x = (Math.log10(inputPerM) - lo) / (hi - lo);
+  return clamp10((1 - Math.max(0, Math.min(1, x))) * 10);
+}
+
+type CapBar = { key: string; label: string; score: number };
+type KV = { k: string; v: string };
+
+const outMods = new Set((spec?.modalities_out ?? spec?.modalities ?? []).map((m) => String(m).toLowerCase()));
+const isMediaOutput = outMods.has("audio") || outMods.has("image") || outMods.has("video");
+const isTextOutput = outMods.has("text") || (!isMediaOutput && (spec?.modalities ?? []).includes("text"));
+const isLLM = isTextOutput && !outMods.has("image") && !outMods.has("video") && !outMods.has("audio");
+
+const modelKind = (() => {
+  if (outMods.has("audio")) return { key: "audio", label: "Audio model", primaryLabel: "Listen" };
+  if (outMods.has("image")) return { key: "image", label: "Image model", primaryLabel: "Gallery" };
+  if (outMods.has("video")) return { key: "video", label: "Video model", primaryLabel: "Watch" };
+  if ([...normalizedCatSet].some((c) => /embed|embedding|rerank/i.test(c)))
+    return { key: "embedding", label: "Embedding model", primaryLabel: "Experience" };
+  if (isLLM) return { key: "llm", label: "Language model", primaryLabel: "Experience" };
+  return { key: "model", label: "Model", primaryLabel: "Experience" };
+})();
+
+const orgMonogram = (() => {
+  const org = normalizeOrg(d.org);
+  const parts = org.split(/[^A-Za-z0-9]+/).filter(Boolean);
+  const a = (parts[0]?.[0] ?? "A").toUpperCase();
+  const b = (parts[1]?.[0] ?? parts[0]?.[1] ?? "").toUpperCase();
+  return `${a}${b}`.slice(0, 2);
+})();
+
+type AttrCard = {
+  icon: "star" | "brain" | "bolt" | "dollar" | "stack" | "globe" | "wave" | "sparkle" | "gallery";
+  color: "violet" | "green" | "amber" | "rose" | "blue" | "cyan" | "pink";
+  k: string;
+  // Single value (e.g. "#2", "Moderate") or a short list rendered as
+  // stacked lines (Strength: ["Reasoning", "Coding", "Agent tasks"]).
+  v: string | string[];
+  desc: string;
+};
+
+const aaInt = benchNum("Intelligence · AA Intelligence Index");
+const aaIntRank = parseRank(benchByName.get("intelligence · aa intelligence index")?.vs_baseline);
+const aaCodingIdx = benchNum("Coding · AA Coding Index");
+const sciCode = benchPct("Coding · SciCode");
+const terminalHard = benchPct("Agentic · Terminal-Bench Hard");
+const speedTok = benchNum("Speed · Output tok/s");
+const speedRank = parseRank(benchByName.get("speed · output tok/s")?.vs_baseline);
+const priceStr = benchByName.get("price ($/m tokens)".toLowerCase())?.score ?? null;
+const priceRank = parseRank(benchByName.get("price ($/m tokens)")?.vs_baseline);
+
+// Helpers for the attribute-card row.
+function tierLabel(r: RankMeta | null, lo: string, mid: string, hi: string): string | null {
+  if (!r) return null;
+  const p = r.rank / r.total;
+  if (p <= 1 / 3) return lo;
+  if (p <= 2 / 3) return mid;
+  return hi;
+}
+
+const attrCards: AttrCard[] = (() => {
+  const out: AttrCard[] = [];
+
+  // POSITION — rank in the AA Intelligence Index (most informative for LLMs)
+  if (aaIntRank) {
+    out.push({
+      icon: "star",
+      color: "violet",
+      k: "Position",
+      v: `#${aaIntRank.rank}`,
+      desc: `of ${aaIntRank.total} on Artificial Analysis`,
+    });
+  }
+
+  // STRENGTH — top 2–3 capability tags from normalized categories.
+  // Rendered as a stacked list (one per line) so a long set doesn't
+  // word-break inside the narrow card.
+  const strengthLabels = normalizedCats
+    .map((c) => CAPABILITY_LABEL[c] ?? c)
+    .filter((s) => s !== "Paper" && s !== "Generative")
+    .slice(0, 3);
+  if (strengthLabels.length) {
+    out.push({
+      icon: "brain",
+      color: "green",
+      k: "Strength",
+      v: strengthLabels,
+      desc: "Best-known capabilities",
+    });
+  }
+
+  // SPEED — tier ("Fast" / "Moderate" / "Slow") from speed rank, with tok/s in desc
+  const speedTier = tierLabel(speedRank, "Fast", "Moderate", "Slow");
+  if (speedTier && speedTok !== null) {
+    out.push({
+      icon: "bolt",
+      color: "amber",
+      k: "Speed",
+      v: speedTier,
+      desc: `${Math.round(speedTok)} tok/s output`,
+    });
+  } else if (speedTok !== null) {
+    out.push({
+      icon: "bolt",
+      color: "amber",
+      k: "Speed",
+      v: `${Math.round(speedTok)} tok/s`,
+      desc: "Output throughput",
+    });
+  }
+
+  // COST — tier ("Low" / "Moderate" / "High") from price rank, with $/M in desc
+  const costTier = tierLabel(priceRank, "Low", "Moderate", "High");
+  if (costTier && priceStr) {
+    out.push({
+      icon: "dollar",
+      color: "rose",
+      k: "Cost",
+      v: costTier,
+      desc: priceStr,
+    });
+  } else if (priceStr) {
+    out.push({
+      icon: "dollar",
+      color: "rose",
+      k: "Cost",
+      v: priceStr,
+      desc: "Per million tokens",
+    });
+  }
+
+  // CONTEXT — for LLMs, a big number ("200K" / "1M") + tokens hint
+  if (spec?.context_window) {
+    const ctx = fmtCtx(spec.context_window) ?? String(spec.context_window);
+    const big = ctx.replace(" tokens", "").toUpperCase();
+    out.push({
+      icon: "stack",
+      color: "blue",
+      k: "Context",
+      v: big,
+      desc: `Up to ${spec.context_window.toLocaleString()} tokens`,
+    });
+  }
+
+  // OUTPUT — for media/multimodal: show modality kind (Audio / Image / Video)
+  // Prefer this in place of Strength when the model produces media.
+  if (isMediaOutput) {
+    const mods = fmtModalities(spec?.modalities_out ?? spec?.modalities);
+    out.unshift({
+      icon: outMods.has("audio") ? "wave" : outMods.has("video") ? "sparkle" : "gallery",
+      color: outMods.has("audio") ? "cyan" : outMods.has("video") ? "pink" : "violet",
+      k: "Output",
+      v: mods,
+      desc: "Model produces this modality",
+    });
+  }
+
+  // DEVELOPER — always available; only used to fill the 5th slot.
+  if (out.length < 5) {
+    out.push({
+      icon: "globe",
+      color: "blue",
+      k: "Developer",
+      v: normalizeOrg(d.org),
+      desc: spec?.release_type === "open_weights" ? "Open weights" : "Lab / company",
+    });
+  }
+
+  return out.slice(0, 5);
+})();
+
+const capBars: CapBar[] = (() => {
+  const out: CapBar[] = [];
+  if (isLLM) {
+    if (aaInt !== null) out.push({ key: "reasoning", label: "Reasoning", score: clamp10((aaInt / 70) * 10) });
+    if (sciCode !== null) out.push({ key: "coding", label: "Coding", score: clamp10(sciCode / 10) });
+    else if (aaCodingIdx !== null) out.push({ key: "coding", label: "Coding", score: clamp10((aaCodingIdx / 70) * 10) });
+    if (terminalHard !== null) out.push({ key: "agentic", label: "Agentic tasks", score: clamp10(terminalHard / 10) });
+    const ctx10 = ctxScore10(spec?.context_window);
+    if (ctx10 !== null) out.push({ key: "context", label: "Context / memory", score: ctx10 });
+    const cost10 = priceTierScore10(priceStr ?? undefined);
+    if (cost10 !== null) out.push({ key: "cost", label: "Cost efficiency", score: cost10 });
+    return out.slice(0, 5);
+  }
+  // Media: show a compact generic set if we have any signals.
+  if (isMediaOutput) {
+    if (aaInt !== null) out.push({ key: "quality", label: "Quality", score: clamp10((aaInt / 70) * 10) });
+    if (speedTok !== null) out.push({ key: "speed", label: "Speed", score: clamp10((Math.log10(Math.max(1, speedTok)) / 2) * 10) });
+    const cost10 = priceTierScore10(priceStr ?? undefined);
+    if (cost10 !== null) out.push({ key: "cost", label: "Cost efficiency", score: cost10 });
+    // Placeholders when missing
+    while (out.length < 4) out.push({ key: `p${out.length}`, label: out.length === 0 ? "Quality" : out.length === 1 ? "Speed" : out.length === 2 ? "Control" : "Consistency", score: 5 });
+    return out.slice(0, 5);
+  }
+  return out;
+})();
+
+const keySignals: KV[] = (() => {
+  const out: KV[] = [];
+  const swe = allBench.find((b) => /SWE-?bench/i.test(b.name));
+  if (swe) out.push({ k: "Coding signal", v: swe.score.replace(/\s*\([^)]*\)\s*/g, "").trim() });
+  if (aaInt !== null) out.push({ k: "Intelligence", v: String(aaInt) });
+  if (spec?.context_window) out.push({ k: "Context", v: fmtCtx(spec.context_window) ?? String(spec.context_window) });
+  return out.slice(0, 3);
+})();
+
+// Curated review bullets (when the MDX has them) override the
+// auto-generated synthesis below. Source for the curated copy: real
+// reviews — Anthropic / OpenAI announcements, Artificial Analysis blog,
+// TechCrunch, The Verge, Reddit r/LocalLLaMA, etc. — distilled by hand.
+const curatedReviews = spec?.reviews ?? null;
+
+const feelBullets: string[] = (() => {
+  if (curatedReviews?.feels_like?.length) {
+    return curatedReviews.feels_like.slice(0, 6);
+  }
+  const out: string[] = [];
+  const reasoning = capBars.find((b) => b.key === "reasoning")?.score ?? null;
+  const coding = capBars.find((b) => b.key === "coding")?.score ?? null;
+  const agentic = capBars.find((b) => b.key === "agentic")?.score ?? null;
+  const ctx10 = capBars.find((b) => b.key === "context")?.score ?? null;
+  const cost10 = capBars.find((b) => b.key === "cost")?.score ?? null;
+  if (reasoning !== null) {
+    out.push(reasoning >= 8 ? "Extremely strong on complex reasoning and long, multi-step tasks." : reasoning >= 6 ? "Solid reasoning; handles most professional workflows well." : "Reasoning is mixed; expect retries on hard tasks.");
+  }
+  if (coding !== null) {
+    out.push(coding >= 8 ? "Feels like a strong coding copilot for real-world repos." : coding >= 6 ? "Good at day-to-day coding; weaker on edge-case debugging." : "Coding help is basic; prefer a code-specialized model.");
+  }
+  if (agentic !== null) {
+    out.push(agentic >= 7 ? "Reliable for tool-using / agentic workflows with fewer dead-ends." : agentic >= 5 ? "Can use tools, but may drift on long-horizon plans." : "Not ideal for autonomous tool-use; keep it tightly scoped.");
+  }
+  if (ctx10 !== null) {
+    out.push(ctx10 >= 7 ? "Comfortable with long context — large docs and codebases fit." : ctx10 >= 5 ? "Moderate context — works for projects, not entire codebases." : "Shorter context — keep prompts and inputs compact.");
+  }
+  if (cost10 !== null) {
+    out.push(cost10 >= 7 ? "Good cost/performance; efficient for high-volume workloads." : cost10 >= 4 ? "Balanced cost; watch spend for long contexts." : "Expensive per token; reserve for hardest requests.");
+  }
+  return out.slice(0, 6);
+})();
+
+const bestForBullets: string[] = (() => {
+  if (curatedReviews?.best_for?.length) {
+    return curatedReviews.best_for.slice(0, 6);
+  }
+  const out: string[] = [];
+  const bf = spec?.best_for ? String(spec.best_for).trim() : "";
+  if (bf) out.push(bf);
+  const apps = d.public_view?.applications ?? [];
+  for (const a of apps.slice(0, 4)) out.push(`${a.product} (${a.company})`);
+  if (!out.length) out.push("General-purpose tasks where you want a strong default.");
+  return Array.from(new Set(out)).slice(0, 5);
+})();
+
+const notIdealBullets: string[] = (() => {
+  if (curatedReviews?.not_ideal_for?.length) {
+    return curatedReviews.not_ideal_for.slice(0, 6);
+  }
+  const out: string[] = [];
+  if (spec?.release_type === "open_weights") out.push("Turnkey hosted reliability (you’ll need deployment/ops).");
+  if (spec?.release_type === "api") out.push("Fully offline / air-gapped deployment.");
+  if (isMediaOutput) out.push("Text-heavy reasoning and coding workloads (use an LLM).");
+  if (!isMediaOutput) out.push("High-fidelity media generation (image/video/audio-first models).");
+  return Array.from(new Set(out)).slice(0, 4);
+})();
+
+type CmpRow = { slug: string; title: string; org: string; why: string };
+const comparisonRows: CmpRow[] = (() => {
+  const out: CmpRow[] = [];
+  const rels = (d.relationships ?? []).filter((r) => r.type === "competes_with" || r.type === "open_alt_to");
+  for (const r of rels.slice(0, 3)) {
+    const target = allNodes.find((n) => n.data.slug === r.to);
+    if (!target) continue;
+    out.push({
+      slug: target.data.slug,
+      title: target.data.title,
+      org: normalizeOrg(target.data.org),
+      why: r.note ? String(r.note) : (r.type === "open_alt_to" ? "More open alternative" : "Alternative"),
+    });
+  }
+  return out;
+})();
+
+type HighlightRow = { k: string; v: string; score: number };
+const perfHighlights: HighlightRow[] = (() => {
+  const out: HighlightRow[] = [];
+  for (const b of capBars.slice(0, 3)) {
+    out.push({ k: b.label, v: `${b.score.toFixed(1)} / 10`, score: b.score });
+  }
+  // Add one extra raw key signal if available (e.g. SWE-bench).
+  const swe = keySignals.find((s) => /coding signal/i.test(s.k));
+  if (swe) out.push({ k: swe.k, v: swe.v, score: 7.5 });
+  return out.slice(0, 3);
+})();
 
 function benchBucket(name: string): "general" | "reasoning" | "coding" | "agentic" | "multimodal" | "cost" | "other" {
   if (/^Intelligence\s*·/i.test(name) || /MMLU/i.test(name) || /Open LLM Leaderboard/i.test(name)) return "general";
@@ -667,6 +1013,57 @@ const pricingModel = (() => {
 
 const heroDescription = summary;
 const heroDescriptionZh = summaryZh;
+
+// ===== Media samples — drives the "Listen / View / Watch" block for
+// audio / image / video output models. Pulled from MDX; no auto-fetch.
+type MediaSample = {
+  kind: "audio" | "image" | "video";
+  title: string;
+  url: string;
+  poster?: string;
+  duration?: string;
+  caption?: string;
+};
+const allSamples = (spec?.media_samples ?? []) as MediaSample[];
+// Pick the dominant kind from modalities_out, then filter samples to that
+// kind so the block renders one consistent media type.
+const mediaKind: "audio" | "image" | "video" | null = (() => {
+  if (outMods.has("audio")) return "audio";
+  if (outMods.has("video")) return "video";
+  if (outMods.has("image")) return "image";
+  return null;
+})();
+const mediaSamples = mediaKind
+  ? allSamples.filter((s) => s.kind === mediaKind).slice(0, 6)
+  : [];
+const mediaHeading = (() => {
+  if (mediaKind === "audio") return `Listen to ${titleName}`;
+  if (mediaKind === "image") return `${titleName} Gallery`;
+  if (mediaKind === "video") return `Watch ${titleName}`;
+  return null;
+})();
+
+// ===== Demo CTA — prefer the org's chat product over the model's marketing
+// page. Anthropic/OpenAI/Google/etc. each have a 1:1 chat surface that's a
+// better landing target than the announcement blog post (which is what
+// `homepage` typically points at).
+const demoUrl = ORG_CHAT_URL[d.org] ?? officialUrl ?? null;
+const demoProductName = ORG_PRODUCT_NAME[d.org] ?? null;
+const demoLabel = demoProductName ? `Try ${demoProductName}` : "Try demo";
+
+// ===== NEW pill — show when the model was released within the last 90
+// days (matches the example screenshot's "NEW" badge near the title).
+const NOW = new Date();
+const ageDays = (NOW.getTime() - d.date.getTime()) / (1000 * 60 * 60 * 24);
+const isNew = ageDays >= 0 && ageDays <= 90;
+
+// ===== Model-kind pill (e.g. "AUDIO MODEL", "LANGUAGE MODEL") shown
+// above the title in the example layout.
+const kindPillLabel = (() => {
+  const k = modelKind.label.toUpperCase();
+  // Model.kind labels like "Language model" → "LANGUAGE MODEL"
+  return k;
+})();
 ---
 
 <Base title={`${d.title} · AI Evolution Tree`} description={d.public_view.plain_english}>
@@ -680,13 +1077,19 @@ const heroDescriptionZh = summaryZh;
       <span class="bc-current">{titleName}</span>
     </nav>
 
+    <div class="page-grid" data-model-kind={modelKind.key}>
+      <div class="page-main">
     {/* ============== HERO (left/right split) ============== */}
     <section class="hero">
       <div class="hero-accent" style={`background: ${orgStroke};`} />
       <div class="hero-grid">
         {/* LEFT: title block */}
         <div class="hero-left">
+          <div class="hero-title-row">
+            <OrgLogo org={d.org} size={120} radius={22} monogramOverride={orgMonogram} class="hero-avatar" />
+            <div class="hero-title-col">
           <div class="hero-meta">
+            <span class="hero-kind-pill">{kindPillLabel}</span>
             <time datetime={d.date.toISOString()} class="hero-date">{fmtShort}</time>
             <a
               href={orgHref}
@@ -696,8 +1099,17 @@ const heroDescriptionZh = summaryZh;
             >
               {normalizeOrg(d.org)}
             </a>
+            {spec?.last_verified_at && fmtUpdatedLong && (
+              <span class="hero-updated">
+                <span data-i18n="detail.lastUpdated">Last updated:</span>{" "}
+                <time datetime={spec.last_verified_at.toISOString()}>{fmtUpdatedLong}</time>
+              </span>
+            )}
           </div>
-          <h1 class="hero-title">{titleName}</h1>
+          <h1 class="hero-title">
+            <span>{titleName}</span>
+            {isNew && <span class="hero-new-pill" aria-label="New release">NEW</span>}
+          </h1>
           {(titleTagline || titleTaglineZh) && (
             <div class="hero-tagline-pill">
               <span class={titleTaglineZh ? "lang-en has-zh" : "lang-en"}>{titleTagline}</span>
@@ -708,6 +1120,72 @@ const heroDescriptionZh = summaryZh;
             <span class={heroDescriptionZh ? "lang-en has-zh" : "lang-en"}>{heroDescription}</span>
             {heroDescriptionZh && <span class="lang-zh">{heroDescriptionZh}</span>}
           </p>
+          <div class="hero-ctas">
+            {demoUrl ? (
+              <a class="btn btn-primary" href={demoUrl} target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                {demoLabel}
+              </a>
+            ) : (
+              <button type="button" class="btn btn-primary" disabled title="Coming soon">{demoLabel}</button>
+            )}
+            <button type="button" class="btn btn-secondary" disabled title="Coming soon">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 8l-4 4 4 4M3 12h14M17 16l4-4-4-4"/></svg>
+              Compare
+            </button>
+          </div>
+            </div>
+          </div>
+          {/* Full-width attribute row + pills, below the title block.
+              Sits as a sibling of hero-title-row so it spans logo + title col. */}
+          <div class="attr-row">
+            {attrCards.map((a) => (
+              <div class="attr-card">
+                <div class="attr-head">
+                  <span class={`attr-icon attr-icon-${a.color}`} aria-hidden="true">
+                    {a.icon === "star" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l2.5 6.5L21 11l-5 4.5L17.5 22 12 18.5 6.5 22 8 15.5 3 11l6.5-1.5z"/></svg>
+                    )}
+                    {a.icon === "brain" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 4a3 3 0 00-3 3v1a3 3 0 00-1 5.7V15a3 3 0 003 3h1v2a1 1 0 002 0V4z"/><path d="M15 4a3 3 0 013 3v1a3 3 0 011 5.7V15a3 3 0 01-3 3h-1v2a1 1 0 01-2 0V4z"/></svg>
+                    )}
+                    {a.icon === "bolt" && (
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+                    )}
+                    {a.icon === "dollar" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M15 8.5c-.7-1-2-1.5-3-1.5-1.7 0-3 1-3 2.4 0 3 6 1.6 6 4.6 0 1.5-1.3 2.5-3 2.5-1.5 0-2.6-.6-3.3-1.5M12 6v2M12 16v2"/></svg>
+                    )}
+                    {a.icon === "stack" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5M3 17l9 5 9-5"/></svg>
+                    )}
+                    {a.icon === "globe" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+                    )}
+                    {a.icon === "wave" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12h2M7 8v8M11 4v16M15 8v8M19 12h2"/></svg>
+                    )}
+                    {a.icon === "sparkle" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
+                    )}
+                    {a.icon === "gallery" && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><path d="M21 16l-4-4-7 7"/></svg>
+                    )}
+                  </span>
+                  <span class="attr-k">{a.k}</span>
+                </div>
+                {Array.isArray(a.v) ? (
+                  <ul class="attr-v-list">
+                    {a.v.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div class={`attr-v ${a.v.length > 14 ? "attr-v-long" : ""}`}>{a.v}</div>
+                )}
+                <div class="attr-desc">{a.desc}</div>
+              </div>
+            ))}
+          </div>
           <div class="hero-pills">
             {officialUrl && (
               <a href={officialUrl} target="_blank" rel="noopener" class="pill pill-link" data-i18n="detail.official">
@@ -731,94 +1209,118 @@ const heroDescriptionZh = summaryZh;
             )}
           </div>
         </div>
-
-        {/* RIGHT: spec table */}
-        <div class="hero-right">
-          <div class="spec-table">
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <rect x="6" y="6" width="12" height="12" rx="2"/>
-                  <rect x="9" y="9" width="6" height="6" rx="1"/>
-                  <path d="M6 10h-2 M6 14h-2 M20 10h2 M20 14h2 M10 6v-2 M14 6v-2 M10 20v-2 M14 20v-2"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.parameters">Parameters</div>
-              <div class="spec-row-value">{naOr(spec?.parameters)}</div>
-            </div>
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <circle cx="12" cy="6" r="2"/>
-                  <circle cx="6" cy="18" r="2"/>
-                  <circle cx="18" cy="18" r="2"/>
-                  <path d="M12 8v4 M12 12l-6 4 M12 12l6 4"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.architecture">Architecture</div>
-              <div
-                class="spec-row-value"
-                title={isPlaceholder(spec?.architecture) ? "" : spec?.architecture ?? ""}
-              >{archCompact(spec?.architecture)}</div>
-            </div>
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <path d="M4 7h16 M4 12h16 M4 17h10"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.context_window">Context Window</div>
-              <div class="spec-row-value">{fmtCtx(spec?.context_window) ?? "N/A"}</div>
-            </div>
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                {/* Inbox arrow — input modality */}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/>
-                  <path d="M12 4v11 M8 11l4 4 4-4"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.modality_in">Modality in</div>
-              <div class="spec-row-value">{fmtModalities(spec?.modalities_in)}</div>
-            </div>
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                {/* Outbox arrow — output modality */}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/>
-                  <path d="M12 15V4 M8 8l4-4 4 4"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.modality_out">Modality out</div>
-              <div class="spec-row-value">{fmtModalities(spec?.modalities_out)}</div>
-            </div>
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                {/* Sparkle — capabilities */}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.capabilities">Capabilities</div>
-              <div
-                class="spec-row-value"
-                title={fmtCapabilities(d.category ?? [])}
-              >{fmtCapabilities(d.category ?? [])}</div>
-            </div>
-            <div class="spec-row">
-              <div class="spec-row-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <circle cx="12" cy="12" r="8"/>
-                  <path d="M12 4v8l5 3"/>
-                </svg>
-              </div>
-              <div class="spec-row-label" data-i18n="spec.release_type">Release</div>
-              <div class="spec-row-value">{accessLabel(releaseType)}</div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
+
+    {/* ============== Media block — Audio / Image / Video samples ============== */}
+    {mediaKind && mediaSamples.length > 0 && (
+      <section class="panel media-panel">
+        <h2 class="block-heading media-heading">
+          {mediaKind === "audio" && (
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          )}
+          {mediaKind === "image" && (
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="1.7" fill="currentColor"/><path d="M21 16l-4-4-7 7"/></svg>
+          )}
+          {mediaKind === "video" && (
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 9l4-2v10l-4-2z"/></svg>
+          )}
+          <span>{mediaHeading}</span>
+        </h2>
+
+        {mediaKind === "audio" && (
+          <div class="audio-grid">
+            {mediaSamples.map((s) => (
+              <figure class="audio-card">
+                <button type="button" class="audio-play" aria-label={`Play ${s.title}`} data-audio-src={s.url}>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="audio-meta">
+                  <figcaption class="audio-title">{s.title}</figcaption>
+                  {s.caption && <div class="audio-cap">{s.caption}</div>}
+                </div>
+                <span class="audio-wave" aria-hidden="true">
+                  <svg viewBox="0 0 60 24" preserveAspectRatio="none">
+                    {Array.from({ length: 24 }, (_, i) => {
+                      const h = 4 + Math.abs(Math.sin((i + s.title.length) * 0.7)) * 16;
+                      const y = (24 - h) / 2;
+                      return <rect x={i * 2.5} y={y} width="1.6" height={h} rx="0.8" />;
+                    })}
+                  </svg>
+                </span>
+                {s.duration && <span class="audio-dur">{s.duration}</span>}
+                <audio preload="none" src={s.url} />
+              </figure>
+            ))}
+          </div>
+        )}
+
+        {mediaKind === "image" && (
+          <div class="image-grid">
+            {mediaSamples.map((s) => (
+              <figure class="image-card">
+                <a href={s.url} target="_blank" rel="noopener">
+                  <img src={s.url} alt={s.title} loading="lazy" decoding="async" />
+                </a>
+                <figcaption class="image-cap">
+                  <span class="image-title">{s.title}</span>
+                  {s.caption && <span class="image-prompt">{s.caption}</span>}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+
+        {mediaKind === "video" && (
+          <div class="video-grid">
+            {mediaSamples.map((s) => (
+              <figure class="video-card">
+                <a href={s.url} target="_blank" rel="noopener" class="video-link">
+                  {s.poster ? (
+                    <img src={s.poster} alt={s.title} loading="lazy" decoding="async" class="video-poster" />
+                  ) : (
+                    <span class="video-poster video-poster-empty" aria-hidden="true"></span>
+                  )}
+                  <span class="video-play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </span>
+                  {s.duration && <span class="video-dur">{s.duration}</span>}
+                </a>
+                <figcaption class="video-meta">
+                  <span class="video-title">{s.title}</span>
+                  {s.caption && <span class="video-cap">{s.caption}</span>}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+
+        <script is:inline>
+          {String.raw`
+(() => {
+  // Single-shot audio play/pause — clicking another card stops the prior one.
+  let current = null;
+  document.querySelectorAll('.audio-play').forEach((btn) => {
+    const audio = btn.parentElement?.querySelector('audio');
+    if (!audio) return;
+    btn.addEventListener('click', () => {
+      if (current && current !== audio) { current.pause(); current.currentTime = 0; }
+      if (audio.paused) {
+        audio.play().catch(() => {});
+        btn.classList.add('is-playing');
+        current = audio;
+      } else {
+        audio.pause();
+        btn.classList.remove('is-playing');
+      }
+    });
+    audio.addEventListener('ended', () => btn.classList.remove('is-playing'));
+  });
+})();
+          `}
+        </script>
+      </section>
+    )}
 
     {/* ============== ROW: Capabilities + Context Window ============== */}
     <section class="dual-row">
@@ -951,155 +1453,116 @@ const heroDescriptionZh = summaryZh;
       </div>
     </section>
 
-    {/* ============== Performance (Benchmarks) ============== */}
+    {/* ============== Capability / Performance (Decision-first) ============== */}
     {allBench.length > 0 && (
-      <section class="panel perf-panel" data-variant-scope>
-        <div class="perf-head-row">
-          <h2 class="block-heading">Benchmark Performance</h2>
-          <span class="block-sub-inline">All scores from authoritative leaderboards (click "source" to verify)</span>
+      <section class="panel cap-panel">
+        <div class="cap-head-row">
+          <h2 class="block-heading">Capability / Performance</h2>
+          <span class="block-sub-inline">Human-readable signals (derived from linked leaderboards)</span>
           <a href="#tech-details" class="perf-see-all">View all benchmarks →</a>
         </div>
-        <details class="perf-how">
-          <summary>How to read this</summary>
-          <ul>
-            <li><b>Rank</b> shows position among models measured by the same source.</li>
-            <li><b>Range</b> is min–max across modes/variants (e.g. high/xhigh/thinking).</li>
-            <li><b>Index</b> scores are not percentages (higher is better).</li>
-            <li><b>Confidence</b> is a heuristic based on available metadata.</li>
-          </ul>
-        </details>
-        {hasVariants && (
-          <div class="variant-strip" role="tablist" aria-label="Model variants">
-            {variantOptions.map((v) => (
-              <button
-                type="button"
-                class="variant-btn"
-                data-variant-btn={v.id}
-                role="tab"
-                aria-selected={v.id === "auto" ? "true" : "false"}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        )}
-        {hasVariants && (
-          <div class="variant-meta-row">
-            <div class="variant-meta" data-variant-meta="auto">
-              Showing family-level rollup (includes multiple modes).
+        <div class="cap-grid">
+          {capBars.map((b) => (
+            <div class="cap-row">
+              <div class="cap-name">{b.label}</div>
+              <div class="cap-bar">
+                <div class="cap-track"></div>
+                <div class="cap-fill" style={`width: ${(b.score / 10) * 100}%;`}></div>
+                <div class="cap-dot" style={`left: ${(b.score / 10) * 100}%;`}></div>
+              </div>
+              <div class="cap-score">{b.score.toFixed(1)}</div>
             </div>
-            {variants.map((v) => (
-              <div class="variant-meta" data-variant-meta={v.id} hidden>
-                {v.status && <span class={`variant-pill variant-${v.status}`}>{v.status}</span>}
-                {fmtIso(v.released_at) && <span class="variant-kv">Released {fmtIso(v.released_at)}</span>}
-                {fmtIso(v.retired_at) && <span class="variant-kv">Retired {fmtIso(v.retired_at)}</span>}
-                {v.api_model && <span class="variant-kv">API: {v.api_model}</span>}
+          ))}
+        </div>
+        {keySignals.length > 0 && (
+          <div class="cap-signals">
+            {keySignals.map((s) => (
+              <div class="cap-signal">
+                <div class="cap-signal-k">{s.k}</div>
+                <div class="cap-signal-v">{s.v}</div>
               </div>
             ))}
           </div>
         )}
+      </section>
+    )}
 
-        {variantOptions.map((v) => {
-          const benchArr = variantBench.get(v.id) ?? allBench;
-          const key = pickKeyBenchmarks(benchArr, normalizedCatSet);
-          const groups = groupBenchmarks(benchArr);
-          const takeaway = takeawayLine(benchArr, normalizedCatSet);
-          return (
-            <div data-variant-block={v.id} hidden={v.id !== "auto"}>
-              {takeaway && <div class="perf-takeaway">{takeaway}</div>}
-              <div class={key.length === 4 ? "perf-grid four" : key.length === 3 ? "perf-grid three" : key.length === 2 ? "perf-grid two" : "perf-grid one"}>
-                {key.map((b) => (
-                  <div class="perf-card">
-                    <div class="perf-name-row">
-                      <span class="perf-name">{b.name}</span>
-                      {b.scoreMeta.unit === "num" && (
-                        <span class="perf-unit" title="Index score (higher is better; not a percent).">Index</span>
-                      )}
-                      {(() => { const s = benchSource(b); return (
-                        <a class="perf-source" href={s.url} target="_blank" rel="noopener">{s.label} ↗</a>
-                      ); })()}
-                    </div>
-                    <div class="perf-bar-row">
-                      <div class="perf-bar">
-                        <div class="perf-bar-track"></div>
-                        {(() => {
-                          const v = clamp01to100(b.scoreMeta.value);
-                          const r0 = clamp01to100(b.scoreMeta.rangeMin);
-                          const r1 = clamp01to100(b.scoreMeta.rangeMax);
-                          const hasRange = r0 !== null && r1 !== null && Math.abs(r1 - r0) > 0.01;
-                          const min = hasRange ? Math.min(r0!, r1!) : null;
-                          const max = hasRange ? Math.max(r0!, r1!) : null;
-                          return (
-                            <>
-                              {hasRange && (
-                                <div
-                                  class="perf-bar-range"
-                                  title="Mode range across variants (e.g. thinking/max/high)."
-                                  style={`left: ${min}%; width: ${Math.max(0, max! - min!)}%;`}
-                                />
-                              )}
-                              {v !== null && <div class="perf-bar-fill" style={`width: ${v}%;`}></div>}
-                              {v !== null && <div class="perf-bar-dot" style={`left: ${v}%;`}></div>}
-                            </>
-                          );
-                        })()}
-                      </div>
-                      <div class="perf-bar-value">{b.score.replace(/\s*\([^)]*\)\s*/g, "").trim()}</div>
-                    </div>
-                    <div class="perf-note">{benchNote(b.name)}</div>
-                    {(() => {
-                      const r = b.rank;
-                      const top = r ? formatTopPct(r.rank, r.total) : null;
-                      const range =
-                        b.scoreMeta.rangeMin !== null && b.scoreMeta.rangeMax !== null
-                          ? `${b.scoreMeta.rangeMin.toFixed(b.scoreMeta.unit === "pct" ? 1 : 2)}–${b.scoreMeta.rangeMax.toFixed(b.scoreMeta.unit === "pct" ? 1 : 2)}${b.scoreMeta.unit === "pct" ? "%" : ""}`
-                          : null;
-                      const confidence = r ? (range ? "High" : "Medium") : "Low";
-                      return (
-                        <div class="perf-meta">
-                          {r && (
-                            <span class="perf-meta-chip" title="Leaderboard position.">
-                              Rank {r.rank} / {r.total} · {top}{r.scope ? ` · ${r.scope}` : ""}
-                            </span>
-                          )}
-                          {range && (
-                            <span class="perf-meta-chip" title="Min–max across variants/modes.">
-                              Range {range}
-                            </span>
-                          )}
-                          <span class={`perf-meta-chip perf-conf perf-conf-${confidence.toLowerCase()}`} title="Heuristic confidence based on available metadata.">
-                            Confidence: {confidence}
-                          </span>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                ))}
-              </div>
-              {groups.length > 1 && (
-                <details class="perf-more">
-                  <summary>Grouped benchmarks</summary>
-                  <div class="perf-buckets">
-                    {groups.map((g) => (
-                      <div class="perf-bucket">
-                        <div class="perf-bucket-title">{g.bucket}</div>
-                        <div class="perf-bucket-items">
-                          {g.items.slice(0, 2).map((b) => (
-                            <div class="perf-bucket-row">
-                              <span class="perf-bucket-name">{b.name}</span>
-                              <span class="perf-bucket-score">{b.score.replace(/\s*\([^)]*\)\s*/g, "").trim()}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </details>
-              )}
-            </div>
-          );
-        })}
-        <p class="perf-foot">* Scores sourced from: Artificial Analysis · Hugging Face · LLM Stats · LMArena · OpenRouter</p>
+    {/* ============== Feels-like + Use-cases (2-up) ============== */}
+    <section class="dual-row review-row">
+      <div class="panel review-panel feel-panel">
+        <h2 class="review-heading review-heading-quote">
+          <span class="review-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h4v4H7c0 2.5 1 4 4 4v2c-4 0-6-2.5-6-6V7zm8 0h4v4h-4c0 2.5 1 4 4 4v2c-4 0-6-2.5-6-6V7z"/></svg>
+          </span>
+          What it feels like
+        </h2>
+        <ul class="review-list">
+          {feelBullets.map((t) => (
+            <li>
+              <svg class="review-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-7"/></svg>
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+        {curatedReviews?.sources?.length && (
+          <div class="review-sources">
+            Reviews:{" "}
+            {curatedReviews.sources.slice(0, 4).map((s, i) => (
+              <>
+                {i > 0 && " · "}
+                <a href={s.url} target="_blank" rel="noopener">{s.name} ↗</a>
+              </>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div class="panel review-panel use-panel">
+        <h2 class="review-heading review-heading-target">
+          <span class="review-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+          </span>
+          Best use cases
+        </h2>
+        <ul class="review-list">
+          {bestForBullets.map((t) => (
+            <li>
+              <svg class="review-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-7"/></svg>
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+        {notIdealBullets.length > 0 && (
+          <>
+            <div class="review-divider"></div>
+            <h3 class="review-subheading">Not ideal for</h3>
+            <ul class="review-list review-list-cross">
+              {notIdealBullets.map((t) => (
+                <li>
+                  <svg class="review-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    </section>
+
+    {/* ============== Comparison ============== */}
+    {comparisonRows.length > 0 && (
+      <section class="panel cmp-panel">
+        <h2 class="block-heading">Comparison</h2>
+        <div class="cmp-note">Nearby alternatives from the tree graph (not a full market survey).</div>
+        <div class="cmp-table">
+          {comparisonRows.map((r) => (
+            <a class="cmp-row" href={`/node/${r.slug}/`} title={r.title}>
+              <span class="cmp-name">{r.title}</span>
+              <span class="cmp-org">{r.org}</span>
+              <span class="cmp-why">{r.why}</span>
+            </a>
+          ))}
+        </div>
       </section>
     )}
 
@@ -1181,6 +1644,92 @@ const heroDescriptionZh = summaryZh;
     {!hideAuthors && <p class="meta-authors">{d.authors.join(" · ")}</p>}
 
     <CitationsBlock citations={d.citations} />
+      </div>
+
+      <aside class="page-aside">
+        <div class="aside-stack">
+          <section class="aside-card">
+            <h3 class="aside-title">Save &amp; Compare</h3>
+            <button type="button" class="aside-btn" disabled title="Coming soon">Save model</button>
+            <button type="button" class="aside-btn" disabled title="Coming soon">Add to compare</button>
+          </section>
+          {/*
+            Dark treatment for the first card per design_page_2.
+            Kept as the first visible block in the sticky rail.
+          */}
+
+          {comparisonRows.length > 0 && (
+            <section class="aside-card">
+              <h3 class="aside-title">Similar models</h3>
+              <div class="aside-list">
+                {comparisonRows.slice(0, 5).map((r) => {
+                  const target = allNodes.find((n) => n.data.slug === r.slug);
+                  const targetOrg = target?.data.org ?? r.org;
+                  const titleSplit = r.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+                  const shortTitle = titleSplit ? titleSplit[1] : r.title;
+                  return (
+                    <a class="aside-item" href={`/node/${r.slug}/`}>
+                      <OrgLogo org={targetOrg} size={32} radius={9} class="aside-logo" />
+                      <div class="aside-item-text">
+                        <div class="aside-item-title">{shortTitle}</div>
+                        <div class="aside-item-sub">{r.org}</div>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+              <a class="aside-link" href="/tree/">View all similar models →</a>
+            </section>
+          )}
+
+          <section class="aside-card">
+            <h3 class="aside-title">Quick facts</h3>
+            <dl class="facts">
+              <div class="facts-row"><dt>Release</dt><dd>{fmtShort}</dd></div>
+              <div class="facts-row"><dt>Developer</dt><dd>{normalizeOrg(d.org)}</dd></div>
+              <div class="facts-row"><dt>Model type</dt><dd>{modelKind.label}</dd></div>
+              <div class="facts-row"><dt>License</dt><dd>{spec?.release_type === "open_weights" ? "Open weights" : "Proprietary / undisclosed"}</dd></div>
+              <div class="facts-row"><dt>Context length</dt><dd>{fmtCtx(spec?.context_window) ?? "N/A"}</dd></div>
+              <div class="facts-row"><dt>Last updated</dt><dd>{fmtUpdatedLong ?? "—"}</dd></div>
+            </dl>
+          </section>
+
+          {perfHighlights.length > 0 && (
+            <section class="aside-card">
+              <h3 class="aside-title">Performance highlights</h3>
+              <div class="hi-list">
+                {perfHighlights.map((h) => (
+                  <div class="hi-row">
+                    <div class="hi-top">
+                      <span class="hi-k">{h.k}</span>
+                      <span class="hi-v">{h.v}</span>
+                    </div>
+                    <div class="hi-bar">
+                      <div class="hi-track"></div>
+                      <div class="hi-fill" style={`width:${(h.score / 10) * 100}%;`}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a class="aside-link" href="#tech-details">View all benchmarks →</a>
+            </section>
+          )}
+
+          <section class="aside-card">
+            <h3 class="aside-title">Sources</h3>
+            <div class="aside-links">
+              {officialUrl && <a class="aside-link" href={officialUrl} target="_blank" rel="noopener">Official ↗</a>}
+              {githubUrl && <a class="aside-link" href={githubUrl} target="_blank" rel="noopener">GitHub ↗</a>}
+              {spec?.aa_url && <a class="aside-link" href={spec.aa_url} target="_blank" rel="noopener">Artificial Analysis ↗</a>}
+              {spec?.hf_url && <a class="aside-link" href={spec.hf_url} target="_blank" rel="noopener">Hugging Face ↗</a>}
+              {(spec?.sources ?? []).slice(0, 8).map((s) => (
+                <a class="aside-link" href={s.url} target="_blank" rel="noopener">{s.name} ↗</a>
+              ))}
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
   </article>
 </Base>
 
@@ -1188,6 +1737,229 @@ const heroDescriptionZh = summaryZh;
   .model-page {
     color: var(--fg);
     --surface: var(--bg-soft);
+  }
+
+  .page-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 22px;
+    align-items: start;
+  }
+  @media (max-width: 1060px) {
+    .page-grid { grid-template-columns: 1fr; }
+  }
+  .page-aside {
+    position: sticky;
+    top: 16px;
+    align-self: start;
+  }
+  @media (max-width: 1060px) {
+    .page-aside { position: static; }
+  }
+  .aside-stack { display: flex; flex-direction: column; gap: 14px; }
+  .aside-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 14px 14px;
+  }
+  .aside-title {
+    margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    color: var(--fg-muted);
+    font-weight: 900;
+  }
+  .aside-btn {
+    width: 100%;
+    display: block;
+    text-align: left;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    color: var(--fg);
+    font-weight: 750;
+    cursor: not-allowed;
+    margin-top: 8px;
+  }
+  .aside-list { display: flex; flex-direction: column; gap: 8px; }
+  .aside-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    background: white;
+    color: var(--fg);
+  }
+  .aside-item:hover { background: var(--bg-sunk); }
+  .aside-item-text { min-width: 0; flex: 1; }
+  .aside-item-title { font-weight: 850; font-size: 13px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .aside-item-sub { margin-top: 2px; font-size: 11.5px; color: var(--fg-muted); font-weight: 650; }
+  .aside-logo { box-shadow: none; }
+
+  .facts { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+  .facts-row { display: flex; justify-content: space-between; gap: 10px; }
+  .facts-row dt { font-size: 12.5px; color: var(--fg-muted); font-weight: 750; }
+  .facts-row dd { margin: 0; font-size: 12.5px; font-weight: 800; color: var(--fg); }
+
+  .aside-links { display: flex; flex-direction: column; gap: 8px; }
+  .aside-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 750;
+    color: var(--accent-2);
+    text-decoration: none;
+  }
+  .aside-link:hover { text-decoration: underline; }
+
+  .hi-list { display: flex; flex-direction: column; gap: 10px; }
+  .hi-top { display: flex; justify-content: space-between; gap: 10px; }
+  .hi-k { font-size: 12.5px; font-weight: 850; color: var(--fg); }
+  .hi-v { font-size: 12.5px; font-weight: 800; color: var(--fg-muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .hi-bar { position: relative; height: 10px; margin-top: 8px; }
+  .hi-track { position: absolute; inset: 0; border-radius: 999px; background: var(--bg-sunk); border: 1px solid var(--border); }
+  .hi-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: rgba(59, 130, 246, 0.55); }
+
+  .hero-ctas { display: flex; gap: 10px; margin: 14px 0 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    font-weight: 850;
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+  .btn-primary {
+    background: rgba(59, 130, 246, 0.10);
+    border-color: rgba(59, 130, 246, 0.25);
+    color: rgb(29, 78, 216);
+  }
+  .btn-secondary {
+    background: white;
+    color: var(--fg);
+  }
+
+  .attr-row {
+    margin-top: 14px;
+    display: grid;
+    /* Auto-fit so 4-card pages don't get squeezed into a 5-col grid.
+       Each card has a guaranteed legible minimum width. */
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (max-width: 1060px) {
+    .attr-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .attr-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: white;
+    padding: 14px 14px 16px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .attr-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .attr-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .attr-icon svg { width: 16px; height: 16px; }
+  .attr-icon-violet { background: rgba(139, 92, 246, 0.12); color: rgb(109, 40, 217); }
+  .attr-icon-green  { background: rgba( 34, 197, 94, 0.12); color: rgb(21, 128, 61); }
+  .attr-icon-amber  { background: rgba(245, 158, 11, 0.16); color: rgb(180, 83, 9); }
+  .attr-icon-rose   { background: rgba(244,  63, 94, 0.12); color: rgb(190, 18, 60); }
+  .attr-icon-blue   { background: rgba( 59, 130,246, 0.12); color: rgb(29, 78, 216); }
+  .attr-icon-cyan   { background: rgba(  6, 182,212, 0.14); color: rgb(8, 145, 178); }
+  .attr-icon-pink   { background: rgba(236,  72,153, 0.12); color: rgb(190, 24, 93); }
+  .attr-k {
+    font-size: 12.5px;
+    color: var(--fg);
+    font-weight: 800;
+  }
+  .attr-v {
+    margin-top: 2px;
+    font-size: 18px;
+    color: var(--fg);
+    font-weight: 900;
+    line-height: 1.2;
+    /* Only wrap at word boundaries — never split a word mid-character. */
+    overflow-wrap: break-word;
+    letter-spacing: -0.01em;
+  }
+  /* Step the value type down when it's a long string (e.g. "$3.00 in / $15.00 out")
+     so it stays on at most two lines inside the narrow card. */
+  .attr-v-long {
+    font-size: 15px;
+    font-weight: 850;
+    letter-spacing: 0;
+  }
+  /* List form for multi-item values like Strength: stacked, dense bullets,
+     no commas so a long capability set can't word-break. */
+  .attr-v-list {
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .attr-v-list > li {
+    font-size: 14.5px;
+    font-weight: 850;
+    color: var(--fg);
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+  }
+  .attr-desc {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--fg-muted);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .hero-title-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 22px;
+    align-items: start;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 640px) {
+    .hero-title-row { grid-template-columns: 72px 1fr; gap: 14px; margin-bottom: 14px; }
+  }
+  /* Width/height/colours live inside OrgLogo. We just shrink it on mobile. */
+  @media (max-width: 640px) {
+    .hero-avatar,
+    .hero-avatar svg {
+      width: 72px !important;
+      height: 72px !important;
+      border-radius: 18px !important;
+    }
   }
 
   /* Page-scoped theme override — match the tree's "paper" palette so
@@ -1245,12 +2017,9 @@ const heroDescriptionZh = summaryZh;
   }
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: 36px;
+    grid-template-columns: 1fr;
+    gap: 22px;
     padding: 26px 28px 28px;
-  }
-  @media (max-width: 880px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 22px; }
   }
 
   .hero-left { min-width: 0; }
@@ -1268,11 +2037,47 @@ const heroDescriptionZh = summaryZh;
     color: var(--fg-muted);
     letter-spacing: 0.06em;
   }
+  .hero-updated {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--fg-muted);
+    letter-spacing: 0.02em;
+  }
   .hero-meta-org {
     /* Use same .pill / .pill-org styles, but with the meta row's
        slightly tighter sizing to match the date's monospace beat. */
     font-size: 12px;
     padding: 3px 10px;
+  }
+  .hero-kind-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    background: rgba(99, 102, 241, 0.10);
+    color: rgb(67, 56, 202);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+  }
+  .hero-new-pill {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(34, 197, 94, 0.14);
+    color: rgb(21, 128, 61);
+    border: 1px solid rgba(34, 197, 94, 0.30);
+    vertical-align: middle;
+    transform: translateY(-6px);
   }
   .hero-title {
     font-size: clamp(2rem, 4vw, 2.6rem);
@@ -1281,6 +2086,10 @@ const heroDescriptionZh = summaryZh;
     letter-spacing: -0.025em;
     color: var(--fg);
     margin: 0 0 12px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0;
   }
   .hero-tagline-pill {
     display: inline-block;
@@ -1302,6 +2111,7 @@ const heroDescriptionZh = summaryZh;
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: 14px;
   }
 
   /* Pill styles (shared with meta strip) */
@@ -1407,6 +2217,144 @@ const heroDescriptionZh = summaryZh;
   @media (max-width: 880px) {
     .dual-row.avail-pricing { grid-template-columns: 1fr; }
   }
+
+  /* ============== Media block ============== */
+  .media-panel { margin-bottom: 16px; }
+  .media-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg);
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .audio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 880px) { .audio-grid { grid-template-columns: 1fr; } }
+  .audio-card {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 6px 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: white;
+  }
+  .audio-play {
+    grid-row: 1 / 3;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.10);
+    color: rgb(67, 56, 202);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease;
+  }
+  .audio-play:hover { background: rgba(99, 102, 241, 0.18); }
+  .audio-play.is-playing {
+    background: rgb(67, 56, 202);
+    color: white;
+  }
+  .audio-meta { min-width: 0; grid-column: 2 / 3; grid-row: 1 / 2; }
+  .audio-title { font-size: 13px; font-weight: 800; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .audio-cap { margin-top: 2px; font-size: 11.5px; color: var(--fg-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .audio-wave {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: block;
+  }
+  .audio-wave svg { width: 100%; height: 22px; fill: rgba(99, 102, 241, 0.55); }
+  .audio-dur {
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--fg-muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 880px) { .image-grid { grid-template-columns: repeat(2, 1fr); } }
+  .image-card {
+    margin: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .image-card a { display: block; }
+  .image-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .image-cap { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .image-title { font-size: 13px; font-weight: 800; color: var(--fg); }
+  .image-prompt { font-size: 11.5px; color: var(--fg-muted); line-height: 1.4; }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 880px) { .video-grid { grid-template-columns: 1fr; } }
+  .video-card {
+    margin: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: white;
+  }
+  .video-link { position: relative; display: block; aspect-ratio: 16 / 9; }
+  .video-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .video-poster-empty {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(34, 197, 94, 0.18));
+  }
+  .video-play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px; height: 48px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.7);
+    color: white;
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(2px);
+  }
+  .video-dur {
+    position: absolute;
+    right: 8px; bottom: 8px;
+    background: rgba(15, 23, 42, 0.78);
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .video-meta { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .video-title { font-size: 13px; font-weight: 800; color: var(--fg); }
+  .video-cap { font-size: 11.5px; color: var(--fg-muted); line-height: 1.4; }
   .block-heading {
     font-size: 14px;
     font-weight: 700;
@@ -1588,16 +2536,16 @@ const heroDescriptionZh = summaryZh;
     box-shadow: 0 0 0 1px var(--marker-color, #047857);
   }
 
-  /* ============== Performance ============== */
-  .perf-panel { padding-bottom: 14px; }
-  .perf-head-row {
+  /* ============== Capability / performance ============== */
+  .cap-panel { padding-bottom: 14px; }
+  .cap-head-row {
     display: flex;
     align-items: baseline;
     gap: 6px;
     flex-wrap: wrap;
     margin-bottom: 14px;
   }
-  .perf-head-row .block-heading { margin-bottom: 0; }
+  .cap-head-row .block-heading { margin-bottom: 0; }
   .perf-see-all {
     margin-left: auto;
     font-size: 12.5px;
@@ -1605,108 +2553,217 @@ const heroDescriptionZh = summaryZh;
     text-decoration: none;
   }
   .perf-see-all:hover { text-decoration: underline; }
-  .variant-strip {
+  .cap-grid {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 2px 0 12px;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
   }
-  .variant-btn {
-    border: 1px solid var(--border-strong);
-    background: var(--surface);
+  .cap-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 44px;
+    gap: 12px;
+    align-items: center;
+  }
+  @media (max-width: 640px) {
+    .cap-row { grid-template-columns: 120px 1fr 44px; }
+  }
+  .cap-name {
+    font-size: 12.5px;
+    font-weight: 750;
     color: var(--fg);
+  }
+  .cap-score {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    color: var(--fg-muted);
+    text-align: right;
+  }
+  .cap-bar {
+    position: relative;
+    height: 12px;
+  }
+  .cap-track {
+    position: absolute;
+    inset: 0;
     border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 12px;
-    font-weight: 650;
-    cursor: pointer;
+    background: var(--bg-sunk);
+    border: 1px solid var(--border);
   }
-  .variant-btn:hover { background: var(--bg-sunk); }
-  .variant-btn.variant-active {
-    border-color: rgba(4, 120, 87, 0.35);
-    background: rgba(16, 185, 129, 0.10);
+  .cap-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+    background: rgba(4, 120, 87, 0.45);
   }
-  .variant-meta-row {
-    margin: -2px 0 14px;
+  .cap-dot {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    border-radius: 999px;
+    background: var(--accent);
+    border: 2px solid var(--surface);
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.25);
+  }
+  .cap-signals {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 880px) {
+    .cap-signals { grid-template-columns: 1fr; }
+  }
+  .cap-signal {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    padding: 10px 12px;
+  }
+  .cap-signal-k {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    font-weight: 800;
+  }
+  .cap-signal-v {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 750;
+    color: var(--fg);
+  }
+
+  /* ============== Reviews: feels-like + use-cases (2-up) ============== */
+  .review-row { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 880px) { .review-row { grid-template-columns: 1fr; } }
+  .review-panel {
+    background: white;
+    padding: 22px 24px 24px;
+  }
+  .review-heading {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
-    font-size: 11.5px;
-    color: var(--fg-muted);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin: 0 0 14px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
-  .variant-pill {
-    display: inline-block;
-    padding: 2px 7px;
-    border-radius: 999px;
-    border: 1px solid var(--border-strong);
-    background: var(--bg-sunk);
+  .review-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+  }
+  .review-icon svg { width: 24px; height: 24px; }
+  .review-heading-quote { color: rgb(21, 128, 61); }
+  .review-heading-quote .review-icon { color: rgb(34, 197, 94); }
+  .review-heading-target { color: rgb(8, 145, 178); }
+  .review-heading-target .review-icon { color: rgb(8, 145, 178); }
+  .review-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .review-list > li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
     color: var(--fg);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-size: 10px;
-    margin-right: 6px;
-  }
-  .variant-preview { background: rgba(59, 130, 246, 0.10); border-color: rgba(59, 130, 246, 0.25); }
-  .variant-active { background: rgba(16, 185, 129, 0.10); border-color: rgba(16, 185, 129, 0.25); }
-  .variant-legacy { background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35); }
-  .variant-retired { background: rgba(239, 68, 68, 0.10); border-color: rgba(239, 68, 68, 0.25); }
-  .variant-kv { margin-right: 10px; }
-  .perf-grid {
-    display: grid;
-    gap: 16px;
-  }
-  .perf-grid.four { grid-template-columns: repeat(4, 1fr); }
-  .perf-grid.three { grid-template-columns: repeat(3, 1fr); }
-  .perf-grid.two { grid-template-columns: repeat(2, 1fr); }
-  .perf-grid.one { grid-template-columns: 1fr; }
-  @media (max-width: 880px) {
-    .perf-grid.four, .perf-grid.three, .perf-grid.two { grid-template-columns: 1fr; }
-  }
-  .perf-how {
-    margin: 6px 0 12px;
-    font-size: 12px;
-    color: var(--fg-muted);
-  }
-  .perf-how summary {
-    cursor: pointer;
-    user-select: none;
-    font-weight: 650;
-    color: var(--fg);
-    margin-bottom: 6px;
-  }
-  .perf-how ul {
-    margin: 8px 0 0 18px;
+    font-size: 13.5px;
     line-height: 1.5;
   }
-  .perf-takeaway {
-    margin: 2px 0 12px;
+  .review-tick {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: rgb(34, 197, 94);
+    margin-top: 1px;
+  }
+  .review-cross {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: rgb(244, 63, 94);
+    margin-top: 1px;
+  }
+  .review-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 18px 0 14px;
+  }
+  .review-subheading {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+  }
+  .review-sources {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    font-weight: 650;
+  }
+  .review-sources a {
+    color: var(--accent-2);
+    text-decoration: none;
+    font-weight: 750;
+  }
+  .review-sources a:hover { text-decoration: underline; }
+
+  /* legacy classes kept as no-ops so older Astro caches don't break */
+  .feel-list, .use-grid, .use-sub, .use-list { all: unset; }
+  .cmp-note {
+    margin-top: 6px;
     font-size: 12.5px;
     color: var(--fg-muted);
     font-weight: 650;
   }
-  .perf-more {
-    margin-top: 10px;
-    border-top: 1px solid var(--border);
-    padding-top: 10px;
+  .cmp-table {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .perf-more summary {
-    cursor: pointer;
-    user-select: none;
-    font-size: 12px;
-    font-weight: 700;
+  .cmp-row {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr 2fr;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    background: var(--surface);
     color: var(--fg);
   }
-  .perf-buckets {
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
   @media (max-width: 880px) {
-    .perf-buckets { grid-template-columns: 1fr; }
+    .cmp-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+  .cmp-row:hover { background: var(--bg-sunk); }
+  .cmp-name { font-weight: 800; }
+  .cmp-org {
+    font-size: 12px;
+    color: var(--fg-muted);
+    font-weight: 700;
+  }
+  .cmp-why {
+    font-size: 12.5px;
+    color: var(--fg-muted);
+    line-height: 1.35;
   }
   .perf-bucket-title {
     font-size: 11px;

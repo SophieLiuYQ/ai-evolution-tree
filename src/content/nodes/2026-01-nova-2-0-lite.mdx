@@ -57,13 +57,36 @@ model_spec:
       score: $0.30 in / $2.50 out
       source_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
       vs_baseline: 'Rank #318 of 496'
-  aa_url: 'https://artificialanalysis.ai/models/nova-2-0-lite'
+  aa_url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
   context_window: 1000000
   modalities_in:
     - text
     - image
   modalities_out:
     - text
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/nova-2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/nova-2-0-lite-reasoning'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Amazon — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Amazon's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Nova 2.0 Lite (Non-reasoning) is an API model from Amazon. It’s positioned

@@ -32,6 +32,34 @@ model_spec:
   context_window: 4000
   parameters: 17B active
   hf_url: 'https://huggingface.co/Snowflake/snowflake-arctic-instruct'
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/arctic'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/Snowflake/snowflake-arctic-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/arctic-instruct'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Snowflake — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Snowflake's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Arctic Instruct is an API model from Snowflake. It’s positioned for general

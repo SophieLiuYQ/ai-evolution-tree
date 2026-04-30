@@ -37,6 +37,33 @@ model_spec:
   homepage: 'https://stability.ai/news/stable-audio-2-0'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: 'https://stability.ai/news/stable-audio-2-0'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Stability's audio diffusion sibling — same lab heritage."
+      - "First text-to-image model with DALL·E 2-class quality and permissive open weights"
+      - "Latent diffusion innovation — denoising in compressed latent space, not pixel space — made consumer-GPU inference viable"
+      - "Ran on <8GB VRAM at release — first generative model regular people could use locally"
+    best_for:
+      - "Self-hosted image generation pipelines (privacy / volume / customisation)"
+      - "Custom-style fine-tuning via LoRA / textual inversion / Dreambooth"
+      - "ControlNet-style guided generation requiring weight access"
+    not_ideal_for:
+      - "Out-of-the-box photorealistic aesthetics — Midjourney still the default for that"
+      - "Reliable in-image text rendering (FLUX.2 and later models leapfrogged here)"
+    sources:
+      - name: "Stability AI — Stable Diffusion public release"
+        url: "https://stability.ai/news/stable-diffusion-public-release"
+      - name: "GitHub — CompVis/stable-diffusion"
+        url: "https://github.com/CompVis/stable-diffusion"
+      - name: "BentoML — Best open-source image generation models"
+        url: "https://www.bentoml.com/blog/a-guide-to-open-source-image-generation-models"
 public_view:
   plain_english: |
     Stability AI's open text-to-audio generator, releasing 3-minute

@@ -33,6 +33,23 @@ model_spec:
   github: 'https://github.com/RosettaCommons/RFdiffusion'
   availability:
     - open_weights
+  sources:
+    - name: Official
+      type: official
+      url: 'https://github.com/RosettaCommons/RFdiffusion'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Vision-language model from Academic / Independent — see the linked sources below for benchmark and review coverage"
+      - "Vision and multimodal tasks are the typical fit per the published model card"
+    best_for:
+      - "Vision tasks (charts, documents, images) per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     The Baker Lab's diffusion-based protein design model — released

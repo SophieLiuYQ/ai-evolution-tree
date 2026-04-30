@@ -57,13 +57,36 @@ model_spec:
       score: $1.25 in / $10.00 out
       source_url: 'https://artificialanalysis.ai/models/nova-2-0-pro-reasoning-medium'
       vs_baseline: 'Rank #417 of 496'
-  aa_url: 'https://artificialanalysis.ai/models/nova-2-0-pro'
+  aa_url: 'https://artificialanalysis.ai/models/nova-2-0-pro-reasoning-medium'
   context_window: 256000
   modalities_in:
     - text
     - image
   modalities_out:
     - text
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/nova-2'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/nova-2-0-pro-reasoning-medium'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from Amazon — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within Amazon's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Nova 2.0 Pro Preview (Non-reasoning) is an API model from Amazon. It’s

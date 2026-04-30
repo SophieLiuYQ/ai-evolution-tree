@@ -45,6 +45,29 @@ model_spec:
   github: 'https://github.com/google-deepmind/alphafold'
   availability:
     - open_weights
+  reviews:
+    feels_like:
+      - "Solved a 50-year grand challenge in biology — protein structure prediction at experimental accuracy"
+      - "CASP14 median GDT score 92.4 vs prior best ~62 — the kind of step-change that ends a research subfield"
+      - "Predicted 200M+ protein structures in AlphaFold DB by 2022 — 1000x more than all experimental data combined"
+      - "Demis Hassabis and John Jumper won the 2024 Nobel Prize in Chemistry — first AI work to do so"
+      - "Open-source code + structure database used by 2M+ researchers worldwide"
+      - "AlphaFold 3 (2024) extended this to protein-ligand and protein-DNA complexes"
+    best_for:
+      - "Drug discovery and target validation pipelines"
+      - "Structural biology research where experimental crystallography is too slow / expensive"
+      - "Vaccine and antibody design starting from sequence"
+      - "Teaching how transformer-style attention generalises beyond language"
+    not_ideal_for:
+      - "Membrane proteins and intrinsically disordered regions (still imperfect)"
+      - "Direct use as a chemistry / docking model (AlphaFold 3 is more relevant for that)"
+    sources:
+      - name: "AlphaFold 2 paper (Nature)"
+        url: "https://www.nature.com/articles/s41586-021-03819-2"
+      - name: "Google DeepMind — AlphaFold project"
+        url: "https://deepmind.google/research/projects/alphafold/"
+      - name: "GitHub — google-deepmind/alphafold"
+        url: "https://github.com/google-deepmind/alphafold"
 public_view:
   plain_english: |
     DeepMind's protein structure prediction system that, in late 2020,

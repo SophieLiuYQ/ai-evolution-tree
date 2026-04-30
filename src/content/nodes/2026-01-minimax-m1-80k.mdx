@@ -64,6 +64,34 @@ model_spec:
     - text
   parameters: 45.9B active
   hf_url: 'https://huggingface.co/MiniMaxAI/MiniMax-M1-80k'
+  sources:
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/minimax-m1'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/MiniMaxAI/MiniMax-M1-80k'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/minimax-m1-80k'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Language model from MiniMax — see the linked sources below for benchmark and review coverage"
+    best_for:
+      - "General-purpose tasks within MiniMax's deployment footprint"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
+  availability:
+    - api
 public_view:
   plain_english: >-
     MiniMax M1 80k is an API model from MiniMax. It’s positioned for general

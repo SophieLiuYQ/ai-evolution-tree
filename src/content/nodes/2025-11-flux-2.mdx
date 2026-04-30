@@ -35,6 +35,42 @@ model_spec:
       score: '1205'
       vs_baseline: 'Rank #6 of 48 · Top #6 of 48 · AA · Image Arena'
       source_url: 'https://artificialanalysis.ai/text-to-image'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://bfl.ai/blog/flux-2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/black-forest-labs/flux'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Flux.2 Pro: 32B params, latent flow matching with a Mistral-3 24B vision-language backbone — not a stock diffusion model"
+      - "Open-weight win rates: 66.6% on text-to-image, 59.8% single-reference editing, 63.6% multi-reference editing"
+      - "Up to 4 megapixel output with reliable text rendering, color matching, and character identity across outputs"
+      - "Up to 10 reference images for character / brand consistency — actual product feature, not just a tech demo"
+      - "Hands, faces, fabrics, and small text are noticeably more accurate than competitor open models"
+      - "Five variants (Pro / Flex / Dev / Klein / VAE) cover hosted-only, adjustable, open-weight, and tiny-open use cases"
+    best_for:
+      - "Brand and product visualisation requiring consistency across multiple outputs"
+      - "Self-hosted image pipelines where open weights matter (Dev variant)"
+      - "Replacing Midjourney for workflows that need text rendering or precise reference editing"
+      - "Edge / on-device generation via the Klein open-source tier (when shipped)"
+    not_ideal_for:
+      - "Pure photorealism leaderboards — Midjourney v7 and Imagen 4 still lead in stylised aesthetics"
+      - "Video generation (FLUX.2 is image-only)"
+      - "Latency-sensitive interactive editing — flow-matching at 4MP is not real-time"
+    sources:
+      - name: "Black Forest Labs — FLUX.2 model page"
+        url: "https://bfl.ai/models/flux-2"
+      - name: "Hugging Face — black-forest-labs/FLUX.2-dev"
+        url: "https://huggingface.co/black-forest-labs/FLUX.2-dev"
+      - name: "VentureBeat — FLUX.2 launch challenges Nano Banana Pro and Midjourney"
+        url: "https://venturebeat.com/ai/black-forest-labs-launches-flux-2-ai-image-models-to-challenge-nano-banana"
 public_view:
   plain_english: |
     Black Forest Labs' November 2025 image model — five variants

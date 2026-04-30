@@ -46,6 +46,29 @@ model_spec:
   github: 'https://github.com/openai/CLIP'
   availability:
     - open_weights
+  reviews:
+    feels_like:
+      - "Zero-shot ImageNet 76.2% — matched fully-supervised ResNet-50 without seeing a single label"
+      - "Established the contrastive image-text pretraining recipe — every modern VLM (Stable Diffusion, DALL·E, GPT-4V) traces back here"
+      - "400M (image, text) pairs from the open web — first widely-cited demonstration of internet-scale weak supervision"
+      - "Open weights + open code on day one — sparked OpenCLIP, LAION, and the open-source vision-language ecosystem"
+      - "Used as the text-image alignment backbone inside Stable Diffusion, Imagen, and many other generative models"
+      - "Robustness +5.3 pts over ResNet-50 across 27 datasets — strong out-of-distribution generalization"
+    best_for:
+      - "Image-text retrieval and search at scale"
+      - "Zero-shot image classification with novel categories"
+      - "Backbone for diffusion-style image generators and any text-conditioned vision system"
+      - "Foundation for understanding modern multimodal architectures"
+    not_ideal_for:
+      - "Fine-grained visual reasoning (modern VLMs like Molmo, Pixtral, Qwen-VL outperform)"
+      - "Generation tasks — CLIP is encoder-only by design"
+    sources:
+      - name: "OpenAI — CLIP announcement"
+        url: "https://openai.com/index/clip/"
+      - name: "CLIP paper (arXiv)"
+        url: "https://arxiv.org/abs/2103.00020"
+      - name: "GitHub — openai/CLIP"
+        url: "https://github.com/openai/CLIP"
 public_view:
   plain_english: |
     A model trained on 400 million image-caption pairs from the web that

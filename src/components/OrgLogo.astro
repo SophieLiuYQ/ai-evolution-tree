@@ -1,0 +1,131 @@
+---
+// Renders a stylized org logo as a coloured tile.
+//
+// Source priority:
+//   1. SVG file under /public/logos/ — inlined and recoloured via
+//      currentColor, so a SimpleIcons-style monochrome logo picks up
+//      the tile's foreground colour. SVGs that carry their own fills
+//      (Wikimedia logos with brand colours) keep them.
+//   2. PNG/ICO file under /public/logos/ — rendered as <img>.
+//   3. Curated inline SVG from src/lib/org-logos.ts (stylized
+//      placeholder for orgs whose real logo failed to fetch).
+//   4. 2-letter monogram on the org's brand colours — last resort.
+import fs from "node:fs";
+import path from "node:path";
+import { logoForOrg } from "../lib/org-logos";
+import { LOGO_MANIFEST } from "../lib/logo-manifest";
+import { stroke as orgStrokeColor, fill as orgFillColor } from "../lib/graph/constants";
+
+interface Props {
+  org: string;
+  size?: number;
+  radius?: number;
+  monogramOverride?: string;
+  class?: string;
+}
+
+const { org, size = 84, radius = 18, monogramOverride, class: className } = Astro.props;
+
+const file = LOGO_MANIFEST[org];
+const stylized = logoForOrg(org);
+
+const fallbackBg = orgFillColor(org);
+const fallbackFg = orgStrokeColor(org);
+const bg = stylized?.bg ?? fallbackBg;
+const fg = stylized?.fg ?? fallbackFg;
+
+const monogram = (() => {
+  if (monogramOverride) return monogramOverride;
+  const parts = org.split(/[^A-Za-z0-9]+/).filter(Boolean);
+  const a = (parts[0]?.[0] ?? "A").toUpperCase();
+  const b = (parts[1]?.[0] ?? parts[0]?.[1] ?? "").toUpperCase();
+  return `${a}${b}`.slice(0, 2);
+})();
+const fontSize = Math.round(size * 0.36);
+const glyphSize = Math.round(size * 0.62);
+
+// Read the SVG file at build time so we can inline it (and recolour
+// via currentColor on the wrapper). PNG/ICO fall back to <img>.
+// process.cwd() is the project root during Astro build, which is more
+// reliable than resolving from the component's own file URL.
+const projectRoot = process.cwd();
+
+let inlineSvg: string | null = null;
+let imgFallback: string | null = null;
+if (file) {
+  if (file.ext === "svg") {
+    try {
+      const p = path.join(projectRoot, "public", "logos", `${file.slug}.svg`);
+      const raw = fs.readFileSync(p, "utf8");
+      // Drop XML prelude + outer <svg ...> wrapper — we'll rebuild the
+      // wrapper with our own width/height so the parent controls size.
+      // Capture the viewBox from the original so the inner geometry
+      // scales correctly.
+      const viewBoxMatch = raw.match(/viewBox\s*=\s*"([^"]+)"/i);
+      const viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 24 24";
+      // Strip <?xml ... ?>, leading whitespace, outer <svg> tags.
+      const stripped = raw
+        .replace(/<\?xml[\s\S]*?\?>/g, "")
+        .replace(/<!DOCTYPE[\s\S]*?>/g, "")
+        .replace(/<svg\b[^>]*>/i, "")
+        .replace(/<\/svg>\s*$/i, "")
+        .trim();
+      inlineSvg = `<svg viewBox="${viewBox}" width="${glyphSize}" height="${glyphSize}" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">${stripped}</svg>`;
+    } catch {
+      inlineSvg = null;
+    }
+  } else {
+    imgFallback = `/logos/${file.slug}.${file.ext}`;
+  }
+}
+---
+
+<div
+  class:list={["org-logo", className]}
+  style={`width:${size}px;height:${size}px;border-radius:${radius}px;background:${bg};color:${fg};`}
+  aria-hidden="true"
+  data-org={org}
+>
+  {inlineSvg ? (
+    <span class="org-logo-svg" set:html={inlineSvg} />
+  ) : imgFallback ? (
+    <img
+      src={imgFallback}
+      alt=""
+      width={glyphSize}
+      height={glyphSize}
+      loading="lazy"
+      decoding="async"
+      class="org-logo-img"
+    />
+  ) : stylized ? (
+    <svg viewBox="0 0 24 24" width={size} height={size} set:html={stylized.svg} />
+  ) : (
+    <span class="org-logo-monogram" style={`font-size:${fontSize}px;`}>{monogram}</span>
+  )}
+</div>
+
+<style>
+  .org-logo {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+  .org-logo svg { display: block; }
+  .org-logo-svg {
+    display: inline-grid;
+    place-items: center;
+    line-height: 0;
+  }
+  .org-logo-img {
+    object-fit: contain;
+  }
+  .org-logo-monogram {
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+</style>

@@ -28,6 +28,28 @@ model_spec:
   availability:
     - open_weights
   hf_url: 'https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: GitHub
+      type: official
+      url: 'https://github.com/NVIDIA/NeMo'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Audio model from Nvidia — see the linked sources below for benchmark and review coverage"
+      - "Audio synthesis or transcription per the published model card"
+    best_for:
+      - "Audio synthesis / transcription tasks per the model card"
+      - "See the model spec and sources block for benchmarked use cases"
+    not_ideal_for:
+      - "Tasks far outside the modalities listed in this model's spec"
+      - "Workflows where a more recent successor in the same family scores higher"
 public_view:
   plain_english: |
     NVIDIA's open speech-recognition family — Parakeet-TDT-0.6B

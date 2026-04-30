@@ -43,6 +43,44 @@ model_spec:
   context_window: 128000
   parameters: 21B active
   hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V2.5-1210'
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.deepseek.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/deepseek-v2-5'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/deepseek-ai/DeepSeek-V2.5-1210'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First DeepSeek model that the wider OSS community took seriously — 236B MoE with only 21B active per token"
+      - "Saved 42.5% training cost vs DeepSeek 67B, reduced KV cache 93.3%, boosted max throughput 5.76x"
+      - "DeepSeekMoE architecture (fine-grained experts + shared expert isolation) became the template"
+    best_for:
+      - "Self-hosted Chinese / multilingual deployments where API access was politically risky"
+      - "Cost-sensitive bulk inference via budget providers"
+      - "MoE-architecture research and KV-cache optimisation experiments"
+    not_ideal_for:
+      - "Frontier reasoning by 2025 — superseded by V3 / V3.1 / V4 generations"
+      - "Edge / single-GPU deployments (236B MoE still demands multi-GPU serving)"
+    sources:
+      - name: "DeepSeek-V2 paper (arXiv)"
+        url: "https://arxiv.org/pdf/2405.04434"
+      - name: "BentoML — Complete guide to DeepSeek models"
+        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
+      - name: "Hugging Face — DeepSeek-V2-Chat"
+        url: "https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat"
+  availability:
+    - api
 public_view:
   plain_english: >-
     DeepSeek-V2.5 (Dec '24) is an API model from DeepSeek. It’s positioned for

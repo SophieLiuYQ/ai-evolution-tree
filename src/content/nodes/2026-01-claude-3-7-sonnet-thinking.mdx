@@ -64,6 +64,44 @@ model_spec:
     - image
   modalities_out:
     - text
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.anthropic.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-3-7'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+    - name: Artificial Analysis
+      type: independent
+      url: 'https://artificialanalysis.ai/models/claude-3-7-sonnet-thinking'
+      last_verified_at: '2026-04-29'
+      confidence: medium
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "First hybrid-reasoning model — same checkpoint switches between fast standard mode and extended thinking"
+      - "70.3% on SWE-bench Verified with custom scaffold — industry-leading at release; jumped from 62.3% baseline"
+      - "Output token limit jumped 8x to 64K (128K beta) — made long-form code/docs viable in one response"
+    best_for:
+      - "Agentic coding with Claude Code CLI — the model designed for this surface"
+      - "Math proofs, multi-step logic, and scientific analysis where extended thinking pays off"
+      - "Long-form code generation, technical writing, or analysis (up to 128K output)"
+    not_ideal_for:
+      - "Casual chat or copy that doesn't need reasoning — extended thinking adds latency without benefit"
+      - "Hard reasoning leaderboards by late 2025 — Claude 4 / Opus 4.5 have moved well past it"
+    sources:
+      - name: "Anthropic — Claude 3.7 Sonnet and Claude Code"
+        url: "https://www.anthropic.com/news/claude-3-7-sonnet"
+      - name: "Anthropic — Visible extended thinking"
+        url: "https://www.anthropic.com/news/visible-extended-thinking"
+      - name: "Simon Willison — Claude 3.7 extended thinking"
+        url: "https://simonw.substack.com/p/claude-37-sonnet-extended-thinking"
+  availability:
+    - api
 public_view:
   plain_english: >-
     Claude 3.7 Sonnet (Reasoning) is an API model from Anthropic. It’s

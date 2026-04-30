@@ -44,6 +44,37 @@ model_spec:
   homepage: 'https://www.doubao.com/'
   availability:
     - api
+  sources:
+    - name: Official
+      type: official
+      url: 'https://www.doubao.com/'
+      last_verified_at: '2026-04-29'
+      confidence: high
+  last_verified_at: '2026-04-29'
+  reviews:
+    feels_like:
+      - "Matches GPT-4o and Claude 3.5 Sonnet on benchmarks at ~50x cheaper price — the headline claim"
+      - "Deep Thinking mode beats OpenAI o1-preview and o1 on AIME"
+      - "Outperformed DeepSeek-V3, GPT-4o, and Llama 3-405B on MMLU-Pro and GPQA"
+      - "Sparse MoE — activates only a subset per token, dense-model quality at fraction of compute"
+      - "32K to 256K context windows — flexible for both chat and long-doc work"
+      - "Released the day before DeepSeek R1 stole the cycle — under-marketed but technically competitive"
+    best_for:
+      - "Cost-sensitive bulk inference at frontier-tier quality (5x cheaper than DeepSeek)"
+      - "Chinese-language production deployments via the Doubao consumer app"
+      - "Long-doc workflows leveraging the 256K context"
+      - "ByteDance ecosystem integrations (TikTok, Capcut, internal tools)"
+    not_ideal_for:
+      - "Self-hosted / open-weights deployments — closed API only"
+      - "Workflows where regulatory restrictions on Chinese-cloud apply"
+      - "Frontier reasoning leaderboards by mid-2025 — Claude 4, GPT-5, DeepSeek R1 lead"
+    sources:
+      - name: "MarkTechPost — Doubao-1.5-Pro deep thinking mode"
+        url: "https://www.marktechpost.com/2025/01/25/bytedance-ai-introduces-doubao-1-5-pro-language-model-with-a-deep-thinking-mode-and-matches-gpt-4o-and-claude-3-5-sonnet-benchmarks-at-50x-cheaper/"
+      - name: "AIBase — ByteDance releases Doubao 1.5 Pro"
+        url: "https://www.aibase.com/news/14931"
+      - name: "FireXCore — Doubao 1.5 Pro guide"
+        url: "https://firexcore.com/blog/doubao-1-5-pro-bytedance-ai-model/"
 public_view:
   plain_english: |
     ByteDance's flagship API model, released January 22, 2025 — one
