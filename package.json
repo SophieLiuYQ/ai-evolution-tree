@@ -30,7 +30,7 @@
     "@astrojs/sitemap": "^3.3.0",
     "@dagrejs/dagre": "^1.1.4",
     "@tailwindcss/vite": "^4.1.7",
-    "astro": "^5.7.10",
+    "astro": "^6.2.1",
     "gray-matter": "^4.0.3",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
