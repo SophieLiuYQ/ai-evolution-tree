@@ -513,19 +513,22 @@ const attrCards: AttrCard[] = (() => {
   // STRENGTH — top 2–3 capability tags from normalized categories.
   // Rendered as a stacked list (one per line) so a long set doesn't
   // word-break inside the narrow card.
-  const strengthLabels = normalizedCats
-    .map((c) => CAPABILITY_LABEL[c] ?? c)
-    .filter((s) => s !== "Paper" && s !== "Generative")
-    .slice(0, 3);
-  if (strengthLabels.length) {
-    out.push({
-      icon: "brain",
-      color: "green",
-      k: "Strength",
-      v: strengthLabels,
-      desc: "Best-known capabilities",
-    });
-  }
+  // STRENGTH card temporarily commented out — covered by the
+  // capability/performance bars below, and the comma-separated list
+  // wrapped awkwardly in the narrow attr card.
+  // const strengthLabels = normalizedCats
+  //   .map((c) => CAPABILITY_LABEL[c] ?? c)
+  //   .filter((s) => s !== "Paper" && s !== "Generative")
+  //   .slice(0, 3);
+  // if (strengthLabels.length) {
+  //   out.push({
+  //     icon: "brain",
+  //     color: "green",
+  //     k: "Strength",
+  //     v: strengthLabels,
+  //     desc: "Best-known capabilities",
+  //   });
+  // }
 
   // SPEED — tier ("Fast" / "Moderate" / "Slow") from speed rank, with tok/s in desc
   const speedTier = tierLabel(speedRank, "Fast", "Moderate", "Slow");
@@ -580,29 +583,32 @@ const attrCards: AttrCard[] = (() => {
     });
   }
 
-  // OUTPUT — for media/multimodal: show modality kind (Audio / Image / Video)
-  // Prefer this in place of Strength when the model produces media.
-  if (isMediaOutput) {
-    const mods = fmtModalities(spec?.modalities_out ?? spec?.modalities);
-    out.unshift({
-      icon: outMods.has("audio") ? "wave" : outMods.has("video") ? "sparkle" : "gallery",
-      color: outMods.has("audio") ? "cyan" : outMods.has("video") ? "pink" : "violet",
-      k: "Output",
-      v: mods,
-      desc: "Model produces this modality",
-    });
-  }
+  // OUTPUT card temporarily commented out — modality is already
+  // covered by the kind pill above the title and the model-type row
+  // in the right-rail Quick facts.
+  // if (isMediaOutput) {
+  //   const mods = fmtModalities(spec?.modalities_out ?? spec?.modalities);
+  //   out.unshift({
+  //     icon: outMods.has("audio") ? "wave" : outMods.has("video") ? "sparkle" : "gallery",
+  //     color: outMods.has("audio") ? "cyan" : outMods.has("video") ? "pink" : "violet",
+  //     k: "Output",
+  //     v: mods,
+  //     desc: "Model produces this modality",
+  //   });
+  // }
 
-  // DEVELOPER — always available; only used to fill the 5th slot.
-  if (out.length < 5) {
-    out.push({
-      icon: "globe",
-      color: "blue",
-      k: "Developer",
-      v: normalizeOrg(d.org),
-      desc: spec?.release_type === "open_weights" ? "Open weights" : "Lab / company",
-    });
-  }
+  // DEVELOPER card temporarily commented out — the org is already
+  // shown in the hero meta row (pill next to the date) and again in
+  // the right-rail Quick facts.
+  // if (out.length < 5) {
+  //   out.push({
+  //     icon: "globe",
+  //     color: "blue",
+  //     k: "Developer",
+  //     v: normalizeOrg(d.org),
+  //     desc: spec?.release_type === "open_weights" ? "Open weights" : "Lab / company",
+  //   });
+  // }
 
   return out.slice(0, 5);
 })();
@@ -1203,10 +1209,18 @@ const apiDocsUrl = ORG_API_DOCS[d.org] ?? null;
 const devTools: DevTool[] = (ORG_DEV_TOOLS[d.org] ?? []).slice(0, 5);
 
 // ===== NEW pill — show when the model was released within the last 90
-// days (matches the example screenshot's "NEW" badge near the title).
+// days. Skipped when the MDX date is an auto-fill artifact (sub-second
+// precision = `Date().toISOString()` placeholder, almost certainly not
+// the real release date) since those would otherwise mark old models
+// like Claude 3.5 / Gemini 1.5 / Llama 3.1 as "NEW".
 const NOW = new Date();
 const ageDays = (NOW.getTime() - d.date.getTime()) / (1000 * 60 * 60 * 24);
-const isNew = ageDays >= 0 && ageDays <= 90;
+const dateLooksAutoFilled =
+  d.date.getUTCHours() !== 0 ||
+  d.date.getUTCMinutes() !== 0 ||
+  d.date.getUTCSeconds() !== 0 ||
+  d.date.getUTCMilliseconds() !== 0;
+const isNew = !dateLooksAutoFilled && ageDays >= 0 && ageDays <= 90;
 
 // ===== Model-kind pill (e.g. "AUDIO MODEL", "LANGUAGE MODEL") shown
 // above the title in the example layout.
@@ -1229,6 +1243,112 @@ const breadcrumbCategory = (() => {
     case "llm": return "Language Models";
     default: return "Models";
   }
+})();
+
+// ===== Model Evolution timeline =====
+// Linear horizontal strip of models in the same family, sorted by date.
+// Source priority: model_spec.family (explicit family tag, ~80%
+// coverage on frontier nodes) → fallback to walking builds_on parents
+// + children one level deep. Window of up to 5 models centered on
+// the current one so the strip stays scannable.
+type FamilyCard = { slug: string; title: string; date: Date; isCurrent: boolean };
+const familyTimeline: FamilyCard[] = (() => {
+  const family = spec?.family;
+  let pool: typeof allNodes = [];
+  if (family) {
+    pool = allNodes.filter((n) => n.data.model_spec?.family === family);
+  } else {
+    // Fallback: 1-hop neighborhood via builds_on relationships.
+    // Restricted to nodes from the SAME ORG so cross-lab descendants
+    // (ChatGLM, Llama, etc. that inherited RLHF from InstructGPT)
+    // don't get pulled into an OpenAI family timeline.
+    const sameOrg = (n: typeof allNodes[number]) =>
+      n.data.org === d.org ||
+      normalizeOrg(n.data.org) === normalizeOrg(d.org);
+    const parentSlugs = new Set(
+      d.relationships
+        .filter((r) => r.type === "builds_on")
+        .map((r) => r.to),
+    );
+    const childSlugs = new Set(
+      allNodes
+        .filter((n) =>
+          sameOrg(n) &&
+          n.data.relationships.some(
+            (r) => r.type === "builds_on" && r.to === d.slug,
+          ),
+        )
+        .map((n) => n.data.slug),
+    );
+    pool = allNodes.filter(
+      (n) =>
+        n.data.slug === d.slug ||
+        (parentSlugs.has(n.data.slug) && sameOrg(n)) ||
+        childSlugs.has(n.data.slug),
+    );
+  }
+  if (pool.length < 2) return []; // need at least 2 cards to show a timeline
+
+  // Drop hidden / template / paper / placeholder-date nodes:
+  //   • graph_hidden — not part of the public tree
+  //   • _ prefix — template files
+  //   • release_type: paper — research papers (Transformer, Scaling
+  //     Laws, RLHF, Constitutional AI) pollute family chains via the
+  //     builds_on fallback walk
+  //   • date 2026-01-01 exactly — placeholder timestamp on ~330
+  //     bulk-added variant SKUs; would sort wrong in chronology
+  // The current model is always kept regardless.
+  const PLACEHOLDER_DATE_MS = new Date("2026-01-01T00:00:00.000Z").getTime();
+  const isAutoFillTimestamp = (dt: Date) => {
+    // Hand-edited dates land at exactly midnight UTC (the YAML loader
+    // parses "2024-09-15" → 00:00:00.000Z). Auto-fill timestamps from
+    // `new Date().toISOString()` always carry non-zero hour/min/sec.
+    // We use that asymmetry to reject ~28 series-headline nodes whose
+    // dates were filled programmatically and would otherwise pollute
+    // the chronology of every family timeline they appear in.
+    return (
+      dt.getUTCHours() !== 0 ||
+      dt.getUTCMinutes() !== 0 ||
+      dt.getUTCSeconds() !== 0 ||
+      dt.getUTCMilliseconds() !== 0
+    );
+  };
+  const cleaned = pool.filter((n) => {
+    if (n.data.slug === d.slug) return true;
+    if (n.data.graph_hidden) return false;
+    if (/^_/.test(n.data.slug)) return false;
+    if (n.data.model_spec?.release_type === "paper") return false;
+    if (n.data.date.getTime() === PLACEHOLDER_DATE_MS) return false;
+    if (isAutoFillTimestamp(n.data.date)) return false;
+    return true;
+  });
+
+  const sorted = cleaned
+    .map((n) => ({
+      slug: n.data.slug,
+      title: (n.data.title.match(/^(.+?)\s+[—–-]\s+/) || [, n.data.title])[1] as string,
+      date: n.data.date,
+      isCurrent: n.data.slug === d.slug,
+    }))
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  // Window of up to 5 cards centered on the current model's index.
+  const myIdx = sorted.findIndex((c) => c.isCurrent);
+  if (myIdx < 0 || sorted.length <= 5) return sorted.slice(0, 5);
+  const start = Math.max(0, Math.min(sorted.length - 5, myIdx - 2));
+  return sorted.slice(start, start + 5);
+})();
+const familyName = (() => {
+  const fam = spec?.family;
+  if (!fam) return null;
+  // "Alibaba qwen" → "Qwen"; "OpenAI GPT" → "GPT"; "Anthropic Claude" → "Claude"
+  const parts = fam.split(/\s+/);
+  return parts.length > 1 ? parts.slice(1).join(" ") : fam;
+})();
+const familySubtitle = (() => {
+  if (!familyName) return null;
+  const orgLabel = normalizeOrg(d.org);
+  return `${familyName} is ${orgLabel}'s ${modelKind.label.toLowerCase()} family.`;
 })();
 ---
 
@@ -1815,7 +1935,8 @@ const breadcrumbCategory = (() => {
       </div>
     </section>
 
-    {/* ============== Comparison ============== */}
+    {/* ============== Comparison — commented out ============== */}
+    {/*
     {comparisonRows.length > 0 && (
       <section class="panel cmp-panel">
         <h2 class="block-heading">Comparison</h2>
@@ -1831,8 +1952,45 @@ const breadcrumbCategory = (() => {
         </div>
       </section>
     )}
+    */}
 
     {/* ============== Lineage + Comparison (2-col, or stacked when dense) ============== */}
+    {/* ============== Model Evolution (linear family timeline) ============== */}
+    {familyTimeline.length > 1 && (
+      <section class="panel evolution-panel">
+        <div class="evolution-head">
+          <h2 class="evolution-title">
+            <span class="evolution-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8 7l8 4M8 17l8-4"/></svg>
+            </span>
+            Model Evolution
+          </h2>
+          {familySubtitle && <p class="evolution-sub">{familySubtitle}</p>}
+        </div>
+        <div class="evolution-strip">
+          {familyTimeline.map((c, i) => (
+            <>
+              <a
+                class={`evolution-card ${c.isCurrent ? "evolution-card-current" : ""}`}
+                href={`/node/${c.slug}/`}
+                title={c.isCurrent ? `${c.title} (this model)` : c.title}
+                aria-current={c.isCurrent ? "true" : undefined}
+              >
+                <div class="evolution-card-name">{c.title}</div>
+                <div class="evolution-card-date">{c.date.toLocaleDateString("en-US", { month: "short", year: "numeric" })}</div>
+              </a>
+              {i < familyTimeline.length - 1 && (
+                <span class="evolution-arrow" aria-hidden="true">→</span>
+              )}
+            </>
+          ))}
+        </div>
+        <a class="evolution-link" href="/tree/">View full evolution tree →</a>
+      </section>
+    )}
+
+    {/* ============== Lineage (minigraph) + prose body — commented out ============== */}
+    {/*
     <section class={`dual-row lineage-prose-row ${denseLineage ? "lineage-prose-stacked" : ""}`}>
       <div class="panel lineage-panel">
         <div class="panel-head">
@@ -1849,11 +2007,13 @@ const breadcrumbCategory = (() => {
         </div>
       </div>
     </section>
+    */}
 
-    {/* ============== Related Models ============== */}
-    <RelationshipsBlock current={node} all={allNodes} />
+    {/* ============== Related Models — commented out ============== */}
+    {/* <RelationshipsBlock current={node} all={allNodes} /> */}
 
-    {/* ============== Technical Details (collapsible) ============== */}
+    {/* ============== Technical Details (collapsible) — commented out ============== */}
+    {/*
     {d.model_spec && (
       <details class="tech-details" id="tech-details">
         <summary class="tech-summary">
@@ -1866,6 +2026,7 @@ const breadcrumbCategory = (() => {
         </div>
       </details>
     )}
+    */}
 
     {hasVariants && (
       <script is:inline>
@@ -1909,7 +2070,8 @@ const breadcrumbCategory = (() => {
 
     {!hideAuthors && <p class="meta-authors">{d.authors.join(" · ")}</p>}
 
-    <CitationsBlock citations={d.citations} />
+    {/* Citations block commented out — covered by sources cited inline. */}
+    {/* <CitationsBlock citations={d.citations} /> */}
       </div>
 
       <aside class="page-aside">
@@ -1977,10 +2139,12 @@ const breadcrumbCategory = (() => {
               <div class="facts-row"><dt>Model type</dt><dd>{modelKind.label}</dd></div>
               <div class="facts-row"><dt>License</dt><dd>{spec?.release_type === "open_weights" ? "Open weights" : "Proprietary / undisclosed"}</dd></div>
               <div class="facts-row"><dt>Context length</dt><dd>{fmtCtx(spec?.context_window) ?? "N/A"}</dd></div>
-              <div class="facts-row"><dt>Last updated</dt><dd>{fmtUpdatedLong ?? "—"}</dd></div>
             </dl>
           </section>
 
+          {/* Performance highlights card commented out — duplicates the
+              capability/performance bars in the main column. */}
+          {/*
           {perfHighlights.length > 0 && (
             <section class="aside-card">
               <h3 class="aside-title">Performance highlights</h3>
@@ -2001,7 +2165,12 @@ const breadcrumbCategory = (() => {
               <a class="aside-link" href="#tech-details">View all benchmarks →</a>
             </section>
           )}
+          */}
 
+          {/* Sources card commented out — links are still surfaced
+              under the hero (pills) and inside the Reviews / Tech
+              Details sections. */}
+          {/*
           <section class="aside-card">
             <h3 class="aside-title">Sources</h3>
             <div class="aside-links">
@@ -2014,6 +2183,7 @@ const breadcrumbCategory = (() => {
               ))}
             </div>
           </section>
+          */}
         </div>
       </aside>
     </div>
@@ -3481,6 +3651,95 @@ const breadcrumbCategory = (() => {
     padding: 3px 10px;
     border-radius: 999px;
   }
+
+  /* ============== Model Evolution (linear family timeline) ============== */
+  .evolution-panel { padding: 22px 24px 20px; }
+  .evolution-head { margin-bottom: 14px; }
+  .evolution-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 850;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+  }
+  .evolution-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    color: rgb(99, 102, 241);
+  }
+  .evolution-sub {
+    margin: 4px 0 0 38px;
+    font-size: 12.5px;
+    color: var(--fg-muted);
+  }
+  .evolution-strip {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 0;
+  }
+  .evolution-card {
+    flex: 1 1 0;
+    min-width: 130px;
+    padding: 14px 14px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    text-align: center;
+    text-decoration: none;
+    color: var(--fg);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .evolution-card:hover {
+    border-color: rgba(99, 102, 241, 0.35);
+    background: rgba(99, 102, 241, 0.04);
+  }
+  .evolution-card-current {
+    border-color: rgba(99, 102, 241, 0.55);
+    background: rgba(99, 102, 241, 0.08);
+    color: rgb(67, 56, 202);
+  }
+  .evolution-card-current:hover {
+    background: rgba(99, 102, 241, 0.12);
+  }
+  .evolution-card-name {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: inherit;
+  }
+  .evolution-card-date {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .evolution-card-current .evolution-card-date {
+    color: rgb(99, 102, 241);
+    opacity: 0.85;
+  }
+  .evolution-arrow {
+    align-self: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    color: var(--fg-muted);
+  }
+  .evolution-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 750;
+    color: var(--accent-2);
+    text-decoration: none;
+  }
+  .evolution-link:hover { text-decoration: underline; }
 
   /* ============== Lineage / Prose / Tech panels ============== */
   .lineage-panel,

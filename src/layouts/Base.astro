@@ -26,11 +26,10 @@ const isTreePage = path === "/tree/" || path.startsWith("/tree/");
 // the navigation already; duplicating the menu in the header just
 // adds chrome). Brand stays in its normal centered-container position.
 const isLanding = path === "/";
-// Model detail pages now keep the global nav so readers can jump
-// between sections (Models / Compare / Benchmarks / About) without
-// going back to the home page first.
+// Model detail pages: nav hidden again per design — the editorial
+// sheet doesn't need duplicate top-of-page chrome.
 const isNodePage = path.startsWith("/node/");
-const hideHeaderNav = isTreePage || isLanding;
+const hideHeaderNav = isTreePage || isLanding || isNodePage;
 
 // Cache-bust the logo when the asset changes (browsers aggressively
 // cache favicons / header images).
