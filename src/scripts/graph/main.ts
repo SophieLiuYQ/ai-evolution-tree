@@ -25,7 +25,14 @@ function safe(name: string, fn: () => void) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// Astro compiles each <script> block as an ES module — modules are
+// deferred, so by the time this file runs the document is already
+// `interactive` (DOMContentLoaded has fired). Listening for
+// DOMContentLoaded here would never fire in Chrome and the entire
+// init chain (including the inspector click handler) would silently
+// no-op. We instead init immediately, with a one-tick fallback for
+// the rare case where the script somehow lands during `loading`.
+function initAll() {
   safe("initState", initState);
   safe("attachOrientHandlers", attachOrientHandlers);
   safe("attachInteractions", attachInteractions);
@@ -42,4 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("load", () =>
     safe("scrollToMostRecent (load)", scrollToMostRecent),
   );
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAll, { once: true });
+} else {
+  initAll();
+}
