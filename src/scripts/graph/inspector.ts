@@ -394,7 +394,7 @@ function handleSelect(slug: string) {
 }
 
 export function attachInspectorHandlers() {
-  console.info("[inspector] attaching handlers");
+  console.log("[inspector] attaching handlers");
 
   // Close button just collapses the panel content (keeps selection).
   const close = document.querySelector<HTMLButtonElement>(".inspector-close");
@@ -407,7 +407,7 @@ export function attachInspectorHandlers() {
     const link = t?.closest?.(".node-link") as HTMLElement | null;
     if (!link) return;
     const slug = link.getAttribute("data-slug");
-    console.info("[inspector] click on node-link, slug =", slug);
+    console.log("[inspector] click on node-link, slug =", slug);
     if (!slug) return;
     const me = e as MouseEvent;
     const allowNav = me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0;

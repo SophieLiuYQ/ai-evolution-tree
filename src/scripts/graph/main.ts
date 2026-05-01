@@ -17,11 +17,32 @@ import { attachStickyHeaders } from "./sticky";
 // (which is what bricked buttons in the past — a single broken module
 // init blocked every later attachX from running). Errors are logged
 // so DevTools console makes it obvious which one failed.
+// Visible on-page banner so we can tell if the script ran at all
+// without the user opening DevTools. Auto-hides after 3s once init
+// finishes successfully. Bricked imports / CSP blocks the banner from
+// appearing → instant signal that the script never executed.
+function dbgBanner(msg: string, ok: boolean) {
+  let el = document.getElementById("ai-tree-dbg");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "ai-tree-dbg";
+    el.style.cssText =
+      "position:fixed;bottom:8px;left:8px;z-index:9999;padding:6px 10px;border-radius:6px;font:11px ui-monospace,Menlo,monospace;background:#fef3c7;color:#78350f;border:1px solid #f59e0b;box-shadow:0 1px 4px rgba(0,0,0,.1);max-width:60vw;";
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.background = ok ? "#dcfce7" : "#fef3c7";
+  el.style.color = ok ? "#166534" : "#78350f";
+  el.style.borderColor = ok ? "#22c55e" : "#f59e0b";
+  if (ok) setTimeout(() => el?.remove(), 3000);
+}
+
 function safe(name: string, fn: () => void) {
   try {
     fn();
   } catch (err) {
     console.error(`[ai-tree:init] ${name} threw:`, err);
+    dbgBanner(`init failed: ${name} threw — open console for details`, false);
   }
 }
 
@@ -33,6 +54,8 @@ function safe(name: string, fn: () => void) {
 // no-op. We instead init immediately, with a one-tick fallback for
 // the rare case where the script somehow lands during `loading`.
 function initAll() {
+  console.log("[ai-tree] initAll() running, readyState =", document.readyState);
+  dbgBanner("ai-tree: init running…", false);
   safe("initState", initState);
   safe("attachOrientHandlers", attachOrientHandlers);
   safe("attachInteractions", attachInteractions);
@@ -49,6 +72,7 @@ function initAll() {
   window.addEventListener("load", () =>
     safe("scrollToMostRecent (load)", scrollToMostRecent),
   );
+  dbgBanner("ai-tree: init complete ✓", true);
 }
 
 if (document.readyState === "loading") {
