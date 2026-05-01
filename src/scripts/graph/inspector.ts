@@ -344,13 +344,27 @@ function setPanelOpen(open: boolean) {
 }
 
 function render(slug: string) {
-  const raw = graphData().nodes?.[slug] as NodeMeta | undefined;
-  const metaBySlug = graphData().nodes as Record<string, NodeMeta> | undefined;
-  if (!raw || !metaBySlug) return;
+  // Each step is wrapped so one bad sub-render (e.g. malformed
+  // benchmark, missing modality) doesn't leave the whole panel
+  // stuck on the empty-state placeholder.
+  let raw: NodeMeta | undefined;
+  let metaBySlug: Record<string, NodeMeta> | undefined;
+  try {
+    raw = graphData().nodes?.[slug] as NodeMeta | undefined;
+    metaBySlug = graphData().nodes as Record<string, NodeMeta> | undefined;
+  } catch (err) {
+    console.error("[inspector] graphData() unavailable", err);
+    return;
+  }
+  if (!raw || !metaBySlug) {
+    console.warn(`[inspector] no data for slug "${slug}"`);
+    return;
+  }
 
+  // Headline fields first so the panel always shows SOMETHING even if
+  // a later sub-render throws.
   setText("inspector-org", raw.org);
   setText("inspector-title", normalizeTitleCasing(raw.title));
-  renderMeta(raw);
 
   const desc = raw.public_view?.plain_english?.trim() ?? "";
   setText(
@@ -358,12 +372,20 @@ function render(slug: string) {
     desc || "No summary yet. Open the full page for details.",
   );
 
-  renderBenchmarks(raw);
-  renderLineage(raw, metaBySlug);
-  wireInspectorButtons(slug);
-  setHidden("inspector-footer", false);
   setPanelOpen(true);
-  highlightSelected(slug);
+  setHidden("inspector-footer", false);
+  wireInspectorButtons(slug);
+
+  // Defensive sub-renders.
+  const safeStep = (name: string, fn: () => void) => {
+    try { fn(); } catch (err) {
+      console.error(`[inspector] ${name} threw:`, err);
+    }
+  };
+  safeStep("renderMeta", () => renderMeta(raw!));
+  safeStep("renderBenchmarks", () => renderBenchmarks(raw!));
+  safeStep("renderLineage", () => renderLineage(raw!, metaBySlug!));
+  safeStep("highlightSelected", () => highlightSelected(slug));
 }
 
 function handleSelect(slug: string) {

@@ -2706,6 +2706,7 @@ const familySubtitle = (() => {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-bottom: 0;
+    align-items: start; /* let panels keep their natural heights */
   }
   .dual-row > .panel { margin-bottom: 16px; }
   @media (max-width: 880px) {
@@ -3291,7 +3292,12 @@ const familySubtitle = (() => {
 
 
   /* ============== Reviews: feels-like + use-cases (2-up) ============== */
-  .review-row { grid-template-columns: 1fr 1fr; }
+  /* `align-items: start` so the two panels keep their natural heights;
+     otherwise the grid stretches the shorter "What it feels like" to
+     match the taller "Best use cases" (which now has tools + not-ideal
+     subsections), leaving awkward trailing whitespace inside the left
+     panel. */
+  .review-row { grid-template-columns: 1fr 1fr; align-items: start; }
   @media (max-width: 880px) { .review-row { grid-template-columns: 1fr; } }
   .review-panel {
     background: white;
