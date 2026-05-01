@@ -8,7 +8,8 @@ import LineageZoom from "../../components/LineageZoom.astro";
 import OrgLogo from "../../components/OrgLogo.astro";
 import { stroke as orgStrokeColor, fill as orgFillColor, HIDDEN_EDGE_TYPES } from "../../lib/graph/constants";
 import { ORG_GITHUB } from "../../lib/org-links";
-import { ORG_CHAT_URL, ORG_PRODUCT_NAME } from "../../lib/org-logos";
+import { ORG_CHAT_URL, ORG_PRODUCT_NAME, ORG_API_DOCS, ORG_DEV_TOOLS } from "../../lib/org-logos";
+import type { DevTool } from "../../lib/org-logos";
 import { normalizeOrg } from "../../lib/org-display";
 import { normalizeCategories } from "../../lib/categories";
 import { benchSource } from "../../lib/benchmark-sources";
@@ -1191,6 +1192,16 @@ const demoUrl = ORG_CHAT_URL[d.org] ?? officialUrl ?? null;
 const demoProductName = ORG_PRODUCT_NAME[d.org] ?? null;
 const demoLabel = demoProductName ? `Try ${demoProductName}` : "Try demo";
 
+// API Docs CTA — third hero button next to "Try X" and "Compare". Only
+// shown when the org has a documented API surface.
+const apiDocsUrl = ORG_API_DOCS[d.org] ?? null;
+
+// "Tools to try" — small list of developer tools / IDEs that wrap or
+// integrate this org's models. Surfaced inside the right "Best use
+// cases" panel so a reader sees use cases AND actionable tools side
+// by side. Skipped when no entry exists for the org.
+const devTools: DevTool[] = (ORG_DEV_TOOLS[d.org] ?? []).slice(0, 5);
+
 // ===== NEW pill — show when the model was released within the last 90
 // days (matches the example screenshot's "NEW" badge near the title).
 const NOW = new Date();
@@ -1204,6 +1215,21 @@ const kindPillLabel = (() => {
   // Model.kind labels like "Language model" → "LANGUAGE MODEL"
   return k;
 })();
+
+// ===== Breadcrumb category — one of "Language Models" / "Audio Models" /
+// "Image Models" / "Video Models" / "Embedding Models" / "Models" keyed
+// off modelKind.key. Used in the breadcrumb mid-link so a reader sees
+// the model's category instead of generic "Graph".
+const breadcrumbCategory = (() => {
+  switch (modelKind.key) {
+    case "audio": return "Audio Models";
+    case "image": return "Image Models";
+    case "video": return "Video Models";
+    case "embedding": return "Embedding Models";
+    case "llm": return "Language Models";
+    default: return "Models";
+  }
+})();
 ---
 
 <Base title={`${d.title} · AI Evolution Tree`} description={d.public_view.plain_english}>
@@ -1212,7 +1238,7 @@ const kindPillLabel = (() => {
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/" data-i18n="nav.home">Home</a>
       <span class="bc-sep">›</span>
-      <a href="/tree/" data-i18n="nav.graph">Graph</a>
+      <a href="/tree/" title={`See all ${breadcrumbCategory.toLowerCase()} in the tree`}>{breadcrumbCategory}</a>
       <span class="bc-sep">›</span>
       <span class="bc-current">{titleName}</span>
     </nav>
@@ -1273,6 +1299,13 @@ const kindPillLabel = (() => {
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 8l-4 4 4 4M3 12h14M17 16l4-4-4-4"/></svg>
               Compare
             </button>
+            {apiDocsUrl && (
+              <a class="btn btn-secondary" href={apiDocsUrl} target="_blank" rel="noopener" title={`${normalizeOrg(d.org)} API documentation`}>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7l4 4v12H9V4z"/><path d="M14 4v5h5 M11 12h6 M11 16h6"/></svg>
+                API Docs
+                <span class="btn-ext">↗</span>
+              </a>
+            )}
           </div>
             </div>
           </div>
@@ -1751,6 +1784,20 @@ const kindPillLabel = (() => {
             </li>
           ))}
         </ul>
+        {devTools.length > 0 && (
+          <>
+            <div class="review-divider"></div>
+            <h3 class="review-subheading">Tools to try</h3>
+            <div class="tools-chips">
+              {devTools.map((t) => (
+                <a class="tools-chip" href={t.url} target="_blank" rel="noopener" title={t.note ?? t.name}>
+                  <span class="tools-chip-name">{t.name}</span>
+                  <span class="tools-chip-ext" aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
         {notIdealBullets.length > 0 && (
           <>
             <div class="review-divider"></div>
@@ -1876,6 +1923,27 @@ const kindPillLabel = (() => {
             Dark treatment for the first card per design_page_2.
             Kept as the first visible block in the sticky rail.
           */}
+
+          {variants.length > 1 && (
+            <section class="aside-card">
+              <h3 class="aside-title">Variants</h3>
+              <div class="aside-variant-list">
+                {variants.map((v) => (
+                  <div class="aside-variant">
+                    <div class="aside-variant-row">
+                      <span class="aside-variant-label">{v.label}</span>
+                      {v.status && (
+                        <span class={`aside-variant-status status-${v.status}`}>{v.status}</span>
+                      )}
+                    </div>
+                    {v.api_model && (
+                      <code class="aside-variant-api">{v.api_model}</code>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {comparisonRows.length > 0 && (
             <section class="aside-card">
@@ -2004,6 +2072,47 @@ const kindPillLabel = (() => {
     margin-top: 8px;
   }
   .aside-list { display: flex; flex-direction: column; gap: 8px; }
+  .aside-variant-list { display: flex; flex-direction: column; gap: 8px; }
+  .aside-variant {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+  }
+  .aside-variant-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .aside-variant-label {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--fg);
+  }
+  .aside-variant-status {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .aside-variant-status.status-active   { background: rgba( 34, 197, 94, 0.12); color: rgb(21, 128, 61); border-color: rgba( 34, 197, 94, 0.30); }
+  .aside-variant-status.status-preview  { background: rgba(245, 158, 11, 0.16); color: rgb(180, 83, 9);  border-color: rgba(245, 158, 11, 0.32); }
+  .aside-variant-status.status-legacy   { background: rgba(15,  23, 42, 0.06);  color: rgb(71,  85, 105); border-color: rgba(15,  23, 42, 0.12); }
+  .aside-variant-status.status-retired  { background: rgba(244,  63, 94, 0.10); color: rgb(190, 18, 60); border-color: rgba(244,  63, 94, 0.22); }
+  .aside-variant-api {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    color: var(--fg-muted);
+    background: var(--bg-sunk);
+    padding: 1px 6px;
+    border-radius: 5px;
+  }
   .aside-item {
     display: flex;
     align-items: center;
@@ -3073,6 +3182,28 @@ const kindPillLabel = (() => {
     background: var(--border);
     margin: 18px 0 14px;
   }
+  .tools-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .tools-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 197, 94, 0.30);
+    background: rgba(34, 197, 94, 0.08);
+    color: rgb(21, 128, 61);
+    font-size: 12px;
+    font-weight: 750;
+    text-decoration: none;
+    transition: background 0.12s ease;
+  }
+  .tools-chip:hover { background: rgba(34, 197, 94, 0.16); }
+  .tools-chip-ext { font-size: 10px; opacity: 0.7; }
   .review-subheading {
     margin: 0 0 12px;
     font-size: 14px;

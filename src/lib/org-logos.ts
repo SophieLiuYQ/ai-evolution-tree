@@ -379,3 +379,188 @@ export const ORG_PRODUCT_NAME: Record<string, string> = {
   "Hume AI": "Hume",
   "Hugging Face": "HF Chat",
 };
+
+// Per-org developer documentation URL — surfaced as a third hero CTA
+// ("API Docs ↗") next to "Try X" and "Compare". Skipped when no entry
+// exists. Kept distinct from ORG_CHAT_URL because the chat surface and
+// the developer docs are usually different sites.
+export const ORG_API_DOCS: Record<string, string> = {
+  "Anthropic": "https://docs.claude.com/",
+  "OpenAI": "https://platform.openai.com/docs/",
+  "Google": "https://ai.google.dev/docs",
+  "Google DeepMind": "https://ai.google.dev/docs",
+  "DeepMind": "https://ai.google.dev/docs",
+  "xAI": "https://docs.x.ai/",
+  "Mistral AI": "https://docs.mistral.ai/",
+  "Meta AI": "https://www.llama.com/docs/",
+  "Microsoft": "https://learn.microsoft.com/azure/ai-services/openai/",
+  "DeepSeek": "https://api-docs.deepseek.com/",
+  "Alibaba": "https://help.aliyun.com/zh/dashscope/",
+  "Cohere": "https://docs.cohere.com/",
+  "Perplexity": "https://docs.perplexity.ai/",
+  "MiniMax": "https://www.minimax.io/platform_overview",
+  "Moonshot AI": "https://platform.moonshot.cn/docs",
+  "Tsinghua / Zhipu": "https://open.bigmodel.cn/dev/api",
+  "Tencent": "https://hunyuan.tencent.com/api",
+  "Baidu": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
+  "ByteDance": "https://www.volcengine.com/docs/82379",
+  "Hugging Face": "https://huggingface.co/docs",
+  "Suno": "https://docs.suno.com/",
+  "ElevenLabs": "https://elevenlabs.io/docs",
+  "Runway": "https://docs.runwayml.com/",
+  "Luma AI": "https://docs.lumalabs.ai/",
+  "Together AI": "https://docs.together.ai/",
+  "Hume AI": "https://dev.hume.ai/docs",
+  "Stability AI": "https://platform.stability.ai/docs/",
+  "Black Forest Labs": "https://docs.bfl.ai/",
+  "Nvidia": "https://docs.nvidia.com/ai-enterprise/",
+  "Amazon": "https://docs.aws.amazon.com/bedrock/",
+  "Salesforce": "https://developer.salesforce.com/docs/einstein/",
+  "AI21 Labs": "https://docs.ai21.com/",
+  "Reka AI": "https://docs.reka.ai/",
+  "01.AI": "https://platform.lingyiwanwu.com/docs",
+  "Stepfun": "https://platform.stepfun.com/docs",
+  "Liquid AI": "https://docs.liquid.ai/",
+};
+
+// Per-org developer-tool / IDE recommendations — surfaced under the
+// "Tools to try" right column on the model page. Each entry is a
+// short list of 3–5 production tools that actually wrap or integrate
+// the org's models. Curated, not exhaustive.
+export type DevTool = { name: string; url: string; note?: string };
+export const ORG_DEV_TOOLS: Record<string, DevTool[]> = {
+  "Anthropic": [
+    { name: "Claude Code", url: "https://docs.claude.com/en/docs/claude-code/", note: "First-party CLI agent" },
+    { name: "Cursor", url: "https://cursor.com/", note: "AI code editor with Claude support" },
+    { name: "Cline", url: "https://cline.bot/", note: "VS Code agent" },
+    { name: "Continue.dev", url: "https://continue.dev/", note: "OSS coding assistant" },
+    { name: "Aider", url: "https://aider.chat/", note: "CLI pair programmer" },
+  ],
+  "OpenAI": [
+    { name: "ChatGPT", url: "https://chatgpt.com/", note: "Consumer chat product" },
+    { name: "Codex CLI", url: "https://github.com/openai/codex", note: "Terminal coding agent" },
+    { name: "Cursor", url: "https://cursor.com/", note: "AI code editor" },
+    { name: "GitHub Copilot", url: "https://github.com/features/copilot", note: "IDE autocomplete" },
+    { name: "Continue.dev", url: "https://continue.dev/" },
+  ],
+  "Google": [
+    { name: "Gemini app", url: "https://gemini.google.com/", note: "Consumer chat" },
+    { name: "AI Studio", url: "https://aistudio.google.com/", note: "Google's prompt playground" },
+    { name: "Vertex AI", url: "https://cloud.google.com/vertex-ai", note: "GCP enterprise surface" },
+    { name: "Gemini CLI", url: "https://github.com/google-gemini/gemini-cli" },
+  ],
+  "Google DeepMind": [
+    { name: "Gemini app", url: "https://gemini.google.com/", note: "Consumer chat" },
+    { name: "AI Studio", url: "https://aistudio.google.com/" },
+    { name: "Vertex AI", url: "https://cloud.google.com/vertex-ai" },
+  ],
+  "DeepMind": [
+    { name: "Gemini app", url: "https://gemini.google.com/" },
+    { name: "AI Studio", url: "https://aistudio.google.com/" },
+  ],
+  "xAI": [
+    { name: "Grok app", url: "https://grok.com/", note: "Consumer chat" },
+    { name: "X (Twitter)", url: "https://x.com/", note: "In-product Grok integration" },
+    { name: "Cursor", url: "https://cursor.com/", note: "Supports Grok via API" },
+  ],
+  "Mistral AI": [
+    { name: "Le Chat", url: "https://chat.mistral.ai/", note: "Mistral's consumer chat" },
+    { name: "La Plateforme", url: "https://console.mistral.ai/", note: "Mistral's API console" },
+    { name: "Continue.dev", url: "https://continue.dev/" },
+    { name: "Aider", url: "https://aider.chat/" },
+  ],
+  "Meta AI": [
+    { name: "Meta AI app", url: "https://meta.ai/", note: "Consumer chat" },
+    { name: "Hugging Face", url: "https://huggingface.co/meta-llama", note: "Open weights" },
+    { name: "Ollama", url: "https://ollama.com/library/llama3", note: "Local inference" },
+    { name: "vLLM", url: "https://github.com/vllm-project/vllm", note: "Self-host serving" },
+  ],
+  "DeepSeek": [
+    { name: "DeepSeek Chat", url: "https://chat.deepseek.com/" },
+    { name: "Cursor", url: "https://cursor.com/" },
+    { name: "Hugging Face", url: "https://huggingface.co/deepseek-ai" },
+    { name: "Ollama", url: "https://ollama.com/library/deepseek-r1" },
+  ],
+  "Alibaba": [
+    { name: "Qwen Chat", url: "https://chat.qwen.ai/" },
+    { name: "Hugging Face", url: "https://huggingface.co/Qwen", note: "Open weights" },
+    { name: "Ollama", url: "https://ollama.com/library/qwen3" },
+    { name: "DashScope", url: "https://help.aliyun.com/zh/dashscope/", note: "Alibaba API" },
+  ],
+  "Microsoft": [
+    { name: "Copilot", url: "https://copilot.microsoft.com/" },
+    { name: "Azure OpenAI", url: "https://azure.microsoft.com/en-us/products/ai-services/openai-service" },
+    { name: "Azure AI Foundry", url: "https://ai.azure.com/" },
+    { name: "GitHub Copilot", url: "https://github.com/features/copilot" },
+  ],
+  "Cohere": [
+    { name: "Cohere Coral", url: "https://coral.cohere.com/" },
+    { name: "Cohere Playground", url: "https://dashboard.cohere.com/playground/chat" },
+  ],
+  "Perplexity": [
+    { name: "Perplexity", url: "https://www.perplexity.ai/" },
+    { name: "Perplexity API", url: "https://docs.perplexity.ai/" },
+  ],
+  "Hugging Face": [
+    { name: "HF Chat", url: "https://huggingface.co/chat/" },
+    { name: "Inference Endpoints", url: "https://huggingface.co/inference-endpoints" },
+    { name: "Transformers (Python)", url: "https://huggingface.co/docs/transformers/" },
+  ],
+  "Moonshot AI": [
+    { name: "Kimi", url: "https://kimi.moonshot.cn/" },
+    { name: "Kimi Platform", url: "https://platform.moonshot.cn/" },
+  ],
+  "MiniMax": [
+    { name: "MiniMax Chat", url: "https://chat.minimax.io/" },
+    { name: "MiniMax Platform", url: "https://www.minimax.io/" },
+  ],
+  "Tsinghua / Zhipu": [
+    { name: "ChatGLM", url: "https://chatglm.cn/" },
+    { name: "Zhipu Open API", url: "https://open.bigmodel.cn/" },
+  ],
+  "Tencent": [
+    { name: "Hunyuan", url: "https://hunyuan.tencent.com/" },
+  ],
+  "Baidu": [
+    { name: "Ernie Bot", url: "https://yiyan.baidu.com/" },
+    { name: "Qianfan ModelBuilder", url: "https://cloud.baidu.com/product/wenxinworkshop" },
+  ],
+  "ByteDance": [
+    { name: "Doubao app", url: "https://www.doubao.com/" },
+    { name: "Volcano Engine", url: "https://www.volcengine.com/" },
+  ],
+  "Suno": [
+    { name: "Suno", url: "https://suno.com/create" },
+  ],
+  "ElevenLabs": [
+    { name: "ElevenLabs Studio", url: "https://elevenlabs.io/app" },
+    { name: "ElevenLabs API", url: "https://elevenlabs.io/docs" },
+  ],
+  "Runway": [
+    { name: "Runway app", url: "https://app.runwayml.com/" },
+  ],
+  "Luma AI": [
+    { name: "Dream Machine", url: "https://lumalabs.ai/dream-machine" },
+  ],
+  "Midjourney": [
+    { name: "Midjourney", url: "https://www.midjourney.com/explore" },
+  ],
+  "Black Forest Labs": [
+    { name: "Hugging Face", url: "https://huggingface.co/black-forest-labs" },
+    { name: "BFL Playground", url: "https://playground.bfl.ai/" },
+    { name: "ComfyUI", url: "https://www.comfy.org/", note: "Local FLUX inference" },
+  ],
+  "Stability AI": [
+    { name: "Stability Platform", url: "https://platform.stability.ai/" },
+    { name: "Hugging Face", url: "https://huggingface.co/stabilityai" },
+    { name: "ComfyUI", url: "https://www.comfy.org/" },
+  ],
+  "Nvidia": [
+    { name: "NIM Microservices", url: "https://www.nvidia.com/en-us/ai/" },
+    { name: "Build catalog", url: "https://build.nvidia.com/" },
+  ],
+  "Allen AI": [
+    { name: "Hugging Face", url: "https://huggingface.co/allenai" },
+    { name: "Playground", url: "https://playground.allenai.org/" },
+  ],
+};
