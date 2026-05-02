@@ -343,6 +343,30 @@ function setPanelOpen(open: boolean) {
   panel.dataset.open = open ? "true" : "false";
 }
 
+// Restore the panel to its empty / unselected state. Used by the
+// close (×) button so the user can dismiss the current selection
+// and have the panel show "Click a node" again.
+function resetPanel() {
+  setText("inspector-org", "Select a node");
+  setText("inspector-title", "Details");
+  setText(
+    "inspector-desc",
+    "Click a node in the graph to explore its summary, benchmarks, and lineage.",
+  );
+  // Hide every body section that only appears when a node is selected.
+  setHidden("inspector-meta", true);
+  setHidden("inspector-bench-section", true);
+  setHidden("inspector-lineage-section", true);
+  setHidden("inspector-footer", true);
+  // Drop any cached selection so reload won't restore it.
+  setSelected(null);
+  // Clear the "selected card" highlight on the graph.
+  document
+    .querySelectorAll<HTMLElement>(".node-link.selected-card")
+    .forEach((el) => el.classList.remove("selected-card"));
+  setPanelOpen(false);
+}
+
 function render(slug: string) {
   // Each step is wrapped so one bad sub-render (e.g. malformed
   // benchmark, missing modality) doesn't leave the whole panel
@@ -390,9 +414,17 @@ function handleSelect(slug: string) {
 }
 
 export function attachInspectorHandlers() {
-  // Close button just collapses the panel content (keeps selection).
+  // Close button → reset the panel back to its empty placeholder
+  // state and drop the cached selection so reload won't restore it.
   const close = document.querySelector<HTMLButtonElement>(".inspector-close");
-  close?.addEventListener("click", () => setPanelOpen(false));
+  close?.addEventListener("click", () => resetPanel());
+  // Also wire pointerup as a defensive fallback in case Chrome
+  // suppresses the synthesized click on this button (same pattern
+  // as the node-card selection further down).
+  close?.addEventListener("pointerup", (e) => {
+    e.preventDefault();
+    resetPanel();
+  });
 
   // Node click → select (but keep ctrl/cmd-click for navigation).
   // Note: Chrome reliably suppresses the synthesized `click` event on
