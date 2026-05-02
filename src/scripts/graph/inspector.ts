@@ -436,6 +436,42 @@ export function attachInspectorHandlers() {
     },
     true,
   );
+  // Even-earlier probes: if click never fires but these do, the click
+  // event itself is being suppressed (touch/pointer cancellation,
+  // preventDefault on pointerdown, or an overlay swallowing it).
+  document.addEventListener(
+    "pointerdown",
+    (e) => {
+      const t = e.target as HTMLElement | null;
+      const el = t as Element | null;
+      console.log(
+        "[probe pointerdown] target=",
+        el?.tagName,
+        "id=",
+        el?.id,
+        "class=",
+        el?.className?.toString().slice(0, 60),
+        "closest .node-link?",
+        !!el?.closest?.(".node-link"),
+      );
+    },
+    true,
+  );
+  document.addEventListener(
+    "mousedown",
+    (e) => {
+      const t = e.target as HTMLElement | null;
+      console.log("[probe mousedown] target=", (t as Element | null)?.tagName);
+    },
+    true,
+  );
+  // Window-level click as last-resort: if document doesn't see it
+  // but window does, there's frame / shadow-DOM weirdness.
+  window.addEventListener(
+    "click",
+    () => console.log("[probe window click] fired"),
+    true,
+  );
 
   // Other modules (search, etc.) can request selection.
   document.addEventListener(SELECT_EVT, (e) => {
