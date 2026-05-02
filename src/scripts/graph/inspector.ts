@@ -352,14 +352,10 @@ function render(slug: string) {
   try {
     raw = graphData().nodes?.[slug] as NodeMeta | undefined;
     metaBySlug = graphData().nodes as Record<string, NodeMeta> | undefined;
-  } catch (err) {
-    console.error("[inspector] graphData() unavailable", err);
-    return;
+  } catch {
+    return; // graph state not initialized; nothing we can render
   }
-  if (!raw || !metaBySlug) {
-    console.warn(`[inspector] no data for slug "${slug}"`);
-    return;
-  }
+  if (!raw || !metaBySlug) return; // unknown slug — silently no-op
 
   // Headline fields first so the panel always shows SOMETHING even if
   // a later sub-render throws.
@@ -376,11 +372,11 @@ function render(slug: string) {
   setHidden("inspector-footer", false);
   wireInspectorButtons(slug);
 
-  // Defensive sub-renders.
-  const safeStep = (name: string, fn: () => void) => {
-    try { fn(); } catch (err) {
-      console.error(`[inspector] ${name} threw:`, err);
-    }
+  // Defensive sub-renders — one bad sub-render shouldn't blank the
+  // headline. Errors are swallowed silently in production; uncomment
+  // the console.error to surface them for debugging.
+  const safeStep = (_name: string, fn: () => void) => {
+    try { fn(); } catch { /* console.error(`[inspector] ${_name} threw:`, err) */ }
   };
   safeStep("renderMeta", () => renderMeta(raw!));
   safeStep("renderBenchmarks", () => renderBenchmarks(raw!));
@@ -394,42 +390,24 @@ function handleSelect(slug: string) {
 }
 
 export function attachInspectorHandlers() {
-  console.log("[inspector] attaching handlers");
-
   // Close button just collapses the panel content (keeps selection).
   const close = document.querySelector<HTMLButtonElement>(".inspector-close");
   close?.addEventListener("click", () => setPanelOpen(false));
 
   // Node click → select (but keep ctrl/cmd-click for navigation).
+  // Note: Chrome reliably suppresses the synthesized `click` event on
+  // these SVG cards because the hover handler re-appends the hovered
+  // card via appendChild() during mouseenter (to bring its pin-button
+  // overhang on top of neighbors). That DOM mutation breaks the
+  // mousedown→mouseup→click sequence on at least some pointer/mouse
+  // combos. The pointerdown/pointerup pair below is the actual
+  // selection path; this `click` listener only handles the rare
+  // device combo where click DOES fire (and harmlessly no-ops the
+  // duplicate select since render() is idempotent).
   document.addEventListener("click", (e) => {
     const t = e.target as HTMLElement | null;
-    const link = t?.closest?.(".node-link") as HTMLElement | null;
-    const tag = (t as Element | null)?.tagName ?? "?";
-    // SVG elements expose className as SVGAnimatedString; use getAttribute
-    // for reliable string output regardless of namespace.
-    const cls = (t as Element | null)?.getAttribute?.("class") ?? "";
-    // Walk parents and print their tag + class for debugging — the
-    // expected anchor (class="node-link") should appear in this chain.
-    const chain: string[] = [];
-    let cur: Element | null = t as Element | null;
-    while (cur && chain.length < 8) {
-      const c = cur.getAttribute?.("class") ?? "";
-      chain.push(`${cur.tagName}${c ? "." + c.split(/\s+/)[0] : ""}`);
-      cur = cur.parentElement;
-    }
-    console.log(
-      "[inspector] click | target=",
-      tag,
-      "class=",
-      cls,
-      "matchedLink=",
-      !!link,
-      "slug=",
-      link?.getAttribute("data-slug") ?? null,
-      "chain=",
-      chain.join(" > "),
-    );
     if (t?.closest?.(".pin-btn")) return;
+    const link = t?.closest?.(".node-link") as HTMLElement | null;
     if (!link) return;
     const slug = link.getAttribute("data-slug");
     if (!slug) return;
@@ -438,77 +416,15 @@ export function attachInspectorHandlers() {
     if (!allowNav) e.preventDefault();
     handleSelect(slug);
   });
-  // Capture-phase listener as a sanity check — if this fires but the
-  // bubble-phase one above doesn't, somebody is calling
-  // stopPropagation() between document and us.
-  document.addEventListener(
-    "click",
-    (e) => {
-      const t = e.target as HTMLElement | null;
-      console.log("[inspector capture] click target=", (t as Element | null)?.tagName);
-    },
-    true,
-  );
-  // Even-earlier probes: if click never fires but these do, the click
-  // event itself is being suppressed (touch/pointer cancellation,
-  // preventDefault on pointerdown, or an overlay swallowing it).
-  document.addEventListener(
-    "pointerdown",
-    (e) => {
-      const t = e.target as HTMLElement | null;
-      const el = t as Element | null;
-      console.log(
-        "[probe pointerdown] target=",
-        el?.tagName,
-        "id=",
-        el?.id,
-        "class=",
-        el?.className?.toString().slice(0, 60),
-        "closest .node-link?",
-        !!el?.closest?.(".node-link"),
-      );
-    },
-    true,
-  );
-  document.addEventListener(
-    "mousedown",
-    (e) => {
-      const t = e.target as HTMLElement | null;
-      console.log("[probe mousedown] target=", (t as Element | null)?.tagName);
-    },
-    true,
-  );
-  document.addEventListener(
-    "mouseup",
-    (e) => {
-      const t = e.target as HTMLElement | null;
-      console.log("[probe mouseup] target=", (t as Element | null)?.tagName);
-    },
-    true,
-  );
-  document.addEventListener(
-    "pointerup",
-    (e) => {
-      const t = e.target as HTMLElement | null;
-      console.log("[probe pointerup] target=", (t as Element | null)?.tagName);
-    },
-    true,
-  );
-  // Window-level click as last-resort: if document doesn't see it
-  // but window does, there's frame / shadow-DOM weirdness.
-  window.addEventListener(
-    "click",
-    () => console.log("[probe window click] fired"),
-    true,
-  );
 
-  // Fallback: select on pointerup so the inspector still works even
-  // when Chrome suppresses the synthesized `click` event after a
-  // DOM mutation (which the hover handler does on mouseenter — it
-  // re-appends the hovered card to bring it on top, and that breaks
-  // the click sequence for some pointer/mouse hardware combos).
-  // We track the slug at pointerdown and act on pointerup if the
-  // pointer didn't drift more than a few pixels (= still a "click").
+  // Pointerup-based fallback: the actual selection path on Chrome.
+  // Chrome suppresses the synthesized `click` event because the
+  // hover handler re-appends the hovered card via appendChild() on
+  // mouseenter (to bring its pin-button overhang on top of
+  // neighbors). That DOM mutation breaks the mousedown→mouseup
+  // →click sequence. We track the slug at pointerdown and act on
+  // pointerup if the pointer didn't drift more than a few pixels
+  // (= still a "click", not a drag).
   let downSlug: string | null = null;
   let downX = 0;
   let downY = 0;
