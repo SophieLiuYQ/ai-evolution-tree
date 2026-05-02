@@ -3,7 +3,7 @@
 // Empty shell; populated by client JS on node selection.
 ---
 
-<aside class="tree-inspector" data-open="false" aria-label="Selected node details">
+<aside class="tree-inspector" data-open="true" aria-label="Selected node details">
   <div class="inspector-header">
     <div class="inspector-title-wrap">
       <div class="inspector-kicker" id="inspector-org">Select a node</div>
@@ -56,6 +56,13 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
+  }
+  /* When the user dismisses the panel via the × button, hide it
+     entirely. The graph reflows to fill the freed width.
+     Selecting another node re-opens the panel by setting
+     data-open back to "true". */
+  .tree-inspector[data-open="false"] {
+    display: none;
   }
 
   .inspector-header {
