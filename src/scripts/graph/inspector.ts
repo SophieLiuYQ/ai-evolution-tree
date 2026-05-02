@@ -405,7 +405,18 @@ export function attachInspectorHandlers() {
     const t = e.target as HTMLElement | null;
     const link = t?.closest?.(".node-link") as HTMLElement | null;
     const tag = (t as Element | null)?.tagName ?? "?";
-    const cls = (t as Element | null)?.className?.toString().slice(0, 80) ?? "";
+    // SVG elements expose className as SVGAnimatedString; use getAttribute
+    // for reliable string output regardless of namespace.
+    const cls = (t as Element | null)?.getAttribute?.("class") ?? "";
+    // Walk parents and print their tag + class for debugging — the
+    // expected anchor (class="node-link") should appear in this chain.
+    const chain: string[] = [];
+    let cur: Element | null = t as Element | null;
+    while (cur && chain.length < 8) {
+      const c = cur.getAttribute?.("class") ?? "";
+      chain.push(`${cur.tagName}${c ? "." + c.split(/\s+/)[0] : ""}`);
+      cur = cur.parentElement;
+    }
     console.log(
       "[inspector] click | target=",
       tag,
@@ -415,6 +426,8 @@ export function attachInspectorHandlers() {
       !!link,
       "slug=",
       link?.getAttribute("data-slug") ?? null,
+      "chain=",
+      chain.join(" > "),
     );
     if (t?.closest?.(".pin-btn")) return;
     if (!link) return;
