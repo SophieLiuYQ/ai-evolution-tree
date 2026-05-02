@@ -848,22 +848,6 @@ const derived = modelRelationships.models[d.slug] ?? { competes_with: [], same_c
 const derivedCompetes = derived.competes_with;
 const derivedSameCap = derived.same_capability;
 
-type CmpRow = { slug: string; title: string; org: string; why: string };
-const comparisonRows: CmpRow[] = (() => {
-  const out: CmpRow[] = [];
-  const rels = (d.relationships ?? []).filter((r) => r.type === "competes_with" || r.type === "open_alt_to");
-  for (const r of rels.slice(0, 3)) {
-    const target = allNodes.find((n) => n.data.slug === r.to);
-    if (!target) continue;
-    out.push({
-      slug: target.data.slug,
-      title: target.data.title,
-      org: normalizeOrg(target.data.org),
-      why: r.note ? String(r.note) : (r.type === "open_alt_to" ? "More open alternative" : "Alternative"),
-    });
-  }
-  return out;
-})();
 
 type HighlightRow = { k: string; v: string; score: number };
 const perfHighlights: HighlightRow[] = (() => {
@@ -1959,26 +1943,8 @@ const familySubtitle = (() => {
       </div>
     </section>
 
-    {/* ============== Comparison — commented out ============== */}
-    {/*
-    {comparisonRows.length > 0 && (
-      <section class="panel cmp-panel">
-        <h2 class="block-heading">Comparison</h2>
-        <div class="cmp-note">Nearby alternatives from the tree graph (not a full market survey).</div>
-        <div class="cmp-table">
-          {comparisonRows.map((r) => (
-            <a class="cmp-row" href={`/node/${r.slug}/`} title={r.title}>
-              <span class="cmp-name">{r.title}</span>
-              <span class="cmp-org">{r.org}</span>
-              <span class="cmp-why">{r.why}</span>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
-    */}
-
-    {/* ============== Lineage + Comparison (2-col, or stacked when dense) ============== */}
+    {/* ============== Lineage (Comparison panel retired — replaced by
+         "Competes with" + "Similar capabilities" in the right rail) ============== */}
     {/* ============== Model Evolution (linear family timeline) ============== */}
     {familyTimeline.length > 1 && (
       <section class="panel evolution-panel">
@@ -2128,30 +2094,6 @@ const familySubtitle = (() => {
                   </div>
                 ))}
               </div>
-            </section>
-          )}
-
-          {comparisonRows.length > 0 && (
-            <section class="aside-card">
-              <h3 class="aside-title">Similar models</h3>
-              <div class="aside-list">
-                {comparisonRows.slice(0, 5).map((r) => {
-                  const target = allNodes.find((n) => n.data.slug === r.slug);
-                  const targetOrg = target?.data.org ?? r.org;
-                  const titleSplit = r.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
-                  const shortTitle = titleSplit ? titleSplit[1] : r.title;
-                  return (
-                    <a class="aside-item" href={`/node/${r.slug}/`}>
-                      <OrgLogo org={targetOrg} size={32} radius={9} class="aside-logo" />
-                      <div class="aside-item-text">
-                        <div class="aside-item-title">{shortTitle}</div>
-                        <div class="aside-item-sub">{r.org}</div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-              <a class="aside-link" href="/tree/">View all similar models →</a>
             </section>
           )}
 
