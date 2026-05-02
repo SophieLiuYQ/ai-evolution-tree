@@ -403,17 +403,39 @@ export function attachInspectorHandlers() {
   // Node click → select (but keep ctrl/cmd-click for navigation).
   document.addEventListener("click", (e) => {
     const t = e.target as HTMLElement | null;
-    if (t?.closest?.(".pin-btn")) return;
     const link = t?.closest?.(".node-link") as HTMLElement | null;
+    const tag = (t as Element | null)?.tagName ?? "?";
+    const cls = (t as Element | null)?.className?.toString().slice(0, 80) ?? "";
+    console.log(
+      "[inspector] click | target=",
+      tag,
+      "class=",
+      cls,
+      "matchedLink=",
+      !!link,
+      "slug=",
+      link?.getAttribute("data-slug") ?? null,
+    );
+    if (t?.closest?.(".pin-btn")) return;
     if (!link) return;
     const slug = link.getAttribute("data-slug");
-    console.log("[inspector] click on node-link, slug =", slug);
     if (!slug) return;
     const me = e as MouseEvent;
     const allowNav = me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0;
     if (!allowNav) e.preventDefault();
     handleSelect(slug);
   });
+  // Capture-phase listener as a sanity check — if this fires but the
+  // bubble-phase one above doesn't, somebody is calling
+  // stopPropagation() between document and us.
+  document.addEventListener(
+    "click",
+    (e) => {
+      const t = e.target as HTMLElement | null;
+      console.log("[inspector capture] click target=", (t as Element | null)?.tagName);
+    },
+    true,
+  );
 
   // Other modules (search, etc.) can request selection.
   document.addEventListener(SELECT_EVT, (e) => {
