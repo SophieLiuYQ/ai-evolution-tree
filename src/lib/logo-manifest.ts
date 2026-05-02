@@ -33,7 +33,6 @@ export const LOGO_MANIFEST: Record<string, LogoManifestEntry> = {
   "Meta AI": { slug: "meta-ai", ext: "svg" },
   "Microsoft": { slug: "microsoft", ext: "svg" },
   "Midjourney": { slug: "midjourney", ext: "ico" },
-  "MiniMax": { slug: "minimax", ext: "svg" },
   "Mistral AI": { slug: "mistral-ai", ext: "svg" },
   "Nari Labs": { slug: "nari-labs", ext: "ico" },
   "Nvidia": { slug: "nvidia", ext: "svg" },

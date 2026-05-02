@@ -57,6 +57,16 @@ if (file) {
     try {
       const p = path.join(projectRoot, "public", "logos", `${file.slug}.svg`);
       const raw = fs.readFileSync(p, "utf8");
+      // Sanity-check: scraped HTML pages sometimes get saved with an
+      // .svg extension. If the file looks like HTML rather than SVG,
+      // bail out so we don't inline 280KB of foreign markup into every
+      // page that happens to reference this org. (This bit us on
+      // minimax.svg — see git history for the regression.)
+      const looksLikeHtml = /^\s*<(?:!doctype|html|head|body|meta)\b/i.test(raw);
+      const hasSvgRoot = /<svg\b/i.test(raw);
+      if (looksLikeHtml || !hasSvgRoot) {
+        throw new Error(`logo file ${file.slug}.svg is not a valid SVG`);
+      }
       // Drop XML prelude + outer <svg ...> wrapper — we'll rebuild the
       // wrapper with our own width/height so the parent controls size.
       // Capture the viewBox from the original so the inner geometry

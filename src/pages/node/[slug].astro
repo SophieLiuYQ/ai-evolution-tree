@@ -13,6 +13,22 @@ import type { DevTool } from "../../lib/org-logos";
 import { normalizeOrg } from "../../lib/org-display";
 import { normalizeCategories } from "../../lib/categories";
 import { benchSource } from "../../lib/benchmark-sources";
+import modelRelationshipsRaw from "../../../data/model-relationships.json";
+
+type DerivedRel = {
+  slug: string;
+  title: string;
+  org: string;
+  domain?: string;
+  shared?: string[];
+  overlap: number;
+  confidence: number;
+  release_gap_mo?: number;
+};
+const modelRelationships = modelRelationshipsRaw as {
+  _meta: unknown;
+  models: Record<string, { competes_with: DerivedRel[]; same_capability: DerivedRel[] }>;
+};
 
 export async function getStaticPaths() {
   const nodes = await getCollection("nodes");
@@ -823,6 +839,14 @@ const notIdealBullets: string[] = (() => {
   if (!isMediaOutput) out.push("High-fidelity media generation (image/video/audio-first models).");
   return Array.from(new Set(out)).slice(0, 4);
 })();
+
+// ===== Derived relationships (from data/model-relationships.json) =====
+// Computed by scripts/relationship-analysis.mjs — capability cosine,
+// media-subdomain match, param-class proximity, family skip. JSON only;
+// no MDX writes, no graph impact.
+const derived = modelRelationships.models[d.slug] ?? { competes_with: [], same_capability: [] };
+const derivedCompetes = derived.competes_with;
+const derivedSameCap = derived.same_capability;
 
 type CmpRow = { slug: string; title: string; org: string; why: string };
 const comparisonRows: CmpRow[] = (() => {
@@ -2131,6 +2155,64 @@ const familySubtitle = (() => {
             </section>
           )}
 
+          {derivedCompetes.length > 0 && (
+            <section class="aside-card">
+              <h3 class="aside-title">Competes with</h3>
+              <div class="aside-derived-note">
+                Models in the same domain, tier, and release window —
+                computed from capability vectors.
+              </div>
+              <div class="aside-list">
+                {derivedCompetes.map((r) => {
+                  const target = allNodes.find((n) => n.data.slug === r.slug);
+                  const targetOrg = target?.data.org ?? r.org;
+                  const titleSplit = r.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+                  const shortTitle = titleSplit ? titleSplit[1] : r.title;
+                  return (
+                    <a class="aside-item" href={`/node/${r.slug}/`} title={`Overlap ${r.overlap.toFixed(2)} · ${r.release_gap_mo} mo apart`}>
+                      <OrgLogo org={targetOrg} size={32} radius={9} class="aside-logo" />
+                      <div class="aside-item-text">
+                        <div class="aside-item-title">{shortTitle}</div>
+                        <div class="aside-item-sub">{normalizeOrg(r.org)}</div>
+                      </div>
+                      <span class="aside-conf" aria-label={`Confidence ${Math.round(r.confidence * 100)}%`}>{Math.round(r.confidence * 100)}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {derivedSameCap.length > 0 && (
+            <section class="aside-card">
+              <h3 class="aside-title">Similar capabilities</h3>
+              <div class="aside-derived-note">
+                Models that share dominant strengths
+                {derivedSameCap[0]?.shared?.length ? (
+                  <> ({derivedSameCap[0].shared.slice(0, 3).join(", ")}{derivedSameCap[0].shared.length > 3 ? "…" : ""})</>
+                ) : null}.
+              </div>
+              <div class="aside-list">
+                {derivedSameCap.map((r) => {
+                  const target = allNodes.find((n) => n.data.slug === r.slug);
+                  const targetOrg = target?.data.org ?? r.org;
+                  const titleSplit = r.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+                  const shortTitle = titleSplit ? titleSplit[1] : r.title;
+                  return (
+                    <a class="aside-item" href={`/node/${r.slug}/`} title={`Shared: ${(r.shared ?? []).join(", ")}`}>
+                      <OrgLogo org={targetOrg} size={32} radius={9} class="aside-logo" />
+                      <div class="aside-item-text">
+                        <div class="aside-item-title">{shortTitle}</div>
+                        <div class="aside-item-sub">{normalizeOrg(r.org)}</div>
+                      </div>
+                      <span class="aside-conf" aria-label={`Confidence ${Math.round(r.confidence * 100)}%`}>{Math.round(r.confidence * 100)}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           <section class="aside-card">
             <h3 class="aside-title">Quick facts</h3>
             <dl class="facts">
@@ -2299,6 +2381,25 @@ const familySubtitle = (() => {
   .aside-item-title { font-weight: 850; font-size: 13px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .aside-item-sub { margin-top: 2px; font-size: 11.5px; color: var(--fg-muted); font-weight: 650; }
   .aside-logo { box-shadow: none; }
+  .aside-derived-note {
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: var(--fg-muted);
+    margin: -4px 0 10px 0;
+  }
+  .aside-conf {
+    flex: 0 0 auto;
+    align-self: center;
+    font-size: 11px;
+    font-weight: 850;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-muted);
+    background: var(--bg-sunk);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 2px 7px;
+    line-height: 1;
+  }
 
   .facts { display: flex; flex-direction: column; gap: 8px; margin: 0; }
   .facts-row { display: flex; justify-content: space-between; gap: 10px; }
