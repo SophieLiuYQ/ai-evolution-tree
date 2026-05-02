@@ -478,6 +478,22 @@ export function attachInspectorHandlers() {
     },
     true,
   );
+  document.addEventListener(
+    "mouseup",
+    (e) => {
+      const t = e.target as HTMLElement | null;
+      console.log("[probe mouseup] target=", (t as Element | null)?.tagName);
+    },
+    true,
+  );
+  document.addEventListener(
+    "pointerup",
+    (e) => {
+      const t = e.target as HTMLElement | null;
+      console.log("[probe pointerup] target=", (t as Element | null)?.tagName);
+    },
+    true,
+  );
   // Window-level click as last-resort: if document doesn't see it
   // but window does, there's frame / shadow-DOM weirdness.
   window.addEventListener(
@@ -485,6 +501,40 @@ export function attachInspectorHandlers() {
     () => console.log("[probe window click] fired"),
     true,
   );
+
+  // Fallback: select on pointerup so the inspector still works even
+  // when Chrome suppresses the synthesized `click` event after a
+  // DOM mutation (which the hover handler does on mouseenter — it
+  // re-appends the hovered card to bring it on top, and that breaks
+  // the click sequence for some pointer/mouse hardware combos).
+  // We track the slug at pointerdown and act on pointerup if the
+  // pointer didn't drift more than a few pixels (= still a "click").
+  let downSlug: string | null = null;
+  let downX = 0;
+  let downY = 0;
+  document.addEventListener("pointerdown", (e) => {
+    const link = (e.target as Element | null)?.closest?.(".node-link");
+    downSlug = link ? link.getAttribute("data-slug") : null;
+    downX = (e as PointerEvent).clientX;
+    downY = (e as PointerEvent).clientY;
+  });
+  document.addEventListener("pointerup", (e) => {
+    if (!downSlug) return;
+    const dx = Math.abs((e as PointerEvent).clientX - downX);
+    const dy = Math.abs((e as PointerEvent).clientY - downY);
+    const me = e as PointerEvent;
+    const allowNav = me.metaKey || me.ctrlKey || me.shiftKey || me.altKey;
+    if (allowNav) return; // user wants to navigate — let the link's default fire
+    if (dx > 4 || dy > 4) { downSlug = null; return; } // it was a drag, not a click
+    const link = (e.target as Element | null)?.closest?.(".node-link");
+    const upSlug = link ? link.getAttribute("data-slug") : null;
+    // Either the same card or fall back to the press-down slug
+    // (DOM mutations between down and up can shift the target).
+    const slug = upSlug ?? downSlug;
+    e.preventDefault();
+    handleSelect(slug);
+    downSlug = null;
+  });
 
   // Other modules (search, etc.) can request selection.
   document.addEventListener(SELECT_EVT, (e) => {
