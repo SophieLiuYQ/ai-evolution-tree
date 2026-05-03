@@ -515,31 +515,24 @@ function tierLabel(r: RankMeta | null, lo: string, mid: string, hi: string): str
 const attrCards: AttrCard[] = (() => {
   const out: AttrCard[] = [];
 
-  // POSITION — rank in the AA Intelligence Index (most informative for LLMs).
-  // The "of N" denominator is the size of the AA pool at scrape time, which
-  // drifts as AA adds models. Surfacing the percentile alongside ("~Top 2%")
-  // makes the card readable even when the rank/denominator drift slightly.
+  // INTELLIGENCE — rank in AA's Intelligence Index, expressed as a
+  // friendly bucket ("Top 1% smart", "Smart", "Not very smart") rather
+  // than a raw rank. The "of N" denominator drifts as AA adds models;
+  // bucket framing stays readable across drift.
   if (aaIntRank) {
     const pct = aaIntRank.rank / aaIntRank.total;
-    // Only surface a "Top X%" band when it actually reads as a strength
-    // (≤ Top 25%). Below that the band number isn't a signal — drop back
-    // to plain "of N ranked" so we don't claim "~Top 82%" for Phi-class.
-    const band = pct <= 0.01 ? "Top 1%"
-      : pct <= 0.02 ? "Top 2%"
-      : pct <= 0.05 ? "Top 5%"
-      : pct <= 0.10 ? "Top 10%"
-      : pct <= 0.20 ? "Top 20%"
-      : pct <= 0.25 ? "Top 25%"
-      :               null;
-    const desc = band
-      ? `~${band} on Artificial Analysis (of ${aaIntRank.total} ranked)`
-      : `of ${aaIntRank.total} on Artificial Analysis`;
+    const bucket = pct <= 0.01 ? { v: "Top 1%",  label: "Top 1% smart" }
+      :            pct <= 0.05 ? { v: "Top 5%",  label: "Top 5% smart" }
+      :            pct <= 0.10 ? { v: "Top 10%", label: "Top 10% smart" }
+      :            pct <= 0.25 ? { v: "Smart",   label: "Smart" }
+      :            pct <= 0.50 ? { v: "Medium",  label: "Medium smart" }
+      :                          { v: "Below avg", label: "Not very smart" };
     out.push({
       icon: "star",
       color: "violet",
-      k: "Position",
-      v: `#${aaIntRank.rank}`,
-      desc,
+      k: "Intelligence",
+      v: bucket.v,
+      desc: `${bucket.label} · #${aaIntRank.rank} of ${aaIntRank.total} by AA`,
     });
   }
 
