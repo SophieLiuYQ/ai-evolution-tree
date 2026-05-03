@@ -530,18 +530,18 @@ const attrCards: AttrCard[] = (() => {
     !spec.aa_url.endsWith("/leaderboards/models");
   if (aaIntRank && hasRealAaPage) {
     const pct = aaIntRank.rank / aaIntRank.total;
-    const bucket = pct <= 0.01 ? { v: "Top 1%",  label: "Top 1% good" }
-      :            pct <= 0.05 ? { v: "Top 5%",  label: "Top 5% good" }
-      :            pct <= 0.10 ? { v: "Top 10%", label: "Top 10% good" }
-      :            pct <= 0.25 ? { v: "Good",    label: "Good" }
-      :            pct <= 0.50 ? { v: "Medium",  label: "Medium good" }
-      :                          { v: "Below avg", label: "Not very good" };
+    const v = pct <= 0.01 ? "Top 1%"
+      :     pct <= 0.05 ? "Top 5%"
+      :     pct <= 0.10 ? "Top 10%"
+      :     pct <= 0.25 ? "Good"
+      :     pct <= 0.50 ? "Medium"
+      :                   "Below avg";
     out.push({
       icon: "star",
       color: "violet",
       k: "Intelligence",
-      v: bucket.v,
-      desc: `${bucket.label} · from Artificial Analysis`,
+      v,
+      desc: "from Artificial Analysis",
     });
   }
 
