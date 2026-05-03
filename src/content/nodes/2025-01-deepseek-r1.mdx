@@ -42,6 +42,18 @@ model_spec:
   modalities:
     - text
   benchmarks:
+    - name: Coding · HumanEval
+      score: 97.7%
+      vs_baseline: 'Rank #6 of 44 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Knowledge · MMLU-Pro
+      score: 84.4%
+      vs_baseline: 'Rank #15 of 82 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Intelligence · AA Intelligence Index
+      score: '18.84'
+      vs_baseline: 'Rank #82 of 127 · Top 65%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: AIME 2024
       score: 79.8%
       vs_baseline: 'o1 83.3%, Claude 3.5 Sonnet 16.0%'
@@ -54,34 +66,6 @@ model_spec:
     - name: GPQA Diamond
       score: 71.5%
       vs_baseline: o1 78.0%
-    - name: Intelligence · AA Intelligence Index
-      score: '27.10'
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #163 of 496'
-    - name: Coding · AA Coding Index
-      score: '24.00'
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #154 of 496'
-    - name: Coding · SciCode
-      score: 40.3% (6.6–40.3%)
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #90 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 15.9% (1.5–15.9%)
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #163 of 496'
-    - name: MMLU-Pro
-      score: 84.9% (26.9–84.9%)
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #36 of 496'
-    - name: GPQA
-      score: 81.3% (9.8–81.3%)
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #88 of 496'
-    - name: HLE
-      score: 14.9% (3.3–14.9%)
-      source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
-      vs_baseline: 'Rank #92 of 496'
     - name: Speed · Output tok/s
       score: '0'
       source_url: 'https://artificialanalysis.ai/models/deepseek-r1'
@@ -131,29 +115,51 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First open-weights reasoning model that genuinely competes with o1 — broke the closed-source moat"
-      - "~90% on advanced math benchmarks vs ~83% for GPT-4o; the chain-of-thought is fully visible"
-      - "Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training runs to reach the frontier"
-      - "Excellent on math/logic/coding; weaker on broad creative writing and multi-turn personality"
-      - "Open weights mean you can self-host, fine-tune, distil — no API rate limits"
-      - "January 2025 release sparked the 'DeepSeek moment' that hit Nvidia stock and reset cost expectations"
+      - >-
+        First open-weights reasoning model that genuinely competes with o1 —
+        broke the closed-source moat
+      - >-
+        ~90% on advanced math benchmarks vs ~83% for GPT-4o; the
+        chain-of-thought is fully visible
+      - >-
+        Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training
+        runs to reach the frontier
+      - >-
+        Excellent on math/logic/coding; weaker on broad creative writing and
+        multi-turn personality
+      - >-
+        Open weights mean you can self-host, fine-tune, distil — no API rate
+        limits
+      - >-
+        January 2025 release sparked the 'DeepSeek moment' that hit Nvidia stock
+        and reset cost expectations
     best_for:
-      - "Math proofs, logic puzzles, and step-by-step derivations where explicit reasoning helps"
-      - "Coding and engineering tasks that benefit from chain-of-thought"
-      - "On-prem / air-gapped deployments where API models can't go"
-      - "Cost-sensitive bulk inference (≈10x cheaper than ChatGPT-class via providers)"
-      - "Distillation into smaller open models for production"
+      - >-
+        Math proofs, logic puzzles, and step-by-step derivations where explicit
+        reasoning helps
+      - Coding and engineering tasks that benefit from chain-of-thought
+      - On-prem / air-gapped deployments where API models can't go
+      - >-
+        Cost-sensitive bulk inference (≈10x cheaper than ChatGPT-class via
+        providers)
+      - Distillation into smaller open models for production
     not_ideal_for:
-      - "Casual chat, tone, or creative writing — ChatGPT/Claude feel more polished"
-      - "Multimodal tasks (image / vision) — text-only model"
-      - "Latency-sensitive UX — reasoning trace adds significant time"
+      - >-
+        Casual chat, tone, or creative writing — ChatGPT/Claude feel more
+        polished
+      - Multimodal tasks (image / vision) — text-only model
+      - Latency-sensitive UX — reasoning trace adds significant time
     sources:
-      - name: "MIT Technology Review — DeepSeek's top AI reasoning model despite sanctions"
-        url: "https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/"
-      - name: "BentoML — Complete guide to DeepSeek models V3, R1, V4"
-        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
-      - name: "DataCamp — DeepSeek vs ChatGPT comparison"
-        url: "https://www.datacamp.com/blog/deepseek-vs-chatgpt"
+      - name: >-
+          MIT Technology Review — DeepSeek's top AI reasoning model despite
+          sanctions
+        url: >-
+          https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/
+      - name: 'BentoML — Complete guide to DeepSeek models V3, R1, V4'
+        url: >-
+          https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+      - name: DataCamp — DeepSeek vs ChatGPT comparison
+        url: 'https://www.datacamp.com/blog/deepseek-vs-chatgpt'
 title_zh: DeepSeek R1 — 开放权重的推理模型
 public_view_zh:
   plain_english: |

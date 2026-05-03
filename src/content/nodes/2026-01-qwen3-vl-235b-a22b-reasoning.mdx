@@ -22,34 +22,14 @@ model_spec:
     - text
   homepage: 'https://www.alibabagroup.com/'
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '27.60'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #48 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '20.90'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #51 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 39.9%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #35 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 11.4%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #56 of 96 · Reasoning'
-    - name: MMLU-Pro
+    - name: Knowledge · MMLU-Pro
       score: 83.6%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #21 of 96 · Reasoning'
-    - name: GPQA
-      score: 77.2%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #47 of 96 · Reasoning'
-    - name: HLE
-      score: 10.1%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #53 of 96 · Reasoning'
+      vs_baseline: 'Rank #20 of 82 · Top 25%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Intelligence · AA Intelligence Index
+      score: '27.64'
+      vs_baseline: 'Rank #63 of 127 · Top 50%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '46'
       source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
@@ -91,13 +71,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Alibaba — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Alibaba's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Alibaba's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

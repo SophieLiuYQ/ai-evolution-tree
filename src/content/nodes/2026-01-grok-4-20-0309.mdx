@@ -22,30 +22,22 @@ model_spec:
     - text
   homepage: 'https://x.ai/'
   benchmarks:
+    - name: Instruction · IFBench
+      score: 81.2%
+      vs_baseline: 'Rank #3 of 112 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/ifbench'
+    - name: Reasoning · GPQA Diamond
+      score: 91.1%
+      vs_baseline: 'Rank #6 of 124 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Knowledge · AA-Omniscience
+      score: '15.35'
+      vs_baseline: 'Rank #6 of 109 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
     - name: Intelligence · AA Intelligence Index
-      score: '48.50'
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
-      vs_baseline: 'Rank #11 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '42.20'
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
-      vs_baseline: 'Rank #11 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 44.7% (32.2–44.7%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
-      vs_baseline: 'Rank #15 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 40.9% (22.0–40.9%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
-      vs_baseline: 'Rank #11 of 96 · Reasoning'
-    - name: GPQA
-      score: 88.5% (78.5–88.5%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
-      vs_baseline: 'Rank #10 of 96 · Reasoning'
-    - name: HLE
-      score: 30.0% (22.5–30.0%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
-      vs_baseline: 'Rank #10 of 96 · Reasoning'
+      score: '49.33'
+      vs_baseline: 'Rank #16 of 127 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '101'
       source_url: 'https://artificialanalysis.ai/models/grok-4-20-0309'
@@ -80,23 +72,37 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "AA Intelligence Index of 73 at release — leading frontier slot, ahead of o3 (70), Gemini 2.5 Pro (70), Claude 4 Opus (64)"
-      - "GPQA Diamond all-time high of 88%; Humanity's Last Exam 24%; AIME 2024 94%; MMLU-Pro 87%"
-      - "Leads Coding Index (LiveCodeBench + SciCode) and Math Index (AIME24 + MATH-500)"
+      - >-
+        AA Intelligence Index of 73 at release — leading frontier slot, ahead of
+        o3 (70), Gemini 2.5 Pro (70), Claude 4 Opus (64)
+      - >-
+        GPQA Diamond all-time high of 88%; Humanity's Last Exam 24%; AIME 2024
+        94%; MMLU-Pro 87%
+      - >-
+        Leads Coding Index (LiveCodeBench + SciCode) and Math Index (AIME24 +
+        MATH-500)
     best_for:
-      - "Math, science, and reasoning research where Grok 4 leads on raw benchmark numbers"
-      - "Real-time information lookup inside the X (Twitter) product with full timeline access"
-      - "Tool-using agents that benefit from extended reasoning + verifiable-rewards training"
+      - >-
+        Math, science, and reasoning research where Grok 4 leads on raw
+        benchmark numbers
+      - >-
+        Real-time information lookup inside the X (Twitter) product with full
+        timeline access
+      - >-
+        Tool-using agents that benefit from extended reasoning +
+        verifiable-rewards training
     not_ideal_for:
-      - "Customer-facing products where political-bias risk is a brand concern"
-      - "Workflows requiring system-prompt-free behaviour — RL tuning shows different defaults depending on scaffold"
+      - Customer-facing products where political-bias risk is a brand concern
+      - >-
+        Workflows requiring system-prompt-free behaviour — RL tuning shows
+        different defaults depending on scaffold
     sources:
-      - name: "xAI — Grok 4 model card (PDF)"
-        url: "https://data.x.ai/2025-08-20-grok-4-model-card.pdf"
-      - name: "Artificial Analysis — Grok 4"
-        url: "https://artificialanalysis.ai/models/grok-4"
-      - name: "Interconnects — Grok 4 an o3 look-alike in search"
-        url: "https://www.interconnects.ai/p/grok-4-an-o3-look-alike-in-search"
+      - name: xAI — Grok 4 model card (PDF)
+        url: 'https://data.x.ai/2025-08-20-grok-4-model-card.pdf'
+      - name: Artificial Analysis — Grok 4
+        url: 'https://artificialanalysis.ai/models/grok-4'
+      - name: Interconnects — Grok 4 an o3 look-alike in search
+        url: 'https://www.interconnects.ai/p/grok-4-an-o3-look-alike-in-search'
   availability:
     - api
 public_view:

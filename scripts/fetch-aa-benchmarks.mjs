@@ -169,12 +169,51 @@ const SLUG_MAP = {
 // by exact `name` match. Falls back to SLUG_MAP/family champion if
 // no record matches.
 const VARIANT_MAP = {
+  // Anthropic — see SLUG_MAP comment above
   "claude-opus-4-7":   "Claude Opus 4.7 (Adaptive Reasoning, Max Effort)",
   "claude-opus-4-6":   "Claude Opus 4.6 (Adaptive Reasoning, Max Effort)",
   "claude-sonnet-4-6": "Claude Sonnet 4.6 (Adaptive Reasoning, Max Effort)",
   "claude-opus-4-5":   "Claude Opus 4.5 (Reasoning)",
   "claude-haiku-4-5":  "Claude 4.5 Haiku (Reasoning)",
   "claude-4":          "Claude 4 Opus (Reasoning)",
+
+  // DeepSeek — AA's `deepseek-v3` family aggregates V3 (Dec '24) all the
+  // way to V3.2 (Reasoning); per-variant override pins each to its row.
+  "deepseek-v3":                  "DeepSeek V3 (Dec '24)",
+  "deepseek-v3-2":                "DeepSeek V3.2 (Reasoning)",
+  "deepseek-r1":                  "DeepSeek R1 (Jan '25)",
+  "deepseek-r1-0120":             "DeepSeek R1 (Jan '25)",
+  "deepseek-r1-distill-llama-70b":"DeepSeek R1 Distill Llama 70B",
+  "deepseek-v4-pro":              "DeepSeek V4 Pro (Reasoning, Max Effort)",
+  "deepseek-v4-flash":            "DeepSeek V4 Flash (Reasoning, Max Effort)",
+
+  // xAI / Grok — `grok-4` family champion is Grok 4.3; per-variant
+  // override pins our specific Grok 4 (the original 2025-08 release) to
+  // its actual record.
+  "grok-3":                  "Grok 3",
+  "grok-4":                  "Grok 4",
+  "grok-4-1":                "Grok 4.1 Fast (Reasoning)",
+  "grok-4-fast":             "Grok 4 Fast (Reasoning)",
+  "grok-4-fast-reasoning":   "Grok 4 Fast (Reasoning)",
+  "grok-4-1-fast":           "Grok 4.1 Fast (Non-reasoning)",
+  "grok-4-1-fast-reasoning": "Grok 4.1 Fast (Reasoning)",
+  "grok-4-20":               "Grok 4.20 0309 v2 (Reasoning)",
+  "grok-4-20-0309":          "Grok 4.20 0309 v2 (Reasoning)",
+  "grok-4-20-0309-non-reasoning": "Grok 4.20 0309 v2 (Non-reasoning)",
+  "grok-4-20-non-reasoning": "Grok 4.20 0309 v2 (Non-reasoning)",
+  "grok-3-mini-reasoning":   "Grok 3 mini Reasoning (high)",
+  "grok-3-reasoning":        "Grok 3 mini Reasoning (high)",
+  "grok-code-fast-1":        "Grok Code Fast 1",
+
+  // Alibaba Qwen3-VL — AA stores these under family `qwen3` (not
+  // `qwen-3-vl`). Pin the headline node to the largest reasoning variant.
+  "qwen-3-vl":                       "Qwen3 VL 235B A22B (Reasoning)",
+  "qwen3-vl-235b-a22b-reasoning":    "Qwen3 VL 235B A22B (Reasoning)",
+  "qwen3-vl-235b-a22b-instruct":     "Qwen3 VL 235B A22B Instruct",
+  "qwen3-vl-32b-reasoning":          "Qwen3 VL 32B (Reasoning)",
+  "qwen3-vl-32b-instruct":           "Qwen3 VL 32B Instruct",
+  "qwen3-vl-30b-a3b-reasoning":      "Qwen3 VL 30B A3B (Reasoning)",
+  "qwen3-vl-30b-a3b-instruct":       "Qwen3 VL 30B A3B Instruct",
 };
 
 // ============== AA scrape + parse ==============
@@ -370,27 +409,27 @@ async function main() {
     const aaSlug = variantKey ?? SLUG_MAP[fm.slug];
     if (!aaSlug) { missing++; vlog(`  ${fm.slug} → no AA mapping, skip`); continue; }
 
-    const top = pickTop3(aaSlug, ranks);
+    let top = pickTop3(aaSlug, ranks);
+    // Guarantee that AA Intelligence Index is in `top` whenever AA has
+    // a score for the model — even if it's outside the Top 25% strength
+    // filter. The Position card on the detail page and the AA-band gate
+    // in the relationship analysis script both depend on this row.
+    if (!top.some((t) => t.k === "intelligence_index")) {
+      const intelMap = ranks.get("intelligence_index");
+      const intelEntry = intelMap?.get(aaSlug);
+      if (intelEntry) {
+        top = [
+          ...top,
+          { k: "intelligence_index", ...intelEntry, percentile: intelEntry.rank / intelEntry.total },
+        ];
+      }
+    }
     if (top.length === 0) {
       missing++;
-      // No qualifying ranks. If the existing benchmarks were AA-sourced
-      // (vs_baseline contains "Rank #"), clear them — stale AA data is
-      // worse than no data. Otherwise leave hand-curated benchmarks alone.
-      const existing = fm.model_spec?.benchmarks ?? [];
-      const aaSourced = existing.some((b) =>
-        typeof b.vs_baseline === "string" && /Rank #\d+ of \d+/.test(b.vs_baseline),
-      );
-      if (aaSourced) {
-        log(`  ${fm.slug} → ${aaSlug}: no Top ${Math.round(PERCENTILE_CAP * 100)}% rankings — clearing stale AA benchmarks`);
-        if (!DRY) {
-          const newSpec = { ...fm.model_spec };
-          delete newSpec.benchmarks;
-          await writeFile(path, matter.stringify(body, { ...fm, model_spec: newSpec }));
-        }
-        touched++;
-      } else {
-        vlog(`  ${fm.slug} → ${aaSlug}: no Top ${Math.round(PERCENTILE_CAP * 100)}% rankings — preserving hand-curated benchmarks`);
-      }
+      // No AA data at all (not just no Top 25% — no Intel either). Leave
+      // existing benchmarks alone; hand-curated entries are better than
+      // empty.
+      vlog(`  ${fm.slug} → ${aaSlug}: no AA scores at all — preserving existing benchmarks`);
       continue;
     }
 

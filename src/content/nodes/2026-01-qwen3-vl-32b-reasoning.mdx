@@ -22,34 +22,14 @@ model_spec:
     - text
   homepage: 'https://www.alibabagroup.com/'
   benchmarks:
+    - name: Coding · LiveCodeBench
+      score: 73.8%
+      vs_baseline: 'Rank #19 of 82 · Top 24%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Intelligence · AA Intelligence Index
-      score: '24.70'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #53 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '14.50'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #61 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 28.5%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #68 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 7.6%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #59 of 96 · Reasoning'
-    - name: MMLU-Pro
-      score: 81.8%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #31 of 96 · Reasoning'
-    - name: GPQA
-      score: 73.3%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #55 of 96 · Reasoning'
-    - name: HLE
-      score: 9.6%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
-      vs_baseline: 'Rank #57 of 96 · Reasoning'
+      score: '24.72'
+      vs_baseline: 'Rank #70 of 127 · Top 56%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '97'
       source_url: 'https://artificialanalysis.ai/models/qwen3-vl-32b-reasoning'
@@ -91,13 +71,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Alibaba — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Alibaba's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Alibaba's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

@@ -19,17 +19,29 @@ model_spec:
     - text
   homepage: 'https://x.ai/'
   benchmarks:
+    - name: Math · MATH-500
+      score: 99.2%
+      vs_baseline: 'Rank #3 of 46 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Coding · HumanEval
+      score: 97.8%
+      vs_baseline: 'Rank #5 of 44 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Reasoning · AIME 2024
+      score: 93.3%
+      vs_baseline: 'Rank #5 of 43 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
     - name: Intelligence · AA Intelligence Index
-      score: '21.60'
-      source_url: 'https://artificialanalysis.ai/models/grok-3-reasoning'
-      vs_baseline: 'Rank #61 of 96 · Reasoning'
+      score: '32.08'
+      vs_baseline: 'Rank #53 of 127 · Top 42%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '0'
       source_url: 'https://artificialanalysis.ai/models/grok-3-reasoning'
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/grok-3-reasoning'
-  aa_url: 'https://artificialanalysis.ai/models/grok-3-reasoning'
+  aa_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
   context_window: 1000000
   modalities_in:
     - text
@@ -54,23 +66,36 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First xAI model trained on the Colossus supercluster — 10x compute of Grok-2"
-      - "AIME 2025 93.3% and GPQA 84.6% — credibly frontier-tier on math and graduate science"
-      - "Chatbot Arena Elo 1402 at release — not a benchmark stunt, real human-preference signal"
+      - >-
+        First xAI model trained on the Colossus supercluster — 10x compute of
+        Grok-2
+      - >-
+        AIME 2025 93.3% and GPQA 84.6% — credibly frontier-tier on math and
+        graduate science
+      - >-
+        Chatbot Arena Elo 1402 at release — not a benchmark stunt, real
+        human-preference signal
     best_for:
-      - "Research and scientific Q&A where chain-of-thought matters"
-      - "Real-time information retrieval inside the X platform with full timeline access"
-      - "Math and competition-style coding (LiveCodeBench 79.4%)"
+      - Research and scientific Q&A where chain-of-thought matters
+      - >-
+        Real-time information retrieval inside the X platform with full timeline
+        access
+      - Math and competition-style coding (LiveCodeBench 79.4%)
     not_ideal_for:
-      - "Coding-agent leaderboards — Claude Opus 4.5 and DeepSeek V4 score higher on SWE-bench"
-      - "Workflows where benchmark transparency matters — release controversy is a real concern"
+      - >-
+        Coding-agent leaderboards — Claude Opus 4.5 and DeepSeek V4 score higher
+        on SWE-bench
+      - >-
+        Workflows where benchmark transparency matters — release controversy is
+        a real concern
     sources:
-      - name: "xAI — Grok 3 announcement"
-        url: "https://x.ai/news/grok-3"
-      - name: "TechCrunch — Did xAI lie about Grok 3 benchmarks?"
-        url: "https://techcrunch.com/2025/02/22/did-xai-lie-about-grok-3s-benchmarks/"
-      - name: "Artificial Analysis — Grok 3 analysis"
-        url: "https://artificialanalysis.ai/models/grok-3"
+      - name: xAI — Grok 3 announcement
+        url: 'https://x.ai/news/grok-3'
+      - name: TechCrunch — Did xAI lie about Grok 3 benchmarks?
+        url: >-
+          https://techcrunch.com/2025/02/22/did-xai-lie-about-grok-3s-benchmarks/
+      - name: Artificial Analysis — Grok 3 analysis
+        url: 'https://artificialanalysis.ai/models/grok-3'
   availability:
     - api
 public_view:

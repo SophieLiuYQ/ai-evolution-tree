@@ -23,30 +23,22 @@ model_spec:
   homepage: 'https://www.deepseek.com/'
   api_model: deepseek-v4-flash
   benchmarks:
+    - name: Instruction · IFBench
+      score: 79.2%
+      vs_baseline: 'Rank #5 of 112 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/ifbench'
+    - name: Reasoning · GPQA Diamond
+      score: 89.4%
+      vs_baseline: 'Rank #10 of 124 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Reasoning · CritPt (graduate physics)
+      score: 7.1%
+      vs_baseline: 'Rank #10 of 110 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/critpt'
     - name: Intelligence · AA Intelligence Index
-      score: '44.90'
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #17 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '39.80'
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #14 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 42.0%
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #25 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 38.6%
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #13 of 96 · Reasoning'
-    - name: GPQA
-      score: 86.7%
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #14 of 96 · Reasoning'
-    - name: HLE
-      score: 27.8%
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #14 of 96 · Reasoning'
+      score: '46.52'
+      vs_baseline: 'Rank #18 of 127 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Price ($/M tokens)
       score: $0.14 in / $0.28 out
       source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
@@ -83,24 +75,38 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Flash tier of V4 — speed-optimised."
-      - "First open-weights reasoning model that genuinely competes with o1 — broke the closed-source moat"
-      - "~90% on advanced math benchmarks vs ~83% for GPT-4o; the chain-of-thought is fully visible"
-      - "Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training runs to reach the frontier"
+      - Flash tier of V4 — speed-optimised.
+      - >-
+        First open-weights reasoning model that genuinely competes with o1 —
+        broke the closed-source moat
+      - >-
+        ~90% on advanced math benchmarks vs ~83% for GPT-4o; the
+        chain-of-thought is fully visible
+      - >-
+        Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training
+        runs to reach the frontier
     best_for:
-      - "Math proofs, logic puzzles, and step-by-step derivations where explicit reasoning helps"
-      - "Coding and engineering tasks that benefit from chain-of-thought"
-      - "On-prem / air-gapped deployments where API models can't go"
+      - >-
+        Math proofs, logic puzzles, and step-by-step derivations where explicit
+        reasoning helps
+      - Coding and engineering tasks that benefit from chain-of-thought
+      - On-prem / air-gapped deployments where API models can't go
     not_ideal_for:
-      - "Casual chat, tone, or creative writing — ChatGPT/Claude feel more polished"
-      - "Multimodal tasks (image / vision) — text-only model"
+      - >-
+        Casual chat, tone, or creative writing — ChatGPT/Claude feel more
+        polished
+      - Multimodal tasks (image / vision) — text-only model
     sources:
-      - name: "MIT Technology Review — DeepSeek's top AI reasoning model despite sanctions"
-        url: "https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/"
-      - name: "BentoML — Complete guide to DeepSeek models V3, R1, V4"
-        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
-      - name: "DataCamp — DeepSeek vs ChatGPT comparison"
-        url: "https://www.datacamp.com/blog/deepseek-vs-chatgpt"
+      - name: >-
+          MIT Technology Review — DeepSeek's top AI reasoning model despite
+          sanctions
+        url: >-
+          https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/
+      - name: 'BentoML — Complete guide to DeepSeek models V3, R1, V4'
+        url: >-
+          https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+      - name: DataCamp — DeepSeek vs ChatGPT comparison
+        url: 'https://www.datacamp.com/blog/deepseek-vs-chatgpt'
   availability:
     - api
 public_view:
