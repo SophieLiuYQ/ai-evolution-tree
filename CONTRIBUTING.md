@@ -10,6 +10,25 @@ Thank you for considering a contribution. This project is **community-curated**:
 
 ---
 
+## Quickstart
+
+```bash
+git clone https://github.com/<you>/ai-tree && cd ai-tree
+npm install
+npm run dev          # local site at http://localhost:4321
+npm run build        # must pass before opening a PR
+```
+
+New to the codebase? Read these in order:
+
+- [`README.md`](./README.md) — what this project is.
+- [`docs/architecture.md`](./docs/architecture.md) — tech stack and rationale.
+- [`docs/node-schema.md`](./docs/node-schema.md) — node frontmatter spec (authoritative).
+- [`docs/graph-design.md`](./docs/graph-design.md) — graph-rendering rules. **Required reading before touching `src/components/Graph.astro` or its siblings.**
+- [`AGENTS.md`](./AGENTS.md) — rules for AI assistants (Claude/Codex/Gemini). Humans can skip.
+
+---
+
 ## Three kinds of contribution
 
 ### 1. Add a node
@@ -23,6 +42,8 @@ Corrections, better citations, clearer explanations, additional `parents:` you d
 ### 3. Edit the platform itself
 
 Schema changes, new components, build tooling. These are bigger — open an Issue first to discuss before sending a PR. Schema-breaking changes require a `MIGRATION.md` entry.
+
+> **Touching graph code?** Any change to `src/components/Graph.astro`, `MiniGraph.astro`, or `Tree.astro` MUST update [`docs/graph-design.md`](./docs/graph-design.md) in the same commit. This is the project's iteration contract — see that doc and `AGENTS.md` Rule #1 for the rationale.
 
 ---
 

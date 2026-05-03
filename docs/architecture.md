@@ -42,7 +42,7 @@ Node
 ├── slug:              "transformer"
 ├── title:             "Attention Is All You Need (Transformer)"
 ├── date:              2017-06-12         (ISO-8601, paper date or release date)
-├── era:               "transformer"      (enum: see NODE_SCHEMA.md)
+├── era:               "transformer"      (enum: see node-schema.md)
 ├── category:          ["nlp", "architecture"]   (tags)
 ├── parents:           ["seq2seq", "attention-mechanism"]  (slugs of nodes this builds on)
 ├── authors:           ["Vaswani, A.", "Shazeer, N.", ...]
@@ -121,7 +121,7 @@ If a PR breaks any of these, justify or fix.
 - **Translation infra** — English first. Add `i18n` collections in v0.3 once the schema is stable.
 - **AI-generated content** — every node must be human-reviewed for accuracy. Drafts can use AI; merges cannot bypass review.
 
-## Open questions (tracked in [ROADMAP.md](./ROADMAP.md))
+## Open questions (tracked in [roadmap.md](./roadmap.md))
 
 - Tree layout algorithm at scale — naive vertical timeline degrades past ~200 nodes.
 - "Recommended path" feature — guided tour through the tree for newcomers.

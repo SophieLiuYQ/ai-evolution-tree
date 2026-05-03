@@ -10,7 +10,7 @@ This file is the chronological record of design decisions, bugs encountered, and
 
 **Goal**: stand up project structure + working build with 7 sample nodes.
 
-- Project skeleton: README, ARCHITECTURE, CONTRIBUTING, ROADMAP, NODE_SCHEMA, LICENSE (MIT) + LICENSE-CONTENT (CC-BY-SA 4.0)
+- Project skeleton: README, architecture, contributing, roadmap, node-schema, LICENSE (MIT) + LICENSE-CONTENT (CC-BY-SA 4.0)
 - Stack chosen: Astro 5 + MDX + Content Collections + Tailwind 4 + Zod schemas + KaTeX + Shiki
   - Rationale: content-collections give Zod schema validation for free; static-first; permissive license model
   - Rejected: Next.js (heavier than needed), Hugo (less type safety), Notion-as-CMS (defeats version control)

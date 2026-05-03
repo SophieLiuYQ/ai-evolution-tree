@@ -5,8 +5,8 @@ a 73-node, 96-edge timeline-DAG with dual orientation, time-as-axis layout,
 typed-relationship edges, and full label legibility.
 
 This document is **methodology**, not a changelog. (For chronological
-build history, see [DEVLOG.md](./DEVLOG.md). For schema specs, see
-[NODE_SCHEMA.md](./NODE_SCHEMA.md).) The intent: codify load-bearing
+build history, see [devlog.md](./devlog.md). For schema specs, see
+[node-schema.md](./node-schema.md).) The intent: codify load-bearing
 decisions so future graph-viz projects can skip the iteration cost.
 
 ---
@@ -1480,7 +1480,7 @@ A useful workflow:
 7. Verify via audit script + hub hover
 8. Repeat
 
-The full iteration log is in [DEVLOG.md](./DEVLOG.md). The principles
+The full iteration log is in [devlog.md](./devlog.md). The principles
 above are the residue.
 
 ---

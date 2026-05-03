@@ -54,19 +54,21 @@ npm run build        # static site to ./dist
 5. List `parents:` — what prior nodes does this build on?
 6. Run `npm run build`. Green build = ready to PR.
 
-Full guide: [CONTRIBUTING.md](./CONTRIBUTING.md). Schema spec: [NODE_SCHEMA.md](./NODE_SCHEMA.md).
+Full guide: [CONTRIBUTING.md](./CONTRIBUTING.md). Schema spec: [docs/node-schema.md](./docs/node-schema.md).
 
 ## Project status
 
-Pre-alpha. Schema is stabilizing; expect breaking changes until v0.2. See [ROADMAP.md](./ROADMAP.md).
+Pre-alpha. Schema is stabilizing; expect breaking changes until v0.2. See [docs/roadmap.md](./docs/roadmap.md).
 
 ## Architecture
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — tech stack rationale, data model, rendering strategy, contributor ergonomics
-- [GRAPH_DESIGN.md](./GRAPH_DESIGN.md) — drawing principles for graph-based data visualization (layout topology, anchor system, fan-out stagger, z-order, invariants — distilled from 18 sprints of iteration)
-- [DEVLOG.md](./DEVLOG.md) — chronological build journal of how the project came together
-- [NODE_SCHEMA.md](./NODE_SCHEMA.md) — authoritative node schema spec
+- [docs/architecture.md](./docs/architecture.md) — tech stack rationale, data model, rendering strategy, contributor ergonomics
+- [docs/graph-design.md](./docs/graph-design.md) — drawing principles for graph-based data visualization (layout topology, anchor system, fan-out stagger, z-order, invariants — distilled from 18 sprints of iteration)
+- [docs/devlog.md](./docs/devlog.md) — chronological build journal of how the project came together
+- [docs/node-schema.md](./docs/node-schema.md) — authoritative node schema spec
+- [docs/model-page-system.md](./docs/model-page-system.md) — model detail-page system
 - [data/README.md](./data/README.md) — V2 embedded JSON architecture decision
+- [AGENTS.md](./AGENTS.md) — guidance for AI assistants working in this repo
 
 ## Licensing
 
