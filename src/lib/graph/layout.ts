@@ -45,13 +45,15 @@ export function groupByYear(nodes: NodeEntry[]) {
   return { byYear, years };
 }
 
-// License bucket: "Open" for open-weight / paper / research (no model_spec);
-// "Closed" for api / product / demo. Mirrors the 2026 open-vs-closed split
-// that the compass research calls out as the defining market structure.
+// License bucket: "Open" only for `open_weights` (downloadable). Papers
+// describe a model but don't ship weights — they belong to "Open
+// (research)" in the by-license layout view but not under "Open" in the
+// filter sense (Open source = downloadable). Anything else (api, product,
+// demo) is "Closed".
 function licenseKey(n: NodeEntry): string {
   const rt = n.data.model_spec?.release_type;
-  if (!rt) return "Open (research)";
-  if (rt === "open_weights" || rt === "paper") return "Open";
+  if (rt === "open_weights") return "Open";
+  if (rt === "paper" || !rt) return "Open (research)";
   return "Closed";
 }
 

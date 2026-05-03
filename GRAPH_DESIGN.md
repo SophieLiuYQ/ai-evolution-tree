@@ -147,6 +147,26 @@ counts for **Capabilities** (multi-tag; a node can increment multiple tags)
 and **License** (open vs closed), matching the existing Company counts. This
 helps users understand dataset composition at a glance before filtering.
 
+**Strict open-source classifier (2026-05-03):** the License filter's "Open"
+bucket previously included `release_type === "paper"` and nodes without
+`model_spec`, which over-counted "open" with research artefacts that don't
+ship downloadable weights. Tightened to:
+
+- **Open** = `release_type === "open_weights"` (downloadable weights only)
+- **Closed** = everything else: `api`, `product`, `demo`, `paper`, or unset.
+
+Three places kept in sync: `Graph.astro` (legend counts + `compactLicense`),
+`graph/Card.astro` (SVG `data-license` attribute), and `lib/graph/layout.ts`
+`licenseKey()` (used by the `byLicense` group axis — papers there get their
+own "Open (research)" bucket so they're still groupable, but they don't
+satisfy the License filter).
+
+Data side: `scripts/refresh-open-source.mjs` syncs each MDX node's
+`release_type` against AA's `is_open_weights` flag where AA has the model
+in its catalog. Hand-curated `paper`, `demo`, and `product` types are
+preserved (AA doesn't track those categories). One-shot run on 2026-05-03
+promoted 141 nodes from `api` → `open_weights`.
+
 **Removed `byOrg` and `byLicense` (2026-04-21):** the LegendPanel filter
 rows (Company, License) cover the same need — pick the subset you care
 about — without pinning the user to a fixed grouping axis. With only

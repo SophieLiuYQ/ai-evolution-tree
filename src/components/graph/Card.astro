@@ -25,12 +25,11 @@ const metaText = clip(`${fmtMonth(d.date)} · ${normalizeOrg(d.org)}`, META_MAX)
 // Two-bucket license signal for the LegendPanel "License" filter. Same
 // rule as licenseKey() in layout.ts: missing model_spec → open
 // (research papers, foundational nodes); open_weights / paper → open;
-// api / product / demo → closed.
+// "Open source" = downloadable weights only. api / product / demo /
+// paper / undefined → closed (papers describe models without shipping
+// weights, so they don't satisfy an "open source filter" either).
 const releaseType = d.model_spec?.release_type;
-const license =
-  !releaseType || releaseType === "open_weights" || releaseType === "paper"
-    ? "open"
-    : "closed";
+const license = releaseType === "open_weights" ? "open" : "closed";
 ---
 
 <a href={`/node/${d.slug}/`} class="node-link" data-slug={d.slug} data-cats={normalizeCategories(d.category).join(" ")} data-license={license} data-org={normalizeOrg(d.org)}>
