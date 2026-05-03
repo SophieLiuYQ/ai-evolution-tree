@@ -42,18 +42,21 @@ model_spec:
     - product
     - enterprise
   benchmarks:
-    - name: Knowledge · MMLU-Pro
-      score: 88.0%
-      vs_baseline: 'Rank #2 of 57 · Top 5%'
+    - name: Reasoning · CritPt (graduate physics)
+      score: 12.6%
+      vs_baseline: 'Rank #3 of 82 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/critpt'
+    - name: Reasoning · Humanity's Last Exam
+      score: 36.7%
+      vs_baseline: 'Rank #4 of 95 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
+    - name: Agentic · AA Agentic Index
+      score: '67.58'
+      vs_baseline: 'Rank #4 of 80 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: Long-context · AA-LCR
-      score: 66.3%
-      vs_baseline: 'Rank #10 of 78 · Top 20%'
-      source_url: >-
-        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
     - name: Intelligence · AA Intelligence Index
-      score: '42.00'
-      vs_baseline: 'Rank #17 of 93 · Top 20%'
+      score: '52.95'
+      vs_baseline: 'Rank #7 of 99 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '54'

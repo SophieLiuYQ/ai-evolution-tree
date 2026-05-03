@@ -23,34 +23,23 @@ model_spec:
   homepage: 'https://www.anthropic.com/'
   api_model: claude-opus-4-5-20251101
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '49.70'
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #9 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '47.80'
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #5 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 49.5%
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #6 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 47.0%
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #4 of 96 · Reasoning'
-    - name: MMLU-Pro
+    - name: Knowledge · MMLU-Pro
       score: 89.5%
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #2 of 96 · Reasoning'
-    - name: GPQA
-      score: 86.6%
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #15 of 96 · Reasoning'
-    - name: HLE
-      score: 28.4%
-      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
-      vs_baseline: 'Rank #12 of 96 · Reasoning'
+      vs_baseline: 'Rank #1 of 60 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Long-context · AA-LCR
+      score: 74.0%
+      vs_baseline: 'Rank #2 of 84 · Top 5%'
+      source_url: >-
+        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: Coding · LiveCodeBench
+      score: 87.1%
+      vs_baseline: 'Rank #4 of 60 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Intelligence · AA Intelligence Index
+      score: '49.73'
+      vs_baseline: 'Rank #12 of 99 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '67'
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-5-thinking'
@@ -94,28 +83,41 @@ model_spec:
     - api
   reviews:
     feels_like:
-      - "Best-in-class on real-world coding — 80.9% on SWE-bench Verified, ahead of Gemini 3 Pro and GPT-5.1"
-      - "Reasoning index of 70 on Artificial Analysis — biggest single-jump from any prior Anthropic model"
-      - "Testers say it 'just gets it' on multi-system bugs without hand-holding"
-      - "Token-efficient: matches Sonnet 4.5's coding score using 76% fewer output tokens at medium effort"
-      - "Pricing dropped to $5/$25 per M tokens — finally accessible for production"
-      - "Tool-use gap is large vs the next model: 62.3% vs 43.8% on scaled tool-use benchmarks"
+      - >-
+        Best-in-class on real-world coding — 80.9% on SWE-bench Verified, ahead
+        of Gemini 3 Pro and GPT-5.1
+      - >-
+        Reasoning index of 70 on Artificial Analysis — biggest single-jump from
+        any prior Anthropic model
+      - Testers say it 'just gets it' on multi-system bugs without hand-holding
+      - >-
+        Token-efficient: matches Sonnet 4.5's coding score using 76% fewer
+        output tokens at medium effort
+      - >-
+        Pricing dropped to $5/$25 per M tokens — finally accessible for
+        production
+      - >-
+        Tool-use gap is large vs the next model: 62.3% vs 43.8% on scaled
+        tool-use benchmarks
     best_for:
-      - "Software engineering on large, real codebases (SWE-bench leader)"
-      - "Multi-step agentic workflows with tool use (τ2-bench, MCP Atlas)"
-      - "Computer-use / OSWorld automation tasks where Opus 4.5 leads by a wide margin"
-      - "Complex bug fixes that require reasoning across files and systems"
+      - 'Software engineering on large, real codebases (SWE-bench leader)'
+      - 'Multi-step agentic workflows with tool use (τ2-bench, MCP Atlas)'
+      - >-
+        Computer-use / OSWorld automation tasks where Opus 4.5 leads by a wide
+        margin
+      - Complex bug fixes that require reasoning across files and systems
     not_ideal_for:
-      - "High-volume, latency-sensitive workloads — use Sonnet 4.5 or Haiku 4.5"
-      - "Simple chat or casual Q&A — overkill"
-      - "Budget-sensitive bulk inference where token cost dominates"
+      - 'High-volume, latency-sensitive workloads — use Sonnet 4.5 or Haiku 4.5'
+      - Simple chat or casual Q&A — overkill
+      - Budget-sensitive bulk inference where token cost dominates
     sources:
-      - name: "Anthropic — Claude Opus 4.5 announcement"
-        url: "https://www.anthropic.com/news/claude-opus-4-5"
-      - name: "Artificial Analysis — Opus 4.5 benchmarks"
-        url: "https://artificialanalysis.ai/articles/claude-opus-4-5-benchmarks-and-analysis"
-      - name: "Vellum — Claude Opus 4.5 benchmarks"
-        url: "https://www.vellum.ai/blog/claude-opus-4-5-benchmarks"
+      - name: Anthropic — Claude Opus 4.5 announcement
+        url: 'https://www.anthropic.com/news/claude-opus-4-5'
+      - name: Artificial Analysis — Opus 4.5 benchmarks
+        url: >-
+          https://artificialanalysis.ai/articles/claude-opus-4-5-benchmarks-and-analysis
+      - name: Vellum — Claude Opus 4.5 benchmarks
+        url: 'https://www.vellum.ai/blog/claude-opus-4-5-benchmarks'
 public_view:
   plain_english: >-
     Claude Opus 4.5 is an API model from Anthropic. It’s positioned for general

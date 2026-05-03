@@ -119,12 +119,15 @@ const SLUG_MAP = {
   "gpt-4o":             "gpt-4o",
   "gpt-4-turbo":        "gpt-4-turbo",
   "gpt-4":              "gpt-4",
-  // Anthropic — our newer slugs map to AA's latest available family
-  "claude-opus-4-7":    "claude-4-1",
-  "claude-opus-4-6":    "claude-4-1",
-  "claude-sonnet-4-6":  "claude-4-1",
-  "claude-haiku-4-5":   "claude-4-1",
-  "claude-4":           "claude-4",
+  // Anthropic — see VARIANT_MAP below; these models need per-variant
+  // name matching because they all live under AA's `claude-4` family
+  // slug but score very differently. The SLUG_MAP entries here only
+  // serve as a fallback if VARIANT_MAP doesn't match.
+  "claude-opus-4-7":    "claude-4",
+  "claude-opus-4-6":    "claude-4",
+  "claude-sonnet-4-6":  "claude-4",
+  "claude-haiku-4-5":   "claude-4",
+  "claude-4":           "claude-4-1",
   "claude-3-7-sonnet":  "claude-3-7",
   "claude-3-5-sonnet":  "claude-3-5",
   "claude-3":           "claude-3",
@@ -158,6 +161,20 @@ const SLUG_MAP = {
   "baidu-ernie-4":      "ernie-4-5",
   // Open-source
   "ling-ring-1t":       "ling-1t",
+};
+
+// VARIANT_MAP: when an AA family aggregates many models with very
+// different scores (e.g. Anthropic's `claude-4` slug holds Opus 4.7
+// at 57.28 alongside Haiku 4.5 at 37.09), pick the specific record
+// by exact `name` match. Falls back to SLUG_MAP/family champion if
+// no record matches.
+const VARIANT_MAP = {
+  "claude-opus-4-7":   "Claude Opus 4.7 (Adaptive Reasoning, Max Effort)",
+  "claude-opus-4-6":   "Claude Opus 4.6 (Adaptive Reasoning, Max Effort)",
+  "claude-sonnet-4-6": "Claude Sonnet 4.6 (Adaptive Reasoning, Max Effort)",
+  "claude-opus-4-5":   "Claude Opus 4.5 (Reasoning)",
+  "claude-haiku-4-5":  "Claude 4.5 Haiku (Reasoning)",
+  "claude-4":          "Claude 4 Opus (Reasoning)",
 };
 
 // ============== AA scrape + parse ==============
@@ -227,6 +244,14 @@ function aggregateByFamily(records) {
     if (!cur || (cur.intelligence_index ?? -Infinity) < ii) {
       byFamily.set(fam, r);
     }
+  }
+  // VARIANT_MAP overlays — for each `(our_slug → variant_name)` pair,
+  // find the record whose `name` matches and add it under a synthetic
+  // family slug "@variant:<our_slug>". The main loop will look this up
+  // first, falling back to the regular SLUG_MAP champion if missing.
+  for (const [ourSlug, variantName] of Object.entries(VARIANT_MAP)) {
+    const rec = records.find((r) => r.name === variantName);
+    if (rec) byFamily.set(`@variant:${ourSlug}`, rec);
   }
   return byFamily;
 }
@@ -338,7 +363,11 @@ async function main() {
     if (!fm.slug) continue;
     if (ONE_SLUG && fm.slug !== ONE_SLUG) continue;
 
-    const aaSlug = SLUG_MAP[fm.slug];
+    // Prefer per-variant override when present (synthetic key in
+     // byFamily is "@variant:<our_slug>"); otherwise fall back to
+     // SLUG_MAP family champion.
+    const variantKey = VARIANT_MAP[fm.slug] ? `@variant:${fm.slug}` : null;
+    const aaSlug = variantKey ?? SLUG_MAP[fm.slug];
     if (!aaSlug) { missing++; vlog(`  ${fm.slug} → no AA mapping, skip`); continue; }
 
     const top = pickTop3(aaSlug, ranks);

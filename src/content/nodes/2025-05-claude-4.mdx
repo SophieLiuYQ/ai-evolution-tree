@@ -39,18 +39,22 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: Knowledge · AA-Omniscience
-      score: '26.17'
-      vs_baseline: 'Rank #1 of 76 · Top 5%'
-      source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
-    - name: Intelligence · AA Intelligence Index
-      score: '57.28'
-      vs_baseline: 'Rank #2 of 93 · Top 5%'
+    - name: Knowledge · MMLU-Pro
+      score: 87.3%
+      vs_baseline: 'Rank #4 of 60 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: Reasoning · GPQA Diamond
-      score: 91.4%
-      vs_baseline: 'Rank #2 of 90 · Top 5%'
-      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Math · MATH-500
+      score: 98.2%
+      vs_baseline: 'Rank #5 of 38 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Reasoning · AIME 2024
+      score: 75.7%
+      vs_baseline: 'Rank #8 of 35 · Top 23%'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
+    - name: Intelligence · AA Intelligence Index
+      score: '39.00'
+      vs_baseline: 'Rank #28 of 99 · Top 29%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: MMLU-Pro
       score: 88.0% (76.0–88.0%)
       source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'

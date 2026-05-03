@@ -33,18 +33,22 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: Knowledge · MMLU-Pro
-      score: 88.0%
-      vs_baseline: 'Rank #2 of 57 · Top 5%'
-      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Long-context · AA-LCR
-      score: 66.3%
-      vs_baseline: 'Rank #10 of 78 · Top 20%'
+      score: 70.3%
+      vs_baseline: 'Rank #9 of 84 · Top 20%'
       source_url: >-
         https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: Knowledge · AA-Omniscience
+      score: '-4.22'
+      vs_baseline: 'Rank #15 of 81 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
+    - name: Coding · SciCode
+      score: 43.3%
+      vs_baseline: 'Rank #19 of 95 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
     - name: Intelligence · AA Intelligence Index
-      score: '42.00'
-      vs_baseline: 'Rank #17 of 93 · Top 20%'
+      score: '37.09'
+      vs_baseline: 'Rank #31 of 99 · Top 32%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
       score: '140'
