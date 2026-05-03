@@ -44,6 +44,7 @@ export const LOGO_MANIFEST: Record<string, LogoManifestEntry> = {
   "Snowflake": { slug: "snowflake", ext: "svg" },
   "Stepfun": { slug: "stepfun", ext: "ico" },
   "Suno": { slug: "suno", ext: "svg" },
+  "Tencent": { slug: "tencent", ext: "svg" },
   "Tesla": { slug: "tesla", ext: "svg" },
   "Tsinghua / Zhipu": { slug: "tsinghua-zhipu", ext: "ico" },
   "Unitree": { slug: "unitree", ext: "ico" },
