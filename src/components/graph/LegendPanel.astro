@@ -359,10 +359,12 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   </p>
   </>
   )}
+  {import.meta.env.DEV && (
   <div class="mt-3 flex gap-1.5 text-[10px]">
     <a href="/timeline/" class="rounded border border-slate-300 bg-white px-2 py-0.5 hover:border-[var(--accent)]">Timeline</a>
     <a href="/about/" class="rounded border border-slate-300 bg-white px-2 py-0.5 hover:border-[var(--accent)]">About</a>
   </div>
+  )}
 </aside>
 
 <style>
