@@ -541,7 +541,7 @@ const attrCards: AttrCard[] = (() => {
       color: "violet",
       k: "Intelligence",
       v,
-      desc: "from Artificial Analysis",
+      desc: "",
     });
   }
 
@@ -1502,7 +1502,7 @@ const familySubtitle = (() => {
                 ) : (
                   <div class={`attr-v ${a.v.length > 14 ? "attr-v-long" : ""}`}>{a.v}</div>
                 )}
-                <div class="attr-desc">{a.desc}</div>
+                {a.desc && <div class="attr-desc">{a.desc}</div>}
               </div>
             ))}
           </div>
