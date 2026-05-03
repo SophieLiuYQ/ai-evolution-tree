@@ -161,6 +161,8 @@ const SLUG_MAP = {
   "baidu-ernie-4":      "ernie-4-5",
   // Open-source
   "ling-ring-1t":       "ling-1t",
+  // Tencent
+  "hy3":                "hy3",
 };
 
 // VARIANT_MAP: when an AA family aggregates many models with very

@@ -1,90 +1,131 @@
 ---
 slug: hy3
-title: "Hy3-preview (Reasoning)"
+title: Hy3-preview — Tencent Hunyuan's open MoE reasoning model
 date: '2026-04-23'
 era: frontier
 category:
   - nlp
   - generative
   - reasoning
+relationships:
+  - to: deepseek-v3
+    type: builds_on
+    note: >-
+      Same MoE-with-reasoning recipe (sparse experts + post-training reasoning)
+      that DeepSeek V3 / V3.2 popularised; open-weights release in that lineage.
 authors:
-  - Tencent Team
+  - Tencent Hunyuan Team
 org: Tencent
-breakthrough_score: 5
+breakthrough_score: 6
 status: active
 model_spec:
-  parameters: "295B total / 21B active"
-  architecture: "Reasoning-tuned LLM (auto-generated stub)"
+  parameters: 295B total / 21B active (MoE)
+  architecture: >-
+    Sparse-MoE transformer with reasoning post-training; preview release of
+    the Hy3 (Hunyuan 3) line.
   context_window: 256000
   release_type: open_weights
   modalities:
     - text
+  modalities_in:
+    - text
+  modalities_out:
+    - text
   benchmarks:
-    - name: "Intelligence · AA Intelligence Index"
-      score: "41.85"
-      vs_baseline: "Rank #18 of 93"
-      source_url: "https://artificialanalysis.ai/models/hy3"
-    - name: "Coding · AA Coding Index"
-      score: "36.46"
-      source_url: "https://artificialanalysis.ai/models/hy3"
-    - name: "Coding · SciCode"
-      score: "41.2%"
-      source_url: "https://artificialanalysis.ai/evaluations/scicode"
-    - name: "Agentic · Terminal-Bench Hard"
-      score: "34.1%"
-      source_url: "https://artificialanalysis.ai/evaluations/terminal-bench-hard"
-    - name: GPQA
-      score: "86.7%"
-      source_url: "https://artificialanalysis.ai/evaluations/gpqa-diamond"
-    - name: HLE
-      score: "25.5%"
-      source_url: "https://artificialanalysis.ai/evaluations/humanitys-last-exam"
-    - name: "Price ($/M tokens)"
-      score: "$0.00 in / $0.00 out"
-      source_url: "https://artificialanalysis.ai/leaderboards/models"
-  aa_url: "https://artificialanalysis.ai/models/hy3"
-  homepage: "https://hunyuan.tencent.com/"
+    - name: Intelligence · AA Intelligence Index
+      score: '41.85'
+      vs_baseline: 'Rank #18 of 127'
+      source_url: 'https://artificialanalysis.ai/models/hy3'
+    - name: Coding · AA Coding Index
+      score: '36.46'
+      source_url: 'https://artificialanalysis.ai/models/hy3'
+    - name: Coding · SciCode
+      score: 41.2%
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: Agentic · Terminal-Bench Hard
+      score: 34.1%
+      source_url: 'https://artificialanalysis.ai/evaluations/terminal-bench-hard'
+    - name: Reasoning · GPQA Diamond
+      score: 86.7%
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Reasoning · Humanity's Last Exam
+      score: 25.5%
+      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
+  aa_url: 'https://artificialanalysis.ai/models/hy3'
+  homepage: 'https://hunyuan.tencent.com/'
+  hf_url: 'https://huggingface.co/tencent/Hy3-preview'
   availability:
     - open_weights
+  family: Tencent Hunyuan
   reviews:
     feels_like:
-      - "Auto-generated stub from Artificial Analysis catalog — verify before publishing"
+      - "Reasoning-style answers — explicit step-by-step traces rather than terse outputs, in the DeepSeek V3 / R1 lineage"
+      - "Frontier-class on benchmarks (AA Intelligence Index ~42), gap to GPT-5 / Opus 4.7 still meaningful but small among open-weights"
     best_for:
-      - "See benchmarks below for capability profile"
+      - "Self-host scenarios where you want a reasoning model with frontier benchmarks but no API dependency"
+      - "Math, coding, and graduate-physics-style problems (GPQA 86.7%, SciCode 41.2%)"
+      - "Long documents — 256K context window matches DeepSeek V3.2 and Kimi K2"
     not_ideal_for:
-      - "Tasks far outside the modalities or capabilities this model targets"
+      - "Multimodal / vision tasks — text-only release"
+      - "Cost-sensitive serving without GPU capacity for a 295B/21B-active MoE"
+      - "Use cases that need a stable production SLA — this is a preview release"
+    sources:
+      - name: Artificial Analysis
+        url: 'https://artificialanalysis.ai/models/hy3'
+        type: benchmark
+      - name: Hugging Face
+        url: 'https://huggingface.co/tencent/Hy3-preview'
+        type: official
+      - name: Tencent Hunyuan
+        url: 'https://hunyuan.tencent.com/'
+        type: official
+  license_name: Tencent HY Community License Agreement
+  license_url: 'https://huggingface.co/tencent/Hy3-preview/blob/main/LICENSE'
 public_view:
   plain_english: |
-    Stub page for Hy3-preview (Reasoning). Auto-imported from Artificial Analysis on
-    2026-05-03. Scores below are pulled
-    from AA; lineage and prose still need hand-curation.
+    Tencent's open-weight reasoning model in the Hunyuan 3 line. 295B
+    total parameters with 21B active per token (sparse mixture of experts),
+    256K context, and reasoning-style answers. Roughly the open-weights peer
+    to DeepSeek V3.2 by AA Intelligence Index.
   analogy: |
-    Like other reasoning
-    LLMs in its tier — see benchmarks for relative positioning. Hand-curated
-    analogy goes here once the entry is reviewed.
+    Like DeepSeek V3 with a Tencent-hosted release path: same sparse MoE +
+    reasoning recipe, similar tier on benchmarks, distributed via Hugging
+    Face under a permissive community license.
   applications:
-    - product: "Hy3-preview (Reasoning)"
+    - product: Tencent Hunyuan platform
       company: Tencent
       year_deployed: 2026
+    - product: 'Self-hosted reasoning agents'
+      company: Multiple
+      year_deployed: 2026
   investment_angle: |
-    Tencent positions Hy3-preview (Reasoning) in the frontier-reasoning
-    market. Refine this paragraph with deployment data, moat shape, and
-    distribution channels once curated.
+    Tencent's open-weights bet in the reasoning era — frontier-tier
+    benchmarks (AA Intel ~42) released under a permissive license positions
+    it against DeepSeek V3.2 in the China-origin open-MoE category.
+    Open-weights release alongside Tencent Cloud's hosted serving suggests
+    the same dual-track DeepSeek used for V3.
   why_it_matters: |
-    See AA's evaluation page for benchmark detail. This stub exists so the
-    model appears alongside its peers in the tree and detail-page peer
-    comparisons; replace with curated context when ready.
+    A second large Chinese lab (after DeepSeek and Moonshot) shipping a
+    reasoning-tuned 200B+ MoE under open weights tightens the gap between
+    open and frontier closed models. Preview tag means scores will likely
+    move on a stable release.
 
 citations:
+  - type: release
+    key: hy3_preview
+    title: 'Hy3-preview release on Hugging Face'
+    url: 'https://huggingface.co/tencent/Hy3-preview'
+    year: 2026
   - type: blog
     key: aa_hy3
-    title: "Hy3-preview (Reasoning) — Artificial Analysis catalog entry"
-    url: "https://artificialanalysis.ai/models/hy3"
+    title: 'Hy3-preview — Artificial Analysis catalog entry'
+    url: 'https://artificialanalysis.ai/models/hy3'
     year: 2026
 ---
 
 ## Notes
 
-This page was auto-generated from Artificial Analysis catalog data.
-Replace with curated context, lineage relationships, and prose when
-ready.
+Preview release in Tencent's Hunyuan-3 line. Open weights under the
+Tencent HY Community License. Sparse MoE with reasoning post-training,
+295B total / 21B active per token, 256K context. AA Intelligence Index
+~42 puts it in the open-weights frontier band alongside DeepSeek V3.2.
