@@ -37,7 +37,7 @@ export const orgFill: Record<string, string> = {
   "Kuaishou": "#fef3c7",
   "Nvidia": "#dcfce7",
   "Apple": "#f1f5f9",
-  "Lightricks": "#ffffff",
+  "Lightricks": "#43364a",
 };
 
 export const orgStroke: Record<string, string> = {

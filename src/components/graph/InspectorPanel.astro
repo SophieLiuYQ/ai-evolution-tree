@@ -169,31 +169,31 @@
   .inspector-facts {
     margin: 16px 0 0 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
   .inspector-fact {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    padding: 10px 12px;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid var(--border);
     border-radius: 8px;
     min-width: 0;
   }
   .inspector-fact dt {
-    font-size: 0.625rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 500;
     color: var(--fg-muted);
+    flex-shrink: 0;
   }
   .inspector-fact dd {
     margin: 0;
-    text-align: left;
-    font-size: 0.875rem;
+    text-align: right;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--fg);
     line-height: 1.3;
