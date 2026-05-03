@@ -86,8 +86,8 @@ export const DICT: Record<Lang, Record<string, string>> = {
     "spec.modality_out": "Modality out",
     "spec.capabilities": "Capabilities",
 
-    "license.open": "Open source",
-    "license.closed": "Closed source",
+    "license.open": "Open weights",
+    "license.closed": "Closed / hosted",
 
     "help.hover": "Hover a card → 1-hop edges.",
     "help.zoom": "zoom",
@@ -260,8 +260,8 @@ export const DICT: Record<Lang, Record<string, string>> = {
     "spec.modality_out": "输出模态",
     "spec.capabilities": "能力",
 
-    "license.open": "开源",
-    "license.closed": "闭源",
+    "license.open": "开放权重",
+    "license.closed": "闭源 / 托管",
 
     "help.hover": "悬停卡片 → 显示 1-hop 关系",
     "help.zoom": "zoom",

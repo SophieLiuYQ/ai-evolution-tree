@@ -243,15 +243,19 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
   </div>
 
   {/* License filter — two buckets, AND-ed with the Node-types filter
-      above. "Open" covers open_weights / paper / no-model_spec; "Closed"
-      covers api / product / demo. Mirrors the byLicense sort taxonomy. */}
+      above. Strict definition (matches Graph.astro / Card.astro /
+      lib/graph/layout.ts):
+        Open    = release_type === "open_weights" (downloadable weights)
+        Closed  = api / product / demo / paper / unset
+      Papers describe a model but don't ship weights, so they fall under
+      Closed alongside hosted-only models. */}
   <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
     <span data-i18n="filter.license">License</span>
   </h3>
   <ul class="space-y-1">
       {([
-      { id: "open", label: "Open source", color: "#047857" },
-      { id: "closed", label: "Closed source", color: "#94a3b8" },
+      { id: "open", label: "Open weights", color: "#047857" },
+      { id: "closed", label: "Closed / hosted", color: "#94a3b8" },
     ] as const).map((lic) => (
       <li class="license-row" data-license={lic.id} data-on="true">
         <button

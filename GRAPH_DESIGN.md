@@ -152,14 +152,19 @@ bucket previously included `release_type === "paper"` and nodes without
 `model_spec`, which over-counted "open" with research artefacts that don't
 ship downloadable weights. Tightened to:
 
-- **Open** = `release_type === "open_weights"` (downloadable weights only)
-- **Closed** = everything else: `api`, `product`, `demo`, `paper`, or unset.
+- **Open weights** = `release_type === "open_weights"` (downloadable weights only)
+- **Closed / hosted** = everything else: `api`, `product`, `demo`, `paper`, or unset.
 
-Three places kept in sync: `Graph.astro` (legend counts + `compactLicense`),
-`graph/Card.astro` (SVG `data-license` attribute), and `lib/graph/layout.ts`
-`licenseKey()` (used by the `byLicense` group axis — papers there get their
-own "Open (research)" bucket so they're still groupable, but they don't
-satisfy the License filter).
+Filter labels renamed from "Open source / Closed source" to
+"Open weights / Closed / hosted" so the meaning is unambiguous —
+"open source" colloquially conflates weight-availability with source-code
+availability, but the filter only checks the former.
+
+Four places kept in sync: `Graph.astro` (legend counts + `compactLicense`),
+`graph/Card.astro` (SVG `data-license` attribute), `lib/graph/layout.ts`
+`licenseKey()` (papers get a separate "Open (research)" bucket in the
+`byLicense` group axis but don't satisfy the License filter), and
+`graph/LegendPanel.astro` (filter row labels + i18n strings).
 
 Data side: `scripts/refresh-open-source.mjs` syncs each MDX node's
 `release_type` against AA's `is_open_weights` flag where AA has the model
