@@ -43,10 +43,18 @@ model_spec:
     - open_weights
     - product
   benchmarks:
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '18.36'
       vs_baseline: 'Rank #58 of 93 · Top 63%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '142'
+      source_url: 'https://artificialanalysis.ai/models/llama-4-scout'
+      vs_baseline: 'Rank #83 of 496'
+    - name: Price ($/M tokens)
+      score: $0.17 in / $0.66 out
+      source_url: 'https://artificialanalysis.ai/models/llama-4-scout'
+      vs_baseline: 'Rank #247 of 496'
   family: Meta Llama
   variants:
     - id: llama-4-behemoth

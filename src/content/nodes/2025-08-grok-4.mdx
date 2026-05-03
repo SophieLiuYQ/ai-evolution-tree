@@ -35,22 +35,34 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: "\U0001D70F²-Bench Telecom (agentic)"
+    - name: "Agentic · \U0001D70F²-Bench Telecom"
       score: 97.7%
       vs_baseline: 'Rank #1 of 78 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/tau2-bench'
-    - name: IFBench (instruction follow)
+    - name: Instruction · IFBench
       score: 81.3%
       vs_baseline: 'Rank #1 of 78 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/ifbench'
-    - name: AA-Omniscience
+    - name: Knowledge · AA-Omniscience
       score: '18.32'
       vs_baseline: 'Rank #3 of 76 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '53.20'
       vs_baseline: 'Rank #5 of 93 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Vision · MMMU-Pro
+      score: 74.6%
+      vs_baseline: 'Rank #7 of 26 · Top #7 of 26 · Artificial Analysis'
+      source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
+    - name: Speed · Output tok/s
+      score: '96'
+      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
+      vs_baseline: 'Rank #30 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $6.00 out
+      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
+      vs_baseline: 'Rank #83 of 96 · Reasoning'
   homepage: 'https://x.ai/news/grok-4'
   availability:
     - api

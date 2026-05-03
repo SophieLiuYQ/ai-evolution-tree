@@ -33,19 +33,27 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: MMLU-Pro
+    - name: Knowledge · MMLU-Pro
       score: 88.0%
       vs_baseline: 'Rank #2 of 57 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: AA-LCR (long-context reason)
+    - name: Long-context · AA-LCR
       score: 66.3%
       vs_baseline: 'Rank #10 of 78 · Top 20%'
       source_url: >-
         https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '42.00'
       vs_baseline: 'Rank #17 of 93 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '140'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
+      vs_baseline: 'Rank #16 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $1.00 in / $5.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
+      vs_baseline: 'Rank #80 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
   modalities_in:
     - text

@@ -34,19 +34,30 @@ model_spec:
   modalities:
     - text
   benchmarks:
-    - name: GDPval-AA (real-world tasks)
+    - name: Agentic · GDPval-AA (real-world tasks)
       score: '1507.75'
       vs_baseline: 'Rank #6 of 67 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/gdpval-aa'
-    - name: AA-LCR (long-context reason)
+    - name: Long-context · AA-LCR
       score: 68.7%
       vs_baseline: 'Rank #7 of 78 · Top 10%'
       source_url: >-
         https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '49.62'
       vs_baseline: 'Rank #9 of 93 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: MMLU-Pro
+      score: 87.5% (82.0–87.5%)
+      source_url: 'https://artificialanalysis.ai/models/minimax-m2-7'
+    - name: Speed · Output tok/s
+      score: '47'
+      source_url: 'https://artificialanalysis.ai/models/minimax-m2-7'
+      vs_baseline: 'Rank #241 of 496'
+    - name: Price ($/M tokens)
+      score: $0.30 in / $1.20 out
+      source_url: 'https://artificialanalysis.ai/models/minimax-m2-7'
+      vs_baseline: 'Rank #295 of 496'
   homepage: 'https://www.minimax.io/news/minimax-m2'
   github: 'https://github.com/MiniMax-AI/MiniMax-M2'
   availability:

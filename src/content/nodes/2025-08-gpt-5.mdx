@@ -41,18 +41,26 @@ model_spec:
     - vision
     - audio
   benchmarks:
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '58.87'
       vs_baseline: 'Rank #1 of 93 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: GPQA Diamond
+    - name: Reasoning · GPQA Diamond
       score: 93.2%
       vs_baseline: 'Rank #1 of 90 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
-    - name: Humanity's Last Exam
+    - name: Reasoning · Humanity's Last Exam
       score: 43.0%
       vs_baseline: 'Rank #1 of 89 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
+    - name: Speed · Output tok/s
+      score: '96'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #144 of 496'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $30.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #485 of 496'
   variants:
     - id: gpt-5-chatgpt
       label: GPT-5 (ChatGPT)

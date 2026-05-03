@@ -39,18 +39,29 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: AA-Omniscience
+    - name: Knowledge · AA-Omniscience
       score: '26.17'
       vs_baseline: 'Rank #1 of 76 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '57.28'
       vs_baseline: 'Rank #2 of 93 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: GPQA Diamond
+    - name: Reasoning · GPQA Diamond
       score: 91.4%
       vs_baseline: 'Rank #2 of 90 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: MMLU-Pro
+      score: 88.0% (76.0–88.0%)
+      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
+    - name: Speed · Output tok/s
+      score: '68'
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+      vs_baseline: 'Rank #40 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $3.00 in / $15.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
+      vs_baseline: 'Rank #92 of 96 · Reasoning'
   homepage: 'https://www.anthropic.com/news/claude-4'
   availability:
     - api

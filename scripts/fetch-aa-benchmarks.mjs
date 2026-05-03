@@ -56,40 +56,44 @@ const vlog = (...a) => VERBOSE && console.log(" ", ...a);
 // knowledge · multimodal — so different model strengths surface in
 // the right category (a coding model lights up on LiveCodeBench/SciCode,
 // an agentic model lights up on Tau²-Bench/Terminal-Bench/GDPval).
+// Benchmark name convention: prefixed with category ("Intelligence · ",
+// "Coding · ", "Agentic · ") so the detail-page lookups (which key by the
+// prefixed form) can find them. Keep this aligned with the lookup strings
+// in src/pages/node/[slug].astro near `aaIntRank`/`speedRank`/etc.
 const BENCH_META = {
   // Reasoning
-  aime:                 { name: "AIME 2024",                    unit: "pct",   eval: "aime" },
-  aime25:               { name: "AIME 2025",                    unit: "pct",   eval: "aime" },
-  gpqa:                 { name: "GPQA Diamond",                 unit: "pct",   eval: "gpqa-diamond" },
-  hle:                  { name: "Humanity's Last Exam",         unit: "pct",   eval: "humanitys-last-exam" },
-  critpt:               { name: "CritPt (graduate physics)",    unit: "pct",   eval: "critpt" },
+  aime:                 { name: "Reasoning · AIME 2024",                  unit: "pct",   eval: "aime" },
+  aime25:               { name: "Reasoning · AIME 2025",                  unit: "pct",   eval: "aime" },
+  gpqa:                 { name: "Reasoning · GPQA Diamond",               unit: "pct",   eval: "gpqa-diamond" },
+  hle:                  { name: "Reasoning · Humanity's Last Exam",       unit: "pct",   eval: "humanitys-last-exam" },
+  critpt:               { name: "Reasoning · CritPt (graduate physics)",  unit: "pct",   eval: "critpt" },
   // Math
-  math_500:             { name: "MATH-500",                     unit: "pct",   eval: null },
-  math_index:           { name: "AA Math Index",                unit: "score", eval: null },
+  math_500:             { name: "Math · MATH-500",                        unit: "pct",   eval: null },
+  math_index:           { name: "Math · AA Math Index",                   unit: "score", eval: null },
   // Coding
-  humaneval:            { name: "HumanEval",                    unit: "pct",   eval: null },
-  livecodebench:        { name: "LiveCodeBench",                unit: "pct",   eval: null },
-  scicode:              { name: "SciCode",                      unit: "pct",   eval: "scicode" },
-  coding_index:         { name: "AA Coding Index",              unit: "score", eval: null },
+  humaneval:            { name: "Coding · HumanEval",                     unit: "pct",   eval: null },
+  livecodebench:        { name: "Coding · LiveCodeBench",                 unit: "pct",   eval: null },
+  scicode:              { name: "Coding · SciCode",                       unit: "pct",   eval: "scicode" },
+  coding_index:         { name: "Coding · AA Coding Index",               unit: "score", eval: null },
   // Agentic / tool use / real-world tasks
-  tau2:                 { name: "𝜏²-Bench Telecom (agentic)",    unit: "pct",   eval: "tau2-bench" },
-  terminalbench_hard:   { name: "Terminal-Bench Hard (agentic)", unit: "pct",  eval: "terminalbench-hard" },
-  gdpval:               { name: "GDPval-AA (real-world tasks)", unit: "score", eval: "gdpval-aa" },
-  agentic_index:        { name: "AA Agentic Index",             unit: "score", eval: null },
-  apex_agents_aa:       { name: "Apex Agents",                  unit: "pct",   eval: "apex-agents-aa" },
+  tau2:                 { name: "Agentic · 𝜏²-Bench Telecom",              unit: "pct",   eval: "tau2-bench" },
+  terminalbench_hard:   { name: "Agentic · Terminal-Bench Hard",          unit: "pct",   eval: "terminalbench-hard" },
+  gdpval:               { name: "Agentic · GDPval-AA (real-world tasks)", unit: "score", eval: "gdpval-aa" },
+  agentic_index:        { name: "Agentic · AA Agentic Index",             unit: "score", eval: null },
+  apex_agents_aa:       { name: "Agentic · Apex Agents",                  unit: "pct",   eval: "apex-agents-aa" },
   // Long context
-  lcr:                  { name: "AA-LCR (long-context reason)", unit: "pct",   eval: "artificial-analysis-long-context-reasoning" },
+  lcr:                  { name: "Long-context · AA-LCR",                  unit: "pct",   eval: "artificial-analysis-long-context-reasoning" },
   // Knowledge / instruction following
-  mmlu_pro:             { name: "MMLU-Pro",                     unit: "pct",   eval: null },
-  ifbench:              { name: "IFBench (instruction follow)", unit: "pct",   eval: "ifbench" },
-  omniscience:          { name: "AA-Omniscience",               unit: "score", eval: "omniscience" },
+  mmlu_pro:             { name: "Knowledge · MMLU-Pro",                   unit: "pct",   eval: null },
+  ifbench:              { name: "Instruction · IFBench",                  unit: "pct",   eval: "ifbench" },
+  omniscience:          { name: "Knowledge · AA-Omniscience",             unit: "score", eval: "omniscience" },
   // Multimodal
-  mmmu:                 { name: "MMMU",                         unit: "pct",   eval: null },
-  mmmu_pro:             { name: "MMMU-Pro",                     unit: "pct",   eval: "mmmu-pro" },
+  mmmu:                 { name: "Vision · MMMU",                          unit: "pct",   eval: null },
+  mmmu_pro:             { name: "Vision · MMMU-Pro",                      unit: "pct",   eval: "mmmu-pro" },
   // Composite indices
-  intelligence_index:   { name: "AA Intelligence Index",        unit: "score", eval: null },
+  intelligence_index:   { name: "Intelligence · AA Intelligence Index",   unit: "score", eval: null },
   // Multilingual
-  multilingual_index:   { name: "AA Multilingual Index",        unit: "score", eval: null },
+  multilingual_index:   { name: "Multilingual · AA Multilingual Index",   unit: "score", eval: null },
 };
 const BENCH_KEYS = Object.keys(BENCH_META);
 
@@ -372,9 +376,23 @@ async function main() {
     log(`  ${fm.slug} → ${aaSlug} (${top.length} qualifying): ${newRows.map((r) => `${r.name} ${r.score} [${r.vs_baseline}]`).join(" · ")}`);
 
     if (!DRY) {
+      // Merge instead of replace: keep existing benchmarks that are NOT
+      // AA-derived strength picks. Specifically preserve Speed and Price
+      // rows (the Speed and Cost attribute cards on the detail page key
+      // off these exact names), plus any hand-curated rows the writer
+      // added under bench-name patterns we don't manage from AA.
+      const existingByName = new Map();
+      for (const b of existing) existingByName.set(String(b.name).toLowerCase(), b);
+      const newNames = new Set(newRows.map((r) => String(r.name).toLowerCase()));
+      const KEEP_RE = /^(speed|price|preference|vision · mmmu-pro|hand-curated)/i;
+      const preserved = existing.filter((b) =>
+        !newNames.has(String(b.name).toLowerCase()) &&
+        (KEEP_RE.test(String(b.name)) || !/Rank #\d+ of \d+/.test(b.vs_baseline ?? "")),
+      );
+      const merged = [...newRows, ...preserved];
       const newFm = {
         ...fm,
-        model_spec: { ...(fm.model_spec ?? {}), benchmarks: newRows },
+        model_spec: { ...(fm.model_spec ?? {}), benchmarks: merged },
       };
       await writeFile(path, matter.stringify(body, newFm));
     }

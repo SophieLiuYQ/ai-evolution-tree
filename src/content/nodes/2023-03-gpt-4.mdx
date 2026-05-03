@@ -38,10 +38,18 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '13.72'
       vs_baseline: 'Rank #71 of 93 · Top 77%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '110'
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+      vs_baseline: 'Rank #122 of 496'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $8.00 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
+      vs_baseline: 'Rank #423 of 496'
   family: OpenAI GPT
   variants:
     - id: gpt-4-turbo

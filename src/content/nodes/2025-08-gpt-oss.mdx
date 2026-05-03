@@ -29,22 +29,30 @@ model_spec:
   modalities:
     - text
   benchmarks:
-    - name: LiveCodeBench
+    - name: Coding · LiveCodeBench
       score: 87.8%
       vs_baseline: 'Rank #3 of 57 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: AIME 2025
+    - name: Reasoning · AIME 2025
       score: 93.4%
       vs_baseline: 'Rank #4 of 43 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/aime'
-    - name: AA Math Index
+    - name: Math · AA Math Index
       score: '93.44'
       vs_baseline: 'Rank #4 of 43 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '33.27'
       vs_baseline: 'Rank #32 of 93 · Top 35%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '284'
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
+      vs_baseline: 'Rank #11 of 496'
+    - name: Price ($/M tokens)
+      score: $0.07 in / $0.23 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
+      vs_baseline: 'Rank #199 of 496'
   homepage: 'https://openai.com/index/introducing-gpt-oss/'
   github: 'https://github.com/openai/gpt-oss'
   availability:

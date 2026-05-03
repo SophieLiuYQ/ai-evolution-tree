@@ -30,10 +30,18 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '22.80'
       vs_baseline: 'Rank #49 of 93 · Top 53%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '42'
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+      vs_baseline: 'Rank #257 of 496'
+    - name: Price ($/M tokens)
+      score: $2.00 in / $6.00 out
+      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
+      vs_baseline: 'Rank #414 of 496'
   aa_url: 'https://artificialanalysis.ai/models/mistral-large-2'
   modalities_in:
     - text

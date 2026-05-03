@@ -38,14 +38,22 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: GPQA Diamond
+    - name: Reasoning · GPQA Diamond
       score: 84.5%
       vs_baseline: 'Rank #17 of 90 · Top 20%'
       source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '40.69'
       vs_baseline: 'Rank #20 of 93 · Top 22%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '18'
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+      vs_baseline: 'Rank #294 of 496'
+    - name: Price ($/M tokens)
+      score: $20.00 in / $80.00 out
+      source_url: 'https://artificialanalysis.ai/models/o3-pro'
+      vs_baseline: 'Rank #494 of 496'
   family: OpenAI o
   variants:
     - id: o3-mini

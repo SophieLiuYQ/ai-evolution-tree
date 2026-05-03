@@ -39,22 +39,30 @@ model_spec:
     - product
     - enterprise
   benchmarks:
-    - name: MATH-500
+    - name: Math · MATH-500
       score: 98.1%
       vs_baseline: 'Rank #5 of 37 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: MMLU-Pro
+    - name: Knowledge · MMLU-Pro
       score: 83.2%
       vs_baseline: 'Rank #9 of 57 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: AIME 2024
+    - name: Reasoning · AIME 2024
       score: 82.3%
       vs_baseline: 'Rank #6 of 34 · Top 20%'
       source_url: 'https://artificialanalysis.ai/evaluations/aime'
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '27.04'
       vs_baseline: 'Rank #43 of 93 · Top 47%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '129'
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      vs_baseline: 'Rank #101 of 496'
+    - name: Price ($/M tokens)
+      score: $1.25 in / $10.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      vs_baseline: 'Rank #417 of 496'
   aa_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
   modalities_in:
     - text

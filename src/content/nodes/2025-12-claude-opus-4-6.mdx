@@ -42,19 +42,27 @@ model_spec:
     - product
     - enterprise
   benchmarks:
-    - name: MMLU-Pro
+    - name: Knowledge · MMLU-Pro
       score: 88.0%
       vs_baseline: 'Rank #2 of 57 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: AA-LCR (long-context reason)
+    - name: Long-context · AA-LCR
       score: 66.3%
       vs_baseline: 'Rank #10 of 78 · Top 20%'
       source_url: >-
         https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '42.00'
       vs_baseline: 'Rank #17 of 93 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '54'
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+      vs_baseline: 'Rank #50 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $5.00 in / $25.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
+      vs_baseline: 'Rank #95 of 96 · Reasoning'
   family: Anthropic claude-opus
   variants:
     - id: claude-opus-4-6-adaptive

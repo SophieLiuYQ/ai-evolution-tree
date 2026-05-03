@@ -36,22 +36,30 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: MATH-500
+    - name: Math · MATH-500
       score: 99.2%
       vs_baseline: 'Rank #1 of 37 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: HumanEval
+    - name: Coding · HumanEval
       score: 97.8%
       vs_baseline: 'Rank #2 of 36 · Top 10%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: AIME 2024
+    - name: Reasoning · AIME 2024
       score: 93.3%
       vs_baseline: 'Rank #2 of 34 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/aime'
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '32.08'
       vs_baseline: 'Rank #35 of 93 · Top 38%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '215'
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+      vs_baseline: 'Rank #3 of 96 · Reasoning'
+    - name: Price ($/M tokens)
+      score: $0.30 in / $0.50 out
+      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
+      vs_baseline: 'Rank #43 of 96 · Reasoning'
   homepage: 'https://x.ai/news/grok-3'
   availability:
     - api

@@ -39,10 +39,18 @@ model_spec:
   availability:
     - open_weights
   benchmarks:
-    - name: AA Intelligence Index
+    - name: Intelligence · AA Intelligence Index
       score: '8.88'
       vs_baseline: 'Rank #87 of 93 · Top 94%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '96'
+      source_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
+      vs_baseline: 'Rank #143 of 496'
+    - name: Price ($/M tokens)
+      score: $0.58 in / $0.71 out
+      source_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
+      vs_baseline: 'Rank #267 of 496'
   aa_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
   hf_url: 'https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct'
   sources:
