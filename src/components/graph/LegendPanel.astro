@@ -39,7 +39,25 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
 ];
 ---
 
-<aside class="edge-legend overflow-y-auto border-r border-slate-200 bg-slate-50 px-4 py-4">
+<aside id="legend-panel" class="edge-legend border-r border-slate-200 bg-slate-50">
+  {/* Collapse toggle — chevron button at the top-right corner. When the
+      panel is collapsed, the aside shrinks to a 32px rail and the inner
+      content hides; the chevron flips to point right (= "expand"). State
+      persists in localStorage under `ai-tree:legend-collapsed`. */}
+  <button
+    id="legend-collapse-btn"
+    type="button"
+    class="legend-collapse-btn"
+    aria-label="Hide panel"
+    aria-expanded="true"
+    title="Hide panel"
+  >
+    <svg class="legend-collapse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+
+  <div class="legend-content">
   {/* Search — type a model name, jump to its card on the active pane */}
   <div class="tree-search relative">
     <input
@@ -365,17 +383,102 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     <a href="/about/" class="rounded border border-slate-300 bg-white px-2 py-0.5 hover:border-[var(--accent)]">About</a>
   </div>
   )}
+  </div>
 </aside>
+
+<script is:inline>
+  (function () {
+    var KEY = "ai-tree:legend-collapsed";
+    var aside = document.getElementById("legend-panel");
+    var btn = document.getElementById("legend-collapse-btn");
+    if (!aside || !btn) return;
+
+    function apply(collapsed) {
+      aside.classList.toggle("is-collapsed", collapsed);
+      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      btn.setAttribute("aria-label", collapsed ? "Show panel" : "Hide panel");
+      btn.setAttribute("title", collapsed ? "Show panel" : "Hide panel");
+    }
+
+    var saved = false;
+    try { saved = localStorage.getItem(KEY) === "1"; } catch (e) {}
+    apply(saved);
+
+    btn.addEventListener("click", function () {
+      var next = !aside.classList.contains("is-collapsed");
+      apply(next);
+      try { localStorage.setItem(KEY, next ? "1" : "0"); } catch (e) {}
+    });
+  })();
+</script>
 
 <style>
   .edge-legend {
     width: 360px !important;
     flex: 0 0 360px;
+    height: 100%;
     max-height: 100%;
     box-sizing: border-box;
     background: var(--bg-sunk);
     border-right: 1px solid var(--border);
     color: var(--fg);
+    position: relative;
+    /* `overflow: visible` so the edge-handle button can extend past the
+       right border. Inner `.legend-content` is the scroll container. */
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.18s ease, flex-basis 0.18s ease;
+  }
+  .legend-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  .edge-legend.is-collapsed {
+    width: 32px !important;
+    flex: 0 0 32px;
+  }
+  .edge-legend.is-collapsed .legend-content {
+    display: none;
+  }
+
+  /* Collapse button — anchored to the right edge of the panel,
+     vertically centered, half-overlapping the border so it reads as a
+     pull-tab handle. Sits in `position: fixed`-like behavior via the
+     parent's `position: relative`, but uses `position: sticky`-style
+     pinning by way of a wrapper-less absolute placement that survives
+     the aside's internal scroll. */
+  .legend-collapse-btn {
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--bg-soft);
+    color: var(--fg-muted);
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+  }
+  .legend-collapse-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--bg-soft);
+  }
+  .legend-collapse-icon {
+    transition: transform 0.18s ease;
+  }
+  .edge-legend.is-collapsed .legend-collapse-icon {
+    transform: rotate(180deg);
   }
 
   /* Theme bridge: panel markup keeps Tailwind's density utilities, but

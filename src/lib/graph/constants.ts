@@ -52,7 +52,7 @@ export const orgStroke: Record<string, string> = {
   "Meta AI": "#0467DF",
   "Microsoft": "#0f766e",
   "Mistral AI": "#b91c1c",
-  "Stability AI": "#8E44EC",
+  "Stability AI": "#5B21B6",
   "EleutherAI": "#6d28d9",
   "xAI": "#374151",
   "Alibaba": "#FF6A00",
