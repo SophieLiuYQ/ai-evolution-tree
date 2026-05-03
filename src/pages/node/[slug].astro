@@ -603,12 +603,16 @@ const attrCards: AttrCard[] = (() => {
     const outP = m ? parseFloat(m[2]) : null;
     const noPrice = inP === 0 && outP === 0;
     if (!noPrice) {
-      const localTier =
+      // Always use the fixed-dollar thresholds shown in the legend so
+      // the card label matches what users read in the bucket chart.
+      // We deliberately ignore priceRank here — pre-existing rank data
+      // would give a different (percentile-based) split that wouldn't
+      // line up with the "$1 / $5" legend lines.
+      const tier =
         outP === null ? null
         : outP < 1   ? "Low"
         : outP < 5   ? "Moderate"
         :              "High";
-      const tier = tierLabel(priceRank, "Low", "Moderate", "High") ?? localTier;
       out.push({
         icon: "dollar",
         color: "rose",
@@ -1521,19 +1525,17 @@ const familySubtitle = (() => {
             ))}
           </div>
           {(attrCards.some((c) => c.k === "Intelligence") ||
-            attrCards.some((c) => c.k === "Speed")) && (
+            attrCards.some((c) => c.k === "Speed") ||
+            attrCards.some((c) => c.k === "Cost")) && (
             <details class="intel-legend">
               <summary class="intel-legend-summary">
-                How are Intelligence &amp; Speed bucketed?
+                How are Intelligence, Speed &amp; Cost bucketed?
               </summary>
               <div class="intel-legend-body">
                 <div class="intel-legend-note">
-                  Bucket = percentile rank on Artificial Analysis.
-                  Intelligence pool ranks the AA Intelligence Index
-                  (composite of MMLU-Pro, GPQA Diamond, HLE, AIME,
-                  SciCode, LiveCodeBench, τ²-Bench, ~135 ranked).
-                  Speed pool ranks median output throughput in tokens/sec
-                  (~308 ranked).
+                  Intelligence and Speed buckets are percentile ranks on
+                  Artificial Analysis. Cost buckets are fixed dollar
+                  thresholds keyed off output-token price ($/M out).
                 </div>
                 <div class="intel-legend-cols">
                   <div>
@@ -1556,6 +1558,14 @@ const familySubtitle = (() => {
                       <li><span class="intel-bucket">Good</span><span class="intel-pct">≥ 146 tok/s</span></li>
                       <li><span class="intel-bucket">Medium</span><span class="intel-pct">≥ 90 tok/s</span></li>
                       <li><span class="intel-bucket">Slow</span><span class="intel-pct">&lt; 90 tok/s</span></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="intel-legend-h">Cost</div>
+                    <ul class="intel-legend-list">
+                      <li><span class="intel-bucket">Low</span><span class="intel-pct">&lt; $1 / M out</span></li>
+                      <li><span class="intel-bucket">Moderate</span><span class="intel-pct">$1–5 / M out</span></li>
+                      <li><span class="intel-bucket">High</span><span class="intel-pct">≥ $5 / M out</span></li>
                     </ul>
                   </div>
                 </div>
