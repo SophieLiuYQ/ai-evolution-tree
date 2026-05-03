@@ -530,12 +530,12 @@ const attrCards: AttrCard[] = (() => {
     !spec.aa_url.endsWith("/leaderboards/models");
   if (aaIntRank && hasRealAaPage) {
     const pct = aaIntRank.rank / aaIntRank.total;
-    const bucket = pct <= 0.01 ? { v: "Top 1%",  label: "Top 1% smart" }
-      :            pct <= 0.05 ? { v: "Top 5%",  label: "Top 5% smart" }
-      :            pct <= 0.10 ? { v: "Top 10%", label: "Top 10% smart" }
-      :            pct <= 0.25 ? { v: "Smart",   label: "Smart" }
-      :            pct <= 0.50 ? { v: "Medium",  label: "Medium smart" }
-      :                          { v: "Below avg", label: "Not very smart" };
+    const bucket = pct <= 0.01 ? { v: "Top 1%",  label: "Top 1% good" }
+      :            pct <= 0.05 ? { v: "Top 5%",  label: "Top 5% good" }
+      :            pct <= 0.10 ? { v: "Top 10%", label: "Top 10% good" }
+      :            pct <= 0.25 ? { v: "Good",    label: "Good" }
+      :            pct <= 0.50 ? { v: "Medium",  label: "Medium good" }
+      :                          { v: "Below avg", label: "Not very good" };
     out.push({
       icon: "star",
       color: "violet",
@@ -1506,6 +1506,28 @@ const familySubtitle = (() => {
               </div>
             ))}
           </div>
+          {attrCards.some((c) => c.k === "Intelligence") && (
+            <details class="intel-legend">
+              <summary class="intel-legend-summary">
+                How is Intelligence bucketed?
+              </summary>
+              <div class="intel-legend-body">
+                <div class="intel-legend-note">
+                  Bucket = percentile rank on Artificial Analysis's
+                  Intelligence Index (a composite of MMLU-Pro, GPQA Diamond,
+                  HLE, AIME, SciCode, LiveCodeBench, τ²-Bench).
+                </div>
+                <ul class="intel-legend-list">
+                  <li><span class="intel-bucket">Top 1%</span><span class="intel-pct">≤ 1%</span></li>
+                  <li><span class="intel-bucket">Top 5%</span><span class="intel-pct">≤ 5%</span></li>
+                  <li><span class="intel-bucket">Top 10%</span><span class="intel-pct">≤ 10%</span></li>
+                  <li><span class="intel-bucket">Good</span><span class="intel-pct">≤ 25%</span></li>
+                  <li><span class="intel-bucket">Medium</span><span class="intel-pct">≤ 50%</span></li>
+                  <li><span class="intel-bucket">Below avg</span><span class="intel-pct">&gt; 50%</span></li>
+                </ul>
+              </div>
+            </details>
+          )}
           <div class="hero-pills">
             {officialUrl && (
               <a href={officialUrl} target="_blank" rel="noopener" class="pill pill-link" data-i18n="detail.official">
@@ -2423,6 +2445,57 @@ const familySubtitle = (() => {
   @media (max-width: 1060px) {
     .attr-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+
+  .intel-legend {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+  .intel-legend-summary {
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .intel-legend-summary::-webkit-details-marker { display: none; }
+  .intel-legend-summary::before {
+    content: "▸";
+    font-size: 10px;
+    transition: transform 0.15s ease;
+  }
+  .intel-legend[open] .intel-legend-summary::before { transform: rotate(90deg); }
+  .intel-legend-body {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-soft, #fafafa);
+  }
+  .intel-legend-note {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .intel-legend-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 4px 12px;
+    font-size: 12px;
+  }
+  .intel-legend-list li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--border);
+    padding: 3px 0;
+  }
+  .intel-bucket { font-weight: 700; color: var(--fg); }
+  .intel-pct { font-family: ui-monospace, SFMono-Regular, monospace; }
+
   .attr-card {
     border: 1px solid var(--border);
     border-radius: 16px;
