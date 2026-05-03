@@ -33,7 +33,7 @@ const hideHeaderNav = isTreePage || isLanding || isNodePage;
 
 // Cache-bust the logo when the asset changes (browsers aggressively
 // cache favicons / header images).
-const LOGO_VERSION = "2026-04-28";
+const LOGO_VERSION = "2026-05-03";
 ---
 
 <!doctype html>
@@ -42,8 +42,10 @@ const LOGO_VERSION = "2026-04-28";
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href={`/logo.png?v=${LOGO_VERSION}`} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href={`/favicon.ico?v=${LOGO_VERSION}`} sizes="32x32" />
+    <link rel="icon" href={`/icon-192.png?v=${LOGO_VERSION}`} type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href={`/apple-touch-icon.png?v=${LOGO_VERSION}`} />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     {/* i18n bootstrap — must run BEFORE body paints so the chosen
