@@ -1,44 +1,61 @@
 ---
 slug: glm-5-1
-title: GLM-5.1 (Non-reasoning)
+title: GLM-5.1 Non-reasoning — Z.ai's chat-tier counterpart
 date: '2026-04-07'
 era: frontier
 category:
   - nlp
   - generative
-  - reasoning
+relationships:
+  - to: glm-5
+    type: builds_on
+    note: >-
+      Same 744B/40B-active backbone as GLM-5.1 (Reasoning); strips the explicit
+      reasoning chain for lower-latency chat use.
 authors:
-  - Academic / Independent Team
-org: Academic / Independent
-breakthrough_score: 5
+  - Z.ai (Tsinghua / Zhipu) Team
+org: Tsinghua / Zhipu
+breakthrough_score: 6
 status: active
 model_spec:
-  parameters: 744B total / 40B active
-  architecture: Decoder-only transformer (auto-generated stub)
+  parameters: 744B total / 40B active (MoE)
+  architecture: >-
+    Sparse-MoE transformer; non-reasoning chat mode of GLM-5.1 (reasoning mode
+    is a separate variant under the same backbone).
   context_window: 200000
   release_type: open_weights
   modalities:
     - text
+  modalities_in:
+    - text
+  modalities_out:
+    - text
   benchmarks:
+    - name: "Agentic · \U0001D70F²-Bench Telecom"
+      score: 97.1%
+      vs_baseline: 'Rank #6 of 124 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/tau2-bench'
+    - name: Agentic · AA Agentic Index
+      score: '66.04'
+      vs_baseline: 'Rank #12 of 119 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Agentic · GDPval-AA (real-world tasks)
+      score: '1497.17'
+      vs_baseline: 'Rank #16 of 111 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gdpval-aa'
     - name: Intelligence · AA Intelligence Index
       score: '43.82'
-      vs_baseline: 'Rank #14 of 93'
-      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
-    - name: Coding · AA Coding Index
-      score: '35.77'
-      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
+      vs_baseline: 'Rank #29 of 139 · Top 21%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Reasoning · GPQA Diamond
+      score: 83.9%
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Reasoning · Humanity's Last Exam
+      score: 25.6%
+      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
     - name: Coding · SciCode
       score: 36.1%
       source_url: 'https://artificialanalysis.ai/evaluations/scicode'
-    - name: Agentic · Terminal-Bench Hard
-      score: 35.6%
-      source_url: 'https://artificialanalysis.ai/evaluations/terminal-bench-hard'
-    - name: GPQA
-      score: 83.9%
-      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
-    - name: HLE
-      score: 25.6%
-      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
     - name: Speed · Output tok/s
       score: '53'
       vs_baseline: 'Rank #237 of 308'
@@ -48,54 +65,85 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/glm-5-1-non-reasoning'
   aa_url: 'https://artificialanalysis.ai/models/glm-5-1-non-reasoning'
   homepage: 'https://z.ai/'
+  hf_url: 'https://huggingface.co/zai-org/GLM-5.1'
   availability:
     - open_weights
+    - api
+  family: Z.ai GLM
   reviews:
     feels_like:
       - >-
-        Auto-generated stub from Artificial Analysis catalog — verify before
-        publishing
+        Direct chat-style answers without explicit reasoning traces — lower
+        latency than the reasoning sibling
+      - >-
+        Still solid frontier-class on knowledge (GPQA 83.9%, MMLU-Pro), but ~7
+        AA Intel points behind the reasoning mode
     best_for:
-      - See benchmarks below for capability profile
+      - >-
+        Chat / customer support / writing where you want speed over
+        chain-of-thought
+      - >-
+        Workloads where reasoning traces would be wasteful (translation,
+        classification, summarisation)
+      - >-
+        Self-host with the same weights as GLM-5.1 Reasoning — switch modes via
+        prompting
     not_ideal_for:
-      - Tasks far outside the modalities or capabilities this model targets
+      - Hardest math / coding tasks — switch to GLM-5.1 Reasoning for those
+      - Multimodal / vision — text-only
+    sources:
+      - name: Artificial Analysis
+        url: 'https://artificialanalysis.ai/models/glm-5-1-non-reasoning'
+        type: benchmark
+      - name: Hugging Face
+        url: 'https://huggingface.co/zai-org/GLM-5.1'
+        type: official
+      - name: Z.ai
+        url: 'https://z.ai/'
+        type: official
+  license_name: MIT
 public_view:
-  plain_english: >
-    Stub page for GLM-5.1 (Non-reasoning). Auto-imported from Artificial
-    Analysis on
-
-    2026-05-03. Scores below are pulled
-
-    from AA; lineage and prose still need hand-curation.
+  plain_english: |
+    GLM-5.1 in non-reasoning mode — same 744B/40B-active MoE backbone as
+    the reasoning sibling but answers directly without an explicit
+    chain-of-thought. Lower latency, ~7 AA Intel points lower on hardest
+    benchmarks. MIT licensed at $1.40/$4.40 hosted.
   analogy: |
-    Like other reasoning
-    LLMs in its tier — see benchmarks for relative positioning. Hand-curated
-    analogy goes here once the entry is reviewed.
+    Same model, different mode — the "fast direct-answer" toggle on
+    GLM-5.1, like Claude's non-reasoning Sonnet vs the reasoning Opus
+    variants but using one set of weights.
   applications:
-    - product: GLM-5.1 (Non-reasoning)
-      company: Academic / Independent
+    - product: Z.ai chat (default mode)
+      company: Z.ai
       year_deployed: 2026
-  investment_angle: >
-    Academic / Independent positions GLM-5.1 (Non-reasoning) in the
-    frontier-reasoning
-
-    market. Refine this paragraph with deployment data, moat shape, and
-
-    distribution channels once curated.
+    - product: Self-hosted chat agents
+      company: Multiple
+      year_deployed: 2026
+  investment_angle: |
+    Pair-shipping reasoning + non-reasoning under the same weights is
+    Z.ai's bet on letting deployers tune for cost-vs-quality at runtime
+    — same competitive dynamic as Anthropic's Sonnet/Opus tiering but
+    on a single open-weights checkpoint.
   why_it_matters: |
-    See AA's evaluation page for benchmark detail. This stub exists so the
-    model appears alongside its peers in the tree and detail-page peer
-    comparisons; replace with curated context when ready.
+    Demonstrates the "one weight set, two modes" pattern in the
+    open-weights tier. Lowers the barrier to running both reasoning
+    and chat modes from a single self-hosted deployment.
 citations:
+  - type: release
+    key: glm_5_1_non_reasoning
+    title: GLM-5.1 release on Hugging Face
+    url: 'https://huggingface.co/zai-org/GLM-5.1'
+    year: 2026
   - type: blog
-    key: aa_glm_5_1
-    title: GLM-5.1 (Non-reasoning) — Artificial Analysis catalog entry
+    key: aa_glm_5_1_non_reasoning
+    title: GLM-5.1 (Non-reasoning) — Artificial Analysis
     url: 'https://artificialanalysis.ai/models/glm-5-1-non-reasoning'
     year: 2026
 ---
 
 ## Notes
 
-This page was auto-generated from Artificial Analysis catalog data.
-Replace with curated context, lineage relationships, and prose when
-ready.
+GLM-5.1 in non-reasoning mode. Same 744B/40B-active MoE backbone as the
+reasoning variant (single set of MIT-licensed weights), just answers
+directly instead of producing a reasoning chain. Lower latency, ~7 AA
+Intel points lower on the hardest benchmarks.

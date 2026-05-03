@@ -217,6 +217,14 @@ const VARIANT_MAP = {
   "qwen3-vl-30b-a3b-reasoning":      "Qwen3 VL 30B A3B (Reasoning)",
   "qwen3-vl-30b-a3b-instruct":       "Qwen3 VL 30B A3B Instruct",
 
+  // Z.ai (Tsinghua / Zhipu) GLM — AA spreads variants across `glm-4`,
+  // `glm-4-5`, `glm-5`, `glm-5-1` family slugs that don't quite match
+  // our naming (their "glm-4-5" champion is actually GLM-5 Non-reasoning).
+  "glm-4-5":   "GLM-4.5 (Reasoning)",
+  "glm-4":     "GLM-4.7 (Reasoning)",
+  "glm-5":     "GLM-5.1 (Reasoning)",
+  "glm-5-1":   "GLM-5.1 (Non-reasoning)",
+
   // Xiaomi MiMo — AA family `mimo` aggregates V2 / V2.5 / Pro / Flash.
   "mimo-v2-5-pro":            "MiMo-V2.5-Pro",
   "mimo-v2-pro":              "MiMo-V2-Pro",

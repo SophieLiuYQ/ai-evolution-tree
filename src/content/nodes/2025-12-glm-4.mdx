@@ -1,44 +1,62 @@
 ---
 slug: glm-4
-title: GLM-4.7 (Reasoning)
+title: GLM-4.7 — Z.ai's open MoE update of the GLM-4 line
 date: '2025-12-22'
-era: agents
+era: frontier
 category:
   - nlp
   - generative
   - reasoning
+relationships:
+  - to: glm-4-5
+    type: builds_on
+    note: >-
+      Direct successor to GLM-4.5 (Jul '25); same MoE recipe scaled with
+      reasoning post-training under the GLM-4 line.
 authors:
-  - Academic / Independent Team
-org: Academic / Independent
-breakthrough_score: 5
+  - Z.ai (Tsinghua / Zhipu) Team
+org: Tsinghua / Zhipu
+breakthrough_score: 6
 status: active
 model_spec:
-  parameters: 357B total / 32B active
-  architecture: Reasoning-tuned LLM (auto-generated stub)
+  parameters: 357B total / 32B active (MoE)
+  architecture: >-
+    Sparse-MoE transformer with reasoning post-training; reasoning and
+    non-reasoning modes share the same backbone.
   context_window: 200000
   release_type: open_weights
   modalities:
     - text
+  modalities_in:
+    - text
+  modalities_out:
+    - text
   benchmarks:
+    - name: Coding · LiveCodeBench
+      score: 89.4%
+      vs_baseline: 'Rank #3 of 86 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Reasoning · AIME 2025
+      score: 95.0%
+      vs_baseline: 'Rank #4 of 72 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
+    - name: Math · AA Math Index
+      score: '95.00'
+      vs_baseline: 'Rank #4 of 72 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Intelligence · AA Intelligence Index
       score: '42.11'
-      vs_baseline: 'Rank #16 of 93'
-      source_url: 'https://artificialanalysis.ai/models/glm-4'
-    - name: Coding · AA Coding Index
-      score: '36.26'
-      source_url: 'https://artificialanalysis.ai/models/glm-4'
+      vs_baseline: 'Rank #33 of 139 · Top 24%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Reasoning · GPQA Diamond
+      score: 85.9%
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Reasoning · Humanity's Last Exam
+      score: 25.1%
+      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
     - name: Coding · SciCode
       score: 45.1%
       source_url: 'https://artificialanalysis.ai/evaluations/scicode'
-    - name: Agentic · Terminal-Bench Hard
-      score: 31.8%
-      source_url: 'https://artificialanalysis.ai/evaluations/terminal-bench-hard'
-    - name: GPQA
-      score: 85.9%
-      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
-    - name: HLE
-      score: 25.1%
-      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
     - name: Speed · Output tok/s
       score: '89'
       vs_baseline: 'Rank #157 of 308'
@@ -48,51 +66,79 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/glm-4-7'
   aa_url: 'https://artificialanalysis.ai/models/glm-4-7'
   homepage: 'https://z.ai/'
+  hf_url: 'https://huggingface.co/zai-org/GLM-4.7'
   availability:
     - open_weights
+    - api
+  family: Z.ai GLM
   reviews:
     feels_like:
+      - Reasoning-style step-by-step traces in the DeepSeek V3 / GLM-4.5 lineage
       - >-
-        Auto-generated stub from Artificial Analysis catalog — verify before
-        publishing
+        Frontier-tier on knowledge benchmarks (GPQA 85.9%, MMLU-Pro), gap to
+        GPT-5 / Opus 4.7 still meaningful
     best_for:
-      - See benchmarks below for capability profile
+      - >-
+        Self-host scenarios where you want Chinese-strong reasoning without API
+        dependency
+      - Price-sensitive serving at $0.60/$2.20 — competitive with DeepSeek V3.2
+      - Long documents — 200K context
     not_ideal_for:
-      - Tasks far outside the modalities or capabilities this model targets
+      - Multimodal / vision tasks — text-only release
+      - Latency-sensitive UX — reasoning traces add output time
+    sources:
+      - name: Artificial Analysis
+        url: 'https://artificialanalysis.ai/models/glm-4-7'
+        type: benchmark
+      - name: Hugging Face
+        url: 'https://huggingface.co/zai-org/GLM-4.7'
+        type: official
+      - name: Z.ai
+        url: 'https://z.ai/'
+        type: official
+  license_name: MIT
 public_view:
   plain_english: |
-    Stub page for GLM-4.7 (Reasoning). Auto-imported from Artificial Analysis on
-    2026-05-03. Scores below are pulled
-    from AA; lineage and prose still need hand-curation.
+    Z.ai (Tsinghua / Zhipu) GLM-4.7 — open-weights successor to GLM-4.5
+    with reasoning post-training. 357B total / 32B active per token MoE,
+    200K context, MIT licensed. Costs $0.60 input / $2.20 output on Z.ai's
+    API; you can also self-host the weights from Hugging Face.
   analogy: |
-    Like other reasoning
-    LLMs in its tier — see benchmarks for relative positioning. Hand-curated
-    analogy goes here once the entry is reviewed.
+    Like DeepSeek V3.2 from a different lab — same MoE-with-reasoning
+    recipe, comparable tier on benchmarks, MIT-licensed weights, and
+    competitive hosted-serving prices.
   applications:
-    - product: GLM-4.7 (Reasoning)
-      company: Academic / Independent
+    - product: Z.ai chat
+      company: Z.ai
       year_deployed: 2025
-  investment_angle: >
-    Academic / Independent positions GLM-4.7 (Reasoning) in the
-    frontier-reasoning
-
-    market. Refine this paragraph with deployment data, moat shape, and
-
-    distribution channels once curated.
+    - product: Self-hosted reasoning agents
+      company: Multiple
+      year_deployed: 2026
+  investment_angle: |
+    Z.ai's open-weights frontier line — MIT license positions GLM
+    against DeepSeek as the second China-origin permissive-license
+    reasoning MoE in the open ecosystem. API price competes directly
+    with DeepSeek V3.2.
   why_it_matters: |
-    See AA's evaluation page for benchmark detail. This stub exists so the
-    model appears alongside its peers in the tree and detail-page peer
-    comparisons; replace with curated context when ready.
+    Tightens the open-weights frontier against closed competitors.
+    GLM-4.7 → 4.6 → 4.5 cadence matches DeepSeek's V3 line, suggesting
+    Z.ai is committed to fast iteration in the open tier.
 citations:
+  - type: release
+    key: glm_4_7
+    title: GLM-4.7 release on Hugging Face
+    url: 'https://huggingface.co/zai-org/GLM-4.7'
+    year: 2025
   - type: blog
-    key: aa_glm_4
-    title: GLM-4.7 (Reasoning) — Artificial Analysis catalog entry
+    key: aa_glm_4_7
+    title: GLM-4.7 — Artificial Analysis
     url: 'https://artificialanalysis.ai/models/glm-4-7'
     year: 2025
 ---
 
 ## Notes
 
-This page was auto-generated from Artificial Analysis catalog data.
-Replace with curated context, lineage relationships, and prose when
-ready.
+GLM-4.7 from Z.ai (Tsinghua / Zhipu). Open weights under MIT license.
+357B total / 32B active per token MoE, 200K context, ~$0.60/$2.20 hosted.
+Successor to GLM-4.5 (Jul 2025), part of the same MoE-with-reasoning
+lineage that DeepSeek V3 / V3.2 popularised.

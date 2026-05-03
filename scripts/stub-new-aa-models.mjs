@@ -137,6 +137,8 @@ const ORG_OVERRIDES = {
   "Kimi":            "Moonshot AI",
   "Moonshot":        "Moonshot AI",
   "Z.ai":            "Tsinghua / Zhipu",
+  "Z AI":            "Tsinghua / Zhipu",
+  "ZAI":             "Tsinghua / Zhipu",
   "Zhipu":           "Tsinghua / Zhipu",
   "Zhipu AI":        "Tsinghua / Zhipu",
   "ZhipuAI":         "Tsinghua / Zhipu",

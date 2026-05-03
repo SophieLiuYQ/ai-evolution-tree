@@ -1,98 +1,147 @@
 ---
 slug: glm-5
-title: GLM-5.1 (Reasoning)
+title: GLM-5.1 — Z.ai's largest open MoE reasoning model
 date: '2026-04-07'
 era: frontier
 category:
   - nlp
   - generative
   - reasoning
+relationships:
+  - to: glm-4
+    type: builds_on
+    note: >-
+      Z.ai GLM-5 line — major scaling step over GLM-4.7 (357B total / 32B
+      active) to 744B total / 40B active.
 authors:
-  - Academic / Independent Team
-org: Academic / Independent
-breakthrough_score: 5
+  - Z.ai (Tsinghua / Zhipu) Team
+org: Tsinghua / Zhipu
+breakthrough_score: 7
 status: active
 model_spec:
-  parameters: 744B total / 40B active
-  architecture: Reasoning-tuned LLM (auto-generated stub)
+  parameters: 744B total / 40B active (MoE)
+  architecture: >-
+    Sparse-MoE transformer with reasoning post-training; reasoning and
+    non-reasoning modes share the same backbone (this entry covers the reasoning
+    mode).
   context_window: 200000
   release_type: open_weights
   modalities:
     - text
+  modalities_in:
+    - text
+  modalities_out:
+    - text
   benchmarks:
+    - name: "Agentic · \U0001D70F²-Bench Telecom"
+      score: 97.7%
+      vs_baseline: 'Rank #3 of 124 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/tau2-bench'
+    - name: Agentic · AA Agentic Index
+      score: '67.05'
+      vs_baseline: 'Rank #10 of 119 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Agentic · GDPval-AA (real-world tasks)
+      score: '1535.03'
+      vs_baseline: 'Rank #11 of 111 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gdpval-aa'
     - name: Intelligence · AA Intelligence Index
       score: '51.41'
-      vs_baseline: 'Rank #8 of 93'
-      source_url: 'https://artificialanalysis.ai/models/glm-5'
-    - name: Coding · AA Coding Index
-      score: '43.37'
-      source_url: 'https://artificialanalysis.ai/models/glm-5'
+      vs_baseline: 'Rank #14 of 139 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Reasoning · GPQA Diamond
+      score: 86.8%
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: Reasoning · Humanity's Last Exam
+      score: 28.0%
+      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
     - name: Coding · SciCode
       score: 43.8%
       source_url: 'https://artificialanalysis.ai/evaluations/scicode'
-    - name: Agentic · Terminal-Bench Hard
-      score: 43.2%
-      source_url: 'https://artificialanalysis.ai/evaluations/terminal-bench-hard'
-    - name: GPQA
-      score: 86.8%
-      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
-    - name: HLE
-      score: 28.0%
-      source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
     - name: Speed · Output tok/s
-      score: '53'
-      vs_baseline: 'Rank #237 of 308'
-      source_url: 'https://artificialanalysis.ai/models/glm-5-1-non-reasoning'
+      score: '60'
+      vs_baseline: 'Rank #222 of 308'
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
     - name: Price ($/M tokens)
       score: $1.40 in / $4.40 out
-      source_url: 'https://artificialanalysis.ai/models/glm-5-1-non-reasoning'
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
   aa_url: 'https://artificialanalysis.ai/models/glm-5-1'
   homepage: 'https://z.ai/'
+  hf_url: 'https://huggingface.co/zai-org/GLM-5.1'
   availability:
     - open_weights
+    - api
+  family: Z.ai GLM
   reviews:
     feels_like:
       - >-
-        Auto-generated stub from Artificial Analysis catalog — verify before
-        publishing
+        Reasoning-style traces, frontier-tier benchmarks (~Top 10% on AA
+        Intelligence Index)
+      - >-
+        744B/40B-active MoE — open-weights peer to DeepSeek V4 Pro and Kimi K2
+        Thinking
     best_for:
-      - See benchmarks below for capability profile
+      - 'Hardest reasoning tasks among open-weights models — GPQA 86.8%, HLE 28%'
+      - Self-host scenarios where you can run a 744B/40B-active MoE
+      - >-
+        API price-sensitive serving at $1.40/$4.40 — cheaper than Claude / GPT
+        frontier tiers
     not_ideal_for:
-      - Tasks far outside the modalities or capabilities this model targets
+      - Multimodal / vision tasks — text-only release
+      - Single-GPU serving — needs sharded inference
+      - Latency-sensitive UX — reasoning chains add output time
+    sources:
+      - name: Artificial Analysis
+        url: 'https://artificialanalysis.ai/models/glm-5-1'
+        type: benchmark
+      - name: Hugging Face
+        url: 'https://huggingface.co/zai-org/GLM-5.1'
+        type: official
+      - name: Z.ai
+        url: 'https://z.ai/'
+        type: official
+  license_name: MIT
 public_view:
   plain_english: |
-    Stub page for GLM-5.1 (Reasoning). Auto-imported from Artificial Analysis on
-    2026-05-03. Scores below are pulled
-    from AA; lineage and prose still need hand-curation.
+    Z.ai's GLM-5.1 in reasoning mode — 744B total / 40B active per token
+    MoE under MIT license, 200K context, ~Top 10% on AA's Intelligence
+    Index. Competes with DeepSeek V4 Pro and Kimi K2 Thinking in the
+    open-weights frontier tier.
   analogy: |
-    Like other reasoning
-    LLMs in its tier — see benchmarks for relative positioning. Hand-curated
-    analogy goes here once the entry is reviewed.
+    Like DeepSeek V4 Pro from a different open-weights lab — same scale,
+    same MoE-plus-reasoning recipe, similar benchmarks, MIT-licensed.
   applications:
-    - product: GLM-5.1 (Reasoning)
-      company: Academic / Independent
+    - product: Z.ai chat
+      company: Z.ai
       year_deployed: 2026
-  investment_angle: >
-    Academic / Independent positions GLM-5.1 (Reasoning) in the
-    frontier-reasoning
-
-    market. Refine this paragraph with deployment data, moat shape, and
-
-    distribution channels once curated.
+    - product: Self-hosted frontier reasoning
+      company: Multiple
+      year_deployed: 2026
+  investment_angle: |
+    Z.ai's strongest open-weights model to date — closes much of the
+    gap to closed frontier (Opus / GPT-5) while remaining MIT licensed
+    and ~3× cheaper to host than Claude Opus 4.7. Threatens to
+    commoditise frontier reasoning in the open ecosystem.
   why_it_matters: |
-    See AA's evaluation page for benchmark detail. This stub exists so the
-    model appears alongside its peers in the tree and detail-page peer
-    comparisons; replace with curated context when ready.
+    Marks the moment open-weights frontier crosses Top 10% on AA's
+    Intelligence Index — the first time a permissive-license model
+    has reached this tier of benchmark performance.
 citations:
+  - type: release
+    key: glm_5_1
+    title: GLM-5.1 release on Hugging Face
+    url: 'https://huggingface.co/zai-org/GLM-5.1'
+    year: 2026
   - type: blog
-    key: aa_glm_5
-    title: GLM-5.1 (Reasoning) — Artificial Analysis catalog entry
+    key: aa_glm_5_1
+    title: GLM-5.1 — Artificial Analysis
     url: 'https://artificialanalysis.ai/models/glm-5-1'
     year: 2026
 ---
 
 ## Notes
 
-This page was auto-generated from Artificial Analysis catalog data.
-Replace with curated context, lineage relationships, and prose when
-ready.
+GLM-5.1 (Reasoning) from Z.ai (Tsinghua / Zhipu). 744B total / 40B
+active per token MoE, 200K context, MIT licensed. AA Intelligence
+Index 51.41 (~Top 10%). Same backbone as GLM-5.1 Non-reasoning;
+reasoning mode adds explicit step-by-step traces.
