@@ -3422,19 +3422,34 @@ const familySubtitle = (() => {
   .cap-dot-range {
     position: absolute;
     top: 50%;
-    width: 11px;
-    height: 11px;
-    margin-top: -5.5px;
-    border-radius: 999px;
-    border: 2px solid white;
     transform: translateX(-50%);
     box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.15);
     z-index: 1;
     cursor: help;
   }
-  .cap-dot-min { background: rgb(220, 38, 38); }
-  .cap-dot-typical { background: rgb(99, 102, 241); z-index: 2; }
-  .cap-dot-max { background: rgb(34, 197, 94); }
+  /* P20 / P80 boundary markers: vertical bars (fence posts on the
+     number line). Distinct from the model's circular marker so users
+     don't conflate "this model" with the bracket boundaries. */
+  .cap-dot-min,
+  .cap-dot-max {
+    width: 4px;
+    height: 18px;
+    margin-top: -9px;
+    border-radius: 2px;
+    border: 1px solid white;
+  }
+  .cap-dot-min  { background: rgb(220, 38, 38); }
+  .cap-dot-max  { background: rgb(34, 197, 94); }
+  /* This-model marker: circular dot. */
+  .cap-dot-typical {
+    width: 13px;
+    height: 13px;
+    margin-top: -6.5px;
+    border-radius: 999px;
+    border: 2px solid white;
+    background: rgb(99, 102, 241);
+    z-index: 2;
+  }
 
   .cap-legend {
     margin-top: 16px;
