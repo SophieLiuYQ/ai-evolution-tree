@@ -841,32 +841,41 @@ state* styling that needs to override those utilities (e.g.
 otherwise the active fill can be wiped out (producing invisible
 white-on-cream text).
 
-**Compact view toggle (2026-04-21):** above the filter sections, a
-"Compact view" button swaps the SVG tree for a year-grouped tile grid
-via a `.compact-mode` class on `.ai-tree-graph`. Motivation: with
-filters active, the faded cards leave large empty bands in the tree —
-visually noisy when the user just wants to see "which selected models
-are there?". Compact view re-renders the filtered set as a tight grid
-but KEEPS the time axis — each year is its own row with the year
-label pinned to the left gutter, tiles flow within. Reads like a
-compact tree, not a flat list.
+**Compact view toggle (2026-05-03):** above the filter sections, a
+"Compact view" button swaps the SVG tree for a **model-family board**
+via a `.compact-mode` class on `.ai-tree-graph`. Motivation: the tree
+is best for ancestry tracing, but not for quickly reading "how did GPT,
+Claude, Gemini, Qwen, etc. progress over time?" Compact mode is now a
+separate visualization surface optimized for that question: **family
+rows + year columns + explicit within-family connectors + denser model
+cards**.
 
 Design notes:
-- Tiles are plain HTML (not SVG), rendered server-side in Graph.astro
-  alongside the panes. Structure:
+- Compact cards are plain HTML (not SVG), rendered server-side in
+  `Graph.astro` alongside the panes. Structure:
   ```
   .compact-list
-    .compact-year[data-year="2024"]
-      .compact-year-label ("2024")
-      .compact-year-tiles
-        a.node-link.compact-tile  (one per node)
-        a.node-link.compact-tile
-        ...
+    .compact-board
+      .compact-board-head
+      .compact-rows
+        .compact-row
+          .compact-family
+          .compact-track
+            svg.compact-links
+            a.node-link.compact-tile
   ```
-- Each tile carries the same `data-cats` / `data-org` / `data-license`
-  grammar as the SVG cards. The filter chain in `node-types.ts`
-  applies unchanged — it iterates `.node-link[data-cats]`, which
-  matches both SVG cards and HTML tiles.
+- The board intentionally focuses on **model releases only**:
+  `graphNodes.filter(n => n.data.model_spec && release_type !== "paper")`.
+  Method/paper nodes stay in the main SVG tree; compact mode is for
+  model-line comparison.
+- Rows are grouped by `model_spec.family` when present, otherwise by
+  the same `familyKey()` heuristics used in `layout.ts` (OpenAI GPT,
+  Anthropic Claude, Google/DeepMind Gemini, Qwen, DeepSeek, etc.).
+  `Graph.astro` and `layout.ts` must stay in sync here.
+- Each card still carries the same `data-cats` / `data-org` /
+  `data-license` grammar as the SVG cards. The filter chain in
+  `node-types.ts` therefore applies unchanged — it iterates
+  `.node-link[data-cats]`, which matches both SVG cards and HTML tiles.
 - **Filters do NOT apply in compact mode** (per user feedback
   2026-04-21). The `.card-filtered` class still gets toggled by
   node-types.ts on every filter change, but its visual effect is
@@ -879,16 +888,15 @@ Design notes:
     display: flex !important;
   }
   ```
-  So compact view is a pure chronological browser of the full corpus.
-  Earlier we hid filtered tiles via `display: none` and used `:has()`
-  to collapse all-filtered year rows, but the user wanted the compact
-  grid to stay full so they can scan the whole tree without losing
-  context to filters set in the other view.
+  So compact view remains a full model-family board even if the user
+  had narrowed filters in the SVG tree. Earlier we hid filtered tiles;
+  that made the board feel broken because families and year lanes
+  appeared to disappear.
 - Compact state is intentionally NOT persisted — it's a transient view
   flip, not a preference.
-- Edges / hover / pin are unavailable in compact mode by design (the
-  SVG is hidden). Users switch back to the tree view for relationship
-  tracing.
+- There is **no hover/pin lineage overlay** in compact mode, but the
+  family board does render static connector strokes between adjacent
+  models in a family's chronology so the lineage remains legible.
 
 The Node-types, Company, and License filters AND together — a card
 must pass ALL THREE to be shown.
@@ -1101,14 +1109,27 @@ This is intentional: the graph is the primary exploration surface; the
 detail page is the deep-dive surface. The inspector reduces context
 switching when scanning multiple models in a year band.
 
-**Inspector overview block contract (2026-04-25):**
-- Always show **Released** (from `date`).
-- Show **Available as** from `model_spec.availability` (fallback:
-  `model_spec.release_type`; otherwise `—`).
-- Show **Modality input/output** from `model_spec.modalities_in/out`
-  (fallback: `model_spec.modalities`; otherwise `—`).
-- Show **Capabilities** from `category[]` (capability tags that also
-  drive the left-side filter).
+**Inspector brief contract (2026-05-03):**
+- The right panel now behaves like a **compact model brief**, not a raw
+  metadata dump.
+- Header must show: model title, org, release date, and a small release
+  badge when `release_type` is known.
+- Facts block should stay short and decision-oriented:
+  **Context Window**, **Parameters**, **Model Type**, **License**, and
+  one external **Website** link if the schema has `homepage`, `github`,
+  `hf_url`, or `aa_url`.
+- A **Related models** section should prefer graph neighbors first
+  (incoming/outgoing adjacency), then fill with same-family models using
+  `model_spec.family`.
+- A **Brief** section may synthesize short factual bullets from current
+  schema fields (`best_for`, context size, release type, category tags);
+  do not invent product claims or benchmark conclusions absent from data.
+- A **Data sources** section should surface `last_verified_at` when
+  present plus outbound pills for homepage / GitHub / Hugging Face /
+  Artificial Analysis.
+- Selection highlight must work in BOTH surfaces:
+  active SVG pane and `.compact-list`. Do not assume "selected" implies
+  an `.orient-pane` is visible.
 
 ### No minimap overlay (intentional)
 

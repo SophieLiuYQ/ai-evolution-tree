@@ -57,7 +57,7 @@ function licenseKey(n: NodeEntry): string {
   return "Closed";
 }
 
-function familyKey(n: NodeEntry): string {
+export function familyKey(n: NodeEntry): string {
   const explicit = n.data.model_spec?.family;
   if (explicit) return explicit;
 

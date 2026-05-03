@@ -5,10 +5,11 @@
 import { clearDynamicEdges } from "./dom";
 import { clearPinOnOrientChange } from "./hover";
 import { scrollToMostRecent } from "./scroll-latest";
-import { type Orient } from "./state";
+import { getSelected, type Orient } from "./state";
 import { updateActivePane } from "./sort";
 
 const STORAGE_KEY = "ai-tree:orient";
+const SELECT_EVT = "ai-tree:select";
 
 let _currentOrient: Orient = "v";
 
@@ -33,6 +34,13 @@ export function setOrient(o: Orient, scrollEnd = true) {
   // unreliable across the figure → graph-body → canvas-area → pane
   // chain right after a display:none flip).
   if (scrollEnd) scrollToMostRecent();
+
+  const selected = getSelected();
+  if (selected) {
+    document.dispatchEvent(
+      new CustomEvent(SELECT_EVT, { detail: { slug: selected } }),
+    );
+  }
 }
 
 export function attachOrientHandlers() {

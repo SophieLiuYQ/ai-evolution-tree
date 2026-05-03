@@ -1,47 +1,55 @@
 ---
 // Right-side inspector panel for the /tree/ page.
-// Empty shell; populated by client JS on node selection.
+// Populated by client JS when a model is selected in either tree or compact mode.
 ---
 
 <aside class="tree-inspector" data-open="true" aria-label="Selected node details">
-  <div class="inspector-header">
-    <div class="inspector-title-wrap">
-      <div class="inspector-kicker" id="inspector-org">Select a node</div>
-      <div class="inspector-title" id="inspector-title">Details</div>
-    </div>
-    <button class="inspector-close" type="button" aria-label="Close inspector" title="Close">
-      ×
-    </button>
-  </div>
+  <div class="inspector-shell">
+    <section class="inspector-card inspector-card-main">
+      <div class="inspector-header">
+        <div>
+          <div class="inspector-kicker">Selected model</div>
+          <div class="inspector-title-row">
+            <h2 class="inspector-title" id="inspector-title">Select a node</h2>
+            <span class="inspector-badge" id="inspector-badge" hidden></span>
+          </div>
+          <div class="inspector-subtitle" id="inspector-subtitle">Open the compact view or click a node in the graph.</div>
+        </div>
+        <button class="inspector-close" type="button" aria-label="Close inspector" title="Close">
+          ×
+        </button>
+      </div>
 
-  <div class="inspector-body">
-    <div class="inspector-meta" id="inspector-meta" hidden></div>
+      <p class="inspector-desc" id="inspector-desc">
+        Click a node in the graph to explore its summary, model facts, and related lineage.
+      </p>
 
-    <p class="inspector-desc" id="inspector-desc">
-      Click a node in the graph to explore its summary, benchmarks, and lineage.
-    </p>
+      <dl class="inspector-facts" id="inspector-facts" hidden></dl>
 
-    <div class="inspector-section" id="inspector-bench-section" hidden>
-      <div class="inspector-section-title">Key benchmarks</div>
-      <ul class="inspector-list" id="inspector-bench"></ul>
-      <a class="inspector-link" id="inspector-bench-link" href="#" hidden>
-        View full model page →
-      </a>
-    </div>
+      <div class="inspector-actions" id="inspector-actions" hidden>
+        <a class="inspector-cta" id="inspector-open" href="#">View model page</a>
+        <a class="inspector-cta secondary" id="inspector-external" href="#" target="_blank" rel="noopener" hidden>
+          Open source
+        </a>
+      </div>
+    </section>
 
-    <div class="inspector-section" id="inspector-lineage-section" hidden>
-      <div class="inspector-section-title">Lineage</div>
-      <div class="inspector-subtitle">Parents</div>
-      <ul class="inspector-list" id="inspector-parents"></ul>
-      <div class="inspector-subtitle">Children</div>
-      <ul class="inspector-list" id="inspector-children"></ul>
-    </div>
+    <section class="inspector-card" id="inspector-related-section" hidden>
+      <div class="inspector-section-title">Related models</div>
+      <ul class="inspector-list" id="inspector-related"></ul>
+      <a class="inspector-link" id="inspector-more-related" href="#" hidden>View more in model page →</a>
+    </section>
 
-    <div class="inspector-footer" hidden id="inspector-footer">
-      <a class="inspector-cta" id="inspector-open" href="#">
-        Open full page
-      </a>
-    </div>
+    <section class="inspector-card" id="inspector-insights-section" hidden>
+      <div class="inspector-section-title">Brief</div>
+      <ul class="inspector-bullets" id="inspector-insights"></ul>
+    </section>
+
+    <section class="inspector-card" id="inspector-sources-section" hidden>
+      <div class="inspector-section-title">Data sources</div>
+      <div class="inspector-source-meta" id="inspector-source-meta"></div>
+      <div class="inspector-source-links" id="inspector-source-links"></div>
+    </section>
   </div>
 </aside>
 
@@ -51,49 +59,82 @@
     flex: 0 0 360px;
     max-height: 100%;
     border-left: 1px solid var(--border);
-    background: var(--bg-soft);
+    background: color-mix(in srgb, var(--bg-soft) 92%, white 8%);
     color: var(--fg);
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
-  /* When the user dismisses the panel via the × button, hide it
-     entirely. The graph reflows to fill the freed width.
-     Selecting another node re-opens the panel by setting
-     data-open back to "true". */
   .tree-inspector[data-open="false"] {
     display: none;
   }
-
+  .inspector-shell {
+    padding: 14px;
+    overflow: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .inspector-card {
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    padding: 14px;
+  }
+  .inspector-card-main {
+    background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.7));
+  }
   .inspector-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    padding: 14px 14px 10px 14px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-soft);
   }
-  .inspector-kicker {
+  .inspector-kicker,
+  .inspector-section-title {
     font-size: 11px;
-    font-weight: 650;
+    font-weight: 750;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--fg-muted);
   }
+  .inspector-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
   .inspector-title {
-    font-size: 18px;
+    font-size: 27px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 750;
+    margin: 0;
+  }
+  .inspector-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: #ece7ff;
+    color: #5b39d3;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.15;
-    margin-top: 4px;
+  }
+  .inspector-subtitle {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--fg-muted);
   }
   .inspector-close {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
     border: 1px solid var(--border);
-    background: var(--bg-soft);
+    background: rgba(255,255,255,0.8);
     color: var(--fg-muted);
     font-size: 18px;
     line-height: 1;
@@ -104,129 +145,147 @@
   }
   .inspector-close:hover {
     border-color: var(--border-strong);
-    background: var(--bg-sunk);
     color: var(--fg);
   }
-
-  .inspector-body {
-    padding: 12px 14px 14px 14px;
-    overflow: auto;
-    min-height: 0;
-  }
-  .inspector-meta {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 10px 10px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--bg);
-    font-size: 12px;
-    color: var(--fg-muted);
-  }
-  .inspector-meta strong { color: var(--fg); font-weight: 650; }
   .inspector-desc {
-    margin-top: 12px;
-    font-size: 13px;
+    margin: 14px 0 0 0;
+    font-size: 14px;
     line-height: 1.55;
     color: var(--fg);
   }
-
-  .inspector-section {
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-  }
-  .inspector-section-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-    margin-bottom: 8px;
-  }
-  .inspector-subtitle {
-    font-size: 11px;
-    font-weight: 650;
-    color: var(--fg-muted);
-    margin-top: 10px;
-    margin-bottom: 6px;
-  }
-  .inspector-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .inspector-list li {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+  .inspector-facts {
+    margin: 14px 0 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 10px;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--bg);
-    font-size: 12px;
+  }
+  .inspector-fact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0;
+  }
+  .inspector-fact dt {
+    font-size: 13px;
+    color: var(--fg-muted);
+  }
+  .inspector-fact dd {
+    margin: 0;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 650;
     color: var(--fg);
   }
-  .inspector-list li a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 600;
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .inspector-list li a:hover { text-decoration: underline; }
-  .inspector-list .right {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    color: var(--fg-muted);
-    font-size: 11px;
-    flex: 0 0 auto;
-  }
-  .inspector-link {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 12px;
-    font-weight: 650;
-    color: var(--accent-2, var(--accent));
+  .inspector-fact dd a {
+    color: #5b39d3;
     text-decoration: none;
   }
-  .inspector-link:hover { text-decoration: underline; }
-
-  .inspector-footer {
+  .inspector-fact dd a:hover,
+  .inspector-link:hover,
+  .inspector-list li a:hover,
+  .inspector-source-links a:hover {
+    text-decoration: underline;
+  }
+  .inspector-actions {
     margin-top: 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
   }
   .inspector-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid var(--accent);
-    background: var(--accent);
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 12px;
+    border: 1px solid #5b39d3;
+    background: linear-gradient(180deg, #6c4dff, #4d34d9);
     color: white;
+    font-size: 13px;
     font-weight: 700;
-    font-size: 12px;
     text-decoration: none;
-    cursor: pointer;
   }
   .inspector-cta.secondary {
-    border-color: var(--border-strong);
-    background: var(--bg-soft);
+    border-color: #c8bcff;
+    background: white;
+    color: #4733a8;
+  }
+  .inspector-list,
+  .inspector-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .inspector-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 0;
+  }
+  .inspector-list li a {
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 650;
+  }
+  .inspector-list .right {
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+  .inspector-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 650;
+    color: #5b39d3;
+    text-decoration: none;
+  }
+  .inspector-bullets li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 1.5;
     color: var(--fg);
   }
-  .inspector-cta.secondary:hover {
-    border-color: var(--accent);
+  .inspector-bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #7fcda8;
+    box-shadow: 0 0 0 5px rgba(127, 205, 168, 0.12);
+  }
+  .inspector-source-meta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+  .inspector-source-links {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .inspector-source-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 650;
   }
 
   @media (max-width: 980px) {

@@ -8,7 +8,8 @@ import {
 } from "../lib/graph/constants";
 import { normalizeCategories } from "../lib/categories";
 import { normalizeOrg } from "../lib/org-display";
-import { computeLayout, groupByYear } from "../lib/graph/layout";
+import { computeLayout, familyKey, groupByYear } from "../lib/graph/layout";
+import { fmtCtx, normalizeTitleCasing, simplifyParams } from "../lib/graph/text";
 import type { Layout, Rel, SortMode } from "../lib/graph/types";
 import { SORT_MODES } from "../lib/graph/types";
 import LegendPanel from "./graph/LegendPanel.astro";
@@ -96,34 +97,162 @@ const packLayout = (layout: Layout) => ({
   ),
 });
 
-// Year-grouped data for the Compact view. Each tile carries the same
-// data-cats / data-license / data-org / data-slug attrs as the SVG
-// cards, so the existing filter chain (node-types.ts) applies to
-// compact tiles too without any fork in the filter logic. Year rows
-// keep the time axis visible when the tree collapses to a grid —
-// rows whose tiles all get filtered out hide automatically via CSS
-// `:has()` so the remaining years stack tightly.
-const compactYears = (() => {
-  const sortedNodes = [...graphNodes].sort(
-    (a, b) => a.data.date.getTime() - b.data.date.getTime(),
-  );
-  const map = new Map<number, CollectionEntry<"nodes">[]>();
-  for (const n of sortedNodes) {
-    const y = n.data.date.getFullYear();
-    const bucket = map.get(y) ?? [];
-    bucket.push(n);
-    map.set(y, bucket);
-  }
-  return Array.from(map.entries())
-    .sort(([a], [b]) => a - b)
-    .map(([year, ns]) => ({ year, nodes: ns }));
-})();
-const fmtCompactDate = (d: Date) =>
-  d.toLocaleDateString("en-US", { month: "short" });
 const compactLicense = (n: CollectionEntry<"nodes">) => {
   const rt = n.data.model_spec?.release_type;
   return rt === "open_weights" ? "open" : "closed";
 };
+const fmtCompactDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "short" });
+const fmtCompactRelease = (rt?: string) => {
+  switch (rt) {
+    case "open_weights":
+      return "Open";
+    case "api":
+      return "API";
+    case "product":
+      return "Product";
+    case "demo":
+      return "Demo";
+    case "paper":
+      return "Paper";
+    default:
+      return "";
+  }
+};
+const compactSpecLine = (n: CollectionEntry<"nodes">) => {
+  const parts: string[] = [];
+  if (n.data.model_spec?.parameters) {
+    parts.push(simplifyParams(n.data.model_spec.parameters));
+  }
+  if (n.data.model_spec?.context_window) {
+    parts.push(`${fmtCtx(n.data.model_spec.context_window)} ctx`);
+  }
+  return parts.join(" · ");
+};
+const compactFamilyLabel = (family: string, org: string) => {
+  const normOrg = normalizeOrg(org);
+  if (family.startsWith(`${normOrg} `)) return family.slice(normOrg.length + 1);
+  const orgRaw = String(org);
+  if (family.startsWith(`${orgRaw} `)) return family.slice(orgRaw.length + 1);
+  return family;
+};
+
+const compactNodes = graphNodes.filter((n) => {
+  const spec = n.data.model_spec;
+  return !!spec && spec.release_type !== "paper";
+});
+const compactYears = Array.from(
+  new Set(compactNodes.map((n) => n.data.date.getFullYear())),
+).sort((a, b) => a - b);
+
+const COMPACT_LABEL_W = 170;
+const COMPACT_COL_W = 248;
+const COMPACT_TILE_W = 208;
+const COMPACT_TILE_H = 88;
+const COMPACT_TILE_GAP = 10;
+const COMPACT_ROW_PAD_Y = 20;
+const COMPACT_ROW_MIN_H = 120;
+
+type CompactCell = {
+  slug: string;
+  x: number;
+  y: number;
+  year: number;
+  yearIdx: number;
+};
+type CompactRow = {
+  family: string;
+  familyLabel: string;
+  org: string;
+  accent: string;
+  fill: string;
+  rowHeight: number;
+  nodes: CollectionEntry<"nodes">[];
+  cells: CompactCell[];
+  connections: { from: string; to: string; d: string }[];
+};
+
+const compactRows: CompactRow[] = (() => {
+  const grouped = new Map<string, CollectionEntry<"nodes">[]>();
+  for (const n of compactNodes) {
+    const key = familyKey(n);
+    const bucket = grouped.get(key) ?? [];
+    bucket.push(n);
+    grouped.set(key, bucket);
+  }
+  return Array.from(grouped.entries())
+    .map(([family, ns]) => {
+      const rowNodes = [...ns].sort(
+        (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+      );
+      const byYearMap = new Map<number, CollectionEntry<"nodes">[]>();
+      for (const n of rowNodes) {
+        const y = n.data.date.getFullYear();
+        const bucket = byYearMap.get(y) ?? [];
+        bucket.push(n);
+        byYearMap.set(y, bucket);
+      }
+      const maxStack = Math.max(
+        1,
+        ...compactYears.map((year) => byYearMap.get(year)?.length ?? 0),
+      );
+      const rowHeight = Math.max(
+        COMPACT_ROW_MIN_H,
+        COMPACT_ROW_PAD_Y * 2 +
+          maxStack * COMPACT_TILE_H +
+          Math.max(0, maxStack - 1) * COMPACT_TILE_GAP,
+      );
+
+      const cells: CompactCell[] = [];
+      for (const [year, yearNodes] of byYearMap.entries()) {
+        const yearIdx = compactYears.indexOf(year);
+        yearNodes.forEach((node, idx) => {
+          cells.push({
+            slug: node.data.slug,
+            year,
+            yearIdx,
+            x: yearIdx * COMPACT_COL_W + (COMPACT_COL_W - COMPACT_TILE_W) / 2,
+            y: COMPACT_ROW_PAD_Y + idx * (COMPACT_TILE_H + COMPACT_TILE_GAP),
+          });
+        });
+      }
+      const cellBySlug = new Map(cells.map((c) => [c.slug, c]));
+      const connections = rowNodes.slice(1).flatMap((node, idx) => {
+        const prev = rowNodes[idx];
+        const from = cellBySlug.get(prev.data.slug);
+        const to = cellBySlug.get(node.data.slug);
+        if (!from || !to) return [];
+        const startX = from.x + COMPACT_TILE_W;
+        const startY = from.y + COMPACT_TILE_H / 2;
+        const endX = to.x;
+        const endY = to.y + COMPACT_TILE_H / 2;
+        const dx = Math.max(28, (endX - startX) * 0.45);
+        return [{
+          from: prev.data.slug,
+          to: node.data.slug,
+          d: `M ${startX} ${startY} C ${startX + dx} ${startY}, ${endX - dx} ${endY}, ${endX} ${endY}`,
+        }];
+      });
+
+      const lead = rowNodes[0];
+      return {
+        family,
+        familyLabel: compactFamilyLabel(family, lead.data.org),
+        org: normalizeOrg(lead.data.org),
+        accent: orgStrokeColor(lead.data.org),
+        fill: orgFillColor(lead.data.org),
+        rowHeight,
+        nodes: rowNodes,
+        cells,
+        connections,
+      };
+    })
+    .sort((a, b) => {
+      const aLatest = a.nodes[a.nodes.length - 1]?.data.date.getTime() ?? 0;
+      const bLatest = b.nodes[b.nodes.length - 1]?.data.date.getTime() ?? 0;
+      return (bLatest - aLatest) || a.org.localeCompare(b.org) || a.family.localeCompare(b.family);
+    });
+})();
 
 // Embedded JSON the client script reads on init. Holds all 6 layout
 // variants; client swaps by orient + sort mode without recomputing.
@@ -147,17 +276,24 @@ const clientPayload = {
         public_view: {
           plain_english: n.data.public_view.plain_english,
         },
+        relationships: n.data.relationships,
         model_spec: n.data.model_spec
           ? {
+              family: n.data.model_spec.family ?? familyKey(n),
               parameters: n.data.model_spec.parameters,
               context_window: n.data.model_spec.context_window,
               release_type: n.data.model_spec.release_type,
+              best_for: n.data.model_spec.best_for,
               availability: n.data.model_spec.availability,
               modalities: n.data.model_spec.modalities,
               modalities_in: n.data.model_spec.modalities_in,
               modalities_out: n.data.model_spec.modalities_out,
               benchmarks: n.data.model_spec.benchmarks,
+              homepage: n.data.model_spec.homepage,
+              github: n.data.model_spec.github,
               aa_url: n.data.model_spec.aa_url,
+              hf_url: n.data.model_spec.hf_url,
+              last_verified_at: n.data.model_spec.last_verified_at?.toISOString(),
               variants: n.data.model_spec.variants?.map((v) => ({
                 id: v.id,
                 label: v.label,
@@ -198,41 +334,81 @@ const clientPayload = {
         )}
       </div>
 
-      {/* Compact view — a year-grouped grid that replaces the SVG tree
-          when `.compact-mode` is active on the figure. Keeps the time
-          axis visible (year labels run down the left gutter) so the
-          chronology of the filtered set is still legible — just without
-          the tree's empty-space bands. Tiles share the same data-*
-          attribute grammar as the SVG cards so node-types.ts's filter
-          chain applies without modification. Year rows with all tiles
-          filtered out auto-hide via the CSS `:has()` rule below. */}
+      {/* Compact view — switches from the spatial graph to a model-family
+          board: family rows, year columns, explicit within-family
+          connectors, and denser model briefs. This view intentionally
+          focuses on model releases (not method papers) so the board reads
+          like a lineage browser rather than a second copy of the SVG. */}
       <div class="compact-list" aria-label="Compact tree view">
-        {compactYears.map(({ year, nodes: yearNodes }) => (
-          <div class="compact-year" data-year={year}>
-            <div class="compact-year-label">{year}</div>
-            <div class="compact-year-tiles">
-              {yearNodes.map((n) => {
-                const d = n.data;
-                const lic = compactLicense(n);
-                const monthLabel = fmtCompactDate(d.date);
-                return (
-                  <a
-                    href={`/node/${d.slug}/`}
-                    class="node-link compact-tile"
-                    data-slug={d.slug}
-                    data-cats={normalizeCategories(d.category).join(" ")}
-                    data-license={lic}
-                    data-org={normalizeOrg(d.org)}
-                    style={`--tile-stroke: ${orgStrokeColor(d.org)}; --tile-fill: ${orgFillColor(d.org)};`}
-                  >
-                    <div class="compact-tile-meta">{monthLabel} · {normalizeOrg(d.org)}</div>
-                    <div class="compact-tile-title">{d.title}</div>
-                  </a>
-                );
-              })}
+        <div
+          class="compact-board"
+          style={`--compact-label-w:${COMPACT_LABEL_W}px; --compact-col-w:${COMPACT_COL_W}px; --compact-tile-w:${COMPACT_TILE_W}px; --compact-tile-h:${COMPACT_TILE_H}px; --compact-years:${compactYears.length};`}
+        >
+          <div class="compact-board-head">
+            <div class="compact-board-spacer"></div>
+            <div class="compact-year-strip">
+              {compactYears.map((year) => (
+                <div class="compact-year-head">{year}</div>
+              ))}
             </div>
           </div>
-        ))}
+
+          <div class="compact-rows">
+            {compactRows.map((row) => (
+              <section class="compact-row" style={`--row-height:${row.rowHeight}px; --row-accent:${row.accent}; --row-fill:${row.fill};`}>
+                <div class="compact-family">
+                  <div class="compact-family-name">{row.familyLabel}</div>
+                  <div class="compact-family-org">{row.org}</div>
+                </div>
+
+                <div class="compact-track">
+                  <div class="compact-column-grid" aria-hidden="true">
+                    {compactYears.map(() => <span class="compact-col-line"></span>)}
+                  </div>
+
+                  <svg
+                    class="compact-links"
+                    viewBox={`0 0 ${compactYears.length * COMPACT_COL_W} ${row.rowHeight}`}
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    {row.connections.map((edge) => (
+                      <path d={edge.d}></path>
+                    ))}
+                  </svg>
+
+                  {row.cells.map((cell) => {
+                    const n = row.nodes.find((node) => node.data.slug === cell.slug);
+                    if (!n) return null;
+                    const d = n.data;
+                    const lic = compactLicense(n);
+                    const releasePill = fmtCompactRelease(d.model_spec?.release_type);
+                    const specLine = compactSpecLine(n);
+                    return (
+                      <a
+                        href={`/node/${d.slug}/`}
+                        class="node-link compact-tile"
+                        data-slug={d.slug}
+                        data-cats={normalizeCategories(d.category).join(" ")}
+                        data-license={lic}
+                        data-org={normalizeOrg(d.org)}
+                        style={`--tile-stroke:${orgStrokeColor(d.org)}; --tile-fill:${orgFillColor(d.org)}; left:${cell.x}px; top:${cell.y}px;`}
+                      >
+                        <div class="compact-tile-topline">
+                          <span class="compact-tile-month">{fmtCompactDate(d.date)}</span>
+                          {releasePill && <span class="compact-tile-pill">{releasePill}</span>}
+                        </div>
+                        <div class="compact-tile-title">{normalizeTitleCasing(d.title)}</div>
+                        <div class="compact-tile-org">{normalizeOrg(d.org)}</div>
+                        {specLine && <div class="compact-tile-spec">{specLine}</div>}
+                      </a>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -276,28 +452,18 @@ const clientPayload = {
     .ai-tree-graph .graph-body { flex-direction: column; }
   }
 
-  /* ===== Compact view — year-grouped grid replaces the SVG tree
-     when active. Toggled via `.compact-mode` class on `.ai-tree-graph`
-     (see compact.ts). The SVG panes get hidden, the year grid gets
-     shown. Same filter chain applies — .card-filtered on a tile
-     becomes display:none in compact mode so only visible tiles show. */
+  /* ===== Compact view — model-family board with a sticky year header,
+     family rows, and explicit within-family connectors. Compact mode is
+     a second visualization surface, not just a denser copy of the SVG. */
   .panes-wrap { display: contents; }
   .compact-list {
     display: none;
-    padding: 20px 24px;
+    padding: 16px 18px 18px 18px;
     overflow-y: auto;
-    flex-direction: column;
-    gap: 2px;
+    overflow-x: auto;
   }
   .ai-tree-graph.compact-mode .panes-wrap { display: none; }
-  .ai-tree-graph.compact-mode .compact-list { display: flex; }
-  /* Compact view = pure chronological browser: filters do NOT apply
-     here. Per user feedback 2026-04-21, the gray/hide treatment that
-     normally goes with .card-filtered is overridden inside compact
-     mode so every tile renders normally regardless of filter state.
-     The card-filtered class still gets toggled by node-types.ts (so
-     toggling back to tree view picks up the filter again), it just
-     has no visual effect inside .compact-mode. */
+  .ai-tree-graph.compact-mode .compact-list { display: block; }
   .ai-tree-graph.compact-mode .compact-tile {
     opacity: 1 !important;
     filter: none !important;
@@ -305,69 +471,180 @@ const clientPayload = {
     display: flex !important;
   }
 
-  /* Each year row: fixed-width year label gutter on the left, tiles
-     flow-wrap to the right. Rows stack vertically so the time axis
-     reads top→bottom. */
-  .compact-year {
-    display: grid;
-    grid-template-columns: 72px 1fr;
-    gap: 20px;
-    padding: 10px 0;
-    border-top: 1px dashed var(--border);
+  .compact-board {
+    min-width: calc(var(--compact-label-w) + var(--compact-years) * var(--compact-col-w));
   }
-  .compact-year:first-child { border-top: none; }
-  .compact-year-label {
+  .compact-board-head {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: var(--compact-label-w) 1fr;
+    background:
+      linear-gradient(to bottom, rgba(251, 249, 243, 0.98), rgba(251, 249, 243, 0.94));
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .compact-board-spacer {
+    border-right: 1px solid rgba(15, 23, 42, 0.06);
+  }
+  .compact-year-strip {
+    display: grid;
+    grid-template-columns: repeat(var(--compact-years), minmax(0, 1fr));
+  }
+  .compact-year-head {
+    padding: 12px 0;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 18px;
     font-weight: 700;
     color: var(--fg-muted);
-    letter-spacing: 0.02em;
-    padding-top: 4px;
-    text-align: right;
-    align-self: start;
-    position: sticky;
-    top: 0;
+    text-align: center;
+    border-left: 1px dashed rgba(15, 23, 42, 0.08);
   }
-  .compact-year-tiles {
+
+  .compact-rows {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-content: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 24px;
+  }
+  .compact-row {
+    display: grid;
+    grid-template-columns: var(--compact-label-w) 1fr;
+    gap: 18px;
+    min-height: var(--row-height);
+    padding: 6px 0 12px 0;
+    border-bottom: 1px dashed rgba(15, 23, 42, 0.08);
+  }
+  .compact-family {
+    position: sticky;
+    left: 0;
+    align-self: start;
+    padding-top: 14px;
+    background: linear-gradient(to right, var(--bg-soft) 78%, rgba(251, 249, 243, 0));
+    z-index: 2;
+  }
+  .compact-family-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+  .compact-family-org {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--fg-muted);
+  }
+
+  .compact-track {
+    position: relative;
+    min-height: var(--row-height);
+  }
+  .compact-column-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--compact-years), var(--compact-col-w));
+    pointer-events: none;
+  }
+  .compact-col-line {
+    border-left: 1px dashed rgba(15, 23, 42, 0.08);
+  }
+  .compact-col-line:last-child {
+    border-right: 1px dashed rgba(15, 23, 42, 0.08);
+  }
+  .compact-links {
+    position: absolute;
+    inset: 0;
+    width: calc(var(--compact-years) * var(--compact-col-w));
+    height: var(--row-height);
+    overflow: visible;
+    pointer-events: none;
+  }
+  .compact-links path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--row-accent) 70%, white 30%);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.9;
   }
 
   .compact-tile {
+    position: absolute;
     display: flex;
     flex-direction: column;
     gap: 3px;
-    padding: 8px 12px 9px 13px;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--tile-stroke, #64748b);
-    border-radius: 6px;
+    width: var(--compact-tile-w);
+    min-height: var(--compact-tile-h);
+    padding: 10px 12px 10px 14px;
+    background: color-mix(in srgb, white 78%, var(--tile-fill) 22%);
+    border: 1px solid color-mix(in srgb, var(--tile-stroke) 30%, white 70%);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
     text-decoration: none;
     color: var(--fg);
-    width: 220px;
-    min-height: 52px;
+    transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
   }
-  /* No hover lift / shadow on compact tiles — per user feedback
-     2026-04-21, hover state isn't useful here (the tile is already a
-     small enough click target that the visual feedback is noise, not
-     signal). Click-through to the detail page is the only interaction. */
-  .compact-tile-meta {
+  .compact-tile:hover {
+    transform: translateY(-1px);
+    border-color: var(--tile-stroke);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
+  }
+  .compact-tile.selected-card {
+    border-color: var(--tile-stroke);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tile-stroke) 24%, white 76%), 0 16px 32px rgba(15, 23, 42, 0.12);
+  }
+  .compact-tile-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .compact-tile-month {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 10.5px;
     font-weight: 600;
     color: var(--tile-stroke, #475569);
     letter-spacing: 0.01em;
   }
+  .compact-tile-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--tile-stroke) 14%, white 86%);
+    color: var(--tile-stroke);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
   .compact-tile-title {
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.25;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
     color: var(--fg);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  .compact-tile-org {
+    font-size: 13px;
+    font-weight: 550;
+    color: var(--fg-muted);
+  }
+  .compact-tile-spec {
+    margin-top: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 980px) {
+    .compact-list { padding: 12px; }
+    .compact-board { min-width: 980px; }
   }
 </style>

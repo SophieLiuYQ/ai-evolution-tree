@@ -5,9 +5,10 @@
 import { clearDynamicEdges } from "./dom";
 import { clearPinOnOrientChange, renderHover } from "./hover";
 import { getOrient } from "./orient";
-import { getPinned, getSort, setPinned, setSort, type SortMode } from "./state";
+import { getPinned, getSelected, getSort, setPinned, setSort, type SortMode } from "./state";
 
 const STORAGE_KEY = "ai-tree:sort";
+const SELECT_EVT = "ai-tree:select";
 
 // Show only the pane matching (current orient, current sort); hide the rest.
 export function updateActivePane() {
@@ -43,6 +44,13 @@ function setSortMode(mode: SortMode, persist = true) {
     try {
       localStorage.setItem(STORAGE_KEY, mode);
     } catch {}
+  }
+
+  const selected = getSelected();
+  if (selected) {
+    document.dispatchEvent(
+      new CustomEvent(SELECT_EVT, { detail: { slug: selected } }),
+    );
   }
 
   // If something was pinned at the moment of switch, the user lost their

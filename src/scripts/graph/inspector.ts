@@ -1,5 +1,5 @@
-// Right-side inspector panel: click a node to populate summary,
-// benchmarks, and lineage without leaving /tree/.
+// Right-side inspector panel: click a node to populate a concise model
+// brief, related models, and source links without leaving /tree/.
 
 import {
   graphData,
@@ -7,19 +7,11 @@ import {
   outgoing,
   getSelected,
   setSelected,
-  type Orient,
 } from "./state";
 import { normalizeTitleCasing } from "../../lib/graph/text";
 
-// Compact context-window formatter — "128k" / "1M" instead of raw
-// "128,000 ctx". The label "Context" already provides units context.
-function fmtCtxCompact(c: number): string {
-  if (c >= 1_000_000) return `${Math.round(c / 1_000_000)}M`;
-  if (c >= 1000) return `${Math.round(c / 1000)}k`;
-  return `${c}`;
-}
-
 type Bench = { name: string; score: string };
+type Relationship = { to: string; type: string; note?: string };
 type NodeMeta = {
   slug: string;
   title: string;
@@ -29,135 +21,115 @@ type NodeMeta = {
   category: string[];
   breakthrough_score: number;
   public_view?: { plain_english?: string };
+  relationships?: Relationship[];
   model_spec?: {
+    family?: string;
     parameters?: string;
     context_window?: number;
     release_type?: string;
+    best_for?: string;
     availability?: string[];
     modalities?: string[];
     modalities_in?: string[];
     modalities_out?: string[];
     benchmarks?: Bench[];
+    homepage?: string;
+    github?: string;
+    aa_url?: string;
+    hf_url?: string;
+    last_verified_at?: string;
   };
 };
 
 const SELECT_EVT = "ai-tree:select";
 
-function activePaneEl(): HTMLElement | null {
-  const panes = document.querySelectorAll<HTMLElement>(".orient-pane");
-  for (const p of panes) {
-    if (getComputedStyle(p).display !== "none") return p;
-  }
-  return null;
+function activeOrient(): "h" | "v" {
+  const sel = document.querySelector<HTMLButtonElement>(
+    '.orient-btn[aria-selected="true"]',
+  );
+  return sel?.dataset.orient === "h" ? "h" : "v";
 }
 
-function activeOrient(): Orient | null {
-  const p = activePaneEl();
-  if (!p) return null;
-  return (p.dataset.orient as Orient) ?? null;
+function isCompactMode(): boolean {
+  return document.querySelector(".ai-tree-graph")?.classList.contains("compact-mode") ?? false;
 }
 
-function fmtDate(iso: string): string {
+function fmtDate(iso: string, withDay = false): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  return d.toLocaleDateString(
+    "en-US",
+    withDay
+      ? { month: "short", day: "numeric", year: "numeric" }
+      : { month: "short", year: "numeric" },
+  );
 }
 
-function scoreMax(b: Bench): number | null {
-  // Accept "56.1%", "60.6% (51.0–60.6%)", "12.00", etc.
-  const nums = String(b.score ?? "").match(/-?\d+(\.\d+)?/g);
-  if (!nums || !nums.length) return null;
-  const parsed = nums.map((n) => Number(n)).filter((n) => Number.isFinite(n));
-  if (!parsed.length) return null;
-  return Math.max(...parsed);
+function fmtCtx(c?: number): string {
+  if (!c) return "Unknown";
+  return c >= 1_000_000
+    ? `${(c / 1_000_000).toFixed(c % 1_000_000 === 0 ? 0 : 1)}M tokens`
+    : c >= 1000
+      ? `${Math.round(c / 1000).toLocaleString()}k tokens`
+      : `${c.toLocaleString()} tokens`;
 }
 
-function pickBestByName(
-  bs: Bench[],
-  match: (name: string) => boolean,
-): Bench | null {
-  let best: Bench | null = null;
-  let bestVal = -Infinity;
-  for (const b of bs) {
-    if (!match(String(b.name ?? ""))) continue;
-    const v = scoreMax(b);
-    if (v == null) continue;
-    if (v > bestVal) {
-      bestVal = v;
-      best = b;
-    }
+function fmtReleaseType(rt?: string): string {
+  switch (rt) {
+    case "open_weights":
+      return "Open";
+    case "api":
+      return "API";
+    case "product":
+      return "Product";
+    case "demo":
+      return "Demo";
+    case "paper":
+      return "Paper";
+    default:
+      return "";
   }
-  return best;
 }
 
-function pickFirstByName(
-  bs: Bench[],
-  match: (name: string) => boolean,
-): Bench | null {
-  for (const b of bs) {
-    if (match(String(b.name ?? ""))) return b;
+function fmtLicense(rt?: string): string {
+  if (rt === "open_weights") return "Open weights";
+  if (rt === "paper") return "Research only";
+  return "Proprietary";
+}
+
+function fmtModelType(n: NodeMeta): string {
+  const cats = new Set((n.category ?? []).map((c) => c.toLowerCase()));
+  if (cats.has("agents")) return "Agent";
+  if (cats.has("multimodal")) return "Multimodal";
+  if (cats.has("reasoning")) return "Reasoning";
+  if (cats.has("code")) return "Coding";
+  if (cats.has("video")) return "Video";
+  if (cats.has("audio")) return "Audio";
+  if (cats.has("cv")) return "Vision";
+  if (cats.has("paper")) return "Research";
+  return "LLM";
+}
+
+function compactName(s?: string): string {
+  if (!s) return "Unknown";
+  return s
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function hostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
   }
-  return null;
 }
 
-function pickKeyBenchmarks(n: NodeMeta): Bench[] {
-  const bs = n.model_spec?.benchmarks ?? [];
-  if (!bs.length) return [];
-  const isMeaningful = (b: Bench) => {
-    const s = String(b.score ?? "").trim();
-    if (!s || s === "—") return false;
-    if (s === "0" || s === "0.0" || s === "0.00" || s === "0%") return false;
-    if (/\$0\.00 in\s*\/\s*\$0\.00 out/i.test(s)) return false;
-    return true;
-  };
-  const filtered = bs.filter(isMeaningful);
-  if (!filtered.length) return [];
-
-  const out: Bench[] = [];
-  const nameHas = (needle: string) => (name: string) =>
-    name.toLowerCase().includes(needle.toLowerCase());
-
-  // Always show (when present): AA Intelligence + Speed + Price.
-  const aa = pickBestByName(filtered, nameHas("aa intelligence index"));
-  if (aa) out.push(aa);
-
-  const speed = pickBestByName(filtered, nameHas("output tok/s"));
-  if (speed) out.push(speed);
-
-  const price = pickFirstByName(filtered, nameHas("price ($/m tokens)"));
-  if (price) out.push(price);
-
-  // Pick exactly ONE task benchmark, depending on node type.
-  const cats = new Set((n.category ?? []).map((c) => String(c).toLowerCase()));
-  const taskCandidates =
-    cats.has("agents")
-      ? ["terminal-bench hard", "terminal-bench"]
-      : cats.has("code")
-        ? ["scicode", "swe-bench", "humaneval"]
-        : cats.has("multimodal") || cats.has("cv") || cats.has("video")
-          ? ["mmmu"]
-          : cats.has("reasoning")
-            ? ["gpqa diamond", "gpqa", "mmlu-pro", "mmlu pro", "hle"]
-            : ["mmlu-pro", "mmlu pro", "mmlu", "gpqa"];
-
-  const already = new Set(out.map((b) => b.name.toLowerCase()));
-  let task: Bench | null = null;
-  for (const cand of taskCandidates) {
-    task = pickBestByName(filtered, nameHas(cand));
-    if (task && !already.has(task.name.toLowerCase())) break;
-    task = null;
-  }
-  if (task) out.push(task);
-
-  // If we still have nothing (rare), fallback to any one meaningful bench.
-  if (!out.length) out.push(filtered[0]);
-
-  // Ensure order + cap at 4 rows.
-  return out.slice(0, 4);
-}
-
-function nodeUrl(slug: string) {
-  return `/node/${slug}/`;
+function setPanelOpen(open: boolean) {
+  const panel = document.querySelector<HTMLElement>(".tree-inspector");
+  if (!panel) return;
+  panel.dataset.open = open ? "true" : "false";
 }
 
 function setText(id: string, v: string) {
@@ -175,142 +147,14 @@ function clearList(id: string) {
   if (el) el.innerHTML = "";
 }
 
-function renderBenchmarks(n: NodeMeta) {
-  const list = document.getElementById("inspector-bench");
-  if (!list) return;
-  list.innerHTML = "";
-  const keys = pickKeyBenchmarks(n);
-  for (const b of keys) {
-    const li = document.createElement("li");
-    const left = document.createElement("a");
-    left.href = nodeUrl(n.slug);
-    left.textContent = b.name;
-    const right = document.createElement("span");
-    right.className = "right";
-    right.textContent = b.score;
-    li.append(left, right);
-    list.appendChild(li);
-  }
-  setHidden("inspector-bench-section", keys.length === 0);
-}
-
-function renderLineage(n: NodeMeta, metaBySlug: Record<string, NodeMeta>) {
-  const orient = activeOrient();
-  if (!orient) return;
-  const inc = incoming()[orient][n.slug] ?? [];
-  const out = outgoing()[orient][n.slug] ?? [];
-
-  const parentsEl = document.getElementById("inspector-parents");
-  const childrenEl = document.getElementById("inspector-children");
-  if (!parentsEl || !childrenEl) return;
-
-  parentsEl.innerHTML = "";
-  childrenEl.innerHTML = "";
-
-  function addRow(target: HTMLElement, slug: string) {
-    const m = metaBySlug[slug];
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-    a.href = nodeUrl(slug);
-    a.textContent = m?.title ?? slug;
-    const right = document.createElement("span");
-    right.className = "right";
-    right.textContent = m?.date ? fmtDate(m.date) : "";
-    li.append(a, right);
-    target.appendChild(li);
-  }
-
-  inc.forEach((s) => addRow(parentsEl, s));
-  out.forEach((s) => addRow(childrenEl, s));
-
-  setHidden(
-    "inspector-lineage-section",
-    inc.length === 0 && out.length === 0,
-  );
-}
-
-function renderMeta(n: NodeMeta) {
-  const meta = document.getElementById("inspector-meta");
-  if (!meta) return;
-  const ctx = n.model_spec?.context_window
-    ? fmtCtxCompact(n.model_spec.context_window)
-    : null;
-
-  const availability = (() => {
-    const avail = n.model_spec?.availability;
-    if (Array.isArray(avail) && avail.length) return avail;
-    const rt = n.model_spec?.release_type;
-    return rt ? [rt] : null;
-  })();
-
-  const formatAvail = (v: string) => {
-    switch (v) {
-      case "api":
-        return "API";
-      case "product":
-        return "Product";
-      case "open_weights":
-        return "Open weights";
-      case "research":
-        return "Research";
-      case "demo":
-        return "Demo";
-      case "enterprise":
-        return "Enterprise";
-      case "paper":
-        return "Paper";
-      default:
-        return v.replace(/_/g, " ");
-    }
-  };
-
-  const availText = availability?.length
-    ? availability.map(formatAvail).join(", ")
-    : "—";
-
-  const fmtMod = (m: string) => m.toLowerCase().replace(/_/g, " ");
-  const inMods = (() => {
-    const v = n.model_spec?.modalities_in;
-    if (Array.isArray(v) && v.length) return v.map(fmtMod).join(", ");
-    const mods = n.model_spec?.modalities;
-    if (Array.isArray(mods) && mods.length) return mods.map(fmtMod).join(", ");
-    return "—";
-  })();
-  const outMods = (() => {
-    const v = n.model_spec?.modalities_out;
-    if (Array.isArray(v) && v.length) return v.map(fmtMod).join(", ");
-    const mods = n.model_spec?.modalities;
-    if (Array.isArray(mods) && mods.length) return mods.map(fmtMod).join(", ");
-    return "—";
-  })();
-
-  const CAP_LABELS: Record<string, string> = {
-    agents: "Agent",
-    multimodal: "Multimodal",
-    reasoning: "Reasoning",
-    generative: "Generative",
-    code: "Coding",
-    cv: "Vision",
-    audio: "Audio",
-    video: "Video",
-    nlp: "Text / NLP",
-    world_model: "World model",
-    paper: "Paper",
-  };
-  const caps = Array.isArray(n.category) && n.category.length
-    ? n.category.map((c: string) => CAP_LABELS[c] ?? c).join(", ")
-    : "—";
-  meta.innerHTML = [
-    `<div><strong>Released</strong> ${fmtDate(n.date)}</div>`,
-    ctx ? `<div><strong>Context</strong> ${ctx}</div>` : "",
-    `<div><strong>Available as</strong> ${availText}</div>`,
-    `<div><strong>Modality input</strong> ${inMods}</div>`,
-    `<div><strong>Modality output</strong> ${outMods}</div>`,
-    `<div><strong>Capabilities</strong> ${caps}</div>`,
-  ]
-    .filter(Boolean)
-    .join("");
-  meta.hidden = false;
+function pickExternalLink(n: NodeMeta): { href: string; label: string } | null {
+  const spec = n.model_spec;
+  if (!spec) return null;
+  if (spec.homepage) return { href: spec.homepage, label: hostname(spec.homepage) };
+  if (spec.github) return { href: spec.github, label: "GitHub" };
+  if (spec.hf_url) return { href: spec.hf_url, label: "Hugging Face" };
+  if (spec.aa_url) return { href: spec.aa_url, label: "Artificial Analysis" };
+  return null;
 }
 
 function highlightSelected(slug: string | null) {
@@ -318,94 +162,221 @@ function highlightSelected(slug: string | null) {
     .querySelectorAll<HTMLElement>(".node-link.selected-card")
     .forEach((el) => el.classList.remove("selected-card"));
   if (!slug) return;
-  const pane = activePaneEl();
-  if (!pane) return;
-  const link = pane.querySelector<HTMLElement>(
+  const scope = isCompactMode()
+    ? document.querySelector<HTMLElement>(".compact-list")
+    : document.querySelector<HTMLElement>(
+        `.orient-pane[data-orient="${activeOrient()}"]`,
+      );
+  if (!scope) return;
+  const link = scope.querySelector<HTMLElement>(
     `.node-link[data-slug="${slug}"]`,
   );
   if (link) link.classList.add("selected-card");
 }
 
-function wireInspectorButtons(slug: string) {
+function renderFacts(n: NodeMeta) {
+  const facts = document.getElementById("inspector-facts");
+  if (!facts) return;
+  const spec = n.model_spec;
+  const ext = pickExternalLink(n);
+  const rows = [
+    ["Context Window", fmtCtx(spec?.context_window)],
+    ["Parameters", compactName(spec?.parameters)],
+    ["Model Type", fmtModelType(n)],
+    ["License", fmtLicense(spec?.release_type)],
+    [
+      "Website",
+      ext ? `<a href="${ext.href}" target="_blank" rel="noopener">${ext.label}</a>` : "Unavailable",
+    ],
+  ];
+  facts.innerHTML = rows
+    .map(
+      ([k, v]) => `<div class="inspector-fact"><dt>${k}</dt><dd>${v}</dd></div>`,
+    )
+    .join("");
+  facts.hidden = false;
+}
+
+function renderActions(n: NodeMeta) {
   const open = document.getElementById("inspector-open") as HTMLAnchorElement | null;
-  if (open) open.href = nodeUrl(slug);
+  if (open) open.href = `/node/${n.slug}/`;
 
-  const benchLink = document.getElementById("inspector-bench-link") as HTMLAnchorElement | null;
-  if (benchLink) {
-    benchLink.href = nodeUrl(slug);
-    benchLink.hidden = false;
+  const ext = pickExternalLink(n);
+  const external = document.getElementById("inspector-external") as HTMLAnchorElement | null;
+  if (external) {
+    if (ext) {
+      external.href = ext.href;
+      external.textContent = ext.label;
+      external.hidden = false;
+    } else {
+      external.hidden = true;
+    }
   }
+  setHidden("inspector-actions", false);
 }
 
-function setPanelOpen(open: boolean) {
-  const panel = document.querySelector<HTMLElement>(".tree-inspector");
-  if (!panel) return;
-  panel.dataset.open = open ? "true" : "false";
+function relatedModels(n: NodeMeta, metaBySlug: Record<string, NodeMeta>) {
+  const orient = activeOrient();
+  const family = n.model_spec?.family;
+  const out: string[] = [];
+  const seen = new Set<string>([n.slug]);
+
+  const push = (slug: string) => {
+    if (!slug || seen.has(slug) || !metaBySlug[slug]) return;
+    seen.add(slug);
+    out.push(slug);
+  };
+
+  for (const slug of incoming()[orient][n.slug] ?? []) push(slug);
+  for (const slug of outgoing()[orient][n.slug] ?? []) push(slug);
+
+  if (family) {
+    const sameFamily = Object.values(metaBySlug)
+      .filter((m) => m.slug !== n.slug && m.model_spec?.family === family)
+      .sort(
+        (a, b) =>
+          Math.abs(new Date(a.date).getTime() - new Date(n.date).getTime()) -
+          Math.abs(new Date(b.date).getTime() - new Date(n.date).getTime()),
+      );
+    for (const m of sameFamily) push(m.slug);
+  }
+
+  return out.slice(0, 6);
 }
 
-// Restore the panel to its empty / unselected state. Used by the
-// close (×) button so the user can dismiss the current selection
-// and have the panel show "Click a node" again.
+function renderRelated(n: NodeMeta, metaBySlug: Record<string, NodeMeta>) {
+  const related = relatedModels(n, metaBySlug);
+  const list = document.getElementById("inspector-related");
+  const more = document.getElementById("inspector-more-related") as HTMLAnchorElement | null;
+  if (!list || !more) return;
+  list.innerHTML = "";
+  for (const slug of related) {
+    const m = metaBySlug[slug];
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = `/node/${slug}/`;
+    a.textContent = normalizeTitleCasing(m?.title ?? slug);
+    const right = document.createElement("span");
+    right.className = "right";
+    right.textContent = m?.org ?? "";
+    li.append(a, right);
+    list.appendChild(li);
+  }
+  more.href = `/node/${n.slug}/`;
+  more.hidden = related.length === 0;
+  setHidden("inspector-related-section", related.length === 0);
+}
+
+function buildInsights(n: NodeMeta): string[] {
+  const spec = n.model_spec;
+  const out: string[] = [];
+  if (spec?.best_for) out.push(spec.best_for);
+  if (spec?.context_window) {
+    if (spec.context_window >= 1_000_000) out.push("Large context window for long documents and multi-step workflows.");
+    else if (spec.context_window >= 128_000) out.push("Long-context capable for larger documents and codebases.");
+  }
+  if (spec?.release_type === "open_weights") out.push("Open weights: usable outside a hosted API, with your own deployment stack.");
+  if (spec?.release_type === "api") out.push("Primarily shipped as a hosted API or managed product surface.");
+  if (n.category.includes("reasoning")) out.push("Reasoning-oriented model line with stronger multi-step problem solving focus.");
+  if (n.category.includes("multimodal")) out.push("Multimodal model: supports more than text-only workflows.");
+  if (!out.length && n.public_view?.plain_english) out.push(n.public_view.plain_english);
+  return out.slice(0, 3);
+}
+
+function renderInsights(n: NodeMeta) {
+  const list = document.getElementById("inspector-insights");
+  if (!list) return;
+  const items = buildInsights(n);
+  list.innerHTML = "";
+  for (const item of items) {
+    const li = document.createElement("li");
+    li.textContent = item;
+    list.appendChild(li);
+  }
+  setHidden("inspector-insights-section", items.length === 0);
+}
+
+function renderSources(n: NodeMeta) {
+  const meta = document.getElementById("inspector-source-meta");
+  const links = document.getElementById("inspector-source-links");
+  if (!meta || !links) return;
+  const spec = n.model_spec;
+  const hrefs = [
+    spec?.homepage ? { href: spec.homepage, label: "Website" } : null,
+    spec?.github ? { href: spec.github, label: "GitHub" } : null,
+    spec?.hf_url ? { href: spec.hf_url, label: "Hugging Face" } : null,
+    spec?.aa_url ? { href: spec.aa_url, label: "Artificial Analysis" } : null,
+  ].filter(Boolean) as { href: string; label: string }[];
+
+  meta.textContent = spec?.last_verified_at
+    ? `Last verified: ${fmtDate(spec.last_verified_at, true)}`
+    : "Schema-backed model data from this repository.";
+  links.innerHTML = hrefs
+    .map(
+      (link) =>
+        `<a href="${link.href}" target="_blank" rel="noopener">${link.label}</a>`,
+    )
+    .join("");
+  setHidden("inspector-sources-section", hrefs.length === 0 && !spec?.last_verified_at);
+}
+
 function resetPanel() {
-  setText("inspector-org", "Select a node");
-  setText("inspector-title", "Details");
+  setText("inspector-title", "Select a node");
+  setText("inspector-subtitle", "Open the compact view or click a node in the graph.");
   setText(
     "inspector-desc",
-    "Click a node in the graph to explore its summary, benchmarks, and lineage.",
+    "Click a node in the graph to explore its summary, model facts, and related lineage.",
   );
-  // Hide every body section that only appears when a node is selected.
-  setHidden("inspector-meta", true);
-  setHidden("inspector-bench-section", true);
-  setHidden("inspector-lineage-section", true);
-  setHidden("inspector-footer", true);
-  // Drop any cached selection so reload won't restore it.
+  setHidden("inspector-badge", true);
+  setHidden("inspector-facts", true);
+  setHidden("inspector-actions", true);
+  setHidden("inspector-related-section", true);
+  setHidden("inspector-insights-section", true);
+  setHidden("inspector-sources-section", true);
+  clearList("inspector-related");
+  clearList("inspector-insights");
+  const links = document.getElementById("inspector-source-links");
+  if (links) links.innerHTML = "";
   setSelected(null);
-  // Clear the "selected card" highlight on the graph.
-  document
-    .querySelectorAll<HTMLElement>(".node-link.selected-card")
-    .forEach((el) => el.classList.remove("selected-card"));
+  highlightSelected(null);
   setPanelOpen(false);
 }
 
 function render(slug: string) {
-  // Each step is wrapped so one bad sub-render (e.g. malformed
-  // benchmark, missing modality) doesn't leave the whole panel
-  // stuck on the empty-state placeholder.
   let raw: NodeMeta | undefined;
   let metaBySlug: Record<string, NodeMeta> | undefined;
   try {
     raw = graphData().nodes?.[slug] as NodeMeta | undefined;
     metaBySlug = graphData().nodes as Record<string, NodeMeta> | undefined;
   } catch {
-    return; // graph state not initialized; nothing we can render
+    return;
   }
-  if (!raw || !metaBySlug) return; // unknown slug — silently no-op
+  if (!raw || !metaBySlug) return;
 
-  // Headline fields first so the panel always shows SOMETHING even if
-  // a later sub-render throws.
-  setText("inspector-org", raw.org);
   setText("inspector-title", normalizeTitleCasing(raw.title));
-
-  const desc = raw.public_view?.plain_english?.trim() ?? "";
+  setText(
+    "inspector-subtitle",
+    `${raw.org} · Released ${fmtDate(raw.date, true)}`,
+  );
   setText(
     "inspector-desc",
-    desc || "No summary yet. Open the full page for details.",
+    raw.public_view?.plain_english?.trim() || "No summary yet. Open the full page for details.",
   );
 
-  setPanelOpen(true);
-  setHidden("inspector-footer", false);
-  wireInspectorButtons(slug);
+  const badge = document.getElementById("inspector-badge");
+  const badgeText = fmtReleaseType(raw.model_spec?.release_type);
+  if (badge) {
+    badge.textContent = badgeText;
+    badge.hidden = !badgeText;
+  }
 
-  // Defensive sub-renders — one bad sub-render shouldn't blank the
-  // headline. Errors are swallowed silently in production; uncomment
-  // the console.error to surface them for debugging.
-  const safeStep = (_name: string, fn: () => void) => {
-    try { fn(); } catch { /* console.error(`[inspector] ${_name} threw:`, err) */ }
-  };
-  safeStep("renderMeta", () => renderMeta(raw!));
-  safeStep("renderBenchmarks", () => renderBenchmarks(raw!));
-  safeStep("renderLineage", () => renderLineage(raw!, metaBySlug!));
-  safeStep("highlightSelected", () => highlightSelected(slug));
+  setPanelOpen(true);
+  renderFacts(raw);
+  renderActions(raw);
+  renderRelated(raw, metaBySlug);
+  renderInsights(raw);
+  renderSources(raw);
+  highlightSelected(slug);
 }
 
 function handleSelect(slug: string) {
@@ -414,83 +385,51 @@ function handleSelect(slug: string) {
 }
 
 export function attachInspectorHandlers() {
-  // Close button → reset the panel back to its empty placeholder
-  // state and drop the cached selection so reload won't restore it.
   const close = document.querySelector<HTMLButtonElement>(".inspector-close");
   close?.addEventListener("click", () => resetPanel());
-  // Also wire pointerup as a defensive fallback in case Chrome
-  // suppresses the synthesized click on this button (same pattern
-  // as the node-card selection further down).
   close?.addEventListener("pointerup", (e) => {
     e.preventDefault();
     resetPanel();
   });
 
-  // Node click → select (but keep ctrl/cmd-click for navigation).
-  // Note: Chrome reliably suppresses the synthesized `click` event on
-  // these SVG cards because the hover handler re-appends the hovered
-  // card via appendChild() during mouseenter (to bring its pin-button
-  // overhang on top of neighbors). That DOM mutation breaks the
-  // mousedown→mouseup→click sequence on at least some pointer/mouse
-  // combos. The pointerdown/pointerup pair below is the actual
-  // selection path; this `click` listener only handles the rare
-  // device combo where click DOES fire (and harmlessly no-ops the
-  // duplicate select since render() is idempotent).
-  document.addEventListener("click", (e) => {
-    const t = e.target as HTMLElement | null;
-    if (t?.closest?.(".pin-btn")) return;
-    const link = t?.closest?.(".node-link") as HTMLElement | null;
-    if (!link) return;
-    const slug = link.getAttribute("data-slug");
-    if (!slug) return;
-    const me = e as MouseEvent;
-    const allowNav = me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0;
-    if (!allowNav) e.preventDefault();
-    handleSelect(slug);
+  document.querySelectorAll<HTMLElement>(".node-link[data-slug]").forEach((link) => {
+    let downX = 0;
+    let downY = 0;
+
+    link.addEventListener("click", (e) => {
+      const slug = link.getAttribute("data-slug");
+      if (!slug) return;
+      const me = e as MouseEvent;
+      const allowNav =
+        me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0;
+      if (allowNav) return;
+      e.preventDefault();
+      handleSelect(slug);
+    });
+
+    link.addEventListener("pointerdown", (e) => {
+      downX = e.clientX;
+      downY = e.clientY;
+    });
+
+    link.addEventListener("pointerup", (e) => {
+      const slug = link.getAttribute("data-slug");
+      if (!slug) return;
+      const allowNav = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+      if (allowNav) return;
+      const dx = Math.abs(e.clientX - downX);
+      const dy = Math.abs(e.clientY - downY);
+      if (dx > 4 || dy > 4) return;
+      e.preventDefault();
+      handleSelect(slug);
+    });
   });
 
-  // Pointerup-based fallback: the actual selection path on Chrome.
-  // Chrome suppresses the synthesized `click` event because the
-  // hover handler re-appends the hovered card via appendChild() on
-  // mouseenter (to bring its pin-button overhang on top of
-  // neighbors). That DOM mutation breaks the mousedown→mouseup
-  // →click sequence. We track the slug at pointerdown and act on
-  // pointerup if the pointer didn't drift more than a few pixels
-  // (= still a "click", not a drag).
-  let downSlug: string | null = null;
-  let downX = 0;
-  let downY = 0;
-  document.addEventListener("pointerdown", (e) => {
-    const link = (e.target as Element | null)?.closest?.(".node-link");
-    downSlug = link ? link.getAttribute("data-slug") : null;
-    downX = (e as PointerEvent).clientX;
-    downY = (e as PointerEvent).clientY;
-  });
-  document.addEventListener("pointerup", (e) => {
-    if (!downSlug) return;
-    const dx = Math.abs((e as PointerEvent).clientX - downX);
-    const dy = Math.abs((e as PointerEvent).clientY - downY);
-    const me = e as PointerEvent;
-    const allowNav = me.metaKey || me.ctrlKey || me.shiftKey || me.altKey;
-    if (allowNav) return; // user wants to navigate — let the link's default fire
-    if (dx > 4 || dy > 4) { downSlug = null; return; } // it was a drag, not a click
-    const link = (e.target as Element | null)?.closest?.(".node-link");
-    const upSlug = link ? link.getAttribute("data-slug") : null;
-    // Either the same card or fall back to the press-down slug
-    // (DOM mutations between down and up can shift the target).
-    const slug = upSlug ?? downSlug;
-    e.preventDefault();
-    handleSelect(slug);
-    downSlug = null;
-  });
-
-  // Other modules (search, etc.) can request selection.
   document.addEventListener(SELECT_EVT, (e) => {
     const slug = (e as CustomEvent).detail?.slug as string | undefined;
     if (slug) handleSelect(slug);
   });
 
-  // Restore last selection (useful after hot reload).
-  const s = getSelected();
-  if (s) render(s);
+  const selected = getSelected();
+  if (selected) render(selected);
 }

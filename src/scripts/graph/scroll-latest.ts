@@ -38,9 +38,7 @@ function applyScroll() {
 
   // Compact view: last tile in the last year row.
   if (fig.classList.contains("compact-mode")) {
-    const tiles = fig.querySelectorAll<HTMLElement>(
-      ".compact-list .compact-tile:not(.card-filtered)",
-    );
+    const tiles = fig.querySelectorAll<HTMLElement>(".compact-list .compact-tile");
     const last = tiles[tiles.length - 1];
     if (last) {
       last.scrollIntoView({ block: "end", inline: "nearest" });

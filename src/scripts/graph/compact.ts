@@ -9,8 +9,10 @@
 // "see what's selected" flip, not a sticky preference.
 
 import { scrollToMostRecent } from "./scroll-latest";
+import { getSelected } from "./state";
 
 const ACTIVE_CLASS = "compact-mode";
+const SELECT_EVT = "ai-tree:select";
 
 export function attachCompactHandler() {
   const btn = document.getElementById("compact-toggle");
@@ -28,5 +30,11 @@ export function attachCompactHandler() {
     // views. The compact list's own scroll container needs its own
     // scrollTop; scrollToMostRecent() handles the branch.
     scrollToMostRecent();
+    const selected = getSelected();
+    if (selected) {
+      document.dispatchEvent(
+        new CustomEvent(SELECT_EVT, { detail: { slug: selected } }),
+      );
+    }
   });
 }
