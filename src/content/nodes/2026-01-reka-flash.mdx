@@ -25,14 +25,6 @@ model_spec:
       score: '12.00'
       source_url: 'https://artificialanalysis.ai/models/reka-flash'
       vs_baseline: 'Rank #381 of 496'
-    - name: Speed · Output tok/s
-      score: '84'
-      source_url: 'https://artificialanalysis.ai/models/reka-flash'
-      vs_baseline: 'Rank #158 of 496'
-    - name: Price ($/M tokens)
-      score: $0.20 in / $0.80 out
-      source_url: 'https://artificialanalysis.ai/models/reka-flash'
-      vs_baseline: 'Rank #274 of 496'
     - name: Coding · SciCode
       score: 26.7%
       source_url: 'https://artificialanalysis.ai/models/reka-flash'
@@ -53,6 +45,12 @@ model_spec:
       score: 5.1%
       source_url: 'https://artificialanalysis.ai/models/reka-flash'
       vs_baseline: 'Rank #288 of 496'
+    - name: Speed · Output tok/s
+      score: '78'
+      source_url: 'https://artificialanalysis.ai/models/reka-flash'
+    - name: Price ($/M tokens)
+      score: $0.20 in / $0.80 out
+      source_url: 'https://artificialanalysis.ai/models/reka-flash'
   aa_url: 'https://artificialanalysis.ai/models/reka-flash'
   context_window: 128000
   modalities_in:
@@ -72,13 +70,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Reka AI — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Reka AI — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Reka AI's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Reka AI's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

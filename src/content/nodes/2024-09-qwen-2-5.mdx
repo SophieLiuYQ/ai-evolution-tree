@@ -78,13 +78,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
       vs_baseline: 'Rank #62 of 496'
     - name: Speed · Output tok/s
-      score: '129'
+      score: '47'
       source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
-      vs_baseline: 'Rank #101 of 496'
     - name: Price ($/M tokens)
-      score: $1.25 in / $10.00 out
+      score: $0.36 in / $0.40 out
       source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
-      vs_baseline: 'Rank #417 of 496'
   homepage: 'https://qwenlm.github.io/blog/qwen2.5/'
   github: 'https://github.com/QwenLM/Qwen2.5'
   availability:
@@ -124,28 +122,46 @@ model_spec:
     - text
   reviews:
     feels_like:
-      - "First open-source model to top OpenCompass leaderboard — beat Llama 3.1 405B with 1/5 the parameters"
-      - "72B-Instruct: 74.2 on coding, 77 on math — outscored Claude 3.5 Sonnet (72.1) and GPT-4o (70.6) at release"
-      - "MMLU 85+, HumanEval 85+, MATH 80+ — frontier-tier across the board for an open-weights model"
-      - "100+ models across the family (sizes from 0.5B to 72B, plus VL/Audio/Coder variants) — full ecosystem"
-      - "Pre-training jumped from 7T to 18T tokens with heavy emphasis on knowledge / coding / math"
-      - "Apache-2.0 license + competitive quality made it the de-facto open-source default in late 2024"
+      - >-
+        First open-source model to top OpenCompass leaderboard — beat Llama 3.1
+        405B with 1/5 the parameters
+      - >-
+        72B-Instruct: 74.2 on coding, 77 on math — outscored Claude 3.5 Sonnet
+        (72.1) and GPT-4o (70.6) at release
+      - >-
+        MMLU 85+, HumanEval 85+, MATH 80+ — frontier-tier across the board for
+        an open-weights model
+      - >-
+        100+ models across the family (sizes from 0.5B to 72B, plus
+        VL/Audio/Coder variants) — full ecosystem
+      - >-
+        Pre-training jumped from 7T to 18T tokens with heavy emphasis on
+        knowledge / coding / math
+      - >-
+        Apache-2.0 license + competitive quality made it the de-facto
+        open-source default in late 2024
     best_for:
-      - "Self-hosted production where Llama 3.1 405B is too big to serve"
-      - "Multilingual deployments (29 languages with strong coverage)"
-      - "Fine-tuning on private code or technical corpora"
-      - "Distillation into smaller production models (the 7B/14B variants are excellent students)"
+      - Self-hosted production where Llama 3.1 405B is too big to serve
+      - Multilingual deployments (29 languages with strong coverage)
+      - Fine-tuning on private code or technical corpora
+      - >-
+        Distillation into smaller production models (the 7B/14B variants are
+        excellent students)
     not_ideal_for:
-      - "Frontier reasoning by mid-2025 — Qwen 3 / DeepSeek R1 / Claude 4 series have moved past it"
-      - "Vision tasks (use Qwen 2.5-VL) or audio (use Qwen 2.5-Audio)"
-      - "Workflows where Western-platform compliance is contractual"
+      - >-
+        Frontier reasoning by mid-2025 — Qwen 3 / DeepSeek R1 / Claude 4 series
+        have moved past it
+      - Vision tasks (use Qwen 2.5-VL) or audio (use Qwen 2.5-Audio)
+      - Workflows where Western-platform compliance is contractual
     sources:
-      - name: "Alibaba Cloud — Qwen 2.5: A Party of Foundation Models"
-        url: "https://www.alibabacloud.com/blog/qwen2-5-a-party-of-foundation-models_601782"
-      - name: "Qwen2.5 Technical Report (arXiv)"
-        url: "https://arxiv.org/abs/2412.15115"
-      - name: "Alibaba Cloud — Qwen 2.5 tops OpenCompass"
-        url: "https://www.alibabacloud.com/blog/alibaba-clouds-qwen-2-5-tops-opencompass-llm-leaderboard-as-the-first-open-source-champion_601701"
+      - name: 'Alibaba Cloud — Qwen 2.5: A Party of Foundation Models'
+        url: >-
+          https://www.alibabacloud.com/blog/qwen2-5-a-party-of-foundation-models_601782
+      - name: Qwen2.5 Technical Report (arXiv)
+        url: 'https://arxiv.org/abs/2412.15115'
+      - name: Alibaba Cloud — Qwen 2.5 tops OpenCompass
+        url: >-
+          https://www.alibabacloud.com/blog/alibaba-clouds-qwen-2-5-tops-opencompass-llm-leaderboard-as-the-first-open-source-champion_601701
 public_view:
   plain_english: |
     Alibaba's Qwen 2.5 generation, released September 2024, was the

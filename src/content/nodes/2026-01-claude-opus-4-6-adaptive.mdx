@@ -47,13 +47,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
       vs_baseline: 'Rank #3 of 96 · Reasoning'
     - name: Speed · Output tok/s
-      score: '54'
+      score: '52'
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
-      vs_baseline: 'Rank #50 of 96 · Reasoning'
     - name: Price ($/M tokens)
-      score: $5.00 in / $25.00 out
+      score: $6.25 in / $25.00 out
       source_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
-      vs_baseline: 'Rank #95 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/claude-opus-4-6-adaptive'
   context_window: 1000000
   modalities_in:
@@ -80,24 +78,31 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Adds 1M-token context to the Opus 4.5 baseline."
-      - "Best-in-class on real-world coding — 80.9% on SWE-bench Verified, ahead of Gemini 3 Pro and GPT-5.1"
-      - "Reasoning index of 70 on Artificial Analysis — biggest single-jump from any prior Anthropic model"
-      - "Testers say it 'just gets it' on multi-system bugs without hand-holding"
+      - Adds 1M-token context to the Opus 4.5 baseline.
+      - >-
+        Best-in-class on real-world coding — 80.9% on SWE-bench Verified, ahead
+        of Gemini 3 Pro and GPT-5.1
+      - >-
+        Reasoning index of 70 on Artificial Analysis — biggest single-jump from
+        any prior Anthropic model
+      - Testers say it 'just gets it' on multi-system bugs without hand-holding
     best_for:
-      - "Software engineering on large, real codebases (SWE-bench leader)"
-      - "Multi-step agentic workflows with tool use (τ2-bench, MCP Atlas)"
-      - "Computer-use / OSWorld automation tasks where Opus 4.5 leads by a wide margin"
+      - 'Software engineering on large, real codebases (SWE-bench leader)'
+      - 'Multi-step agentic workflows with tool use (τ2-bench, MCP Atlas)'
+      - >-
+        Computer-use / OSWorld automation tasks where Opus 4.5 leads by a wide
+        margin
     not_ideal_for:
-      - "High-volume, latency-sensitive workloads — use Sonnet 4.5 or Haiku 4.5"
-      - "Simple chat or casual Q&A — overkill"
+      - 'High-volume, latency-sensitive workloads — use Sonnet 4.5 or Haiku 4.5'
+      - Simple chat or casual Q&A — overkill
     sources:
-      - name: "Anthropic — Claude Opus 4.5 announcement"
-        url: "https://www.anthropic.com/news/claude-opus-4-5"
-      - name: "Artificial Analysis — Opus 4.5 benchmarks"
-        url: "https://artificialanalysis.ai/articles/claude-opus-4-5-benchmarks-and-analysis"
-      - name: "Vellum — Claude Opus 4.5 benchmarks"
-        url: "https://www.vellum.ai/blog/claude-opus-4-5-benchmarks"
+      - name: Anthropic — Claude Opus 4.5 announcement
+        url: 'https://www.anthropic.com/news/claude-opus-4-5'
+      - name: Artificial Analysis — Opus 4.5 benchmarks
+        url: >-
+          https://artificialanalysis.ai/articles/claude-opus-4-5-benchmarks-and-analysis
+      - name: Vellum — Claude Opus 4.5 benchmarks
+        url: 'https://www.vellum.ai/blog/claude-opus-4-5-benchmarks'
   availability:
     - api
 public_view:

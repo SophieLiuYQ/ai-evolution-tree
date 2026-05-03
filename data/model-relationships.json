@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated_at": "2026-05-03T14:30:44.947Z",
+    "generated_at": "2026-05-03T14:35:01.433Z",
     "source_models": 232,
     "sources_with_pairs": 206,
     "competes_per_source_cap": 6,
@@ -341,15 +341,6 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.766,
-          "confidence": 0.388,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "glm-5-1",
           "title": "GLM-5.1 (Non-reasoning)",
           "org": "Academic / Independent",
@@ -357,6 +348,15 @@
           "overlap": 0.777,
           "confidence": 0.35,
           "release_gap_mo": 3
+        },
+        {
+          "slug": "glm-4",
+          "title": "GLM-4.7 (Reasoning)",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.737,
+          "confidence": 0.344,
+          "release_gap_mo": 0
         }
       ],
       "same_capability": [
@@ -431,16 +431,6 @@
           "confidence": 0.508
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.766,
-          "confidence": 0.508
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -459,6 +449,16 @@
           ],
           "overlap": 0.739,
           "confidence": 0.494
+        },
+        {
+          "slug": "glm-4",
+          "title": "GLM-4.7 (Reasoning)",
+          "org": "Academic / Independent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.737,
+          "confidence": 0.493
         }
       ]
     },
@@ -542,15 +542,6 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.766,
-          "confidence": 0.388,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "glm-5-1",
           "title": "GLM-5.1 (Non-reasoning)",
           "org": "Academic / Independent",
@@ -576,6 +567,15 @@
           "overlap": 0.767,
           "confidence": 0.336,
           "release_gap_mo": 3
+        },
+        {
+          "slug": "hy3",
+          "title": "Hy3-preview",
+          "org": "Tencent",
+          "domain": "reasoning",
+          "overlap": 0.745,
+          "confidence": 0.299,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -630,16 +630,6 @@
           "confidence": 0.508
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.766,
-          "confidence": 0.508
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -678,6 +668,16 @@
           ],
           "overlap": 0.739,
           "confidence": 0.494
+        },
+        {
+          "slug": "glm-4",
+          "title": "GLM-4.7 (Reasoning)",
+          "org": "Academic / Independent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.737,
+          "confidence": 0.493
         }
       ]
     },
@@ -1555,12 +1555,12 @@
           "release_gap_mo": 1
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
+          "slug": "glm-4",
+          "title": "GLM-4.7 (Reasoning)",
+          "org": "Academic / Independent",
           "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.947,
+          "overlap": 0.992,
+          "confidence": 0.932,
           "release_gap_mo": 3
         }
       ],
@@ -1573,16 +1573,6 @@
             "reasoning"
           ],
           "overlap": 1,
-          "confidence": 0.625
-        },
-        {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.999,
           "confidence": 0.625
         },
         {
@@ -1664,6 +1654,16 @@
           ],
           "overlap": 0.992,
           "confidence": 0.621
+        },
+        {
+          "slug": "kimi-k2",
+          "title": "Kimi K2",
+          "org": "Moonshot AI",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.992,
+          "confidence": 0.621
         }
       ]
     },
@@ -1697,15 +1697,6 @@
           "release_gap_mo": 1
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.947,
-          "release_gap_mo": 3
-        },
-        {
           "slug": "glm-4",
           "title": "GLM-4.7 (Reasoning)",
           "org": "Academic / Independent",
@@ -1722,6 +1713,15 @@
           "overlap": 0.997,
           "confidence": 0.686,
           "release_gap_mo": 1
+        },
+        {
+          "slug": "kimi-k2-thinking",
+          "title": "Kimi K2 Thinking",
+          "org": "Moonshot AI",
+          "domain": "reasoning",
+          "overlap": 0.994,
+          "confidence": 0.608,
+          "release_gap_mo": 5
         }
       ],
       "same_capability": [
@@ -1729,16 +1729,6 @@
           "slug": "glm-5-1",
           "title": "GLM-5.1 (Non-reasoning)",
           "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 1,
-          "confidence": 0.625
-        },
-        {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
           "shared": [
             "reasoning"
           ],
@@ -1818,6 +1808,16 @@
         {
           "slug": "kimi-k2",
           "title": "Kimi K2",
+          "org": "Moonshot AI",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.994,
+          "confidence": 0.622
+        },
+        {
+          "slug": "kimi-k2-thinking",
+          "title": "Kimi K2 Thinking",
           "org": "Moonshot AI",
           "shared": [
             "reasoning"
@@ -1934,9 +1934,9 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "grok-2-1212",
-          "title": "Grok 2 (Dec '24)",
-          "org": "xAI",
+          "slug": "command-r-plus-04-2024",
+          "title": "Command-R+ (Apr '24)",
+          "org": "Cohere",
           "domain": "reasoning",
           "overlap": 0.996,
           "confidence": 0.995,
@@ -2624,15 +2624,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "command-r-plus-04-2024",
-          "title": "Command-R+ (Apr '24)",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.982,
-          "confidence": 0.977,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "nova-premier",
           "title": "Nova Premier",
           "org": "Amazon",
@@ -2640,6 +2631,15 @@
           "overlap": 0.975,
           "confidence": 0.966,
           "release_gap_mo": 0
+        },
+        {
+          "slug": "sarvam",
+          "title": "Sarvam 105B (high)",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.985,
+          "confidence": 0.944,
+          "release_gap_mo": 2
         }
       ],
       "same_capability": []
@@ -2683,18 +2683,18 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "doubao-seed-code",
-          "title": "Doubao Seed Code",
-          "org": "ByteDance",
+          "slug": "deepseek-v3-1",
+          "title": "DeepSeek V3.1 (Non-reasoning)",
+          "org": "DeepSeek",
           "domain": "reasoning",
           "overlap": 0.996,
-          "confidence": 0.932,
+          "confidence": 0.933,
           "release_gap_mo": 4
         },
         {
-          "slug": "gpt-oss-120b",
-          "title": "gpt-oss-120B (high)",
-          "org": "OpenAI",
+          "slug": "doubao-seed-code",
+          "title": "Doubao Seed Code",
+          "org": "ByteDance",
           "domain": "reasoning",
           "overlap": 0.996,
           "confidence": 0.932,
@@ -2791,16 +2791,6 @@
           ],
           "overlap": 0.745,
           "confidence": 0.497
-        },
-        {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.647,
-          "confidence": 0.448
         }
       ]
     },
@@ -2825,33 +2815,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "qwen-3-5",
-          "title": "Qwen 3.5",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.997,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "qwen-3-6",
-          "title": "Qwen 3.6",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.989,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "kat-coder-pro-v2",
-          "title": "KAT Coder Pro V2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.987,
-          "confidence": 0.967,
-          "release_gap_mo": 1
-        },
-        {
           "slug": "mercury",
           "title": "Mercury 2",
           "org": "Academic / Independent",
@@ -2859,6 +2822,33 @@
           "overlap": 0.998,
           "confidence": 0.962,
           "release_gap_mo": 2
+        },
+        {
+          "slug": "doubao-seed-code",
+          "title": "Doubao Seed Code",
+          "org": "ByteDance",
+          "domain": "reasoning",
+          "overlap": 0.997,
+          "confidence": 0.933,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "gpt-oss-120b",
+          "title": "gpt-oss-120B (high)",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.932,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "ernie-5-0-thinking-preview",
+          "title": "ERNIE 5.0 Thinking Preview",
+          "org": "Baidu",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.632,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -2883,16 +2873,6 @@
           "confidence": 0.625
         },
         {
-          "slug": "qwen-3-5",
-          "title": "Qwen 3.5",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
           "slug": "deepseek-v4",
           "title": "DeepSeek v4",
           "org": "DeepSeek",
@@ -2901,36 +2881,6 @@
           ],
           "overlap": 0.998,
           "confidence": 0.624
-        },
-        {
-          "slug": "kimi-k2",
-          "title": "Kimi K2",
-          "org": "Moonshot AI",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.623
-        },
-        {
-          "slug": "kimi-k2-thinking",
-          "title": "Kimi K2 Thinking",
-          "org": "Moonshot AI",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.623
-        },
-        {
-          "slug": "qwen-3-6",
-          "title": "Qwen 3.6",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.991,
-          "confidence": 0.621
         },
         {
           "slug": "kat-coder-pro-v2",
@@ -2951,16 +2901,6 @@
           ],
           "overlap": 0.954,
           "confidence": 0.602
-        },
-        {
-          "slug": "mimo-v2",
-          "title": "Mimo v2",
-          "org": "Xiaomi",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.727,
-          "confidence": 0.489
         }
       ]
     },
@@ -3195,6 +3135,15 @@
           "release_gap_mo": 0
         },
         {
+          "slug": "deepseek-v3-1",
+          "title": "DeepSeek V3.1 (Non-reasoning)",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.995,
+          "confidence": 0.993,
+          "release_gap_mo": 0
+        },
+        {
           "slug": "mercury",
           "title": "Mercury 2",
           "org": "Academic / Independent",
@@ -3229,15 +3178,6 @@
           "overlap": 0.994,
           "confidence": 0.929,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "nemotron-cascade-2-30b-a3b",
-          "title": "Nemotron Cascade 2 30B A3B",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.7,
-          "release_gap_mo": 0
         }
       ],
       "same_capability": []
@@ -3681,15 +3621,6 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "gemini-2-5",
-          "title": "Gemini 2.5",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.968,
-          "confidence": 0.957,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "granite-4-0",
           "title": "Granite 4.0",
           "org": "IBM",
@@ -3697,6 +3628,15 @@
           "overlap": 0.958,
           "confidence": 0.944,
           "release_gap_mo": 0
+        },
+        {
+          "slug": "deepseek-r1-distill-llama",
+          "title": "DeepSeek r1 distill llama",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.998,
+          "confidence": 0.935,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": []
@@ -3731,15 +3671,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "gemini-2-5",
-          "title": "Gemini 2.5",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.977,
-          "confidence": 0.97,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "granite-4-0",
           "title": "Granite 4.0",
           "org": "IBM",
@@ -3755,6 +3686,15 @@
           "domain": "reasoning",
           "overlap": 0.994,
           "confidence": 0.93,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "gpt-35-turbo",
+          "title": "GPT-3.5 Turbo",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.991,
+          "confidence": 0.926,
           "release_gap_mo": 4
         }
       ],
@@ -3849,16 +3789,6 @@
           "confidence": 0.624
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
           "slug": "qwen-3-5",
           "title": "Qwen 3.5",
           "org": "Alibaba",
@@ -3917,6 +3847,16 @@
           ],
           "overlap": 0.992,
           "confidence": 0.621
+        },
+        {
+          "slug": "gpt-5-3-instant",
+          "title": "GPT-5.3 Instant",
+          "org": "OpenAI",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.975,
+          "confidence": 0.613
         }
       ]
     },
@@ -4136,15 +4076,6 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "gemini-2-5",
-          "title": "Gemini 2.5",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.954,
-          "confidence": 0.939,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "sonar-pro",
           "title": "Sonar Pro",
           "org": "Perplexity",
@@ -4152,21 +4083,80 @@
           "overlap": 1,
           "confidence": 0.938,
           "release_gap_mo": 4
+        },
+        {
+          "slug": "deepseek-coder-v2-lite",
+          "title": "DeepSeek Coder V2 Lite Instruct",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.999,
+          "confidence": 0.937,
+          "release_gap_mo": 4
+        }
+      ],
+      "same_capability": []
+    },
+    "deepseek-v3-1": {
+      "competes_with": [
+        {
+          "slug": "doubao-seed-code",
+          "title": "Doubao Seed Code",
+          "org": "ByteDance",
+          "domain": "reasoning",
+          "overlap": 0.998,
+          "confidence": 0.997,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "gpt-oss-120b",
+          "title": "gpt-oss-120B (high)",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.995,
+          "confidence": 0.993,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "glm-4",
+          "title": "GLM-4.7 (Reasoning)",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.997,
+          "confidence": 0.99,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "mercury",
+          "title": "Mercury 2",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.998,
+          "confidence": 0.971,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "o4-mini",
+          "title": "o4-mini (high)",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.968,
+          "confidence": 0.958,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "nemotron-super-v3",
+          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
+          "org": "Nvidia",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.957,
+          "release_gap_mo": 2
         }
       ],
       "same_capability": []
     },
     "qwen-3-5": {
       "competes_with": [
-        {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.997,
-          "release_gap_mo": 0
-        },
         {
           "slug": "hy3",
           "title": "Hy3-preview",
@@ -4211,6 +4201,15 @@
           "overlap": 0.995,
           "confidence": 0.977,
           "release_gap_mo": 1
+        },
+        {
+          "slug": "glm-4",
+          "title": "GLM-4.7 (Reasoning)",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.994,
+          "confidence": 0.925,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -4245,16 +4244,6 @@
           "confidence": 0.625
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.999,
-          "confidence": 0.624
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -4285,16 +4274,6 @@
           "confidence": 0.624
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
           "slug": "nemotron-super-v3",
           "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
           "org": "Nvidia",
@@ -4313,67 +4292,28 @@
           ],
           "overlap": 0.998,
           "confidence": 0.624
+        },
+        {
+          "slug": "claude-4-5",
+          "title": "Claude 4.5",
+          "org": "Anthropic",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.998,
+          "confidence": 0.624
+        },
+        {
+          "slug": "kimi-k2",
+          "title": "Kimi K2",
+          "org": "Moonshot AI",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.997,
+          "confidence": 0.624
         }
       ]
-    },
-    "deepseek-v3-1": {
-      "competes_with": [
-        {
-          "slug": "doubao-seed-code",
-          "title": "Doubao Seed Code",
-          "org": "ByteDance",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.997,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7 (Reasoning)",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.99,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "o4-mini",
-          "title": "o4-mini (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.968,
-          "confidence": 0.958,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.938,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.937,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.935,
-          "release_gap_mo": 4
-        }
-      ],
-      "same_capability": []
     },
     "flux-2": {
       "competes_with": [
@@ -4977,15 +4917,6 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "domain": "multimodal",
-          "overlap": 0.996,
-          "confidence": 0.846,
-          "release_gap_mo": 9
-        },
-        {
           "slug": "genie-3",
           "title": "Genie 3",
           "org": "Google DeepMind",
@@ -4995,15 +4926,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.874,
-          "confidence": 0.77,
-          "release_gap_mo": 4
-        },
-        {
           "slug": "qwen-3-coder",
           "title": "Qwen3-Coder",
           "org": "Alibaba",
@@ -5011,6 +4933,15 @@
           "overlap": 0.727,
           "confidence": 0.633,
           "release_gap_mo": 0
+        },
+        {
+          "slug": "devin",
+          "title": "Devin",
+          "org": "Cognition",
+          "domain": "multimodal",
+          "overlap": 0.727,
+          "confidence": 0.361,
+          "release_gap_mo": 17
         }
       ],
       "same_capability": [
@@ -5027,30 +4958,6 @@
           "confidence": 0.874
         },
         {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision",
-            "reasoning"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.873
-        },
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "vision",
-            "reasoning"
-          ],
-          "overlap": 0.976,
-          "confidence": 0.863
-        },
-        {
           "slug": "claude-haiku-4-5",
           "title": "Claude Haiku 4.5",
           "org": "Anthropic",
@@ -5063,18 +4970,6 @@
           "confidence": 0.852
         },
         {
-          "slug": "gpt-5-2",
-          "title": "GPT-5.2",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision",
-            "reasoning"
-          ],
-          "overlap": 0.92,
-          "confidence": 0.835
-        },
-        {
           "slug": "gpt-5-1",
           "title": "GPT-5.1",
           "org": "OpenAI",
@@ -5085,29 +4980,6 @@
           ],
           "overlap": 0.919,
           "confidence": 0.835
-        },
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision",
-            "reasoning"
-          ],
-          "overlap": 0.874,
-          "confidence": 0.812
-        },
-        {
-          "slug": "claude-3-7-sonnet",
-          "title": "Claude 3.7 Sonnet",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.953,
-          "confidence": 0.727
         },
         {
           "slug": "qwen-3-vl",
@@ -5130,6 +5002,59 @@
           ],
           "overlap": 0.853,
           "confidence": 0.677
+        },
+        {
+          "slug": "genie-3",
+          "title": "Genie 3",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.853,
+          "confidence": 0.677
+        },
+        {
+          "slug": "gemini-2-5-pro",
+          "title": "Gemini 2.5 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.852,
+          "confidence": 0.676
+        },
+        {
+          "slug": "doubao-1-5",
+          "title": "Doubao 1.5 Pro",
+          "org": "ByteDance",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.681,
+          "confidence": 0.59
+        },
+        {
+          "slug": "devin",
+          "title": "Devin",
+          "org": "Cognition",
+          "shared": [
+            "multimodal"
+          ],
+          "overlap": 0.727,
+          "confidence": 0.489
+        },
+        {
+          "slug": "qwen-3-coder",
+          "title": "Qwen3-Coder",
+          "org": "Alibaba",
+          "shared": [
+            "multimodal"
+          ],
+          "overlap": 0.727,
+          "confidence": 0.489
         }
       ]
     },
@@ -5431,6 +5356,65 @@
       ],
       "same_capability": []
     },
+    "command-r-plus-04-2024": {
+      "competes_with": [
+        {
+          "slug": "gpt-35-turbo",
+          "title": "GPT-3.5 Turbo",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.995,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "qwen-2",
+          "title": "Qwen 2",
+          "org": "Alibaba",
+          "domain": "reasoning",
+          "overlap": 0.988,
+          "confidence": 0.984,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "deepseek-r1-distill-llama",
+          "title": "DeepSeek r1 distill llama",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.987,
+          "confidence": 0.983,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "grok-2-1212",
+          "title": "Grok 2 (Dec '24)",
+          "org": "xAI",
+          "domain": "reasoning",
+          "overlap": 0.984,
+          "confidence": 0.979,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "deepseek-r1-distill-qwen",
+          "title": "DeepSeek r1 distill qwen",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.978,
+          "confidence": 0.971,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "nova-pro",
+          "title": "Nova Pro",
+          "org": "Amazon",
+          "domain": "reasoning",
+          "overlap": 0.977,
+          "confidence": 0.969,
+          "release_gap_mo": 0
+        }
+      ],
+      "same_capability": []
+    },
     "minimax-m2": {
       "competes_with": [
         {
@@ -5450,15 +5434,6 @@
           "overlap": 0.999,
           "confidence": 0.94,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.658,
-          "release_gap_mo": 2
         },
         {
           "slug": "glm-4",
@@ -5485,6 +5460,15 @@
           "domain": "reasoning",
           "overlap": 0.999,
           "confidence": 0.6,
+          "release_gap_mo": 6
+        },
+        {
+          "slug": "hy3",
+          "title": "Hy3-preview",
+          "org": "Tencent",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.597,
           "release_gap_mo": 6
         }
       ],
@@ -5615,15 +5599,6 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.66,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "kat-coder-pro-v2",
           "title": "KAT Coder Pro V2",
           "org": "Academic / Independent",
@@ -5649,6 +5624,15 @@
           "overlap": 0.992,
           "confidence": 0.606,
           "release_gap_mo": 5
+        },
+        {
+          "slug": "qwen-3-5",
+          "title": "Qwen 3.5",
+          "org": "Alibaba",
+          "domain": "reasoning",
+          "overlap": 0.997,
+          "confidence": 0.604,
+          "release_gap_mo": 6
         }
       ],
       "same_capability": [
@@ -5705,16 +5689,6 @@
           "confidence": 0.623
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.623
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -5753,6 +5727,16 @@
           ],
           "overlap": 0.993,
           "confidence": 0.622
+        },
+        {
+          "slug": "glm-5-1",
+          "title": "GLM-5.1 (Non-reasoning)",
+          "org": "Academic / Independent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.992,
+          "confidence": 0.621
         }
       ]
     },
@@ -6008,15 +5992,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.989,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "o4-mini",
           "title": "o4-mini (high)",
           "org": "OpenAI",
@@ -6051,6 +6026,15 @@
           "overlap": 0.992,
           "confidence": 0.932,
           "release_gap_mo": 3
+        },
+        {
+          "slug": "hy3",
+          "title": "Hy3-preview",
+          "org": "Tencent",
+          "domain": "reasoning",
+          "overlap": 0.999,
+          "confidence": 0.931,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -6088,16 +6072,6 @@
           "slug": "qwen-3-6",
           "title": "Qwen 3.6",
           "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.623
-        },
-        {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
           "shared": [
             "reasoning"
           ],
@@ -6147,6 +6121,16 @@
         {
           "slug": "kimi-k2",
           "title": "Kimi K2",
+          "org": "Moonshot AI",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.99,
+          "confidence": 0.62
+        },
+        {
+          "slug": "kimi-k2-thinking",
+          "title": "Kimi K2 Thinking",
           "org": "Moonshot AI",
           "shared": [
             "reasoning"
@@ -6493,166 +6477,6 @@
           ],
           "overlap": 0.902,
           "confidence": 0.701
-        }
-      ]
-    },
-    "deepseek-v4": {
-      "competes_with": [
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7 (Reasoning)",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.989,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "glm-5",
-          "title": "GLM-5.1 (Reasoning)",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.947,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "glm-5-1",
-          "title": "GLM-5.1 (Non-reasoning)",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.947,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "kat-coder-pro-v2",
-          "title": "KAT Coder Pro V2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.989,
-          "confidence": 0.939,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "qwen-3-5",
-          "title": "Qwen 3.5",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.936,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "kimi-k2-thinking",
-          "title": "Kimi K2 Thinking",
-          "org": "Moonshot AI",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.66,
-          "release_gap_mo": 2
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "glm-5",
-          "title": "GLM-5.1 (Reasoning)",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 1,
-          "confidence": 0.625
-        },
-        {
-          "slug": "glm-5-1",
-          "title": "GLM-5.1 (Non-reasoning)",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.999,
-          "confidence": 0.625
-        },
-        {
-          "slug": "hy3",
-          "title": "Hy3-preview",
-          "org": "Tencent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.999,
-          "confidence": 0.625
-        },
-        {
-          "slug": "qwen-3-5",
-          "title": "Qwen 3.5",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.999,
-          "confidence": 0.624
-        },
-        {
-          "slug": "claude-4-5",
-          "title": "Claude 4.5",
-          "org": "Anthropic",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
-          "slug": "gemini-3-1",
-          "title": "Gemini 3.1",
-          "org": "Google",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.997,
-          "confidence": 0.624
-        },
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7 (Reasoning)",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.623
-        },
-        {
-          "slug": "minimax-m2",
-          "title": "MiniMax M2",
-          "org": "MiniMax",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.623
-        },
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.623
         }
       ]
     },
@@ -7163,15 +6987,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.989,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "gemma-4",
           "title": "Gemma 4",
           "org": "Google",
@@ -7206,6 +7021,15 @@
           "overlap": 0.961,
           "confidence": 0.932,
           "release_gap_mo": 1
+        },
+        {
+          "slug": "doubao-seed-code",
+          "title": "Doubao Seed Code",
+          "org": "ByteDance",
+          "domain": "reasoning",
+          "overlap": 0.993,
+          "confidence": 0.928,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -7260,26 +7084,6 @@
           "confidence": 0.621
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.991,
-          "confidence": 0.621
-        },
-        {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.99,
-          "confidence": 0.62
-        },
-        {
           "slug": "gemma-4",
           "title": "Gemma 4",
           "org": "Google",
@@ -7308,6 +7112,26 @@
           ],
           "overlap": 0.986,
           "confidence": 0.618
+        },
+        {
+          "slug": "kat-code",
+          "title": "KAT-Coder-Pro V1",
+          "org": "Academic / Independent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.985,
+          "confidence": 0.618
+        },
+        {
+          "slug": "minimax-m2",
+          "title": "MiniMax M2",
+          "org": "MiniMax",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.977,
+          "confidence": 0.613
         }
       ]
     },
@@ -8386,6 +8210,15 @@
           "release_gap_mo": 0
         },
         {
+          "slug": "command-r-plus-04-2024",
+          "title": "Command-R+ (Apr '24)",
+          "org": "Cohere",
+          "domain": "reasoning",
+          "overlap": 0.977,
+          "confidence": 0.969,
+          "release_gap_mo": 0
+        },
+        {
           "slug": "gpt-35-turbo",
           "title": "GPT-3.5 Turbo",
           "org": "OpenAI",
@@ -8393,15 +8226,6 @@
           "overlap": 0.977,
           "confidence": 0.969,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.984,
-          "confidence": 0.966,
-          "release_gap_mo": 1
         }
       ],
       "same_capability": []
@@ -8861,65 +8685,6 @@
           "confidence": 0.541
         }
       ]
-    },
-    "command-r-plus-04-2024": {
-      "competes_with": [
-        {
-          "slug": "qwen-2",
-          "title": "Qwen 2",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.988,
-          "confidence": 0.984,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "grok-2-1212",
-          "title": "Grok 2 (Dec '24)",
-          "org": "xAI",
-          "domain": "reasoning",
-          "overlap": 0.984,
-          "confidence": 0.979,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "command-a",
-          "title": "Command A",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.982,
-          "confidence": 0.977,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "deepseek-r1-distill-qwen",
-          "title": "DeepSeek r1 distill qwen",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.978,
-          "confidence": 0.971,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "sarvam",
-          "title": "Sarvam 105B (high)",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.964,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "jamba-1",
-          "title": "Jamba 1",
-          "org": "AI21 Labs",
-          "domain": "reasoning",
-          "overlap": 0.994,
-          "confidence": 0.93,
-          "release_gap_mo": 4
-        }
-      ],
-      "same_capability": []
     },
     "devstral": {
       "competes_with": [
@@ -9541,124 +9306,6 @@
         }
       ]
     },
-    "gemini-2-5": {
-      "competes_with": [
-        {
-          "slug": "mistral-small-4",
-          "title": "Mistral Small 4 (v26.03)",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.978,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nvidia-nemotron-nano",
-          "title": "Nvidia Nemotron NANO",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.977,
-          "confidence": 0.97,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "llama-3-3",
-          "title": "Llama 3.3",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.968,
-          "confidence": 0.957,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.948,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "llama-nemotron-super-49b",
-          "title": "Llama nemotron.super.49b",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.954,
-          "confidence": 0.939,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "gpt-oss-20b",
-          "title": "gpt-oss-20B (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.932,
-          "release_gap_mo": 4
-        }
-      ],
-      "same_capability": []
-    },
-    "mistral-small-4": {
-      "competes_with": [
-        {
-          "slug": "gemini-2-5",
-          "title": "Gemini 2.5",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.978,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.968,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "nemotron-cascade-2-30b-a3b",
-          "title": "Nemotron Cascade 2 30B A3B",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.954,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "gpt-oss-20b",
-          "title": "gpt-oss-20B (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.954,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "ernie-5-0-thinking-preview",
-          "title": "ERNIE 5.0 Thinking Preview",
-          "org": "Baidu",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.95,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.948,
-          "release_gap_mo": 3
-        }
-      ],
-      "same_capability": []
-    },
     "kat-coder-pro-v2": {
       "competes_with": [
         {
@@ -9698,15 +9345,6 @@
           "release_gap_mo": 1
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "domain": "reasoning",
-          "overlap": 0.987,
-          "confidence": 0.967,
-          "release_gap_mo": 1
-        },
-        {
           "slug": "nvidia-nemotron-3",
           "title": "Nvidia nemotron.3",
           "org": "Nvidia",
@@ -9714,6 +9352,15 @@
           "overlap": 0.986,
           "confidence": 0.965,
           "release_gap_mo": 1
+        },
+        {
+          "slug": "deepseek-v3-1",
+          "title": "DeepSeek V3.1 (Non-reasoning)",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.984,
+          "confidence": 0.932,
+          "release_gap_mo": 3
         }
       ],
       "same_capability": [
@@ -9858,21 +9505,21 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "domain": "reasoning",
-          "overlap": 0.967,
-          "confidence": 0.893,
-          "release_gap_mo": 4
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
           "domain": "reasoning",
           "overlap": 0.964,
           "confidence": 0.891,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "ling",
+          "title": "Ling-2.6-1T",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.963,
+          "confidence": 0.889,
           "release_gap_mo": 4
         }
       ],
@@ -10024,6 +9671,15 @@
           "release_gap_mo": 1
         },
         {
+          "slug": "deepseek-v3-1",
+          "title": "DeepSeek V3.1 (Non-reasoning)",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.957,
+          "release_gap_mo": 2
+        },
+        {
           "slug": "glm-4",
           "title": "GLM-4.7 (Reasoning)",
           "org": "Academic / Independent",
@@ -10040,15 +9696,6 @@
           "overlap": 0.838,
           "confidence": 0.695,
           "release_gap_mo": 5
-        },
-        {
-          "slug": "trinity-large-thinking",
-          "title": "Trinity Large Thinking",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.684,
-          "release_gap_mo": 1
         }
       ],
       "same_capability": [
@@ -10234,6 +9881,15 @@
           "release_gap_mo": 2
         },
         {
+          "slug": "deepseek-v3-1",
+          "title": "DeepSeek V3.1 (Non-reasoning)",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.998,
+          "confidence": 0.971,
+          "release_gap_mo": 2
+        },
+        {
           "slug": "step-3-5",
           "title": "Step 3.5",
           "org": "Stepfun",
@@ -10259,15 +9915,6 @@
           "overlap": 0.997,
           "confidence": 0.961,
           "release_gap_mo": 2
-        },
-        {
-          "slug": "mistral-small-4",
-          "title": "Mistral Small 4 (v26.03)",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.992,
-          "confidence": 0.676,
-          "release_gap_mo": 1
         }
       ],
       "same_capability": []
@@ -10524,6 +10171,17 @@
           "confidence": 0.698
         },
         {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.897,
+          "confidence": 0.698
+        },
+        {
           "slug": "ernie-4",
           "title": "Ernie 4.0",
           "org": "Baidu",
@@ -10544,17 +10202,6 @@
           ],
           "overlap": 0.877,
           "confidence": 0.689
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.805,
-          "confidence": 0.652
         },
         {
           "slug": "doubao-1-5",
@@ -10638,13 +10285,13 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
           "domain": "multimodal",
-          "overlap": 0.819,
-          "confidence": 0.382,
-          "release_gap_mo": 5
+          "overlap": 0.904,
+          "confidence": 0.343,
+          "release_gap_mo": 14
         },
         {
           "slug": "qwen-3-coder",
@@ -10691,17 +10338,6 @@
           "confidence": 0.722
         },
         {
-          "slug": "gemma-3",
-          "title": "Gemma 3",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.94,
-          "confidence": 0.72
-        },
-        {
           "slug": "qwen-3-vl",
           "title": "Qwen3-VL",
           "org": "Alibaba",
@@ -10722,6 +10358,17 @@
           ],
           "overlap": 0.906,
           "confidence": 0.703
+        },
+        {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.904,
+          "confidence": 0.702
         },
         {
           "slug": "ernie-4",
@@ -10823,6 +10470,65 @@
           "domain": "reasoning",
           "overlap": 0.996,
           "confidence": 0.96,
+          "release_gap_mo": 2
+        }
+      ],
+      "same_capability": []
+    },
+    "mistral-small-4": {
+      "competes_with": [
+        {
+          "slug": "longcat",
+          "title": "LongCat Flash Lite",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.995,
+          "confidence": 0.968,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "nemotron-cascade-2-30b-a3b",
+          "title": "Nemotron Cascade 2 30B A3B",
+          "org": "Nvidia",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.954,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "gpt-oss-20b",
+          "title": "gpt-oss-20B (high)",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.954,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "ernie-5-0-thinking-preview",
+          "title": "ERNIE 5.0 Thinking Preview",
+          "org": "Baidu",
+          "domain": "reasoning",
+          "overlap": 0.993,
+          "confidence": 0.95,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "nemotron-nano-v2",
+          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
+          "org": "Nvidia",
+          "domain": "reasoning",
+          "overlap": 0.998,
+          "confidence": 0.948,
+          "release_gap_mo": 3
+        },
+        {
+          "slug": "seed-oss-36b-instruct",
+          "title": "Seed-OSS-36B-Instruct",
+          "org": "ByteDance",
+          "domain": "reasoning",
+          "overlap": 0.984,
+          "confidence": 0.939,
           "release_gap_mo": 2
         }
       ],
@@ -11453,14 +11159,14 @@
           "confidence": 0.624
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
+          "slug": "glm-5",
+          "title": "GLM-5.1 (Reasoning)",
+          "org": "Academic / Independent",
           "shared": [
             "reasoning"
           ],
           "overlap": 0.997,
-          "confidence": 0.624
+          "confidence": 0.623
         }
       ]
     },
@@ -11552,6 +11258,17 @@
           "confidence": 0.622
         },
         {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "reasoning",
+            "coding"
+          ],
+          "overlap": 0.642,
+          "confidence": 0.571
+        },
+        {
           "slug": "claude-opus-4-5",
           "title": "Claude Opus 4.5",
           "org": "Anthropic",
@@ -11572,6 +11289,65 @@
           "confidence": 0.472
         }
       ]
+    },
+    "gemini-2-5": {
+      "competes_with": [
+        {
+          "slug": "longcat",
+          "title": "LongCat Flash Lite",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.997,
+          "confidence": 0.948,
+          "release_gap_mo": 3
+        },
+        {
+          "slug": "gpt-4-1",
+          "title": "GPT-4.1",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.996,
+          "confidence": 0.932,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "sarvam",
+          "title": "Sarvam 105B (high)",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.966,
+          "confidence": 0.928,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "nova-premier",
+          "title": "Nova Premier",
+          "org": "Amazon",
+          "domain": "reasoning",
+          "overlap": 0.991,
+          "confidence": 0.926,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "devstral",
+          "title": "Devstral 2",
+          "org": "Mistral AI",
+          "domain": "reasoning",
+          "overlap": 0.994,
+          "confidence": 0.917,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "claude-3-5-haiku",
+          "title": "Claude 3.5 Haiku",
+          "org": "Anthropic",
+          "domain": "reasoning",
+          "overlap": 0.971,
+          "confidence": 0.899,
+          "release_gap_mo": 4
+        }
+      ],
+      "same_capability": []
     },
     "seedream-4": {
       "competes_with": [
@@ -11743,6 +11519,378 @@
         }
       ]
     },
+    "gemini-3-pro": {
+      "competes_with": [
+        {
+          "slug": "gpt-5-1",
+          "title": "GPT-5.1",
+          "org": "OpenAI",
+          "domain": "multimodal",
+          "overlap": 0.959,
+          "confidence": 0.942,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "gpt-5-2",
+          "title": "GPT-5.2",
+          "org": "OpenAI",
+          "domain": "multimodal",
+          "overlap": 0.94,
+          "confidence": 0.907,
+          "release_gap_mo": 1
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.914,
+          "confidence": 0.874,
+          "release_gap_mo": 1
+        },
+        {
+          "slug": "claude-haiku-4-5",
+          "title": "Claude Haiku 4.5",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.912,
+          "confidence": 0.855,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "domain": "multimodal",
+          "overlap": 0.914,
+          "confidence": 0.832,
+          "release_gap_mo": 3
+        },
+        {
+          "slug": "step-3",
+          "title": "Step-3",
+          "org": "Stepfun",
+          "domain": "multimodal",
+          "overlap": 0.863,
+          "confidence": 0.754,
+          "release_gap_mo": 4
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "gpt-5",
+          "title": "GPT-5",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "audio",
+            "agentic"
+          ],
+          "overlap": 0.995,
+          "confidence": 1
+        },
+        {
+          "slug": "gpt-5-1",
+          "title": "GPT-5.1",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "audio"
+          ],
+          "overlap": 0.959,
+          "confidence": 0.98
+        },
+        {
+          "slug": "gpt-5-2",
+          "title": "GPT-5.2",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "audio"
+          ],
+          "overlap": 0.94,
+          "confidence": 0.97
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.914,
+          "confidence": 0.957
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.914,
+          "confidence": 0.957
+        },
+        {
+          "slug": "claude-haiku-4-5",
+          "title": "Claude Haiku 4.5",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.912,
+          "confidence": 0.956
+        },
+        {
+          "slug": "claude-opus-4-7",
+          "title": "Claude Opus 4.7",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.911,
+          "confidence": 0.956
+        },
+        {
+          "slug": "doubao-1-5",
+          "title": "Doubao 1.5 Pro",
+          "org": "ByteDance",
+          "shared": [
+            "multimodal",
+            "vision",
+            "audio",
+            "agentic"
+          ],
+          "overlap": 0.881,
+          "confidence": 0.94
+        },
+        {
+          "slug": "gpt-5-5",
+          "title": "GPT-5.5",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.852,
+          "confidence": 0.926
+        },
+        {
+          "slug": "gpt-5-4",
+          "title": "GPT-5.4",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.851,
+          "confidence": 0.925
+        }
+      ]
+    },
+    "gpt-5-1": {
+      "competes_with": [
+        {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "domain": "multimodal",
+          "overlap": 0.959,
+          "confidence": 0.942,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "claude-sonnet-4-6",
+          "title": "Claude Sonnet 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.908,
+          "confidence": 0.874,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "step-3",
+          "title": "Step-3",
+          "org": "Stepfun",
+          "domain": "multimodal",
+          "overlap": 0.916,
+          "confidence": 0.827,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.877,
+          "confidence": 0.821,
+          "release_gap_mo": 1
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "domain": "multimodal",
+          "overlap": 0.919,
+          "confidence": 0.803,
+          "release_gap_mo": 5
+        },
+        {
+          "slug": "claude-opus-4-7",
+          "title": "Claude Opus 4.7",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.875,
+          "confidence": 0.787,
+          "release_gap_mo": 3
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "audio"
+          ],
+          "overlap": 0.959,
+          "confidence": 0.98
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.919,
+          "confidence": 0.835
+        },
+        {
+          "slug": "glm-4-5",
+          "title": "GLM-4.5",
+          "org": "Tsinghua / Zhipu",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.919,
+          "confidence": 0.835
+        },
+        {
+          "slug": "step-3",
+          "title": "Step-3",
+          "org": "Stepfun",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.916,
+          "confidence": 0.833
+        },
+        {
+          "slug": "claude-sonnet-4-6",
+          "title": "Claude Sonnet 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.908,
+          "confidence": 0.829
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.877,
+          "confidence": 0.813
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.876,
+          "confidence": 0.813
+        },
+        {
+          "slug": "claude-opus-4-7",
+          "title": "Claude Opus 4.7",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.875,
+          "confidence": 0.813
+        },
+        {
+          "slug": "claude-haiku-4-5",
+          "title": "Claude Haiku 4.5",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.872,
+          "confidence": 0.811
+        },
+        {
+          "slug": "doubao-1-5",
+          "title": "Doubao 1.5 Pro",
+          "org": "ByteDance",
+          "shared": [
+            "multimodal",
+            "vision",
+            "audio"
+          ],
+          "overlap": 0.839,
+          "confidence": 0.795
+        }
+      ]
+    },
     "codestral-25": {
       "competes_with": [
         {
@@ -11773,13 +11921,13 @@
           "release_gap_mo": 7
         },
         {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
           "domain": "multimodal",
-          "overlap": 0.741,
-          "confidence": 0.616,
-          "release_gap_mo": 2
+          "overlap": 0.849,
+          "confidence": 0.685,
+          "release_gap_mo": 7
         },
         {
           "slug": "grok-4-1",
@@ -11835,6 +11983,17 @@
           "confidence": 0.682
         },
         {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "agentic"
+          ],
+          "overlap": 0.849,
+          "confidence": 0.674
+        },
+        {
           "slug": "grok-4-1",
           "title": "Grok 4.1",
           "org": "xAI",
@@ -11844,28 +12003,6 @@
           ],
           "overlap": 0.784,
           "confidence": 0.642
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "agentic"
-          ],
-          "overlap": 0.741,
-          "confidence": 0.621
-        },
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "agentic"
-          ],
-          "overlap": 0.691,
-          "confidence": 0.596
         },
         {
           "slug": "doubao-1-5",
@@ -11907,6 +12044,16 @@
           ],
           "overlap": 0.722,
           "confidence": 0.486
+        },
+        {
+          "slug": "mistral-medium-3-1",
+          "title": "Mistral Medium 3.1 (v25.08)",
+          "org": "Mistral AI",
+          "shared": [
+            "multimodal"
+          ],
+          "overlap": 0.711,
+          "confidence": 0.481
         }
       ]
     },
@@ -11940,15 +12087,6 @@
           "release_gap_mo": 3
         },
         {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.741,
-          "confidence": 0.636,
-          "release_gap_mo": 1
-        },
-        {
           "slug": "grok-4-1",
           "title": "Grok 4.1",
           "org": "xAI",
@@ -11958,13 +12096,13 @@
           "release_gap_mo": 7
         },
         {
-          "slug": "gemma-3",
-          "title": "Gemma 3",
-          "org": "Google DeepMind",
+          "slug": "molmo",
+          "title": "Molmo",
+          "org": "Allen AI",
           "domain": "multimodal",
-          "overlap": 0.724,
-          "confidence": 0.305,
-          "release_gap_mo": 2
+          "overlap": 0.722,
+          "confidence": 0.211,
+          "release_gap_mo": 7
         }
       ],
       "same_capability": [
@@ -12013,28 +12151,6 @@
           "confidence": 0.642
         },
         {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "agentic"
-          ],
-          "overlap": 0.741,
-          "confidence": 0.621
-        },
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "agentic"
-          ],
-          "overlap": 0.691,
-          "confidence": 0.596
-        },
-        {
           "slug": "doubao-1-5",
           "title": "Doubao 1.5 Pro",
           "org": "ByteDance",
@@ -12056,16 +12172,6 @@
           "confidence": 0.487
         },
         {
-          "slug": "mistral-large-3",
-          "title": "Mistral Large 3 (v25.12)",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal"
-          ],
-          "overlap": 0.722,
-          "confidence": 0.486
-        },
-        {
           "slug": "molmo",
           "title": "Molmo",
           "org": "Allen AI",
@@ -12074,6 +12180,16 @@
           ],
           "overlap": 0.722,
           "confidence": 0.486
+        },
+        {
+          "slug": "stable-audio-2",
+          "title": "Stable Audio 2.0",
+          "org": "Stability AI",
+          "shared": [
+            "multimodal"
+          ],
+          "overlap": 0.618,
+          "confidence": 0.434
         }
       ]
     },
@@ -12096,6 +12212,15 @@
           "overlap": 0.999,
           "confidence": 0.927,
           "release_gap_mo": 4
+        },
+        {
+          "slug": "command-r-plus-04-2024",
+          "title": "Command-R+ (Apr '24)",
+          "org": "Cohere",
+          "domain": "reasoning",
+          "overlap": 0.957,
+          "confidence": 0.885,
+          "release_gap_mo": 3
         },
         {
           "slug": "command-r-03-2024",
@@ -12123,15 +12248,6 @@
           "overlap": 0.943,
           "confidence": 0.867,
           "release_gap_mo": 3
-        },
-        {
-          "slug": "sarvam",
-          "title": "Sarvam 105B (high)",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.966,
-          "confidence": 0.863,
-          "release_gap_mo": 6
         }
       ],
       "same_capability": []
@@ -12155,15 +12271,6 @@
           "overlap": 0.99,
           "confidence": 0.597,
           "release_gap_mo": 5
-        },
-        {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.595,
-          "release_gap_mo": 6
         },
         {
           "slug": "kat-coder-pro-v2",
@@ -12190,6 +12297,15 @@
           "domain": "reasoning",
           "overlap": 0.992,
           "confidence": 0.541,
+          "release_gap_mo": 9
+        },
+        {
+          "slug": "qwen-3-5",
+          "title": "Qwen 3.5",
+          "org": "Alibaba",
+          "domain": "reasoning",
+          "overlap": 0.997,
+          "confidence": 0.539,
           "release_gap_mo": 9
         }
       ],
@@ -12247,16 +12363,6 @@
           "confidence": 0.623
         },
         {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.623
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -12295,6 +12401,16 @@
           ],
           "overlap": 0.993,
           "confidence": 0.622
+        },
+        {
+          "slug": "glm-5-1",
+          "title": "GLM-5.1 (Non-reasoning)",
+          "org": "Academic / Independent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.992,
+          "confidence": 0.621
         }
       ]
     },
@@ -12328,15 +12444,6 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "deepseek-r1-distill-llama",
-          "title": "DeepSeek r1 distill llama",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.933,
-          "release_gap_mo": 4
-        },
-        {
           "slug": "qwen-2",
           "title": "Qwen 2",
           "org": "Alibaba",
@@ -12346,12 +12453,21 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "gpt-35-turbo",
-          "title": "GPT-3.5 Turbo",
-          "org": "OpenAI",
+          "slug": "longcat",
+          "title": "LongCat Flash Lite",
+          "org": "Academic / Independent",
           "domain": "reasoning",
-          "overlap": 0.988,
-          "confidence": 0.921,
+          "overlap": 0.934,
+          "confidence": 0.864,
+          "release_gap_mo": 3
+        },
+        {
+          "slug": "nemotron-nano-v2",
+          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
+          "org": "Nvidia",
+          "domain": "reasoning",
+          "overlap": 0.927,
+          "confidence": 0.831,
           "release_gap_mo": 4
         }
       ],
@@ -12624,6 +12740,15 @@
           "release_gap_mo": 5
         },
         {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "domain": "multimodal",
+          "overlap": 0.99,
+          "confidence": 0.9,
+          "release_gap_mo": 5
+        },
+        {
           "slug": "gpt-5-2",
           "title": "GPT-5.2",
           "org": "OpenAI",
@@ -12649,15 +12774,6 @@
           "overlap": 0.889,
           "confidence": 0.84,
           "release_gap_mo": 1
-        },
-        {
-          "slug": "claude-opus-4-7",
-          "title": "Claude Opus 4.7",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.888,
-          "confidence": 0.808,
-          "release_gap_mo": 3
         }
       ],
       "same_capability": [
@@ -13243,16 +13359,6 @@
           "confidence": 0.623
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.622
-        },
-        {
           "slug": "claude-4-1",
           "title": "Claude 4.1",
           "org": "Anthropic",
@@ -13281,67 +13387,18 @@
           ],
           "overlap": 0.994,
           "confidence": 0.622
+        },
+        {
+          "slug": "claude-4-5",
+          "title": "Claude 4.5",
+          "org": "Anthropic",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.993,
+          "confidence": 0.621
         }
       ]
-    },
-    "jamba-1": {
-      "competes_with": [
-        {
-          "slug": "command-r-plus-04-2024",
-          "title": "Command-R+ (Apr '24)",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.994,
-          "confidence": 0.93,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "nova-pro",
-          "title": "Nova Pro",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.967,
-          "confidence": 0.894,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "qwen-2",
-          "title": "Qwen 2",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.966,
-          "confidence": 0.892,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "grok-2-1212",
-          "title": "Grok 2 (Dec '24)",
-          "org": "xAI",
-          "domain": "reasoning",
-          "overlap": 0.96,
-          "confidence": 0.884,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "command-a",
-          "title": "Command A",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.957,
-          "confidence": 0.881,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "deepseek-r1-distill-qwen",
-          "title": "DeepSeek r1 distill qwen",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.951,
-          "confidence": 0.872,
-          "release_gap_mo": 4
-        }
-      ],
-      "same_capability": []
     },
     "veo-3": {
       "competes_with": [
@@ -13464,15 +13521,6 @@
           "overlap": 0.988,
           "confidence": 0.922,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "qwen-2-5",
-          "title": "Qwen 2.5",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.74,
-          "release_gap_mo": 15
         },
         {
           "slug": "gpt-4-1",
@@ -13643,6 +13691,15 @@
           "release_gap_mo": 0
         },
         {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "domain": "multimodal",
+          "overlap": 0.914,
+          "confidence": 0.832,
+          "release_gap_mo": 3
+        },
+        {
           "slug": "gpt-5-1",
           "title": "GPT-5.1",
           "org": "OpenAI",
@@ -13652,22 +13709,13 @@
           "release_gap_mo": 3
         },
         {
-          "slug": "gpt-5-2",
-          "title": "GPT-5.2",
-          "org": "OpenAI",
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
           "domain": "multimodal",
-          "overlap": 0.859,
-          "confidence": 0.746,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "qwen-3-coder",
-          "title": "Qwen3-Coder",
-          "org": "Alibaba",
-          "domain": "multimodal",
-          "overlap": 0.773,
-          "confidence": 0.686,
-          "release_gap_mo": 1
+          "overlap": 0.93,
+          "confidence": 0.766,
+          "release_gap_mo": 8
         }
       ],
       "same_capability": [
@@ -13724,6 +13772,19 @@
           "confidence": 0.997
         },
         {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "vision",
+            "reasoning",
+            "agentic"
+          ],
+          "overlap": 0.914,
+          "confidence": 0.957
+        },
+        {
           "slug": "claude-sonnet-4-6",
           "title": "Claude Sonnet 4.6",
           "org": "Anthropic",
@@ -13773,16 +13834,187 @@
           "confidence": 0.847
         },
         {
-          "slug": "ernie-4",
-          "title": "Ernie 4.0",
-          "org": "Baidu",
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
           "shared": [
             "multimodal",
             "vision",
-            "agentic"
+            "reasoning"
           ],
-          "overlap": 0.895,
-          "confidence": 0.823
+          "overlap": 0.93,
+          "confidence": 0.84
+        }
+      ]
+    },
+    "gpt-5-2": {
+      "competes_with": [
+        {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "domain": "multimodal",
+          "overlap": 0.94,
+          "confidence": 0.907,
+          "release_gap_mo": 1
+        },
+        {
+          "slug": "claude-sonnet-4-6",
+          "title": "Claude Sonnet 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.922,
+          "confidence": 0.884,
+          "release_gap_mo": 1
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "domain": "multimodal",
+          "overlap": 0.926,
+          "confidence": 0.827,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.863,
+          "confidence": 0.817,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "claude-opus-4-7",
+          "title": "Claude Opus 4.7",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.862,
+          "confidence": 0.786,
+          "release_gap_mo": 2
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "domain": "multimodal",
+          "overlap": 0.859,
+          "confidence": 0.746,
+          "release_gap_mo": 4
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "audio"
+          ],
+          "overlap": 0.94,
+          "confidence": 0.97
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.926,
+          "confidence": 0.963
+        },
+        {
+          "slug": "claude-sonnet-4-6",
+          "title": "Claude Sonnet 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.922,
+          "confidence": 0.961
+        },
+        {
+          "slug": "step-3",
+          "title": "Step-3",
+          "org": "Stepfun",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.917,
+          "confidence": 0.834
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.863,
+          "confidence": 0.807
+        },
+        {
+          "slug": "claude-opus-4-7",
+          "title": "Claude Opus 4.7",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.862,
+          "confidence": 0.806
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.859,
+          "confidence": 0.805
+        },
+        {
+          "slug": "claude-haiku-4-5",
+          "title": "Claude Haiku 4.5",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.855,
+          "confidence": 0.803
+        },
+        {
+          "slug": "doubao-1-5",
+          "title": "Doubao 1.5 Pro",
+          "org": "ByteDance",
+          "shared": [
+            "multimodal",
+            "vision",
+            "audio"
+          ],
+          "overlap": 0.81,
+          "confidence": 0.78
         },
         {
           "slug": "genie-3",
@@ -13790,11 +14022,10 @@
           "org": "Google DeepMind",
           "shared": [
             "multimodal",
-            "vision",
-            "agentic"
+            "vision"
           ],
-          "overlap": 0.895,
-          "confidence": 0.823
+          "overlap": 0.733,
+          "confidence": 0.617
         }
       ]
     },
@@ -13808,6 +14039,15 @@
           "overlap": 0.999,
           "confidence": 0.907,
           "release_gap_mo": 6
+        },
+        {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.907,
+          "confidence": 0.523,
+          "release_gap_mo": 3
         },
         {
           "slug": "genie-3",
@@ -13844,15 +14084,6 @@
           "overlap": 0.722,
           "confidence": 0.221,
           "release_gap_mo": 6
-        },
-        {
-          "slug": "qwen-3",
-          "title": "Qwen 3",
-          "org": "Alibaba",
-          "domain": "multimodal",
-          "overlap": 0.722,
-          "confidence": 0.211,
-          "release_gap_mo": 7
         }
       ],
       "same_capability": [
@@ -13888,6 +14119,17 @@
           ],
           "overlap": 0.939,
           "confidence": 0.72
+        },
+        {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.907,
+          "confidence": 0.704
         },
         {
           "slug": "genie-3",
@@ -13964,15 +14206,6 @@
           "release_gap_mo": 5
         },
         {
-          "slug": "qwen-3",
-          "title": "Qwen 3",
-          "org": "Alibaba",
-          "domain": "multimodal",
-          "overlap": 0.724,
-          "confidence": 0.305,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "doubao-1-5",
           "title": "Doubao 1.5 Pro",
           "org": "ByteDance",
@@ -14011,17 +14244,6 @@
           ],
           "overlap": 0.999,
           "confidence": 0.75
-        },
-        {
-          "slug": "mistral-medium-3-1",
-          "title": "Mistral Medium 3.1 (v25.08)",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.94,
-          "confidence": 0.72
         },
         {
           "slug": "genie-3",
@@ -14287,13 +14509,13 @@
           "release_gap_mo": 8
         },
         {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
           "domain": "multimodal",
-          "overlap": 0.827,
-          "confidence": 0.332,
-          "release_gap_mo": 8
+          "overlap": 0.912,
+          "confidence": 0.292,
+          "release_gap_mo": 17
         },
         {
           "slug": "qwen-3-coder",
@@ -14305,13 +14527,13 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "qwen-3",
-          "title": "Qwen 3",
-          "org": "Alibaba",
+          "slug": "codestral-25",
+          "title": "Codestral 25.01",
+          "org": "Mistral AI",
           "domain": "multimodal",
           "overlap": 0.722,
-          "confidence": 0.21,
-          "release_gap_mo": 7
+          "confidence": 0.152,
+          "release_gap_mo": 11
         }
       ],
       "same_capability": [
@@ -14371,6 +14593,17 @@
           "confidence": 0.707
         },
         {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.912,
+          "confidence": 0.706
+        },
+        {
           "slug": "claude-haiku-4-5",
           "title": "Claude Haiku 4.5",
           "org": "Anthropic",
@@ -14391,17 +14624,6 @@
           ],
           "overlap": 0.876,
           "confidence": 0.688
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.827,
-          "confidence": 0.664
         },
         {
           "slug": "doubao-1-5",
@@ -14456,6 +14678,15 @@
           "release_gap_mo": 7
         },
         {
+          "slug": "gemini-2-5-pro",
+          "title": "Gemini 2.5 Pro",
+          "org": "Google DeepMind",
+          "domain": "multimodal",
+          "overlap": 0.899,
+          "confidence": 0.849,
+          "release_gap_mo": 1
+        },
+        {
           "slug": "step-3",
           "title": "Step-3",
           "org": "Stepfun",
@@ -14471,15 +14702,6 @@
           "domain": "multimodal",
           "overlap": 0.923,
           "confidence": 0.809,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "qwen-3-coder",
-          "title": "Qwen3-Coder",
-          "org": "Alibaba",
-          "domain": "multimodal",
-          "overlap": 0.798,
-          "confidence": 0.649,
           "release_gap_mo": 5
         }
       ],
@@ -14557,6 +14779,18 @@
           "confidence": 0.83
         },
         {
+          "slug": "gemini-2-5-pro",
+          "title": "Gemini 2.5 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.899,
+          "confidence": 0.824
+        },
+        {
           "slug": "doubao-1-5",
           "title": "Doubao 1.5 Pro",
           "org": "ByteDance",
@@ -14567,17 +14801,6 @@
           ],
           "overlap": 0.737,
           "confidence": 0.743
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.953,
-          "confidence": 0.727
         },
         {
           "slug": "step-3",
@@ -15059,6 +15282,19 @@
           "confidence": 1
         },
         {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.988,
+          "confidence": 0.994
+        },
+        {
           "slug": "claude-opus-4-7",
           "title": "Claude Opus 4.7",
           "org": "Anthropic",
@@ -15083,6 +15319,19 @@
           ],
           "overlap": 0.935,
           "confidence": 0.967
+        },
+        {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "agentic",
+            "vision"
+          ],
+          "overlap": 0.852,
+          "confidence": 0.926
         },
         {
           "slug": "genie-3",
@@ -15156,15 +15405,6 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.898,
-          "confidence": 0.858,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "qwen-3-coder",
           "title": "Qwen3-Coder",
           "org": "Alibaba",
@@ -15199,9 +15439,30 @@
           "overlap": 0.844,
           "confidence": 0.579,
           "release_gap_mo": 13
+        },
+        {
+          "slug": "ernie-4-5",
+          "title": "ERNIE 4.5",
+          "org": "Baidu",
+          "domain": "multimodal",
+          "overlap": 0.897,
+          "confidence": 0.515,
+          "release_gap_mo": 3
         }
       ],
       "same_capability": [
+        {
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 1,
+          "confidence": 0.875
+        },
         {
           "slug": "ernie-4",
           "title": "Ernie 4.0",
@@ -15225,18 +15486,6 @@
           ],
           "overlap": 0.977,
           "confidence": 0.863
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.898,
-          "confidence": 0.824
         },
         {
           "slug": "doubao-1-5",
@@ -15317,6 +15566,190 @@
         }
       ]
     },
+    "gemini-3": {
+      "competes_with": [
+        {
+          "slug": "claude-sonnet-4-6",
+          "title": "Claude Sonnet 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.99,
+          "confidence": 0.9,
+          "release_gap_mo": 5
+        },
+        {
+          "slug": "step-3",
+          "title": "Step-3",
+          "org": "Stepfun",
+          "domain": "multimodal",
+          "overlap": 0.996,
+          "confidence": 0.844,
+          "release_gap_mo": 9
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.931,
+          "confidence": 0.833,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "gpt-5-2",
+          "title": "GPT-5.2",
+          "org": "OpenAI",
+          "domain": "multimodal",
+          "overlap": 0.926,
+          "confidence": 0.827,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "gpt-5-1",
+          "title": "GPT-5.1",
+          "org": "OpenAI",
+          "domain": "multimodal",
+          "overlap": 0.919,
+          "confidence": 0.803,
+          "release_gap_mo": 5
+        },
+        {
+          "slug": "claude-haiku-4-5",
+          "title": "Claude Haiku 4.5",
+          "org": "Anthropic",
+          "domain": "multimodal",
+          "overlap": 0.926,
+          "confidence": 0.789,
+          "release_gap_mo": 7
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "gpt-5-4",
+          "title": "GPT-5.4",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.992,
+          "confidence": 0.996
+        },
+        {
+          "slug": "claude-sonnet-4-6",
+          "title": "Claude Sonnet 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.99,
+          "confidence": 0.995
+        },
+        {
+          "slug": "gpt-5-5",
+          "title": "GPT-5.5",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.988,
+          "confidence": 0.994
+        },
+        {
+          "slug": "gpt-5-2",
+          "title": "GPT-5.2",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "coding"
+          ],
+          "overlap": 0.926,
+          "confidence": 0.963
+        },
+        {
+          "slug": "step-3",
+          "title": "Step-3",
+          "org": "Stepfun",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.996,
+          "confidence": 0.873
+        },
+        {
+          "slug": "claude-opus-4-6",
+          "title": "Claude Opus 4.6",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.931,
+          "confidence": 0.84
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.93,
+          "confidence": 0.84
+        },
+        {
+          "slug": "claude-opus-4-7",
+          "title": "Claude Opus 4.7",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.929,
+          "confidence": 0.839
+        },
+        {
+          "slug": "claude-haiku-4-5",
+          "title": "Claude Haiku 4.5",
+          "org": "Anthropic",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.926,
+          "confidence": 0.838
+        },
+        {
+          "slug": "gpt-5-1",
+          "title": "GPT-5.1",
+          "org": "OpenAI",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.919,
+          "confidence": 0.835
+        }
+      ]
+    },
     "dbrx": {
       "competes_with": [
         {
@@ -15363,6 +15796,65 @@
           "overlap": 0.709,
           "confidence": 0.59,
           "release_gap_mo": 1
+        }
+      ],
+      "same_capability": []
+    },
+    "jamba-1": {
+      "competes_with": [
+        {
+          "slug": "nova-pro",
+          "title": "Nova Pro",
+          "org": "Amazon",
+          "domain": "reasoning",
+          "overlap": 0.967,
+          "confidence": 0.894,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "qwen-2",
+          "title": "Qwen 2",
+          "org": "Alibaba",
+          "domain": "reasoning",
+          "overlap": 0.966,
+          "confidence": 0.892,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "grok-2-1212",
+          "title": "Grok 2 (Dec '24)",
+          "org": "xAI",
+          "domain": "reasoning",
+          "overlap": 0.96,
+          "confidence": 0.884,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "command-a",
+          "title": "Command A",
+          "org": "Cohere",
+          "domain": "reasoning",
+          "overlap": 0.957,
+          "confidence": 0.881,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "deepseek-r1-distill-qwen",
+          "title": "DeepSeek r1 distill qwen",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.951,
+          "confidence": 0.872,
+          "release_gap_mo": 4
+        },
+        {
+          "slug": "apertus-70b-instruct",
+          "title": "Apertus 70B Instruct",
+          "org": "Academic / Independent",
+          "domain": "reasoning",
+          "overlap": 0.98,
+          "confidence": 0.845,
+          "release_gap_mo": 8
         }
       ],
       "same_capability": []
@@ -15465,6 +15957,19 @@
           "confidence": 0.962
         },
         {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.911,
+          "confidence": 0.956
+        },
+        {
           "slug": "claude-sonnet-4-6",
           "title": "Claude Sonnet 4.6",
           "org": "Anthropic",
@@ -15476,6 +15981,18 @@
           ],
           "overlap": 0.888,
           "confidence": 0.944
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.929,
+          "confidence": 0.839
         },
         {
           "slug": "gpt-5-1",
@@ -15524,28 +16041,6 @@
           ],
           "overlap": 0.658,
           "confidence": 0.704
-        },
-        {
-          "slug": "devin",
-          "title": "Devin",
-          "org": "Cognition",
-          "shared": [
-            "multimodal",
-            "agentic"
-          ],
-          "overlap": 0.712,
-          "confidence": 0.606
-        },
-        {
-          "slug": "qwen-3-coder",
-          "title": "Qwen3-Coder",
-          "org": "Alibaba",
-          "shared": [
-            "multimodal",
-            "agentic"
-          ],
-          "overlap": 0.712,
-          "confidence": 0.606
         }
       ]
     },
@@ -15669,6 +16164,17 @@
           ],
           "overlap": 0.972,
           "confidence": 0.611
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "reasoning",
+            "coding"
+          ],
+          "overlap": 0.632,
+          "confidence": 0.566
         }
       ]
     },
@@ -15868,13 +16374,22 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "llama-4",
-          "title": "Llama 4",
-          "org": "Meta AI",
+          "slug": "claude-3-7-sonnet",
+          "title": "Claude 3.7 Sonnet",
+          "org": "Anthropic",
           "domain": "multimodal",
-          "overlap": 0.898,
-          "confidence": 0.858,
-          "release_gap_mo": 0
+          "overlap": 0.899,
+          "confidence": 0.849,
+          "release_gap_mo": 1
+        },
+        {
+          "slug": "gpt-4o",
+          "title": "GPT-4o",
+          "org": "OpenAI",
+          "domain": "multimodal",
+          "overlap": 0.979,
+          "confidence": 0.799,
+          "release_gap_mo": 10
         },
         {
           "slug": "qwen-3-vl",
@@ -15895,22 +16410,13 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "qwen-3",
-          "title": "Qwen 3",
+          "slug": "qwen-3-coder",
+          "title": "Qwen3-Coder",
           "org": "Alibaba",
           "domain": "multimodal",
           "overlap": 0.741,
-          "confidence": 0.636,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "codestral-25",
-          "title": "Codestral 25.01",
-          "org": "Mistral AI",
-          "domain": "multimodal",
-          "overlap": 0.741,
-          "confidence": 0.616,
-          "release_gap_mo": 2
+          "confidence": 0.59,
+          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -15953,15 +16459,15 @@
           "confidence": 0.826
         },
         {
-          "slug": "llama-4",
-          "title": "Llama 4",
-          "org": "Meta AI",
+          "slug": "claude-3-7-sonnet",
+          "title": "Claude 3.7 Sonnet",
+          "org": "Anthropic",
           "shared": [
             "multimodal",
             "vision",
             "agentic"
           ],
-          "overlap": 0.898,
+          "overlap": 0.899,
           "confidence": 0.824
         },
         {
@@ -15977,16 +16483,28 @@
           "confidence": 0.823
         },
         {
-          "slug": "grok-4-1",
-          "title": "Grok 4.1",
-          "org": "xAI",
+          "slug": "claude-3-5-sonnet",
+          "title": "Claude 3.5 Sonnet",
+          "org": "Anthropic",
           "shared": [
             "multimodal",
             "vision",
             "agentic"
           ],
           "overlap": 0.895,
-          "confidence": 0.823
+          "confidence": 0.822
+        },
+        {
+          "slug": "grok-4",
+          "title": "Grok 4",
+          "org": "xAI",
+          "shared": [
+            "multimodal",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.892,
+          "confidence": 0.821
         },
         {
           "slug": "pixtral-large",
@@ -16023,17 +16541,6 @@
           ],
           "overlap": 0.858,
           "confidence": 0.804
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.852,
-          "confidence": 0.676
         }
       ]
     },
@@ -16243,189 +16750,6 @@
       ],
       "same_capability": []
     },
-    "gpt-5-2": {
-      "competes_with": [
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.922,
-          "confidence": 0.884,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "claude-opus-4-6",
-          "title": "Claude Opus 4.6",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.863,
-          "confidence": 0.817,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "claude-opus-4-7",
-          "title": "Claude Opus 4.7",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.862,
-          "confidence": 0.786,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "grok-4",
-          "title": "Grok 4",
-          "org": "xAI",
-          "domain": "multimodal",
-          "overlap": 0.859,
-          "confidence": 0.746,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "genie-3",
-          "title": "Genie 3",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.733,
-          "confidence": 0.574,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "doubao-1-5",
-          "title": "Doubao 1.5 Pro",
-          "org": "ByteDance",
-          "domain": "multimodal",
-          "overlap": 0.81,
-          "confidence": 0.57,
-          "release_gap_mo": 11
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "audio"
-          ],
-          "overlap": 0.94,
-          "confidence": 0.97
-        },
-        {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "coding"
-          ],
-          "overlap": 0.926,
-          "confidence": 0.963
-        },
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "coding"
-          ],
-          "overlap": 0.922,
-          "confidence": 0.961
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.92,
-          "confidence": 0.835
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.917,
-          "confidence": 0.834
-        },
-        {
-          "slug": "claude-opus-4-6",
-          "title": "Claude Opus 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.863,
-          "confidence": 0.807
-        },
-        {
-          "slug": "claude-opus-4-7",
-          "title": "Claude Opus 4.7",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.862,
-          "confidence": 0.806
-        },
-        {
-          "slug": "grok-4",
-          "title": "Grok 4",
-          "org": "xAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.859,
-          "confidence": 0.805
-        },
-        {
-          "slug": "claude-haiku-4-5",
-          "title": "Claude Haiku 4.5",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.855,
-          "confidence": 0.803
-        },
-        {
-          "slug": "doubao-1-5",
-          "title": "Doubao 1.5 Pro",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision",
-            "audio"
-          ],
-          "overlap": 0.81,
-          "confidence": 0.78
-        }
-      ]
-    },
     "deepseek-v2": {
       "competes_with": [
         {
@@ -16585,189 +16909,17 @@
       ],
       "same_capability": []
     },
-    "gpt-5-1": {
+    "claude-opus-4-6": {
       "competes_with": [
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.908,
-          "confidence": 0.874,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "domain": "multimodal",
-          "overlap": 0.916,
-          "confidence": 0.827,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "claude-opus-4-6",
-          "title": "Claude Opus 4.6",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.877,
-          "confidence": 0.821,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "claude-opus-4-7",
-          "title": "Claude Opus 4.7",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.875,
-          "confidence": 0.787,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "grok-4",
-          "title": "Grok 4",
-          "org": "xAI",
-          "domain": "multimodal",
-          "overlap": 0.876,
-          "confidence": 0.784,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "doubao-1-5",
-          "title": "Doubao 1.5 Pro",
-          "org": "ByteDance",
-          "domain": "multimodal",
-          "overlap": 0.839,
-          "confidence": 0.625,
-          "release_gap_mo": 10
-        }
-      ],
-      "same_capability": [
         {
           "slug": "gemini-3-pro",
           "title": "Gemini 3 Pro",
           "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "audio"
-          ],
-          "overlap": 0.959,
-          "confidence": 0.98
+          "domain": "multimodal",
+          "overlap": 0.914,
+          "confidence": 0.874,
+          "release_gap_mo": 1
         },
-        {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.919,
-          "confidence": 0.835
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.919,
-          "confidence": 0.835
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.916,
-          "confidence": 0.833
-        },
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.908,
-          "confidence": 0.829
-        },
-        {
-          "slug": "claude-opus-4-6",
-          "title": "Claude Opus 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.877,
-          "confidence": 0.813
-        },
-        {
-          "slug": "grok-4",
-          "title": "Grok 4",
-          "org": "xAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.876,
-          "confidence": 0.813
-        },
-        {
-          "slug": "claude-opus-4-7",
-          "title": "Claude Opus 4.7",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.875,
-          "confidence": 0.813
-        },
-        {
-          "slug": "claude-haiku-4-5",
-          "title": "Claude Haiku 4.5",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.872,
-          "confidence": 0.811
-        },
-        {
-          "slug": "doubao-1-5",
-          "title": "Doubao 1.5 Pro",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision",
-            "audio"
-          ],
-          "overlap": 0.839,
-          "confidence": 0.795
-        }
-      ]
-    },
-    "claude-opus-4-6": {
-      "competes_with": [
         {
           "slug": "gpt-5-4",
           "title": "GPT-5.4",
@@ -16796,6 +16948,15 @@
           "release_gap_mo": 4
         },
         {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "domain": "multimodal",
+          "overlap": 0.931,
+          "confidence": 0.833,
+          "release_gap_mo": 4
+        },
+        {
           "slug": "gpt-5",
           "title": "GPT-5",
           "org": "OpenAI",
@@ -16803,24 +16964,6 @@
           "overlap": 0.924,
           "confidence": 0.83,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "gpt-5-1",
-          "title": "GPT-5.1",
-          "org": "OpenAI",
-          "domain": "multimodal",
-          "overlap": 0.877,
-          "confidence": 0.821,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "gpt-5-2",
-          "title": "GPT-5.2",
-          "org": "OpenAI",
-          "domain": "multimodal",
-          "overlap": 0.863,
-          "confidence": 0.817,
-          "release_gap_mo": 0
         }
       ],
       "same_capability": [
@@ -16890,6 +17033,19 @@
           "confidence": 0.962
         },
         {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.914,
+          "confidence": 0.957
+        },
+        {
           "slug": "claude-sonnet-4-6",
           "title": "Claude Sonnet 4.6",
           "org": "Anthropic",
@@ -16915,6 +17071,18 @@
           "confidence": 0.844
         },
         {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.931,
+          "confidence": 0.84
+        },
+        {
           "slug": "gpt-5-1",
           "title": "GPT-5.1",
           "org": "OpenAI",
@@ -16925,30 +17093,6 @@
           ],
           "overlap": 0.877,
           "confidence": 0.813
-        },
-        {
-          "slug": "gpt-5-2",
-          "title": "GPT-5.2",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.863,
-          "confidence": 0.807
-        },
-        {
-          "slug": "genie-3",
-          "title": "Genie 3",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.844,
-          "confidence": 0.797
         }
       ]
     },
@@ -17272,364 +17416,6 @@
         }
       ]
     },
-    "gemini-3-pro": {
-      "competes_with": [
-        {
-          "slug": "claude-haiku-4-5",
-          "title": "Claude Haiku 4.5",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.912,
-          "confidence": 0.855,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "domain": "multimodal",
-          "overlap": 0.874,
-          "confidence": 0.77,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "domain": "multimodal",
-          "overlap": 0.863,
-          "confidence": 0.754,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "domain": "multimodal",
-          "overlap": 0.852,
-          "confidence": 0.717,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "doubao-1-5",
-          "title": "Doubao 1.5 Pro",
-          "org": "ByteDance",
-          "domain": "multimodal",
-          "overlap": 0.881,
-          "confidence": 0.676,
-          "release_gap_mo": 10
-        },
-        {
-          "slug": "genie-3",
-          "title": "Genie 3",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.8,
-          "confidence": 0.675,
-          "release_gap_mo": 3
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "gpt-5-1",
-          "title": "GPT-5.1",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "audio"
-          ],
-          "overlap": 0.959,
-          "confidence": 0.98
-        },
-        {
-          "slug": "gpt-5-2",
-          "title": "GPT-5.2",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "audio"
-          ],
-          "overlap": 0.94,
-          "confidence": 0.97
-        },
-        {
-          "slug": "claude-haiku-4-5",
-          "title": "Claude Haiku 4.5",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.912,
-          "confidence": 0.956
-        },
-        {
-          "slug": "doubao-1-5",
-          "title": "Doubao 1.5 Pro",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision",
-            "audio",
-            "agentic"
-          ],
-          "overlap": 0.881,
-          "confidence": 0.94
-        },
-        {
-          "slug": "gpt-5-4",
-          "title": "GPT-5.4",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.851,
-          "confidence": 0.925
-        },
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.813,
-          "confidence": 0.906
-        },
-        {
-          "slug": "claude-3-7-sonnet",
-          "title": "Claude 3.7 Sonnet",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.909,
-          "confidence": 0.83
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.874,
-          "confidence": 0.812
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.863,
-          "confidence": 0.807
-        },
-        {
-          "slug": "gemini-3",
-          "title": "Gemini 3",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.852,
-          "confidence": 0.801
-        }
-      ]
-    },
-    "gemini-3": {
-      "competes_with": [
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "domain": "multimodal",
-          "overlap": 0.996,
-          "confidence": 0.846,
-          "release_gap_mo": 9
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "domain": "multimodal",
-          "overlap": 0.996,
-          "confidence": 0.844,
-          "release_gap_mo": 9
-        },
-        {
-          "slug": "claude-haiku-4-5",
-          "title": "Claude Haiku 4.5",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 0.926,
-          "confidence": 0.789,
-          "release_gap_mo": 7
-        },
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.852,
-          "confidence": 0.717,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "genie-3",
-          "title": "Genie 3",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.806,
-          "confidence": 0.597,
-          "release_gap_mo": 9
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "gpt-5-4",
-          "title": "GPT-5.4",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "coding"
-          ],
-          "overlap": 0.992,
-          "confidence": 0.996
-        },
-        {
-          "slug": "claude-sonnet-4-6",
-          "title": "Claude Sonnet 4.6",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "coding"
-          ],
-          "overlap": 0.99,
-          "confidence": 0.995
-        },
-        {
-          "slug": "gpt-5-2",
-          "title": "GPT-5.2",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision",
-            "coding"
-          ],
-          "overlap": 0.926,
-          "confidence": 0.963
-        },
-        {
-          "slug": "glm-4-5",
-          "title": "GLM-4.5",
-          "org": "Tsinghua / Zhipu",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.873
-        },
-        {
-          "slug": "step-3",
-          "title": "Step-3",
-          "org": "Stepfun",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.873
-        },
-        {
-          "slug": "claude-haiku-4-5",
-          "title": "Claude Haiku 4.5",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.926,
-          "confidence": 0.838
-        },
-        {
-          "slug": "gpt-5-1",
-          "title": "GPT-5.1",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.919,
-          "confidence": 0.835
-        },
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "reasoning",
-            "vision"
-          ],
-          "overlap": 0.852,
-          "confidence": 0.801
-        },
-        {
-          "slug": "claude-3-7-sonnet",
-          "title": "Claude 3.7 Sonnet",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.923,
-          "confidence": 0.712
-        },
-        {
-          "slug": "genie-3",
-          "title": "Genie 3",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.806,
-          "confidence": 0.653
-        }
-      ]
-    },
     "ernie-4": {
       "competes_with": [
         {
@@ -17849,6 +17635,15 @@
           "release_gap_mo": 1
         },
         {
+          "slug": "codestral-25",
+          "title": "Codestral 25.01",
+          "org": "Mistral AI",
+          "domain": "multimodal",
+          "overlap": 0.849,
+          "confidence": 0.685,
+          "release_gap_mo": 7
+        },
+        {
           "slug": "doubao-1-5",
           "title": "Doubao 1.5 Pro",
           "org": "ByteDance",
@@ -17856,22 +17651,13 @@
           "overlap": 0.784,
           "confidence": 0.593,
           "release_gap_mo": 7
-        },
-        {
-          "slug": "qwen-3-coder",
-          "title": "Qwen3-Coder",
-          "org": "Alibaba",
-          "domain": "multimodal",
-          "overlap": 0.849,
-          "confidence": 0.581,
-          "release_gap_mo": 13
         }
       ],
       "same_capability": [
         {
-          "slug": "gpt-4",
-          "title": "GPT-4",
-          "org": "OpenAI",
+          "slug": "llama-4",
+          "title": "Llama 4",
+          "org": "Meta AI",
           "shared": [
             "multimodal",
             "vision",
@@ -17929,6 +17715,18 @@
           "confidence": 0.861
         },
         {
+          "slug": "gemini-2-5-pro",
+          "title": "Gemini 2.5 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "vision",
+            "agentic"
+          ],
+          "overlap": 0.895,
+          "confidence": 0.822
+        },
+        {
           "slug": "gpt-4o",
           "title": "GPT-4o",
           "org": "OpenAI",
@@ -17953,36 +17751,26 @@
           "confidence": 0.767
         },
         {
-          "slug": "devin",
-          "title": "Devin",
-          "org": "Cognition",
+          "slug": "mistral-large-3",
+          "title": "Mistral Large 3 (v25.12)",
+          "org": "Mistral AI",
           "shared": [
             "multimodal",
-            "agentic"
+            "vision"
           ],
-          "overlap": 0.849,
-          "confidence": 0.674
+          "overlap": 0.912,
+          "confidence": 0.706
         },
         {
-          "slug": "qwen-3-coder",
-          "title": "Qwen3-Coder",
-          "org": "Alibaba",
+          "slug": "molmo",
+          "title": "Molmo",
+          "org": "Allen AI",
           "shared": [
             "multimodal",
-            "agentic"
+            "vision"
           ],
-          "overlap": 0.849,
-          "confidence": 0.674
-        },
-        {
-          "slug": "deepseek-coder-v2",
-          "title": "DeepSeek-Coder V2",
-          "org": "DeepSeek",
-          "shared": [
-            "multimodal"
-          ],
-          "overlap": 0.754,
-          "confidence": 0.502
+          "overlap": 0.907,
+          "confidence": 0.704
         }
       ]
     },
@@ -17996,6 +17784,15 @@
           "overlap": 0.984,
           "confidence": 0.84,
           "release_gap_mo": 8
+        },
+        {
+          "slug": "gemini-2-5-pro",
+          "title": "Gemini 2.5 Pro",
+          "org": "Google DeepMind",
+          "domain": "multimodal",
+          "overlap": 0.979,
+          "confidence": 0.799,
+          "release_gap_mo": 10
         },
         {
           "slug": "claude-3-5-sonnet",
@@ -18032,15 +17829,6 @@
           "overlap": 0.801,
           "confidence": 0.462,
           "release_gap_mo": 16
-        },
-        {
-          "slug": "pixtral-large",
-          "title": "Pixtral Large",
-          "org": "Mistral AI",
-          "domain": "multimodal",
-          "overlap": 0.781,
-          "confidence": 0.305,
-          "release_gap_mo": 6
         }
       ],
       "same_capability": [
@@ -18748,6 +18536,20 @@
       ],
       "same_capability": [
         {
+          "slug": "gemini-3-pro",
+          "title": "Gemini 3 Pro",
+          "org": "Google DeepMind",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision",
+            "audio",
+            "agentic"
+          ],
+          "overlap": 0.995,
+          "confidence": 1
+        },
+        {
           "slug": "claude-opus-4-7",
           "title": "Claude Opus 4.7",
           "org": "Anthropic",
@@ -18798,6 +18600,18 @@
           ],
           "overlap": 0.82,
           "confidence": 0.91
+        },
+        {
+          "slug": "gemini-3",
+          "title": "Gemini 3",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "reasoning",
+            "vision"
+          ],
+          "overlap": 0.858,
+          "confidence": 0.804
         },
         {
           "slug": "ernie-4",
@@ -18964,18 +18778,6 @@
           ],
           "overlap": 0.907,
           "confidence": 0.829
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 0.895,
-          "confidence": 0.823
         },
         {
           "slug": "doubao-1-5",
@@ -19783,15 +19585,6 @@
           "release_gap_mo": 7
         },
         {
-          "slug": "claude-3-5-sonnet",
-          "title": "Claude 3.5 Sonnet",
-          "org": "Anthropic",
-          "domain": "multimodal",
-          "overlap": 1,
-          "confidence": 0.446,
-          "release_gap_mo": 15
-        },
-        {
           "slug": "deepseek-coder-v2",
           "title": "DeepSeek-Coder V2",
           "org": "DeepSeek",
@@ -19811,18 +19604,6 @@
         }
       ],
       "same_capability": [
-        {
-          "slug": "claude-3-5-sonnet",
-          "title": "Claude 3.5 Sonnet",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "vision",
-            "agentic"
-          ],
-          "overlap": 1,
-          "confidence": 0.875
-        },
         {
           "slug": "ernie-4",
           "title": "Ernie 4.0",
@@ -20030,40 +19811,58 @@
     "qwen-2-5": {
       "competes_with": [
         {
-          "slug": "claude-3-7-sonnet-thinking",
-          "title": "Claude 3.7 Sonnet (Reasoning)",
-          "org": "Anthropic",
+          "slug": "doubao-seed-code",
+          "title": "Doubao Seed Code",
+          "org": "ByteDance",
           "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.74,
+          "overlap": 1,
+          "confidence": 0.743,
           "release_gap_mo": 15
         },
         {
-          "slug": "o4-mini",
-          "title": "o4-mini (high)",
+          "slug": "gpt-oss-120b",
+          "title": "gpt-oss-120B (high)",
           "org": "OpenAI",
           "domain": "reasoning",
-          "overlap": 0.985,
-          "confidence": 0.724,
+          "overlap": 0.999,
+          "confidence": 0.742,
           "release_gap_mo": 15
         },
         {
-          "slug": "gpt-4-1",
-          "title": "GPT-4.1",
-          "org": "OpenAI",
+          "slug": "mercury",
+          "title": "Mercury 2",
+          "org": "Academic / Independent",
           "domain": "reasoning",
-          "overlap": 0.984,
-          "confidence": 0.423,
-          "release_gap_mo": 15
-        },
-        {
-          "slug": "gpt-5-3-instant",
-          "title": "GPT-5.3 Instant",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.969,
-          "confidence": 0.368,
+          "overlap": 0.999,
+          "confidence": 0.715,
           "release_gap_mo": 17
+        },
+        {
+          "slug": "gpt-oss",
+          "title": "gpt-oss",
+          "org": "OpenAI",
+          "domain": "reasoning",
+          "overlap": 0.755,
+          "confidence": 0.498,
+          "release_gap_mo": 11
+        },
+        {
+          "slug": "nemotron-cascade-2-30b-a3b",
+          "title": "Nemotron Cascade 2 30B A3B",
+          "org": "Nvidia",
+          "domain": "reasoning",
+          "overlap": 1,
+          "confidence": 0.443,
+          "release_gap_mo": 15
+        },
+        {
+          "slug": "ernie-5-0-thinking-preview",
+          "title": "ERNIE 5.0 Thinking Preview",
+          "org": "Baidu",
+          "domain": "reasoning",
+          "overlap": 0.999,
+          "confidence": 0.442,
+          "release_gap_mo": 15
         }
       ],
       "same_capability": []
@@ -20213,16 +20012,6 @@
           "confidence": 0.508
         },
         {
-          "slug": "deepseek-v4",
-          "title": "DeepSeek v4",
-          "org": "DeepSeek",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.766,
-          "confidence": 0.508
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -20281,6 +20070,16 @@
           ],
           "overlap": 0.718,
           "confidence": 0.484
+        },
+        {
+          "slug": "gemini-3-1",
+          "title": "Gemini 3.1",
+          "org": "Google",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.716,
+          "confidence": 0.483
         }
       ]
     },
@@ -20467,43 +20266,17 @@
       ],
       "same_capability": []
     },
-    "mattergen": {
-      "competes_with": [
-        {
-          "slug": "alphafold-3",
-          "title": "AlphaFold 3",
-          "org": "DeepMind",
-          "domain": "science",
-          "overlap": 0.832,
-          "confidence": 0.638,
-          "release_gap_mo": 8
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "rfdiffusion",
-          "title": "RFdiffusion",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal"
-          ],
-          "overlap": 0.832,
-          "confidence": 0.541
-        },
-        {
-          "slug": "alphafold-3",
-          "title": "AlphaFold 3",
-          "org": "DeepMind",
-          "shared": [
-            "multimodal"
-          ],
-          "overlap": 0.832,
-          "confidence": 0.541
-        }
-      ]
-    },
     "gpt-oss": {
       "competes_with": [
+        {
+          "slug": "deepseek-v3-1",
+          "title": "DeepSeek V3.1 (Non-reasoning)",
+          "org": "DeepSeek",
+          "domain": "reasoning",
+          "overlap": 0.797,
+          "confidence": 0.648,
+          "release_gap_mo": 5
+        },
         {
           "slug": "gemma-4",
           "title": "Gemma 4",
@@ -20548,15 +20321,6 @@
           "overlap": 0.757,
           "confidence": 0.594,
           "release_gap_mo": 5
-        },
-        {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.777,
-          "confidence": 0.593,
-          "release_gap_mo": 7
         }
       ],
       "same_capability": [
@@ -20629,6 +20393,41 @@
           ],
           "overlap": 0.725,
           "confidence": 0.487
+        }
+      ]
+    },
+    "mattergen": {
+      "competes_with": [
+        {
+          "slug": "alphafold-3",
+          "title": "AlphaFold 3",
+          "org": "DeepMind",
+          "domain": "science",
+          "overlap": 0.832,
+          "confidence": 0.638,
+          "release_gap_mo": 8
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "rfdiffusion",
+          "title": "RFdiffusion",
+          "org": "Academic / Independent",
+          "shared": [
+            "multimodal"
+          ],
+          "overlap": 0.832,
+          "confidence": 0.541
+        },
+        {
+          "slug": "alphafold-3",
+          "title": "AlphaFold 3",
+          "org": "DeepMind",
+          "shared": [
+            "multimodal"
+          ],
+          "overlap": 0.832,
+          "confidence": 0.541
         }
       ]
     },
@@ -20897,6 +20696,17 @@
           ],
           "overlap": 0.87,
           "confidence": 0.685
+        },
+        {
+          "slug": "gemini-2-0",
+          "title": "Gemini 2.0",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.697,
+          "confidence": 0.598
         }
       ]
     },
@@ -20909,6 +20719,15 @@
           "domain": "image",
           "overlap": 0.926,
           "confidence": 0.485,
+          "release_gap_mo": 7
+        },
+        {
+          "slug": "gemini-2-0",
+          "title": "Gemini 2.0",
+          "org": "Google",
+          "domain": "image",
+          "overlap": 0.771,
+          "confidence": 0.275,
           "release_gap_mo": 7
         }
       ],
@@ -21000,6 +20819,299 @@
           ],
           "overlap": 0.896,
           "confidence": 0.698
+        },
+        {
+          "slug": "gemini-2-0",
+          "title": "Gemini 2.0",
+          "org": "Google",
+          "shared": [
+            "multimodal",
+            "vision"
+          ],
+          "overlap": 0.771,
+          "confidence": 0.635
+        }
+      ]
+    },
+    "claude-35": {
+      "competes_with": [
+        {
+          "slug": "gemini-2-0",
+          "title": "Gemini 2.0",
+          "org": "Google",
+          "domain": "image",
+          "overlap": 0.788,
+          "confidence": 0.417,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "grok-3",
+          "title": "Grok 3",
+          "org": "xAI",
+          "domain": "image",
+          "overlap": 0.87,
+          "confidence": 0.29,
+          "release_gap_mo": 14
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "magistral-medium",
+          "title": "Magistral Medium 1.2",
+          "org": "Mistral AI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.975,
+          "confidence": 0.738
+        },
+        {
+          "slug": "gemini-1-5",
+          "title": "Gemini 1.5",
+          "org": "Google",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.929,
+          "confidence": 0.715
+        },
+        {
+          "slug": "grok-3",
+          "title": "Grok 3",
+          "org": "xAI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.87,
+          "confidence": 0.685
+        },
+        {
+          "slug": "gpt-image-1",
+          "title": "GPT Image 1 / 1.5",
+          "org": "OpenAI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.858,
+          "confidence": 0.679
+        },
+        {
+          "slug": "midjourney-v7",
+          "title": "Midjourney V7",
+          "org": "Midjourney",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.858,
+          "confidence": 0.679
+        },
+        {
+          "slug": "seedream-4",
+          "title": "Seedream 4.0",
+          "org": "ByteDance",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.858,
+          "confidence": 0.679
+        },
+        {
+          "slug": "nano-banana-pro",
+          "title": "Nano Banana Pro / Gemini 3 Pro Image",
+          "org": "Google DeepMind",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.858,
+          "confidence": 0.679
+        },
+        {
+          "slug": "gemini-2-0",
+          "title": "Gemini 2.0",
+          "org": "Google",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.788,
+          "confidence": 0.644
+        }
+      ]
+    },
+    "gemini-2-0": {
+      "competes_with": [
+        {
+          "slug": "claude-35",
+          "title": "Claude 35",
+          "org": "Anthropic",
+          "domain": "image",
+          "overlap": 0.788,
+          "confidence": 0.417,
+          "release_gap_mo": 0
+        },
+        {
+          "slug": "ministral",
+          "title": "Ministral 3 14B",
+          "org": "Mistral AI",
+          "domain": "image",
+          "overlap": 0.77,
+          "confidence": 0.314,
+          "release_gap_mo": 5
+        },
+        {
+          "slug": "ministral-8",
+          "title": "Ministral 3 8B",
+          "org": "Mistral AI",
+          "domain": "image",
+          "overlap": 0.767,
+          "confidence": 0.311,
+          "release_gap_mo": 5
+        },
+        {
+          "slug": "ministral-3",
+          "title": "Ministral 3 3B",
+          "org": "Mistral AI",
+          "domain": "image",
+          "overlap": 0.76,
+          "confidence": 0.301,
+          "release_gap_mo": 5
+        },
+        {
+          "slug": "magistral",
+          "title": "Magistral Small 1.2",
+          "org": "Mistral AI",
+          "domain": "image",
+          "overlap": 0.774,
+          "confidence": 0.279,
+          "release_gap_mo": 7
+        },
+        {
+          "slug": "magistral-medium",
+          "title": "Magistral Medium 1.2",
+          "org": "Mistral AI",
+          "domain": "image",
+          "overlap": 0.771,
+          "confidence": 0.275,
+          "release_gap_mo": 7
+        }
+      ],
+      "same_capability": [
+        {
+          "slug": "claude-35",
+          "title": "Claude 35",
+          "org": "Anthropic",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.788,
+          "confidence": 0.644
+        },
+        {
+          "slug": "magistral",
+          "title": "Magistral Small 1.2",
+          "org": "Mistral AI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.774,
+          "confidence": 0.637
+        },
+        {
+          "slug": "apriel",
+          "title": "Apriel-v1.5-15B-Thinker",
+          "org": "Academic / Independent",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.771,
+          "confidence": 0.636
+        },
+        {
+          "slug": "magistral-medium",
+          "title": "Magistral Medium 1.2",
+          "org": "Mistral AI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.771,
+          "confidence": 0.635
+        },
+        {
+          "slug": "ministral",
+          "title": "Ministral 3 14B",
+          "org": "Mistral AI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.77,
+          "confidence": 0.635
+        },
+        {
+          "slug": "ministral-8",
+          "title": "Ministral 3 8B",
+          "org": "Mistral AI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.767,
+          "confidence": 0.634
+        },
+        {
+          "slug": "ministral-3",
+          "title": "Ministral 3 3B",
+          "org": "Mistral AI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.76,
+          "confidence": 0.63
+        },
+        {
+          "slug": "grok-3",
+          "title": "Grok 3",
+          "org": "xAI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.697,
+          "confidence": 0.598
+        },
+        {
+          "slug": "gpt-image-1",
+          "title": "GPT Image 1 / 1.5",
+          "org": "OpenAI",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.682,
+          "confidence": 0.591
+        },
+        {
+          "slug": "midjourney-v7",
+          "title": "Midjourney V7",
+          "org": "Midjourney",
+          "shared": [
+            "vision",
+            "multimodal"
+          ],
+          "overlap": 0.682,
+          "confidence": 0.591
         }
       ]
     },
@@ -21117,15 +21229,6 @@
           "overlap": 0.852,
           "confidence": 0.342,
           "release_gap_mo": 10
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "domain": "multimodal",
-          "overlap": 0.764,
-          "confidence": 0.19,
-          "release_gap_mo": 12
         }
       ],
       "same_capability": [
@@ -21139,28 +21242,6 @@
           ],
           "overlap": 0.852,
           "confidence": 0.676
-        },
-        {
-          "slug": "gemini-2-5-pro",
-          "title": "Gemini 2.5 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "audio"
-          ],
-          "overlap": 0.764,
-          "confidence": 0.632
-        },
-        {
-          "slug": "gemini-3-pro",
-          "title": "Gemini 3 Pro",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "audio"
-          ],
-          "overlap": 0.712,
-          "confidence": 0.606
         },
         {
           "slug": "devin",
@@ -21191,158 +21272,6 @@
           ],
           "overlap": 0.618,
           "confidence": 0.434
-        }
-      ]
-    },
-    "gemini-2-0": {
-      "competes_with": [
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.77,
-          "confidence": 0.314,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.767,
-          "confidence": 0.311,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.76,
-          "confidence": 0.301,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.774,
-          "confidence": 0.279,
-          "release_gap_mo": 7
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.774,
-          "confidence": 0.637
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.771,
-          "confidence": 0.636
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.77,
-          "confidence": 0.635
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.767,
-          "confidence": 0.634
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.76,
-          "confidence": 0.63
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.682,
-          "confidence": 0.591
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.682,
-          "confidence": 0.591
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.682,
-          "confidence": 0.591
-        },
-        {
-          "slug": "flux-2",
-          "title": "FLUX.2",
-          "org": "Black Forest Labs",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.682,
-          "confidence": 0.591
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.682,
-          "confidence": 0.591
         }
       ]
     },
@@ -21409,98 +21338,6 @@
           ],
           "overlap": 0.761,
           "confidence": 0.63
-        }
-      ]
-    },
-    "claude-35": {
-      "competes_with": [
-        {
-          "slug": "grok-3",
-          "title": "Grok 3",
-          "org": "xAI",
-          "domain": "image",
-          "overlap": 0.87,
-          "confidence": 0.29,
-          "release_gap_mo": 14
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.975,
-          "confidence": 0.738
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.929,
-          "confidence": 0.715
-        },
-        {
-          "slug": "grok-3",
-          "title": "Grok 3",
-          "org": "xAI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.87,
-          "confidence": 0.685
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.858,
-          "confidence": 0.679
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.858,
-          "confidence": 0.679
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.858,
-          "confidence": 0.679
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.858,
-          "confidence": 0.679
         }
       ]
     },
@@ -21846,6 +21683,61 @@
           ],
           "overlap": 0.771,
           "confidence": 0.636
+        }
+      ]
+    },
+    "deepseek-v4": {
+      "competes_with": [],
+      "same_capability": [
+        {
+          "slug": "hy3",
+          "title": "Hy3-preview",
+          "org": "Tencent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.999,
+          "confidence": 0.625
+        },
+        {
+          "slug": "step-3-5",
+          "title": "Step 3.5",
+          "org": "Stepfun",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.998,
+          "confidence": 0.624
+        },
+        {
+          "slug": "minimax-m2",
+          "title": "MiniMax M2",
+          "org": "MiniMax",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.996,
+          "confidence": 0.623
+        },
+        {
+          "slug": "gemma-4",
+          "title": "Gemma 4",
+          "org": "Google",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.995,
+          "confidence": 0.623
+        },
+        {
+          "slug": "kat-coder-pro-v2",
+          "title": "KAT Coder Pro V2",
+          "org": "Academic / Independent",
+          "shared": [
+            "reasoning"
+          ],
+          "overlap": 0.989,
+          "confidence": 0.62
         }
       ]
     }

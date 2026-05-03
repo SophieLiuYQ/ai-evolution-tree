@@ -50,11 +50,9 @@ model_spec:
     - name: Speed · Output tok/s
       score: '139'
       source_url: 'https://artificialanalysis.ai/models/o4-mini'
-      vs_baseline: 'Rank #91 of 496'
     - name: Price ($/M tokens)
       score: $1.10 in / $4.40 out
       source_url: 'https://artificialanalysis.ai/models/o4-mini'
-      vs_baseline: 'Rank #394 of 496'
   aa_url: 'https://artificialanalysis.ai/models/o4-mini'
   context_window: 200000
   modalities_in:
@@ -81,24 +79,34 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Successor to o3 — extends the reasoning-model line."
-      - "Step-change on ARC-AGI-1 — 75.7% at the public $10K compute limit, 87.5% at high compute (172x)"
-      - "But ARC-AGI-2 (March 2025) cratered the narrative: <3% on the harder benchmark vs 60% for the average human"
-      - "The released April-2025 o3 is NOT the December preview — preview had ARC-AGI-1 in its training, public version is more honest"
+      - Successor to o3 — extends the reasoning-model line.
+      - >-
+        Step-change on ARC-AGI-1 — 75.7% at the public $10K compute limit, 87.5%
+        at high compute (172x)
+      - >-
+        But ARC-AGI-2 (March 2025) cratered the narrative: <3% on the harder
+        benchmark vs 60% for the average human
+      - >-
+        The released April-2025 o3 is NOT the December preview — preview had
+        ARC-AGI-1 in its training, public version is more honest
     best_for:
-      - "Frontier reasoning research and benchmark exploration"
-      - "Hard math (AIME, IMO-style) and graduate-level science (GPQA)"
-      - "Code that needs novel algorithm design rather than scaffolded refactors"
+      - Frontier reasoning research and benchmark exploration
+      - 'Hard math (AIME, IMO-style) and graduate-level science (GPQA)'
+      - Code that needs novel algorithm design rather than scaffolded refactors
     not_ideal_for:
-      - "Latency-sensitive chat — o3-mini or GPT-4o are far faster"
-      - "Tasks framed slightly outside training distribution — Apple's variable-rename study still applies"
+      - Latency-sensitive chat — o3-mini or GPT-4o are far faster
+      - >-
+        Tasks framed slightly outside training distribution — Apple's
+        variable-rename study still applies
     sources:
-      - name: "ARC Prize — o3 breakthrough on ARC-AGI-Pub"
-        url: "https://arcprize.org/blog/oai-o3-pub-breakthrough"
-      - name: "TechCrunch — o3 scores lower than initially implied"
-        url: "https://techcrunch.com/2025/04/20/openais-o3-ai-model-scores-lower-on-a-benchmark-than-the-company-initially-implied/"
-      - name: "VentureBeat — o3 progress on ARC-AGI"
-        url: "https://venturebeat.com/ai/openais-o3-shows-remarkable-progress-on-arc-agi-sparking-debate-on-ai-reasoning"
+      - name: ARC Prize — o3 breakthrough on ARC-AGI-Pub
+        url: 'https://arcprize.org/blog/oai-o3-pub-breakthrough'
+      - name: TechCrunch — o3 scores lower than initially implied
+        url: >-
+          https://techcrunch.com/2025/04/20/openais-o3-ai-model-scores-lower-on-a-benchmark-than-the-company-initially-implied/
+      - name: VentureBeat — o3 progress on ARC-AGI
+        url: >-
+          https://venturebeat.com/ai/openais-o3-shows-remarkable-progress-on-arc-agi-sparking-debate-on-ai-reasoning
   availability:
     - api
 public_view:

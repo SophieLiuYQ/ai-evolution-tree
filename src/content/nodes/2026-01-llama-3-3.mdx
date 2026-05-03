@@ -51,13 +51,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
       vs_baseline: 'Rank #406 of 496'
     - name: Speed · Output tok/s
-      score: '96'
+      score: '99'
       source_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
-      vs_baseline: 'Rank #143 of 496'
     - name: Price ($/M tokens)
       score: $0.58 in / $0.71 out
       source_url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
-      vs_baseline: 'Rank #267 of 496'
   variants:
     - id: llama-3-3-nemotron-super-49b
       label: Llama 3.3 Nemotron Super 49B v1 (Non-reasoning)
@@ -94,28 +92,42 @@ model_spec:
     - api
   reviews:
     feels_like:
-      - "Same architecture as 3.1 70B but post-training advances delivered notable reasoning + math gains"
-      - "92.1% on IFEval — beats Llama 3.1 405B (88.6) and GPT-4o (84.6) on instruction following"
-      - "MATH 77.0% (vs 67.8% for 3.1 70B); HumanEval 88.4%; MMLU Chat 86.0%"
-      - "Outperforms Claude 3 Opus on 5 of 6 major benchmarks at one-tenth the parameter count"
-      - "$0.58/M input, $0.71/M output — 25x cheaper than GPT-4o while matching most benchmarks"
-      - "Generates 93.6 tok/s median — above-average throughput at the 70B tier"
+      - >-
+        Same architecture as 3.1 70B but post-training advances delivered
+        notable reasoning + math gains
+      - >-
+        92.1% on IFEval — beats Llama 3.1 405B (88.6) and GPT-4o (84.6) on
+        instruction following
+      - MATH 77.0% (vs 67.8% for 3.1 70B); HumanEval 88.4%; MMLU Chat 86.0%
+      - >-
+        Outperforms Claude 3 Opus on 5 of 6 major benchmarks at one-tenth the
+        parameter count
+      - >-
+        $0.58/M input, $0.71/M output — 25x cheaper than GPT-4o while matching
+        most benchmarks
+      - Generates 93.6 tok/s median — above-average throughput at the 70B tier
     best_for:
-      - "Open-weights production where 405B is too expensive but 8B is too weak"
-      - "Self-hosted RAG and code-completion stacks needing strong instruction-following"
-      - "Multilingual reasoning (MGSM 91.1%) at frontier-tier quality"
-      - "Replacing GPT-4o-class API calls with self-hosted inference for cost savings"
+      - Open-weights production where 405B is too expensive but 8B is too weak
+      - >-
+        Self-hosted RAG and code-completion stacks needing strong
+        instruction-following
+      - Multilingual reasoning (MGSM 91.1%) at frontier-tier quality
+      - >-
+        Replacing GPT-4o-class API calls with self-hosted inference for cost
+        savings
     not_ideal_for:
-      - "Frontier reasoning by mid-2025 — Llama 4 family and competitors moved past it"
-      - "Multimodal tasks (text-only; vision lives in Llama 3.2 Vision / Llama 4)"
-      - "Edge / consumer-laptop deployments — 70B still demands serious GPU"
+      - >-
+        Frontier reasoning by mid-2025 — Llama 4 family and competitors moved
+        past it
+      - Multimodal tasks (text-only; vision lives in Llama 3.2 Vision / Llama 4)
+      - Edge / consumer-laptop deployments — 70B still demands serious GPU
     sources:
-      - name: "DataCamp — Llama 3.3 70B review"
-        url: "https://www.datacamp.com/blog/llama-3-3-70b"
-      - name: "Artificial Analysis — Llama 3.3 70B"
-        url: "https://artificialanalysis.ai/models/llama-3-3-instruct-70b"
-      - name: "Analytics Vidhya — Llama 3.3 70B is here, 25x cheaper"
-        url: "https://www.analyticsvidhya.com/blog/2024/12/meta-llama-3-3-70b/"
+      - name: DataCamp — Llama 3.3 70B review
+        url: 'https://www.datacamp.com/blog/llama-3-3-70b'
+      - name: Artificial Analysis — Llama 3.3 70B
+        url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
+      - name: 'Analytics Vidhya — Llama 3.3 70B is here, 25x cheaper'
+        url: 'https://www.analyticsvidhya.com/blog/2024/12/meta-llama-3-3-70b/'
 public_view:
   plain_english: >-
     Llama 3.3 is an API model from Nvidia. It’s positioned for hard reasoning

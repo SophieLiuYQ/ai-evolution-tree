@@ -47,13 +47,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
       vs_baseline: 'Rank #6 of 96 · Reasoning'
     - name: Speed · Output tok/s
-      score: '38'
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
-      vs_baseline: 'Rank #62 of 96 · Reasoning'
+      score: '81'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-non-reasoning'
     - name: Price ($/M tokens)
-      score: $1.74 in / $3.48 out
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-pro-high'
-      vs_baseline: 'Rank #75 of 96 · Reasoning'
+      score: $0.14 in / $0.28 out
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-non-reasoning'
   variants:
     - id: deepseek-v4-flash-high
       label: 'DeepSeek V4 Flash (Reasoning, High Effort)'
@@ -100,24 +98,38 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Successor to V3/R1 generation."
-      - "First open-weights reasoning model that genuinely competes with o1 — broke the closed-source moat"
-      - "~90% on advanced math benchmarks vs ~83% for GPT-4o; the chain-of-thought is fully visible"
-      - "Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training runs to reach the frontier"
+      - Successor to V3/R1 generation.
+      - >-
+        First open-weights reasoning model that genuinely competes with o1 —
+        broke the closed-source moat
+      - >-
+        ~90% on advanced math benchmarks vs ~83% for GPT-4o; the
+        chain-of-thought is fully visible
+      - >-
+        Trained for ~$5.5M on 2,048 H800s — proof you don't need $100M training
+        runs to reach the frontier
     best_for:
-      - "Math proofs, logic puzzles, and step-by-step derivations where explicit reasoning helps"
-      - "Coding and engineering tasks that benefit from chain-of-thought"
-      - "On-prem / air-gapped deployments where API models can't go"
+      - >-
+        Math proofs, logic puzzles, and step-by-step derivations where explicit
+        reasoning helps
+      - Coding and engineering tasks that benefit from chain-of-thought
+      - On-prem / air-gapped deployments where API models can't go
     not_ideal_for:
-      - "Casual chat, tone, or creative writing — ChatGPT/Claude feel more polished"
-      - "Multimodal tasks (image / vision) — text-only model"
+      - >-
+        Casual chat, tone, or creative writing — ChatGPT/Claude feel more
+        polished
+      - Multimodal tasks (image / vision) — text-only model
     sources:
-      - name: "MIT Technology Review — DeepSeek's top AI reasoning model despite sanctions"
-        url: "https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/"
-      - name: "BentoML — Complete guide to DeepSeek models V3, R1, V4"
-        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
-      - name: "DataCamp — DeepSeek vs ChatGPT comparison"
-        url: "https://www.datacamp.com/blog/deepseek-vs-chatgpt"
+      - name: >-
+          MIT Technology Review — DeepSeek's top AI reasoning model despite
+          sanctions
+        url: >-
+          https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/
+      - name: 'BentoML — Complete guide to DeepSeek models V3, R1, V4'
+        url: >-
+          https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+      - name: DataCamp — DeepSeek vs ChatGPT comparison
+        url: 'https://www.datacamp.com/blog/deepseek-vs-chatgpt'
   availability:
     - api
 public_view:

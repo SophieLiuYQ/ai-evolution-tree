@@ -76,13 +76,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
       vs_baseline: 'Rank #39 of 496'
     - name: Speed · Output tok/s
-      score: '136'
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
-      vs_baseline: 'Rank #95 of 496'
+      score: '131'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
     - name: Price ($/M tokens)
       score: $1.25 in / $10.00 out
-      source_url: 'https://artificialanalysis.ai/models/gpt-5-1'
-      vs_baseline: 'Rank #417 of 496'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
   homepage: 'https://openai.com/index/gpt-5-1-for-developers/'
   aa_url: 'https://artificialanalysis.ai/models/gpt-5-1'
   context_window: 272000
@@ -112,28 +110,40 @@ model_spec:
     - api
   reviews:
     feels_like:
-      - "Adaptive thinking — auto-tunes reasoning depth per task; not a fixed-tier release"
-      - "2-3x faster than GPT-5 on tool-heavy reasoning at similar or better quality (Balyasny eval)"
-      - "Uses ~half the tokens of leading competitors on agent flows for the same answer"
-      - "CodeRabbit: 'top model of choice for PR reviews' at release"
-      - "Cognition: 'noticeably better at understanding what you're asking and working with you to get it done'"
-      - "'No reasoning' mode for fast everyday answers; you don't pay for thinking when it's not needed"
+      - >-
+        Adaptive thinking — auto-tunes reasoning depth per task; not a
+        fixed-tier release
+      - >-
+        2-3x faster than GPT-5 on tool-heavy reasoning at similar or better
+        quality (Balyasny eval)
+      - >-
+        Uses ~half the tokens of leading competitors on agent flows for the same
+        answer
+      - 'CodeRabbit: ''top model of choice for PR reviews'' at release'
+      - >-
+        Cognition: 'noticeably better at understanding what you're asking and
+        working with you to get it done'
+      - >-
+        'No reasoning' mode for fast everyday answers; you don't pay for
+        thinking when it's not needed
     best_for:
-      - "Production agent workflows where token cost / latency dominate"
-      - "PR review and code-discussion bots (CodeRabbit picked it as default)"
-      - "Cursor / Devin-style developer tools where adaptive depth matters"
-      - "Replacing GPT-5 in production where speed is the constraint"
+      - Production agent workflows where token cost / latency dominate
+      - PR review and code-discussion bots (CodeRabbit picked it as default)
+      - Cursor / Devin-style developer tools where adaptive depth matters
+      - Replacing GPT-5 in production where speed is the constraint
     not_ideal_for:
-      - "Hardest research-grade reasoning — GPT-5.2 Thinking and Pro are stronger"
-      - "Agentic-coding leaderboards on raw SWE-bench — Claude Opus 4.5 / 4.6 still lead"
-      - "Workloads where you want manual control over reasoning effort tier"
+      - Hardest research-grade reasoning — GPT-5.2 Thinking and Pro are stronger
+      - >-
+        Agentic-coding leaderboards on raw SWE-bench — Claude Opus 4.5 / 4.6
+        still lead
+      - Workloads where you want manual control over reasoning effort tier
     sources:
-      - name: "OpenAI — GPT-5.1 for developers"
-        url: "https://openai.com/index/gpt-5-1-for-developers/"
-      - name: "OpenAI — GPT-5.1 smarter, more conversational ChatGPT"
-        url: "https://openai.com/index/gpt-5-1/"
-      - name: "OpenAI — GPT-5.1 system card addendum"
-        url: "https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/"
+      - name: OpenAI — GPT-5.1 for developers
+        url: 'https://openai.com/index/gpt-5-1-for-developers/'
+      - name: 'OpenAI — GPT-5.1 smarter, more conversational ChatGPT'
+        url: 'https://openai.com/index/gpt-5-1/'
+      - name: OpenAI — GPT-5.1 system card addendum
+        url: 'https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/'
 public_view:
   plain_english: >
     GPT-5.1 was OpenAI’s first “fast follow” iteration on GPT-5: less

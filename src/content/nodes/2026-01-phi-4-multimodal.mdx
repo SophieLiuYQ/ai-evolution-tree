@@ -41,10 +41,6 @@ model_spec:
     - name: Speed · Output tok/s
       score: '17'
       source_url: 'https://artificialanalysis.ai/models/phi-4-multimodal'
-      vs_baseline: 'Rank #295 of 496'
-    - name: Price ($/M tokens)
-      score: $0.00 in / $0.00 out
-      source_url: 'https://artificialanalysis.ai/models/phi-4-multimodal'
   aa_url: 'https://artificialanalysis.ai/models/phi-4-multimodal'
   parameters: 5.6B
   context_window: 128000
@@ -74,23 +70,32 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "14B parameters that outperforms models 5x larger on math and reasoning — synthetic-data scaling laws in action"
-      - "MMLU 84.8% (up from Phi-3's 77.9%); MATH 56.1% (up from 42.5%) — large quality jumps without size jump"
-      - "HumanEval 82.6% — competitive with much larger frontier-tier models on Python code generation"
+      - >-
+        14B parameters that outperforms models 5x larger on math and reasoning —
+        synthetic-data scaling laws in action
+      - >-
+        MMLU 84.8% (up from Phi-3's 77.9%); MATH 56.1% (up from 42.5%) — large
+        quality jumps without size jump
+      - >-
+        HumanEval 82.6% — competitive with much larger frontier-tier models on
+        Python code generation
     best_for:
-      - "On-device reasoning where larger models can't fit"
-      - "Math, science, and code benchmarks at SLM cost"
-      - "Self-hosted production where 14B inference is affordable on a single GPU"
+      - On-device reasoning where larger models can't fit
+      - 'Math, science, and code benchmarks at SLM cost'
+      - Self-hosted production where 14B inference is affordable on a single GPU
     not_ideal_for:
-      - "Broad-knowledge factual QA — small models still have limited recall"
-      - "Multimodal tasks (Phi-4 base is text-only; vision lives in Phi-4-multimodal)"
+      - Broad-knowledge factual QA — small models still have limited recall
+      - >-
+        Multimodal tasks (Phi-4 base is text-only; vision lives in
+        Phi-4-multimodal)
     sources:
-      - name: "Microsoft — Phi-4 small models that pack a punch"
-        url: "https://techcommunity.microsoft.com/blog/educatordeveloperblog/phi-4-small-language-models-that-pack-a-punch/4464167"
-      - name: "Hugging Face — microsoft/phi-4"
-        url: "https://huggingface.co/microsoft/phi-4"
-      - name: "Microsoft Azure — Phi product page"
-        url: "https://azure.microsoft.com/en-us/products/phi"
+      - name: Microsoft — Phi-4 small models that pack a punch
+        url: >-
+          https://techcommunity.microsoft.com/blog/educatordeveloperblog/phi-4-small-language-models-that-pack-a-punch/4464167
+      - name: Hugging Face — microsoft/phi-4
+        url: 'https://huggingface.co/microsoft/phi-4'
+      - name: Microsoft Azure — Phi product page
+        url: 'https://azure.microsoft.com/en-us/products/phi'
   availability:
     - api
 public_view:

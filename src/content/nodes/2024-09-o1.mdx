@@ -69,14 +69,9 @@ model_spec:
       score: 7.7% (4.9–7.7%)
       source_url: 'https://artificialanalysis.ai/models/o1'
       vs_baseline: 'Rank #188 of 496'
-    - name: Speed · Output tok/s
-      score: '100'
-      source_url: 'https://artificialanalysis.ai/models/o1'
-      vs_baseline: 'Rank #134 of 496'
     - name: Price ($/M tokens)
-      score: $15.00 in / $60.00 out
-      source_url: 'https://artificialanalysis.ai/models/o1'
-      vs_baseline: 'Rank #488 of 496'
+      score: $16.50 in / $66.00 out
+      source_url: 'https://artificialanalysis.ai/models/o1-preview'
   homepage: 'https://openai.com/index/learning-to-reason-with-llms/'
   availability:
     - api
@@ -110,29 +105,39 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Preferred to GPT-4o by a large margin in data analysis, coding, and math — but not preferred on natural-language tasks"
-      - "Genuinely novel: chain-of-thought is internalised, not prompted — model recognises and corrects its own mistakes"
-      - "Slow — minutes for hard problems vs seconds for GPT-4o; not for chat"
-      - "Hidden chain of thought is policy-restricted; users can lose access for trying to extract it"
-      - "Apple's GSM-Symbolic study showed 17.5% perf drop with renamed variables — fragility lurks under the high benchmark scores"
-      - "Token costs are heavy because of the reasoning trace, even when not shown to the user"
+      - >-
+        Preferred to GPT-4o by a large margin in data analysis, coding, and math
+        — but not preferred on natural-language tasks
+      - >-
+        Genuinely novel: chain-of-thought is internalised, not prompted — model
+        recognises and corrects its own mistakes
+      - Slow — minutes for hard problems vs seconds for GPT-4o; not for chat
+      - >-
+        Hidden chain of thought is policy-restricted; users can lose access for
+        trying to extract it
+      - >-
+        Apple's GSM-Symbolic study showed 17.5% perf drop with renamed variables
+        — fragility lurks under the high benchmark scores
+      - >-
+        Token costs are heavy because of the reasoning trace, even when not
+        shown to the user
     best_for:
-      - "Olympiad-level math, physics, and chemistry problems"
-      - "Code that needs deep reasoning about correctness rather than fluency"
-      - "Strategic / multi-step planning where you can wait minutes for an answer"
-      - "Research workflows that benefit from explicit step-by-step decomposition"
+      - 'Olympiad-level math, physics, and chemistry problems'
+      - Code that needs deep reasoning about correctness rather than fluency
+      - Strategic / multi-step planning where you can wait minutes for an answer
+      - Research workflows that benefit from explicit step-by-step decomposition
     not_ideal_for:
-      - "Real-time chat or low-latency tools — GPT-4o is faster"
-      - "Open-ended writing, creative copy, or natural-language tasks"
-      - "Cost-sensitive bulk inference — reasoning tokens are expensive"
-      - "Use cases where you need to inspect or steer the chain of thought"
+      - Real-time chat or low-latency tools — GPT-4o is faster
+      - 'Open-ended writing, creative copy, or natural-language tasks'
+      - Cost-sensitive bulk inference — reasoning tokens are expensive
+      - Use cases where you need to inspect or steer the chain of thought
     sources:
-      - name: "OpenAI — Learning to reason with LLMs"
-        url: "https://openai.com/index/learning-to-reason-with-llms/"
-      - name: "Simon Willison — Notes on OpenAI's new o1 chain-of-thought models"
-        url: "https://simonwillison.net/2024/Sep/12/openai-o1/"
-      - name: "Wikipedia — OpenAI o1"
-        url: "https://en.wikipedia.org/wiki/OpenAI_o1"
+      - name: OpenAI — Learning to reason with LLMs
+        url: 'https://openai.com/index/learning-to-reason-with-llms/'
+      - name: Simon Willison — Notes on OpenAI's new o1 chain-of-thought models
+        url: 'https://simonwillison.net/2024/Sep/12/openai-o1/'
+      - name: Wikipedia — OpenAI o1
+        url: 'https://en.wikipedia.org/wiki/OpenAI_o1'
 public_view:
   plain_english: |
     OpenAI's first model trained explicitly to "think before it answers"

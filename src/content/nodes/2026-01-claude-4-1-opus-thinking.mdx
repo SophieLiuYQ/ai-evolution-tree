@@ -51,13 +51,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/claude-4-1-opus-thinking'
       vs_baseline: 'Rank #41 of 96 · Reasoning'
     - name: Speed · Output tok/s
-      score: '42'
-      source_url: 'https://artificialanalysis.ai/models/claude-4-1-opus-thinking'
-      vs_baseline: 'Rank #59 of 96 · Reasoning'
+      score: '38'
+      source_url: 'https://artificialanalysis.ai/models/claude-4-1-opus'
     - name: Price ($/M tokens)
-      score: $15.00 in / $75.00 out
-      source_url: 'https://artificialanalysis.ai/models/claude-4-1-opus-thinking'
-      vs_baseline: 'Rank #96 of 96 · Reasoning'
+      score: $18.75 in / $75.00 out
+      source_url: 'https://artificialanalysis.ai/models/claude-4-1-opus'
   aa_url: 'https://artificialanalysis.ai/models/claude-4-1-opus-thinking'
   context_window: 200000
   modalities_in:
@@ -84,24 +82,32 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Mid-cycle refresh of Claude 4 — modest reasoning bumps."
-      - "Sustains hours-long agent loops without losing the thread — testers ran Opus 4 on 7+ hour autonomous coding sessions"
-      - "Best-in-class for real-world software engineering at release; SWE-bench Verified gains over Claude 3.7 Sonnet"
-      - "Native MCP support makes tool-using agents noticeably more reliable in production"
+      - Mid-cycle refresh of Claude 4 — modest reasoning bumps.
+      - >-
+        Sustains hours-long agent loops without losing the thread — testers ran
+        Opus 4 on 7+ hour autonomous coding sessions
+      - >-
+        Best-in-class for real-world software engineering at release; SWE-bench
+        Verified gains over Claude 3.7 Sonnet
+      - >-
+        Native MCP support makes tool-using agents noticeably more reliable in
+        production
     best_for:
-      - "AI-software-engineer products (Devin, Cursor, Cline) that need long-horizon autonomy"
-      - "Agentic workflows with tool use, file editing, and computer use"
-      - "Complex bug fixes that span multiple files / systems"
+      - >-
+        AI-software-engineer products (Devin, Cursor, Cline) that need
+        long-horizon autonomy
+      - 'Agentic workflows with tool use, file editing, and computer use'
+      - Complex bug fixes that span multiple files / systems
     not_ideal_for:
-      - "High-volume chat or simple Q&A (use Sonnet or Haiku)"
-      - "Strictly latency-sensitive applications — Opus is slower"
+      - High-volume chat or simple Q&A (use Sonnet or Haiku)
+      - Strictly latency-sensitive applications — Opus is slower
     sources:
-      - name: "Anthropic — Claude 4 announcement"
-        url: "https://www.anthropic.com/news/claude-4"
-      - name: "16x Engineer — Claude 4 evaluation results"
-        url: "https://eval.16x.engineer/blog/claude-4-opus-sonnet-evaluation-results"
-      - name: "DataCamp — Claude 4 review"
-        url: "https://www.datacamp.com/blog/claude-4"
+      - name: Anthropic — Claude 4 announcement
+        url: 'https://www.anthropic.com/news/claude-4'
+      - name: 16x Engineer — Claude 4 evaluation results
+        url: 'https://eval.16x.engineer/blog/claude-4-opus-sonnet-evaluation-results'
+      - name: DataCamp — Claude 4 review
+        url: 'https://www.datacamp.com/blog/claude-4'
   availability:
     - api
 public_view:

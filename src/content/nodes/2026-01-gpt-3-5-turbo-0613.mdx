@@ -20,11 +20,11 @@ model_spec:
   homepage: 'https://openai.com/'
   benchmarks:
     - name: Speed · Output tok/s
-      score: '0'
-      source_url: 'https://artificialanalysis.ai/models/gpt-3-5-turbo-0613'
+      score: '111'
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
     - name: Price ($/M tokens)
-      score: $0.00 in / $0.00 out
-      source_url: 'https://artificialanalysis.ai/models/gpt-3-5-turbo-0613'
+      score: $0.50 in / $1.50 out
+      source_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
   aa_url: 'https://artificialanalysis.ai/models/gpt-35-turbo'
   context_window: 4096
   modalities_in:
@@ -50,24 +50,34 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Earlier GPT-3 generation — historical baseline."
-      - "Step-change in reasoning vs GPT-3.5 — top 10% on simulated bar exam vs 3.5's bottom 10%"
-      - "MMLU 86.4% in English; surpassed prior models in 24 of 26 other languages"
-      - "First widely-deployed model with image input (text output only) — multimodal era starts here"
+      - Earlier GPT-3 generation — historical baseline.
+      - >-
+        Step-change in reasoning vs GPT-3.5 — top 10% on simulated bar exam vs
+        3.5's bottom 10%
+      - >-
+        MMLU 86.4% in English; surpassed prior models in 24 of 26 other
+        languages
+      - >-
+        First widely-deployed model with image input (text output only) —
+        multimodal era starts here
     best_for:
-      - "Professional knowledge work needing top-of-class reasoning at the time"
-      - "Code generation with chain-of-thought prompting"
-      - "Multilingual tasks across 26+ languages"
+      - Professional knowledge work needing top-of-class reasoning at the time
+      - Code generation with chain-of-thought prompting
+      - Multilingual tasks across 26+ languages
     not_ideal_for:
-      - "Frontier work after Claude 3.5+ / GPT-4o / Llama 3 — quickly surpassed in 2024"
-      - "Cost-sensitive bulk inference — pricing dominant before GPT-4o cut it in half"
+      - >-
+        Frontier work after Claude 3.5+ / GPT-4o / Llama 3 — quickly surpassed
+        in 2024
+      - >-
+        Cost-sensitive bulk inference — pricing dominant before GPT-4o cut it in
+        half
     sources:
-      - name: "OpenAI — GPT-4 research page"
-        url: "https://openai.com/index/gpt-4-research/"
-      - name: "GPT-4 Technical Report (arXiv)"
-        url: "https://arxiv.org/abs/2303.08774"
-      - name: "MIT Press — How is ChatGPT's behavior changing"
-        url: "https://hdsr.mitpress.mit.edu/pub/y95zitmz"
+      - name: OpenAI — GPT-4 research page
+        url: 'https://openai.com/index/gpt-4-research/'
+      - name: GPT-4 Technical Report (arXiv)
+        url: 'https://arxiv.org/abs/2303.08774'
+      - name: MIT Press — How is ChatGPT's behavior changing
+        url: 'https://hdsr.mitpress.mit.edu/pub/y95zitmz'
   availability:
     - api
 public_view:

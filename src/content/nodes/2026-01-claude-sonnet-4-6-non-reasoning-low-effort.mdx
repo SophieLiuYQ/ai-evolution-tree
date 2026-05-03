@@ -53,15 +53,13 @@ model_spec:
         https://artificialanalysis.ai/models/claude-sonnet-4-6-non-reasoning-low-effort
       vs_baseline: 'Rank #19 of 81 · Non-reasoning'
     - name: Speed · Output tok/s
-      score: '59'
+      score: '58'
       source_url: >-
         https://artificialanalysis.ai/models/claude-sonnet-4-6-non-reasoning-low-effort
-      vs_baseline: 'Rank #46 of 81 · Non-reasoning'
     - name: Price ($/M tokens)
-      score: $3.00 in / $15.00 out
+      score: $3.75 in / $15.00 out
       source_url: >-
         https://artificialanalysis.ai/models/claude-sonnet-4-6-non-reasoning-low-effort
-      vs_baseline: 'Rank #76 of 81 · Non-reasoning'
   aa_url: >-
     https://artificialanalysis.ai/models/claude-sonnet-4-6-non-reasoning-low-effort
   context_window: 1000000
@@ -90,23 +88,32 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Topped SWE-bench Verified at release — Cognition reported 18% planning gain and 12% end-to-end eval gain for Devin"
-      - "Edit accuracy is the headline change — internal code-editing error rate dropped from 9% on Sonnet 4 to 0%"
-      - "Sustains 30+ hour autonomous coding focus without losing the thread"
+      - >-
+        Topped SWE-bench Verified at release — Cognition reported 18% planning
+        gain and 12% end-to-end eval gain for Devin
+      - >-
+        Edit accuracy is the headline change — internal code-editing error rate
+        dropped from 9% on Sonnet 4 to 0%
+      - Sustains 30+ hour autonomous coding focus without losing the thread
     best_for:
-      - "Production agentic coding (Devin, Cursor, Cline) where reliability matters"
-      - "AI SRE / on-call automation with long task horizons"
-      - "Day-to-day software engineering at scale on real GitHub issues"
+      - >-
+        Production agentic coding (Devin, Cursor, Cline) where reliability
+        matters
+      - AI SRE / on-call automation with long task horizons
+      - Day-to-day software engineering at scale on real GitHub issues
     not_ideal_for:
-      - "The very hardest reasoning tasks — Opus 4.5 still leads by ~7 points on AA Intelligence Index"
-      - "Simple chat or casual Q&A — try Haiku 4.5 instead"
+      - >-
+        The very hardest reasoning tasks — Opus 4.5 still leads by ~7 points on
+        AA Intelligence Index
+      - Simple chat or casual Q&A — try Haiku 4.5 instead
     sources:
-      - name: "Anthropic — Claude Sonnet 4.5 announcement"
-        url: "https://www.anthropic.com/news/claude-sonnet-4-5"
-      - name: "InfoQ — Sonnet 4.5 tops SWE-bench"
-        url: "https://www.infoq.com/news/2025/10/claude-sonnet-4-5/"
-      - name: "Caylent — Sonnet 4.5 highest-scoring Claude on SWE-bench"
-        url: "https://caylent.com/blog/claude-sonnet-4-5-highest-scoring-claude-model-yet-on-swe-bench"
+      - name: Anthropic — Claude Sonnet 4.5 announcement
+        url: 'https://www.anthropic.com/news/claude-sonnet-4-5'
+      - name: InfoQ — Sonnet 4.5 tops SWE-bench
+        url: 'https://www.infoq.com/news/2025/10/claude-sonnet-4-5/'
+      - name: Caylent — Sonnet 4.5 highest-scoring Claude on SWE-bench
+        url: >-
+          https://caylent.com/blog/claude-sonnet-4-5-highest-scoring-claude-model-yet-on-swe-bench
   availability:
     - api
 public_view:

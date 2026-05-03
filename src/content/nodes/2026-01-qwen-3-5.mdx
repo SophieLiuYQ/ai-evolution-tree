@@ -48,13 +48,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
       vs_baseline: 'Rank #15 of 96 · Reasoning'
     - name: Speed · Output tok/s
-      score: '51'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
-      vs_baseline: 'Rank #52 of 96 · Reasoning'
+      score: '48'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b-non-reasoning'
     - name: Price ($/M tokens)
       score: $0.60 in / $3.60 out
-      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b'
-      vs_baseline: 'Rank #73 of 96 · Reasoning'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-5-397b-a17b-non-reasoning'
   variants:
     - id: qwen3-5-0-8b-non-reasoning
       label: Qwen3.5 0.8B (Non-reasoning)
@@ -138,23 +136,38 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Best open-source reasoning model at its release — 235B-A22B (Thinking) beats DeepSeek-R1 on 17/23 benchmarks"
-      - "Toggle-able thinking mode: same weights serve both reasoning and fast-chat modes"
-      - "Strong 119-language coverage; the most genuinely multilingual frontier-tier model"
+      - >-
+        Best open-source reasoning model at its release — 235B-A22B (Thinking)
+        beats DeepSeek-R1 on 17/23 benchmarks
+      - >-
+        Toggle-able thinking mode: same weights serve both reasoning and
+        fast-chat modes
+      - >-
+        Strong 119-language coverage; the most genuinely multilingual
+        frontier-tier model
     best_for:
-      - "Multilingual production deployments (119 languages) where most models stay English-centric"
-      - "Self-hosted reasoning workflows that need both 'fast mode' and 'thinking mode' from one weight set"
-      - "Open-weights agentic coding (Qwen3-Coder) with very large context windows"
+      - >-
+        Multilingual production deployments (119 languages) where most models
+        stay English-centric
+      - >-
+        Self-hosted reasoning workflows that need both 'fast mode' and 'thinking
+        mode' from one weight set
+      - >-
+        Open-weights agentic coding (Qwen3-Coder) with very large context
+        windows
     not_ideal_for:
-      - "Multimodal tasks (Qwen3 base is text — vision lives in Qwen3-VL, audio in Qwen3-Audio)"
-      - "Edge / single-consumer-GPU deployments at the 235B scale"
+      - >-
+        Multimodal tasks (Qwen3 base is text — vision lives in Qwen3-VL, audio
+        in Qwen3-Audio)
+      - Edge / single-consumer-GPU deployments at the 235B scale
     sources:
-      - name: "Qwen team — Qwen3 launch blog"
-        url: "https://qwenlm.github.io/blog/qwen3/"
-      - name: "Qwen3 Technical Report (arXiv)"
-        url: "https://arxiv.org/pdf/2505.09388"
-      - name: "MarkTechPost — Qwen3.6-27B coding benchmarks"
-        url: "https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/"
+      - name: Qwen team — Qwen3 launch blog
+        url: 'https://qwenlm.github.io/blog/qwen3/'
+      - name: Qwen3 Technical Report (arXiv)
+        url: 'https://arxiv.org/pdf/2505.09388'
+      - name: MarkTechPost — Qwen3.6-27B coding benchmarks
+        url: >-
+          https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/
   availability:
     - api
 public_view:

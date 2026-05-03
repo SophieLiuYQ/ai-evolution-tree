@@ -47,13 +47,9 @@ model_spec:
       score: 15.2% (6.3–15.2%)
       source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
       vs_baseline: 'Rank #32 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '0'
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
     - name: Price ($/M tokens)
       score: $1.64 in / $2.75 out
       source_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
-      vs_baseline: 'Rank #68 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/deepseek-v3-1-terminus-reasoning'
   context_window: 128000
   modalities_in:
@@ -86,23 +82,34 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "671B-param MoE (37B active per token) — the open-weights model that finally matched GPT-4 / Claude 3.5 Sonnet quality"
-      - "82.6% HumanEval (coding) and 90.2% MATH-500 — outperformed GPT-4o, Claude 3.5 Sonnet, and Llama 3 on each"
-      - "Trained for $5.576M on 2.788M H800 GPU hours — 1/100th of comparable proprietary training budgets"
+      - >-
+        671B-param MoE (37B active per token) — the open-weights model that
+        finally matched GPT-4 / Claude 3.5 Sonnet quality
+      - >-
+        82.6% HumanEval (coding) and 90.2% MATH-500 — outperformed GPT-4o,
+        Claude 3.5 Sonnet, and Llama 3 on each
+      - >-
+        Trained for $5.576M on 2.788M H800 GPU hours — 1/100th of comparable
+        proprietary training budgets
     best_for:
-      - "Self-hosted frontier-quality LLM for orgs that can't use proprietary APIs"
-      - "Math, coding, and general knowledge benchmarks at open-source price"
-      - "Fine-tuning and distillation into smaller production models"
+      - >-
+        Self-hosted frontier-quality LLM for orgs that can't use proprietary
+        APIs
+      - 'Math, coding, and general knowledge benchmarks at open-source price'
+      - Fine-tuning and distillation into smaller production models
     not_ideal_for:
-      - "Edge / single-GPU deployments — the MoE size is large despite low active params"
-      - "Multimodal use cases — text-only"
+      - >-
+        Edge / single-GPU deployments — the MoE size is large despite low active
+        params
+      - Multimodal use cases — text-only
     sources:
-      - name: "DeepSeek V3 Technical Report (arXiv)"
-        url: "https://arxiv.org/abs/2412.19437"
-      - name: "BentoML — Complete guide to DeepSeek models"
-        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
-      - name: "Helicone — DeepSeek V3 release"
-        url: "https://www.helicone.ai/blog/deepseek-v3"
+      - name: DeepSeek V3 Technical Report (arXiv)
+        url: 'https://arxiv.org/abs/2412.19437'
+      - name: BentoML — Complete guide to DeepSeek models
+        url: >-
+          https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+      - name: Helicone — DeepSeek V3 release
+        url: 'https://www.helicone.ai/blog/deepseek-v3'
   availability:
     - api
 public_view:

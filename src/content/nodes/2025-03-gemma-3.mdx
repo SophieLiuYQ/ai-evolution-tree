@@ -65,11 +65,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/gemma-3-270m'
       vs_baseline: 'Rank #387 of 496'
     - name: Speed · Output tok/s
-      score: '28'
-      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+      score: '29'
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-4b'
     - name: Price ($/M tokens)
-      score: $0.00 in / $0.00 out
-      source_url: 'https://artificialanalysis.ai/models/gemma-3-27b'
+      score: $0.04 in / $0.08 out
+      source_url: 'https://artificialanalysis.ai/models/gemma-3-4b'
   homepage: 'https://ai.google.dev/gemma'
   github: 'https://github.com/google-deepmind/gemma'
   availability:
@@ -127,28 +127,43 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Four sizes (1B / 4B / 12B / 27B) — covers laptop-class up to single-GPU server inference"
-      - "Gemma-3-4B-IT beats Gemma-2-27B-IT; Gemma-3-27B-IT beats Gemini 1.5 Pro on shared benchmarks"
-      - "Vision input from 4B up; 1B is text-only — first Gemma family with multimodal at small sizes"
-      - "128K context window across all sizes; 140+ language coverage"
-      - "Interleaves 5 local-attention layers per global layer — saves memory at long context"
-      - "Distillation + RL + model merging in post-training delivered noticeable math/coding/instruction gains"
+      - >-
+        Four sizes (1B / 4B / 12B / 27B) — covers laptop-class up to single-GPU
+        server inference
+      - >-
+        Gemma-3-4B-IT beats Gemma-2-27B-IT; Gemma-3-27B-IT beats Gemini 1.5 Pro
+        on shared benchmarks
+      - >-
+        Vision input from 4B up; 1B is text-only — first Gemma family with
+        multimodal at small sizes
+      - 128K context window across all sizes; 140+ language coverage
+      - >-
+        Interleaves 5 local-attention layers per global layer — saves memory at
+        long context
+      - >-
+        Distillation + RL + model merging in post-training delivered noticeable
+        math/coding/instruction gains
     best_for:
-      - "Single-GPU production inference (27B fits H100 / A100 80GB at FP precision)"
-      - "Laptop / phone deployment via the 1B / 4B variants"
-      - "Multilingual apps in 140 languages at open-weights pricing"
-      - "Vision + text workflows that don't justify a frontier API call"
+      - >-
+        Single-GPU production inference (27B fits H100 / A100 80GB at FP
+        precision)
+      - Laptop / phone deployment via the 1B / 4B variants
+      - Multilingual apps in 140 languages at open-weights pricing
+      - Vision + text workflows that don't justify a frontier API call
     not_ideal_for:
-      - "Frontier reasoning leaderboards — Gemini 2.5 / 3 Pro and competitors lead"
-      - "Workloads needing 1M+ context (Gemma 3 caps at 128K)"
-      - "Audio or video input (Gemma 3 base is text + image)"
+      - >-
+        Frontier reasoning leaderboards — Gemini 2.5 / 3 Pro and competitors
+        lead
+      - Workloads needing 1M+ context (Gemma 3 caps at 128K)
+      - Audio or video input (Gemma 3 base is text + image)
     sources:
-      - name: "Google — Introducing Gemma 3 developer guide"
-        url: "https://developers.googleblog.com/en/introducing-gemma3/"
-      - name: "Hugging Face — Welcome Gemma 3"
-        url: "https://huggingface.co/blog/gemma3"
-      - name: "DeepLearning.AI — Gemma 3 vision-language models"
-        url: "https://www.deeplearning.ai/the-batch/google-releases-gemma-3-vision-language-models-with-open-weights/"
+      - name: Google — Introducing Gemma 3 developer guide
+        url: 'https://developers.googleblog.com/en/introducing-gemma3/'
+      - name: Hugging Face — Welcome Gemma 3
+        url: 'https://huggingface.co/blog/gemma3'
+      - name: DeepLearning.AI — Gemma 3 vision-language models
+        url: >-
+          https://www.deeplearning.ai/the-batch/google-releases-gemma-3-vision-language-models-with-open-weights/
 public_view:
   plain_english: |
     Google DeepMind's March 2025 open-weight family, sized 1B / 4B /

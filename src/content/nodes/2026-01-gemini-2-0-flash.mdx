@@ -50,12 +50,6 @@ model_spec:
       score: 7.1% (3.6–7.1%)
       source_url: 'https://artificialanalysis.ai/models/gemini-2-0-flash-thinking-exp-0121'
       vs_baseline: 'Rank #203 of 496'
-    - name: Speed · Output tok/s
-      score: '0'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-flash'
-    - name: Price ($/M tokens)
-      score: $0.15 in / $0.60 out
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-0-flash'
   aa_url: 'https://artificialanalysis.ai/models/gemini-2-0-flash'
   context_window: 1000000
   modalities_in:
@@ -85,24 +79,33 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Earlier Flash tier — superseded by Gemini 2.5 Flash."
-      - "Long context is the headline — 91.5% on 128k and 83.1% on 1M long-context retrieval, ahead of every other frontier model"
-      - "Independent testers confirm reliable retrieval up to ~800K tokens; the last 200K degrades"
-      - "Genuine 'put a whole codebase or book in the prompt' workflow — not theatre"
+      - Earlier Flash tier — superseded by Gemini 2.5 Flash.
+      - >-
+        Long context is the headline — 91.5% on 128k and 83.1% on 1M
+        long-context retrieval, ahead of every other frontier model
+      - >-
+        Independent testers confirm reliable retrieval up to ~800K tokens; the
+        last 200K degrades
+      - >-
+        Genuine 'put a whole codebase or book in the prompt' workflow — not
+        theatre
     best_for:
-      - "Whole-codebase analysis, refactors across many files at once"
-      - "Long-form document QA (books, contracts, research papers)"
-      - "Multi-doc RAG replacement when context budget is generous"
+      - 'Whole-codebase analysis, refactors across many files at once'
+      - 'Long-form document QA (books, contracts, research papers)'
+      - Multi-doc RAG replacement when context budget is generous
     not_ideal_for:
-      - "Pure agentic-coding leaderboards — Claude Opus 4.5 and DeepSeek V4 lead SWE-bench"
-      - "Cost-bound bulk inference past 200K tokens (price doubles)"
+      - >-
+        Pure agentic-coding leaderboards — Claude Opus 4.5 and DeepSeek V4 lead
+        SWE-bench
+      - Cost-bound bulk inference past 200K tokens (price doubles)
     sources:
-      - name: "Artificial Analysis — Gemini 2.5 Pro analysis"
-        url: "https://artificialanalysis.ai/models/gemini-2-5-pro"
-      - name: "Google DeepMind — Gemini 2.5 technical report"
-        url: "https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf"
-      - name: "DataCamp — Gemini 2.5 Pro review"
-        url: "https://www.datacamp.com/blog/gemini-2-5-pro"
+      - name: Artificial Analysis — Gemini 2.5 Pro analysis
+        url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      - name: Google DeepMind — Gemini 2.5 technical report
+        url: >-
+          https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf
+      - name: DataCamp — Gemini 2.5 Pro review
+        url: 'https://www.datacamp.com/blog/gemini-2-5-pro'
   availability:
     - api
 public_view:

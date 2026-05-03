@@ -43,13 +43,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/jamba-1-6-mini'
       vs_baseline: 'Rank #342 of 496'
     - name: Speed · Output tok/s
-      score: '183'
-      source_url: 'https://artificialanalysis.ai/models/jamba-1-6-mini'
-      vs_baseline: 'Rank #38 of 496'
+      score: '58'
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-6-large'
     - name: Price ($/M tokens)
-      score: $0.20 in / $0.40 out
-      source_url: 'https://artificialanalysis.ai/models/jamba-1-6-mini'
-      vs_baseline: 'Rank #235 of 496'
+      score: $2.00 in / $8.00 out
+      source_url: 'https://artificialanalysis.ai/models/jamba-1-6-large'
   variants:
     - id: jamba-1-6-large
       label: Jamba 1.6 Large
@@ -84,13 +82,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from AI21 Labs — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from AI21 Labs — see the linked sources below for
+        benchmark and review coverage
     best_for:
-      - "General-purpose tasks within AI21 Labs's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within AI21 Labs's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

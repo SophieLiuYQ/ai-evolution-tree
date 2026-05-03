@@ -42,14 +42,6 @@ model_spec:
       score: 8.3% (4.3–8.3%)
       source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
       vs_baseline: 'Rank #62 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '95'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
-      vs_baseline: 'Rank #31 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $0.70 in / $8.40 out
-      source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
-      vs_baseline: 'Rank #78 of 96 · Reasoning'
     - name: Coding · AA Coding Index
       score: '13.80'
       source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
@@ -58,6 +50,12 @@ model_spec:
       score: 3.0%
       source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
       vs_baseline: 'Rank #76 of 96 · Reasoning'
+    - name: Speed · Output tok/s
+      score: '98'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.20 in / $0.52 out
+      source_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
   aa_url: 'https://artificialanalysis.ai/models/qwen3-32b-instruct-reasoning'
   parameters: 32.8B
   context_window: 32768
@@ -90,13 +88,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Alibaba — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Alibaba's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Alibaba's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

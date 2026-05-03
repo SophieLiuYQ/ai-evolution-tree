@@ -55,15 +55,11 @@ model_spec:
         https://artificialanalysis.ai/models/llama-3-1-nemotron-ultra-253b-v1-reasoning
       vs_baseline: 'Rank #64 of 96 · Reasoning'
     - name: Speed · Output tok/s
-      score: '43'
-      source_url: >-
-        https://artificialanalysis.ai/models/llama-3-1-nemotron-ultra-253b-v1-reasoning
-      vs_baseline: 'Rank #58 of 96 · Reasoning'
+      score: '158'
+      source_url: 'https://artificialanalysis.ai/models/llama-3-1-instruct-8b'
     - name: Price ($/M tokens)
-      score: $0.60 in / $1.80 out
-      source_url: >-
-        https://artificialanalysis.ai/models/llama-3-1-nemotron-ultra-253b-v1-reasoning
-      vs_baseline: 'Rank #55 of 96 · Reasoning'
+      score: $0.10 in / $0.10 out
+      source_url: 'https://artificialanalysis.ai/models/llama-3-1-instruct-8b'
   variants:
     - id: llama-3-1-nemotron-instruct-70b
       label: Llama 3.1 Nemotron Instruct 70B
@@ -105,28 +101,47 @@ model_spec:
     - api
   reviews:
     feels_like:
-      - "Llama 3.1 405B was the world's largest openly available foundation model at release"
-      - "Trained on 15T tokens across 16K+ H100 GPUs — Meta opted for dense decoder over MoE for training stability"
-      - "MMLU 87.3% (Instruct) — matched or beat GPT-4-Turbo (86.5%) and Claude 3 Opus (86.8%)"
-      - "MATH 73.8% — beaten only by GPT-4o (76.6%); edged GPT-4T and Claude 3.5 Sonnet"
-      - "128K context, native tool use, multilingual coverage in 8 languages"
-      - "License change allowed using Llama outputs to train other models — kicked off the synthetic-data wave"
+      - >-
+        Llama 3.1 405B was the world's largest openly available foundation model
+        at release
+      - >-
+        Trained on 15T tokens across 16K+ H100 GPUs — Meta opted for dense
+        decoder over MoE for training stability
+      - >-
+        MMLU 87.3% (Instruct) — matched or beat GPT-4-Turbo (86.5%) and Claude 3
+        Opus (86.8%)
+      - >-
+        MATH 73.8% — beaten only by GPT-4o (76.6%); edged GPT-4T and Claude 3.5
+        Sonnet
+      - '128K context, native tool use, multilingual coverage in 8 languages'
+      - >-
+        License change allowed using Llama outputs to train other models —
+        kicked off the synthetic-data wave
     best_for:
-      - "Self-hosted frontier-quality LLM deployments where you can spare ~8 H100s"
-      - "Distillation source for smaller open models (license-permissive synthetic data)"
-      - "Multilingual production work in the 8 supported languages"
-      - "Tool-using agent workflows where open weights matter"
+      - >-
+        Self-hosted frontier-quality LLM deployments where you can spare ~8
+        H100s
+      - >-
+        Distillation source for smaller open models (license-permissive
+        synthetic data)
+      - Multilingual production work in the 8 supported languages
+      - Tool-using agent workflows where open weights matter
     not_ideal_for:
-      - "Single-GPU / edge deployments — 405B is too big without aggressive quantization"
-      - "Frontier reasoning by 2025 — Llama 3.3 70B and Llama 4 family supersede it"
-      - "Multimodal tasks (Llama 3.1 base is text-only; vision came in 3.2)"
+      - >-
+        Single-GPU / edge deployments — 405B is too big without aggressive
+        quantization
+      - >-
+        Frontier reasoning by 2025 — Llama 3.3 70B and Llama 4 family supersede
+        it
+      - Multimodal tasks (Llama 3.1 base is text-only; vision came in 3.2)
     sources:
-      - name: "Meta — Introducing Llama 3.1"
-        url: "https://ai.meta.com/blog/meta-llama-3-1/"
-      - name: "InfoQ — Meta releases Llama 3.1 405B"
-        url: "https://www.infoq.com/news/2024/07/meta-releases-llama31-405b/"
-      - name: "Vellum — Llama 3.1 405B vs closed-source competitors"
-        url: "https://www.vellum.ai/blog/evaluating-llama-3-1-405b-against-leading-closed-source-competitors"
+      - name: Meta — Introducing Llama 3.1
+        url: 'https://ai.meta.com/blog/meta-llama-3-1/'
+      - name: InfoQ — Meta releases Llama 3.1 405B
+        url: 'https://www.infoq.com/news/2024/07/meta-releases-llama31-405b/'
+      - name: Vellum — Llama 3.1 405B vs closed-source competitors
+        url: >-
+          https://www.vellum.ai/blog/evaluating-llama-3-1-405b-against-leading-closed-source-competitors
 public_view:
   plain_english: >-
     Llama 3.1 is an API model from Nvidia. It’s positioned for hard reasoning

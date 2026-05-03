@@ -51,13 +51,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
       vs_baseline: 'Rank #41 of 81 · Non-reasoning'
     - name: Speed · Output tok/s
-      score: '116'
+      score: '131'
       source_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
-      vs_baseline: 'Rank #28 of 81 · Non-reasoning'
     - name: Price ($/M tokens)
       score: $1.25 in / $10.00 out
       source_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
-      vs_baseline: 'Rank #66 of 81 · Non-reasoning'
   aa_url: 'https://artificialanalysis.ai/models/gpt-5-1-non-reasoning'
   context_window: 400000
   modalities_in:
@@ -84,24 +82,32 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "No-reasoning mode — fast path through GPT-5.1."
-      - "Adaptive thinking — auto-tunes reasoning depth per task; not a fixed-tier release"
-      - "2-3x faster than GPT-5 on tool-heavy reasoning at similar or better quality (Balyasny eval)"
-      - "Uses ~half the tokens of leading competitors on agent flows for the same answer"
+      - No-reasoning mode — fast path through GPT-5.1.
+      - >-
+        Adaptive thinking — auto-tunes reasoning depth per task; not a
+        fixed-tier release
+      - >-
+        2-3x faster than GPT-5 on tool-heavy reasoning at similar or better
+        quality (Balyasny eval)
+      - >-
+        Uses ~half the tokens of leading competitors on agent flows for the same
+        answer
     best_for:
-      - "Production agent workflows where token cost / latency dominate"
-      - "PR review and code-discussion bots (CodeRabbit picked it as default)"
-      - "Cursor / Devin-style developer tools where adaptive depth matters"
+      - Production agent workflows where token cost / latency dominate
+      - PR review and code-discussion bots (CodeRabbit picked it as default)
+      - Cursor / Devin-style developer tools where adaptive depth matters
     not_ideal_for:
-      - "Hardest research-grade reasoning — GPT-5.2 Thinking and Pro are stronger"
-      - "Agentic-coding leaderboards on raw SWE-bench — Claude Opus 4.5 / 4.6 still lead"
+      - Hardest research-grade reasoning — GPT-5.2 Thinking and Pro are stronger
+      - >-
+        Agentic-coding leaderboards on raw SWE-bench — Claude Opus 4.5 / 4.6
+        still lead
     sources:
-      - name: "OpenAI — GPT-5.1 for developers"
-        url: "https://openai.com/index/gpt-5-1-for-developers/"
-      - name: "OpenAI — GPT-5.1 smarter, more conversational ChatGPT"
-        url: "https://openai.com/index/gpt-5-1/"
-      - name: "OpenAI — GPT-5.1 system card addendum"
-        url: "https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/"
+      - name: OpenAI — GPT-5.1 for developers
+        url: 'https://openai.com/index/gpt-5-1-for-developers/'
+      - name: 'OpenAI — GPT-5.1 smarter, more conversational ChatGPT'
+        url: 'https://openai.com/index/gpt-5-1/'
+      - name: OpenAI — GPT-5.1 system card addendum
+        url: 'https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/'
   availability:
     - api
 public_view:

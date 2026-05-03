@@ -27,12 +27,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/o1-pro'
       vs_baseline: 'Rank #176 of 496'
     - name: Speed · Output tok/s
-      score: '0'
+      score: '22'
       source_url: 'https://artificialanalysis.ai/models/o1-pro'
     - name: Price ($/M tokens)
       score: $150.00 in / $600.00 out
       source_url: 'https://artificialanalysis.ai/models/o1-pro'
-      vs_baseline: 'Rank #496 of 496'
   aa_url: 'https://artificialanalysis.ai/models/o1-pro'
   context_window: 200000
   modalities_in:
@@ -59,23 +58,27 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Preferred to GPT-4o by a large margin in data analysis, coding, and math — but not preferred on natural-language tasks"
-      - "Genuinely novel: chain-of-thought is internalised, not prompted — model recognises and corrects its own mistakes"
-      - "Slow — minutes for hard problems vs seconds for GPT-4o; not for chat"
+      - >-
+        Preferred to GPT-4o by a large margin in data analysis, coding, and math
+        — but not preferred on natural-language tasks
+      - >-
+        Genuinely novel: chain-of-thought is internalised, not prompted — model
+        recognises and corrects its own mistakes
+      - Slow — minutes for hard problems vs seconds for GPT-4o; not for chat
     best_for:
-      - "Olympiad-level math, physics, and chemistry problems"
-      - "Code that needs deep reasoning about correctness rather than fluency"
-      - "Strategic / multi-step planning where you can wait minutes for an answer"
+      - 'Olympiad-level math, physics, and chemistry problems'
+      - Code that needs deep reasoning about correctness rather than fluency
+      - Strategic / multi-step planning where you can wait minutes for an answer
     not_ideal_for:
-      - "Real-time chat or low-latency tools — GPT-4o is faster"
-      - "Open-ended writing, creative copy, or natural-language tasks"
+      - Real-time chat or low-latency tools — GPT-4o is faster
+      - 'Open-ended writing, creative copy, or natural-language tasks'
     sources:
-      - name: "OpenAI — Learning to reason with LLMs"
-        url: "https://openai.com/index/learning-to-reason-with-llms/"
-      - name: "Simon Willison — Notes on OpenAI's new o1 chain-of-thought models"
-        url: "https://simonwillison.net/2024/Sep/12/openai-o1/"
-      - name: "Wikipedia — OpenAI o1"
-        url: "https://en.wikipedia.org/wiki/OpenAI_o1"
+      - name: OpenAI — Learning to reason with LLMs
+        url: 'https://openai.com/index/learning-to-reason-with-llms/'
+      - name: Simon Willison — Notes on OpenAI's new o1 chain-of-thought models
+        url: 'https://simonwillison.net/2024/Sep/12/openai-o1/'
+      - name: Wikipedia — OpenAI o1
+        url: 'https://en.wikipedia.org/wiki/OpenAI_o1'
   availability:
     - api
 public_view:

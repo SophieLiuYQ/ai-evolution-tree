@@ -71,13 +71,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
       vs_baseline: 'Rank #30 of 81 · Non-reasoning'
     - name: Speed · Output tok/s
-      score: '55'
-      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
-      vs_baseline: 'Rank #48 of 81 · Non-reasoning'
+      score: '49'
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
     - name: Price ($/M tokens)
-      score: $1.00 in / $3.20 out
-      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
-      vs_baseline: 'Rank #60 of 81 · Non-reasoning'
+      score: $0.60 in / $2.20 out
+      source_url: 'https://artificialanalysis.ai/models/glm-4.5'
   homepage: 'https://z.ai/blog/glm-4.5'
   github: 'https://github.com/zai-org/GLM-4.5'
   availability:
@@ -117,16 +115,22 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Vision-language model from Tsinghua / Zhipu — see the linked sources below for benchmark and review coverage"
-      - "Tool-use and agent loops are the typical fit per the published model card"
-      - "Vision and multimodal tasks are the typical fit per the published model card"
+      - >-
+        Vision-language model from Tsinghua / Zhipu — see the linked sources
+        below for benchmark and review coverage
+      - >-
+        Tool-use and agent loops are the typical fit per the published model
+        card
+      - >-
+        Vision and multimodal tasks are the typical fit per the published model
+        card
     best_for:
-      - "Agent / tool-use workflows that match the model's published benchmarks"
-      - "Vision tasks (charts, documents, images) per the model card"
-      - "See the model spec and sources block for benchmarked use cases"
+      - Agent / tool-use workflows that match the model's published benchmarks
+      - 'Vision tasks (charts, documents, images) per the model card'
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
 public_view:
   plain_english: |
     Zhipu's GLM-4.5 is a complete open-weight family — frontier MoE,

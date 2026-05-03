@@ -50,13 +50,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/gemini-3-1-pro-preview'
       vs_baseline: 'Rank #2 of 496'
     - name: Speed · Output tok/s
-      score: '135'
+      score: '124'
       source_url: 'https://artificialanalysis.ai/models/gemini-3-1-pro-preview'
-      vs_baseline: 'Rank #97 of 496'
     - name: Price ($/M tokens)
       score: $2.00 in / $12.00 out
       source_url: 'https://artificialanalysis.ai/models/gemini-3-1-pro-preview'
-      vs_baseline: 'Rank #449 of 496'
   variants:
     - id: gemini-3-1-flash-audio
       label: Gemini 3.1 Flash Audio
@@ -102,23 +100,29 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Tops LMArena at 1501 Elo at release — first model past 1500 on the human-preference leaderboard"
-      - "37.5% on Humanity's Last Exam without tools, 91.9% on GPQA Diamond — PhD-level reasoning headline"
-      - "MathArena Apex 23.4% — new state-of-the-art on contest-grade math"
+      - >-
+        Tops LMArena at 1501 Elo at release — first model past 1500 on the
+        human-preference leaderboard
+      - >-
+        37.5% on Humanity's Last Exam without tools, 91.9% on GPQA Diamond —
+        PhD-level reasoning headline
+      - MathArena Apex 23.4% — new state-of-the-art on contest-grade math
     best_for:
-      - "Multimodal reasoning over images, video, and long documents"
-      - "Hardest math and science research tasks (esp. with Deep Think enabled)"
-      - "Whole-codebase or long-context analysis at frontier quality"
+      - 'Multimodal reasoning over images, video, and long documents'
+      - Hardest math and science research tasks (esp. with Deep Think enabled)
+      - Whole-codebase or long-context analysis at frontier quality
     not_ideal_for:
-      - "Self-hosted / open-weights deployments"
-      - "Workflows where the early-launch instability is unacceptable (some users report regressions)"
+      - Self-hosted / open-weights deployments
+      - >-
+        Workflows where the early-launch instability is unacceptable (some users
+        report regressions)
     sources:
-      - name: "Google — Introducing Gemini 3"
-        url: "https://blog.google/products/gemini/gemini-3/"
-      - name: "Google DeepMind — Gemini 3.1 Pro model page"
-        url: "https://deepmind.google/models/gemini/pro/"
-      - name: "Vellum — Gemini 3 benchmarks explained"
-        url: "https://www.vellum.ai/blog/google-gemini-3-benchmarks"
+      - name: Google — Introducing Gemini 3
+        url: 'https://blog.google/products/gemini/gemini-3/'
+      - name: Google DeepMind — Gemini 3.1 Pro model page
+        url: 'https://deepmind.google/models/gemini/pro/'
+      - name: Vellum — Gemini 3 benchmarks explained
+        url: 'https://www.vellum.ai/blog/google-gemini-3-benchmarks'
   availability:
     - api
 public_view:

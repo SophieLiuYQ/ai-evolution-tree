@@ -43,12 +43,9 @@ model_spec:
       score: 10.7%
       source_url: 'https://artificialanalysis.ai/models/gemma-4-26b-a4b-non-reasoning'
       vs_baseline: 'Rank #20 of 81 · Non-reasoning'
-    - name: Speed · Output tok/s
-      score: '0'
-      source_url: 'https://artificialanalysis.ai/models/gemma-4-26b-a4b-non-reasoning'
     - name: Price ($/M tokens)
-      score: $0.00 in / $0.00 out
-      source_url: 'https://artificialanalysis.ai/models/gemma-4-26b-a4b-non-reasoning'
+      score: $0.13 in / $0.40 out
+      source_url: 'https://artificialanalysis.ai/models/gemma-4-26b-a4b'
   aa_url: 'https://artificialanalysis.ai/models/gemma-4-26b-a4b'
   parameters: 3.8B active · 25.2B total
   context_window: 256000
@@ -83,23 +80,34 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Four sizes (1B / 4B / 12B / 27B) — covers laptop-class up to single-GPU server inference"
-      - "Gemma-3-4B-IT beats Gemma-2-27B-IT; Gemma-3-27B-IT beats Gemini 1.5 Pro on shared benchmarks"
-      - "Vision input from 4B up; 1B is text-only — first Gemma family with multimodal at small sizes"
+      - >-
+        Four sizes (1B / 4B / 12B / 27B) — covers laptop-class up to single-GPU
+        server inference
+      - >-
+        Gemma-3-4B-IT beats Gemma-2-27B-IT; Gemma-3-27B-IT beats Gemini 1.5 Pro
+        on shared benchmarks
+      - >-
+        Vision input from 4B up; 1B is text-only — first Gemma family with
+        multimodal at small sizes
     best_for:
-      - "Single-GPU production inference (27B fits H100 / A100 80GB at FP precision)"
-      - "Laptop / phone deployment via the 1B / 4B variants"
-      - "Multilingual apps in 140 languages at open-weights pricing"
+      - >-
+        Single-GPU production inference (27B fits H100 / A100 80GB at FP
+        precision)
+      - Laptop / phone deployment via the 1B / 4B variants
+      - Multilingual apps in 140 languages at open-weights pricing
     not_ideal_for:
-      - "Frontier reasoning leaderboards — Gemini 2.5 / 3 Pro and competitors lead"
-      - "Workloads needing 1M+ context (Gemma 3 caps at 128K)"
+      - >-
+        Frontier reasoning leaderboards — Gemini 2.5 / 3 Pro and competitors
+        lead
+      - Workloads needing 1M+ context (Gemma 3 caps at 128K)
     sources:
-      - name: "Google — Introducing Gemma 3 developer guide"
-        url: "https://developers.googleblog.com/en/introducing-gemma3/"
-      - name: "Hugging Face — Welcome Gemma 3"
-        url: "https://huggingface.co/blog/gemma3"
-      - name: "DeepLearning.AI — Gemma 3 vision-language models"
-        url: "https://www.deeplearning.ai/the-batch/google-releases-gemma-3-vision-language-models-with-open-weights/"
+      - name: Google — Introducing Gemma 3 developer guide
+        url: 'https://developers.googleblog.com/en/introducing-gemma3/'
+      - name: Hugging Face — Welcome Gemma 3
+        url: 'https://huggingface.co/blog/gemma3'
+      - name: DeepLearning.AI — Gemma 3 vision-language models
+        url: >-
+          https://www.deeplearning.ai/the-batch/google-releases-gemma-3-vision-language-models-with-open-weights/
   availability:
     - api
 public_view:

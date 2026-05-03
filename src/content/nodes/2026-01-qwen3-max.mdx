@@ -51,13 +51,11 @@ model_spec:
       source_url: 'https://artificialanalysis.ai/models/qwen3-max-thinking'
       vs_baseline: 'Rank #40 of 496'
     - name: Speed · Output tok/s
-      score: '35'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-max-thinking'
-      vs_baseline: 'Rank #269 of 496'
+      score: '59'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-max-preview'
     - name: Price ($/M tokens)
       score: $1.20 in / $6.00 out
-      source_url: 'https://artificialanalysis.ai/models/qwen3-max-thinking'
-      vs_baseline: 'Rank #402 of 496'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-max-preview'
   aa_url: 'https://artificialanalysis.ai/models/qwen3-max-thinking'
   context_window: 256000
   modalities_in:
@@ -90,13 +88,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Alibaba — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Alibaba's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Alibaba's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:
