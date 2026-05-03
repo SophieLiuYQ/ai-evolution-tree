@@ -519,7 +519,16 @@ const attrCards: AttrCard[] = (() => {
   // friendly bucket ("Top 1% smart", "Smart", "Not very smart") rather
   // than a raw rank. The "of N" denominator drifts as AA adds models;
   // bucket framing stays readable across drift.
-  if (aaIntRank) {
+  //
+  // Only show the card when the model has a real AA model page (the
+  // hero "Artificial Analysis" pill points there). If aa_url is empty
+  // or the leaderboards-root fallback, the rank is from a stale auto-
+  // import and there's nothing on AA to verify it against — hide it.
+  const hasRealAaPage =
+    typeof spec?.aa_url === "string" &&
+    spec.aa_url.includes("/models/") &&
+    !spec.aa_url.endsWith("/leaderboards/models");
+  if (aaIntRank && hasRealAaPage) {
     const pct = aaIntRank.rank / aaIntRank.total;
     const bucket = pct <= 0.01 ? { v: "Top 1%",  label: "Top 1% smart" }
       :            pct <= 0.05 ? { v: "Top 5%",  label: "Top 5% smart" }
