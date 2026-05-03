@@ -16,8 +16,23 @@ Thank you for considering a contribution. This project is **community-curated**:
 git clone https://github.com/<you>/ai-tree && cd ai-tree
 npm install
 npm run dev          # local site at http://localhost:4321
+npm test             # run unit tests (vitest)
 npm run build        # must pass before opening a PR
 ```
+
+CI runs `npm run check`, `npm test`, and `npm run build` on every PR.
+
+### Tests
+
+Tests live in [`tests/`](./tests). They cover:
+
+- **Frontmatter schema** — every node MDX has required fields, valid era/status/relationship enums, and unique slugs.
+- **`data/graph.json` invariants** — no duplicate slugs, no self-loops, sorted by date.
+- **Migration script** — `npm run graph:export` runs cleanly and regenerates a valid graph.
+
+A few checks (dangling parent refs, year mismatches) are pinned to current
+counts via `*_BASELINE` constants — PRs may only *reduce* the count, not
+grow it. If you fix some, lower the baseline.
 
 New to the codebase? Read these in order:
 
