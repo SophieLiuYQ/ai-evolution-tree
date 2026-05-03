@@ -1,7 +1,7 @@
 {
   "version": "0.2.0",
   "schema_url": "https://github.com/aievolutiontree/aievolutiontree",
-  "generated_at": "2026-05-03T21:55:20.193Z",
+  "generated_at": "2026-05-03T22:06:40.466Z",
   "stats": {
     "node_count": 178,
     "edge_count": 248,
@@ -13164,7 +13164,7 @@
           "url": "https://www.anthropic.com/news/claude-4"
         }
       ],
-      "body_md": "## How Claude 4 compares to mid-2025 frontier\n\n| Model | Date | Org | SWE-bench Verified | TerminalBench | GPQA | MMLU |\n|---|---|---|---|---|---|---|\n| Claude 3.7 Sonnet | 2025-02 | Anthropic | 70.3% | 27.6% | 84.8% | — |\n| GPT-4.5 | 2025-02 | OpenAI | — | — | 71.4% | — |\n| o3 | 2025-04 | OpenAI | 71.7% | 30.2% | 87.7% | — |\n| Gemini 2.5 Pro | 2025-03 | Google | 63.8% | 25.3% | 84.0% | — |\n| **Claude Sonnet 4** | **2025-05** | **Anthropic** | **73.6%** | **35.5%** | **75.4%** | — |\n| **Claude Opus 4** | **2025-05** | **Anthropic** | **79.4%** | **43.2%** | **83.3%** | — |\n| Llama 4 Maverick | 2025-04 | Meta | — | — | — | — |\n| DeepSeek V3 / R1.5 | 2025-Q2 | DeepSeek | — | — | — | — |\n\nOpus 4's SWE-bench Verified score (79.4%) was the largest single-release jump on that benchmark since the Claude 3.5 → 3.7 transition. TerminalBench (which evaluates terminal-use capability — the closest proxy for \"can it operate a developer environment\") more than doubled from 3.7 Sonnet.\n\n## The agentic delta\n\nReal-world agentic capability isn't fully captured by static benchmarks. Anecdotal but consistent reports from production users in mid-2025:\n\n- Claude Code sessions complete 60-80% of well-scoped engineering tasks end-to-end with Opus 4, vs 30-50% with 3.7 Sonnet.\n- Mean time-to-drift (when the agent loses the thread) extended from ~45 min to ~3 hours.\n- Cost per completed task dropped despite Opus 4 being priced higher than Sonnet 3.7 — fewer retries, shorter total context.\n\nThese deltas are why Cursor, Windsurf, and Devin all defaulted to Opus 4 within weeks of release.\n\n## Successor: Opus 4.6, Opus 4.7\n\nAnthropic shipped Opus 4.5 (October 2025), 4.6 (December 2025), and 4.7 (early 2026) on a roughly 8-week cadence — each a substantial capability and reliability update without re-incrementing the major version. The 4.6 release added the 1M-token context window variant currently powering many long-document and large-codebase workflows (and likely the model writing this very file).\n\nBy early 2026 the Opus 4.x line is the de facto default for any agentic-AI workflow that requires sustained reasoning, tool use, and multi-hour autonomy.",
+      "body_md": "## How Claude 4 compares to mid-2025 frontier\n\n| Model | Date | Org | SWE-bench Verified | TerminalBench | GPQA | MMLU |\n|---|---|---|---|---|---|---|\n| Claude 3.7 Sonnet | 2025-02 | Anthropic | 70.3% | 27.6% | 84.8% | — |\n| GPT-4.5 | 2025-02 | OpenAI | — | — | 71.4% | — |\n| o3 | 2025-04 | OpenAI | 71.7% | 30.2% | 87.7% | — |\n| Gemini 2.5 Pro | 2025-03 | Google | 63.8% | 25.3% | 84.0% | — |\n| **Claude Sonnet 4** | **2025-05** | **Anthropic** | **73.6%** | **35.5%** | **75.4%** | — |\n| **Claude Opus 4** | **2025-05** | **Anthropic** | **79.4%** | **43.2%** | **83.3%** | — |\n| Llama 4 Maverick | 2025-04 | Meta | — | — | — | — |\n| DeepSeek V3 / R1.5 | 2025-Q2 | DeepSeek | — | — | — | — |\n\nOpus 4's SWE-bench Verified score (79.4%) was the largest single-release jump on that benchmark since the Claude 3.5 → 3.7 transition. TerminalBench (which evaluates terminal-use capability — the closest proxy for \"can it operate a developer environment\") more than doubled from 3.7 Sonnet.\n\n## The agentic delta\n\nReal-world agentic capability isn't fully captured by static benchmarks. Anecdotal but consistent reports from production users in mid-2025:\n\n- Claude Code sessions complete 60-80% of well-scoped engineering tasks end-to-end with Opus 4, vs 30-50% with 3.7 Sonnet.\n- Mean time-to-drift (when the agent loses the thread) extended from ~45 min to ~3 hours.\n- Cost per completed task dropped despite Opus 4 being priced higher than Sonnet 3.7 — fewer retries, shorter total context.\n\nThese deltas are why Cursor, Windsurf, and Devin all defaulted to Opus 4 within weeks of release.\n\n## Successor: Opus 4.6, Opus 4.7\n\nAnthropic shipped Opus 4.5 (October 2025), 4.6 (December 2025), and 4.7 (early 2026) on a roughly 8-week cadence — each a substantial capability and reliability update without re-incrementing the major version. The 4.6 release added the 1M-token context window variant currently powering many long-document and large-codebase workflows.\n\nBy early 2026 the Opus 4.x line is the de facto default for any agentic-AI workflow that requires sustained reasoning, tool use, and multi-hour autonomy.",
       "_source_file": "2025-05-claude-4.mdx"
     },
     {
@@ -22660,7 +22660,7 @@
     },
     {
       "slug": "claude-opus-4-7",
-      "title": "Claude Opus 4.7 — Current Frontier (and the model writing this)",
+      "title": "Claude Opus 4.7",
       "date": "2026-02-04",
       "era": "agents",
       "category": [

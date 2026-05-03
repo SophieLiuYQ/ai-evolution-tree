@@ -17,7 +17,7 @@ export const orgFill: Record<string, string> = {
   "Meta AI": "#dbeafe",
   "Microsoft": "#ccfbf1",
   "Mistral AI": "#fee2e2",
-  "Stability AI": "#e7e5e4",
+  "Stability AI": "#ffffff",
   "EleutherAI": "#ede9fe",
   "xAI": "#e5e7eb",
   "Alibaba": "#ffe6cc",
@@ -29,7 +29,7 @@ export const orgFill: Record<string, string> = {
   "MiniMax": "#ffffff",
   "ByteDance": "#ffedd5",
   "Stepfun": "#e5e7eb",
-  "Suno": "#fce7f3",
+  "Suno": "#ffffff",
   "Runway": "#ede9fe",
   "Black Forest Labs": "#e4e4e7",
   "Databricks": "#ffedd5",
@@ -37,6 +37,7 @@ export const orgFill: Record<string, string> = {
   "Kuaishou": "#fef3c7",
   "Nvidia": "#dcfce7",
   "Apple": "#f1f5f9",
+  "Lightricks": "#ffffff",
 };
 
 export const orgStroke: Record<string, string> = {
@@ -63,7 +64,7 @@ export const orgStroke: Record<string, string> = {
   "MiniMax": "#E73562",
   "ByteDance": "#c2410c",
   "Stepfun": "#1F2937",
-  "Suno": "#be185d",
+  "Suno": "#000000",
   "Runway": "#6d28d9",
   "Black Forest Labs": "#3f3f46",
   "Databricks": "#c2410c",
@@ -71,6 +72,7 @@ export const orgStroke: Record<string, string> = {
   "Kuaishou": "#a16207",
   "Nvidia": "#76B900",
   "Apple": "#334155",
+  "Lightricks": "#111111",
 };
 
 export const fill = (org: string) => orgFill[org] ?? "#f3f4f6";

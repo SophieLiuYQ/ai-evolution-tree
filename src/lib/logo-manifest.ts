@@ -35,6 +35,7 @@ export const LOGO_MANIFEST: Record<string, LogoManifestEntry> = {
   "IBM": { slug: "ibm", ext: "svg" },
   "Ideogram": { slug: "ideogram", ext: "ico" },
   "Kuaishou": { slug: "kuaishou", ext: "svg" },
+  "Lightricks": { slug: "lightricks", ext: "png" },
   "Luma AI": { slug: "luma-ai", ext: "png" },
   "MIT": { slug: "mit", ext: "ico" },
   "Meta AI": { slug: "meta-ai", ext: "svg" },
