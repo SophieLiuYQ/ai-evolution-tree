@@ -50,12 +50,15 @@ const license = releaseType === "open_weights" ? "open" : "closed";
     )}
 
     {/* External action buttons (hover-revealed, see GRAPH_DESIGN.md §VII).
-        fill-opacity="1" + opacity="1" defensively defeat any inherited
-        opacity from the link's hover-fade JS. */}
-    <g class="pin-btn" data-pin-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2})`} role="button" aria-label="Pin this lineage path">
-      <rect x="0" y="-11" width="130" height="22" rx="11" fill="var(--graph-surface)" fill-opacity="1" stroke="var(--graph-btn-border)" stroke-width="1.2" />
-      <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="var(--graph-fg)" fill-opacity="1" letter-spacing="0.2">highlight this path</text>
-    </g>
+        Disabled (2026-05-03) along with the highlight/pin interaction
+        in src/scripts/graph/main.ts. Restore by removing the
+        `false && ` wrapper. */}
+    {false && (
+      <g class="pin-btn" data-pin-slug={d.slug} transform={`translate(${p.width + 6}, ${p.height / 2})`} role="button" aria-label="Pin this lineage path">
+        <rect x="0" y="-11" width="130" height="22" rx="11" fill="var(--graph-surface)" fill-opacity="1" stroke="var(--graph-btn-border)" stroke-width="1.2" />
+        <text x="65" y="4" text-anchor="middle" font-size="11" font-family="ui-sans-serif, system-ui" font-weight="700" fill="var(--graph-fg)" fill-opacity="1" letter-spacing="0.2">highlight this path</text>
+      </g>
+    )}
   </g>
 </a>
 

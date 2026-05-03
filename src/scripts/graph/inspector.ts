@@ -178,16 +178,11 @@ function renderFacts(n: NodeMeta) {
   const facts = document.getElementById("inspector-facts");
   if (!facts) return;
   const spec = n.model_spec;
-  const ext = pickExternalLink(n);
   const rows = [
     ["Context Window", fmtCtx(spec?.context_window)],
     ["Parameters", compactName(spec?.parameters)],
     ["Model Type", fmtModelType(n)],
     ["License", fmtLicense(spec?.release_type)],
-    [
-      "Website",
-      ext ? `<a href="${ext.href}" target="_blank" rel="noopener">${ext.label}</a>` : "Unavailable",
-    ],
   ];
   facts.innerHTML = rows
     .map(

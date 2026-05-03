@@ -34,9 +34,11 @@ function safe(name: string, fn: () => void) {
 function initAll() {
   safe("initState", initState);
   safe("attachOrientHandlers", attachOrientHandlers);
-  safe("attachInteractions", attachInteractions);
+  // Disabled (2026-05-03): hover-lineage / pin-path highlight interaction.
+  // safe("attachInteractions", attachInteractions);
   safe("attachSortHandlers", attachSortHandlers);
-  safe("attachEdgeTypeHandlers", attachEdgeTypeHandlers);
+  // Disabled (2026-05-03): edge-types per-row + bulk show/hide toggles.
+  // safe("attachEdgeTypeHandlers", attachEdgeTypeHandlers);
   safe("attachNodeTypeHandlers", attachNodeTypeHandlers);
   safe("attachStickyHeaders", attachStickyHeaders);
   safe("attachSearchHandlers", attachSearchHandlers);

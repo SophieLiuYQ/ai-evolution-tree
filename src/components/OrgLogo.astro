@@ -73,14 +73,33 @@ if (file) {
       // scales correctly.
       const viewBoxMatch = raw.match(/viewBox\s*=\s*"([^"]+)"/i);
       const viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 24 24";
-      // Strip <?xml ... ?>, leading whitespace, outer <svg> tags.
-      const stripped = raw
+      // Detect whether the source SVG carries its own brand colors.
+      // Brand-coloured SVGs encode color via:
+      //   - fill="#hex" / fill="rgb(...)" on <svg> root or inner elements
+      //   - <linearGradient>/<radialGradient> + url(#id) refs
+      //   - inline style="fill:#..." declarations
+      // Monochrome SimpleIcons-style SVGs either omit fill (→ inherit black)
+      // or set fill="currentColor". For those we want the wrapper to
+      // inject currentColor so the org's stroke color comes through.
+      const outerSvgTag = raw.match(/<svg\b[^>]*>/i)?.[0] ?? "";
+      const innerSvg = raw
         .replace(/<\?xml[\s\S]*?\?>/g, "")
         .replace(/<!DOCTYPE[\s\S]*?>/g, "")
         .replace(/<svg\b[^>]*>/i, "")
         .replace(/<\/svg>\s*$/i, "")
         .trim();
-      inlineSvg = `<svg viewBox="${viewBox}" width="${glyphSize}" height="${glyphSize}" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">${stripped}</svg>`;
+      const hasExplicitInnerFill = /\sfill\s*=\s*"(?!none|currentColor)[^"]+"/i.test(innerSvg)
+        || /style\s*=\s*"[^"]*fill\s*:/i.test(innerSvg)
+        || /<(linear|radial)Gradient\b/i.test(innerSvg);
+      const outerFillMatch = outerSvgTag.match(/\sfill\s*=\s*"([^"]+)"/i);
+      const outerFill = outerFillMatch ? outerFillMatch[1] : null;
+      const outerHasBrandFill = outerFill && outerFill !== "none" && outerFill !== "currentColor";
+      const isBrandColoured = hasExplicitInnerFill || outerHasBrandFill;
+      // For brand-coloured SVGs, propagate the outer <svg fill="..."> down
+      // (so paths that inherit fill still pick up the brand color), but
+      // do NOT override paths that already declare their own fills.
+      const wrapperFill = isBrandColoured ? (outerFill ?? "#000") : "currentColor";
+      inlineSvg = `<svg viewBox="${viewBox}" width="${glyphSize}" height="${glyphSize}" xmlns="http://www.w3.org/2000/svg" fill="${wrapperFill}" aria-hidden="true">${innerSvg}</svg>`;
     } catch {
       inlineSvg = null;
     }

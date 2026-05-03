@@ -293,9 +293,10 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     ))}
   </ul>
 
-  {/* Edge legend — each row is a click toggle (eye indicator on the
-      right). Bulk Show all / Hide all controls at the bottom of the
-      list. */}
+  {/* Edge legend + highlight tip — disabled (2026-05-03). Restore by
+      removing the `false &&` wrapper around the fragment below. */}
+  {false && (
+  <>
   <h3 class="mt-5 mb-2 border-t border-slate-200 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
     <span data-i18n="filter.edgeTypes">Edge types</span>
   </h3>
@@ -355,6 +356,8 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     Hover a card → ancestor lineage.<br/>
     <strong>highlight this path</strong> → pin it.
   </p>
+  </>
+  )}
   <div class="mt-3 flex gap-1.5 text-[10px]">
     <a href="/timeline/" class="rounded border border-slate-300 bg-white px-2 py-0.5 hover:border-[var(--accent)]">Timeline</a>
     <a href="/about/" class="rounded border border-slate-300 bg-white px-2 py-0.5 hover:border-[var(--accent)]">About</a>
