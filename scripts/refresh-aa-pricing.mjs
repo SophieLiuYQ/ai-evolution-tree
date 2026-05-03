@@ -121,6 +121,23 @@ for (const r of records) {
   if (!cur || (cur.intelligence_index ?? -Infinity) < ii) familyChampion.set(f, r);
 }
 
+// Pre-compute speed-rank table across all AA records that have a numeric
+// median_output_speed. Detail page uses this to bucket Speed into the same
+// "Top 1% / Top 5% / Top 10% / Good / Medium / Below avg" scheme as
+// Intelligence, computed off (rank / total) percentile.
+function speedFor(rec) {
+  const perfRows = Array.isArray(rec?.performanceByPromptLength) ? rec.performanceByPromptLength : [];
+  const speeds = perfRows.map((r) => r?.median_output_speed).filter((v) => typeof v === "number" && v > 0);
+  return speeds.length ? speeds.reduce((a, b) => a + b, 0) / speeds.length : null;
+}
+const speedTable = records
+  .map((r) => ({ id: r.id, speed: speedFor(r) }))
+  .filter((x) => typeof x.speed === "number" && x.speed > 0)
+  .sort((a, b) => b.speed - a.speed);
+const speedTotal = speedTable.length;
+const speedRankByRecordId = new Map();
+speedTable.forEach((x, i) => speedRankByRecordId.set(x.id, i + 1));
+
 function findAaRecord(fmSlug, fmTitle) {
   // 1. Variant override → exact name match
   const vName = variantMap.get(fmSlug);
@@ -180,8 +197,14 @@ for (const f of files) {
   const inAA = rec.price_1m_input_tokens;
   const outAA = rec.price_1m_output_tokens;
 
+  const speedRank = speedRankByRecordId.get(rec.id);
   const newSpeed = (typeof speedAA === "number" && speedAA > 0)
-    ? { name: "Speed · Output tok/s", score: String(Math.round(speedAA)), source_url: aaModelUrl }
+    ? {
+        name: "Speed · Output tok/s",
+        score: String(Math.round(speedAA)),
+        ...(speedRank ? { vs_baseline: `Rank #${speedRank} of ${speedTotal}` } : {}),
+        source_url: aaModelUrl,
+      }
     : null;
   const newPrice = (typeof inAA === "number" && typeof outAA === "number" && (inAA > 0 || outAA > 0))
     ? { name: "Price ($/M tokens)", score: `$${inAA.toFixed(2)} in / $${outAA.toFixed(2)} out`, source_url: aaModelUrl }

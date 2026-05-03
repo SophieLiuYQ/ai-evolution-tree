@@ -565,23 +565,30 @@ const attrCards: AttrCard[] = (() => {
   //   });
   // }
 
-  // SPEED — tier ("Fast" / "Moderate" / "Slow") from speed rank, with tok/s in desc
-  const speedTier = tierLabel(speedRank, "Fast", "Moderate", "Slow");
-  if (speedTier && speedTok !== null) {
+  // SPEED — same percentile-bucket scheme as Intelligence (Top 1% / Top
+  // 5% / Top 10% / Good / Medium / Below avg) computed off speedRank.
+  // Falls back to the raw tok/s number when AA hasn't ranked the model.
+  // Hide entirely when speedTok is 0 — that's "AA has no throughput data"
+  // (e.g. Sonar / retrieval-augmented services), not an actual zero.
+  if (typeof speedTok === "number" && speedTok > 0) {
+    let v: string;
+    if (speedRank) {
+      const pct = speedRank.rank / speedRank.total;
+      v = pct <= 0.01 ? "Top 1%"
+        : pct <= 0.05 ? "Top 5%"
+        : pct <= 0.10 ? "Top 10%"
+        : pct <= 0.25 ? "Good"
+        : pct <= 0.50 ? "Medium"
+        :               "Below avg";
+    } else {
+      v = `${Math.round(speedTok)} tok/s`;
+    }
     out.push({
       icon: "bolt",
       color: "amber",
       k: "Speed",
-      v: speedTier,
+      v,
       desc: `${Math.round(speedTok)} tok/s output`,
-    });
-  } else if (speedTok !== null) {
-    out.push({
-      icon: "bolt",
-      color: "amber",
-      k: "Speed",
-      v: `${Math.round(speedTok)} tok/s`,
-      desc: "Output throughput",
     });
   }
 
@@ -1513,16 +1520,19 @@ const familySubtitle = (() => {
               </div>
             ))}
           </div>
-          {attrCards.some((c) => c.k === "Intelligence") && (
+          {(attrCards.some((c) => c.k === "Intelligence") ||
+            attrCards.some((c) => c.k === "Speed")) && (
             <details class="intel-legend">
               <summary class="intel-legend-summary">
-                How is Intelligence bucketed?
+                How are Intelligence &amp; Speed bucketed?
               </summary>
               <div class="intel-legend-body">
                 <div class="intel-legend-note">
-                  Bucket = percentile rank on Artificial Analysis's
-                  Intelligence Index (a composite of MMLU-Pro, GPQA Diamond,
-                  HLE, AIME, SciCode, LiveCodeBench, τ²-Bench).
+                  Bucket = percentile rank on Artificial Analysis.
+                  Intelligence pool ranks the AA Intelligence Index
+                  (composite of MMLU-Pro, GPQA Diamond, HLE, AIME,
+                  SciCode, LiveCodeBench, τ²-Bench). Speed pool ranks
+                  median output throughput in tokens/sec.
                 </div>
                 <ul class="intel-legend-list">
                   <li><span class="intel-bucket">Top 1%</span><span class="intel-pct">≤ 1%</span></li>
