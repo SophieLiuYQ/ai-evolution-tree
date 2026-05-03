@@ -31,46 +31,22 @@ model_spec:
   modalities:
     - text
   benchmarks:
-    - name: Vision · MMMU-Pro
-      score: 73.1%
-      vs_baseline: 'Rank #9 of 26 · Top #9 of 26 · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
-    - name: Intelligence · AA Intelligence Index
-      score: '40.90'
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #67 of 496'
-    - name: Coding · AA Coding Index
-      score: '34.80'
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #76 of 496'
-    - name: Coding · SciCode
-      score: 42.4%
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #64 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 31.1%
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #86 of 496'
-    - name: MMLU-Pro
-      score: 84.8%
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #37 of 496'
-    - name: GPQA
-      score: 83.8%
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #66 of 496'
-    - name: HLE
-      score: 22.3%
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #56 of 496'
-    - name: Speed · Output tok/s
-      score: '101'
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #132 of 496'
-    - name: Price ($/M tokens)
-      score: $0.60 in / $2.50 out
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #357 of 496'
+    - name: "\U0001D70F²-Bench Telecom (agentic)"
+      score: 95.9%
+      vs_baseline: 'Rank #6 of 78 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/tau2-bench'
+    - name: SciCode
+      score: 49.0%
+      vs_baseline: 'Rank #7 of 89 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/scicode'
+    - name: GPQA Diamond
+      score: 87.9%
+      vs_baseline: 'Rank #9 of 90 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: AA Intelligence Index
+      score: '46.81'
+      vs_baseline: 'Rank #10 of 93 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   github: 'https://github.com/MoonshotAI/Kimi-K2'
   availability:
     - open_weights
@@ -112,23 +88,30 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "1T-parameter MoE / 32B active per token — Moonshot's open-weights debut, modified MIT license"
-      - "65.8% on SWE-bench Verified single-attempt — outperforms every model tested except Claude Sonnet 4 at release"
-      - "53.7% on LiveCodeBench v6 — strong open-source coding tier"
+      - >-
+        1T-parameter MoE / 32B active per token — Moonshot's open-weights debut,
+        modified MIT license
+      - >-
+        65.8% on SWE-bench Verified single-attempt — outperforms every model
+        tested except Claude Sonnet 4 at release
+      - 53.7% on LiveCodeBench v6 — strong open-source coding tier
     best_for:
-      - "Self-hosted agent platforms where API models can't go (regulated, private cloud)"
-      - "Cost-sensitive frontier-tier inference via budget providers"
-      - "Coding agents that need long context + open weights for fine-tuning"
+      - >-
+        Self-hosted agent platforms where API models can't go (regulated,
+        private cloud)
+      - Cost-sensitive frontier-tier inference via budget providers
+      - Coding agents that need long context + open weights for fine-tuning
     not_ideal_for:
-      - "Edge / single-GPU deployments — 1T MoE still demands multi-node serving"
-      - "Multimodal tasks (text-only at this generation; vision lives in Kimi-VL)"
+      - Edge / single-GPU deployments — 1T MoE still demands multi-node serving
+      - Multimodal tasks (text-only at this generation; vision lives in Kimi-VL)
     sources:
-      - name: "Moonshot AI — Kimi K2 announcement"
-        url: "https://www.kimi.com/preview/1980c532-5631-8c55-885f-517d380005e7"
-      - name: "Cline — Kimi K2 for coding first impressions"
-        url: "https://cline.bot/blog/moonshots-kimi-k2-for-coding-our-first-impressions-in-cline"
-      - name: "Data Science Dojo — Kimi K2 deep dive"
-        url: "https://datasciencedojo.com/blog/kimi-k2/"
+      - name: Moonshot AI — Kimi K2 announcement
+        url: 'https://www.kimi.com/preview/1980c532-5631-8c55-885f-517d380005e7'
+      - name: Cline — Kimi K2 for coding first impressions
+        url: >-
+          https://cline.bot/blog/moonshots-kimi-k2-for-coding-our-first-impressions-in-cline
+      - name: Data Science Dojo — Kimi K2 deep dive
+        url: 'https://datasciencedojo.com/blog/kimi-k2/'
 public_view:
   plain_english: |
     Moonshot's K2 model trained to think while it acts. Most reasoning

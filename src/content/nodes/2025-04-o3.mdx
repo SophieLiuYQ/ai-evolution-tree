@@ -38,51 +38,14 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: Coding · HumanEval
-      score: 99.1%
-      vs_baseline: 'Rank #1 of 17 · Top 10% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/models'
-    - name: Intelligence · MMLU-Pro
-      score: 85.3%
-      vs_baseline: 'Rank #5 of 55 · Top 10% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/models'
-    - name: Context · AA-LCR (long-context)
-      score: 69.3%
-      vs_baseline: 'Rank #8 of 84 · Top 10% · Artificial Analysis'
-      source_url: >-
-        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
-    - name: Intelligence · AA Intelligence Index
-      score: '40.70'
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #68 of 496'
-    - name: Coding · SciCode
-      score: 41.0% (39.8–41.0%)
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #75 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 37.1% (6.1–37.1%)
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #48 of 496'
-    - name: MMLU-Pro
-      score: 85.3% (79.1–85.3%)
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #30 of 496'
-    - name: GPQA
-      score: 84.5% (74.8–84.5%)
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #57 of 496'
-    - name: HLE
-      score: 20.0% (8.7–20.0%)
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #66 of 496'
-    - name: Speed · Output tok/s
-      score: '18'
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #294 of 496'
-    - name: Price ($/M tokens)
-      score: $20.00 in / $80.00 out
-      source_url: 'https://artificialanalysis.ai/models/o3-pro'
-      vs_baseline: 'Rank #494 of 496'
+    - name: GPQA Diamond
+      score: 84.5%
+      vs_baseline: 'Rank #17 of 90 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
+    - name: AA Intelligence Index
+      score: '40.69'
+      vs_baseline: 'Rank #20 of 93 · Top 22%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   family: OpenAI o
   variants:
     - id: o3-mini
@@ -119,28 +82,44 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Step-change on ARC-AGI-1 — 75.7% at the public $10K compute limit, 87.5% at high compute (172x)"
-      - "But ARC-AGI-2 (March 2025) cratered the narrative: <3% on the harder benchmark vs 60% for the average human"
-      - "The released April-2025 o3 is NOT the December preview — preview had ARC-AGI-1 in its training, public version is more honest"
-      - "TechCrunch reported the released o3 scored lower than initial OpenAI claims implied"
-      - "Reasoning trace is much faster than o1 and the honesty/calibration of the chain improved noticeably"
-      - "Still expensive at high effort; still slow on the hardest tasks"
+      - >-
+        Step-change on ARC-AGI-1 — 75.7% at the public $10K compute limit, 87.5%
+        at high compute (172x)
+      - >-
+        But ARC-AGI-2 (March 2025) cratered the narrative: <3% on the harder
+        benchmark vs 60% for the average human
+      - >-
+        The released April-2025 o3 is NOT the December preview — preview had
+        ARC-AGI-1 in its training, public version is more honest
+      - >-
+        TechCrunch reported the released o3 scored lower than initial OpenAI
+        claims implied
+      - >-
+        Reasoning trace is much faster than o1 and the honesty/calibration of
+        the chain improved noticeably
+      - Still expensive at high effort; still slow on the hardest tasks
     best_for:
-      - "Frontier reasoning research and benchmark exploration"
-      - "Hard math (AIME, IMO-style) and graduate-level science (GPQA)"
-      - "Code that needs novel algorithm design rather than scaffolded refactors"
-      - "Tool-using agents that benefit from longer reasoning windows"
+      - Frontier reasoning research and benchmark exploration
+      - 'Hard math (AIME, IMO-style) and graduate-level science (GPQA)'
+      - Code that needs novel algorithm design rather than scaffolded refactors
+      - Tool-using agents that benefit from longer reasoning windows
     not_ideal_for:
-      - "Latency-sensitive chat — o3-mini or GPT-4o are far faster"
-      - "Tasks framed slightly outside training distribution — Apple's variable-rename study still applies"
-      - "Bulk inference — high-effort o3 is one of the most expensive options on the market"
+      - Latency-sensitive chat — o3-mini or GPT-4o are far faster
+      - >-
+        Tasks framed slightly outside training distribution — Apple's
+        variable-rename study still applies
+      - >-
+        Bulk inference — high-effort o3 is one of the most expensive options on
+        the market
     sources:
-      - name: "ARC Prize — o3 breakthrough on ARC-AGI-Pub"
-        url: "https://arcprize.org/blog/oai-o3-pub-breakthrough"
-      - name: "TechCrunch — o3 scores lower than initially implied"
-        url: "https://techcrunch.com/2025/04/20/openais-o3-ai-model-scores-lower-on-a-benchmark-than-the-company-initially-implied/"
-      - name: "VentureBeat — o3 progress on ARC-AGI"
-        url: "https://venturebeat.com/ai/openais-o3-shows-remarkable-progress-on-arc-agi-sparking-debate-on-ai-reasoning"
+      - name: ARC Prize — o3 breakthrough on ARC-AGI-Pub
+        url: 'https://arcprize.org/blog/oai-o3-pub-breakthrough'
+      - name: TechCrunch — o3 scores lower than initially implied
+        url: >-
+          https://techcrunch.com/2025/04/20/openais-o3-ai-model-scores-lower-on-a-benchmark-than-the-company-initially-implied/
+      - name: VentureBeat — o3 progress on ARC-AGI
+        url: >-
+          https://venturebeat.com/ai/openais-o3-shows-remarkable-progress-on-arc-agi-sparking-debate-on-ai-reasoning
 public_view:
   plain_english: |
     OpenAI's full o3 release in April 2025, after a December 2024

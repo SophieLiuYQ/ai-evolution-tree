@@ -39,41 +39,18 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '51.70'
-      vs_baseline: 'Rank #4 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-    - name: Coding · SciCode
-      score: 46.9% (44.1–46.9%)
-      vs_baseline: 'Rank #7 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-    - name: Agentic · Terminal-Bench Hard
-      score: 53.0% (42.4–53.0%)
-      vs_baseline: 'Rank #2 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-    - name: Coding · AA Coding Index
-      score: '50.90'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #3 of 96 · Reasoning'
-    - name: MMLU-Pro
-      score: 88.0% (76.0–88.0%)
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-sonnet-thinking'
-    - name: GPQA
-      score: 87.5% (79.7–87.5%)
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #12 of 96 · Reasoning'
-    - name: HLE
-      score: 30.0% (10.8–30.0%)
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #10 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '68'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #40 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $3.00 in / $15.00 out
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #92 of 96 · Reasoning'
+    - name: AA-Omniscience
+      score: '26.17'
+      vs_baseline: 'Rank #1 of 76 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
+    - name: AA Intelligence Index
+      score: '57.28'
+      vs_baseline: 'Rank #2 of 93 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: GPQA Diamond
+      score: 91.4%
+      vs_baseline: 'Rank #2 of 90 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
   homepage: 'https://www.anthropic.com/news/claude-4'
   availability:
     - api
@@ -118,28 +95,42 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Sustains hours-long agent loops without losing the thread — testers ran Opus 4 on 7+ hour autonomous coding sessions"
-      - "Best-in-class for real-world software engineering at release; SWE-bench Verified gains over Claude 3.7 Sonnet"
-      - "Native MCP support makes tool-using agents noticeably more reliable in production"
-      - "File editing and computer use feel meaningfully better than 3.7 — fewer 'almost works' debugging cycles"
-      - "Opus 4 is slower and more expensive than alternatives; reserve for the hardest tasks"
-      - "Sonnet 4 is the workhorse — same agentic strengths at a much friendlier price"
+      - >-
+        Sustains hours-long agent loops without losing the thread — testers ran
+        Opus 4 on 7+ hour autonomous coding sessions
+      - >-
+        Best-in-class for real-world software engineering at release; SWE-bench
+        Verified gains over Claude 3.7 Sonnet
+      - >-
+        Native MCP support makes tool-using agents noticeably more reliable in
+        production
+      - >-
+        File editing and computer use feel meaningfully better than 3.7 — fewer
+        'almost works' debugging cycles
+      - >-
+        Opus 4 is slower and more expensive than alternatives; reserve for the
+        hardest tasks
+      - >-
+        Sonnet 4 is the workhorse — same agentic strengths at a much friendlier
+        price
     best_for:
-      - "AI-software-engineer products (Devin, Cursor, Cline) that need long-horizon autonomy"
-      - "Agentic workflows with tool use, file editing, and computer use"
-      - "Complex bug fixes that span multiple files / systems"
-      - "Multi-hour research or coding sessions where context retention matters"
+      - >-
+        AI-software-engineer products (Devin, Cursor, Cline) that need
+        long-horizon autonomy
+      - 'Agentic workflows with tool use, file editing, and computer use'
+      - Complex bug fixes that span multiple files / systems
+      - Multi-hour research or coding sessions where context retention matters
     not_ideal_for:
-      - "High-volume chat or simple Q&A (use Sonnet or Haiku)"
-      - "Strictly latency-sensitive applications — Opus is slower"
-      - "Fully offline / air-gapped deployments (API only)"
+      - High-volume chat or simple Q&A (use Sonnet or Haiku)
+      - Strictly latency-sensitive applications — Opus is slower
+      - Fully offline / air-gapped deployments (API only)
     sources:
-      - name: "Anthropic — Claude 4 announcement"
-        url: "https://www.anthropic.com/news/claude-4"
-      - name: "16x Engineer — Claude 4 evaluation results"
-        url: "https://eval.16x.engineer/blog/claude-4-opus-sonnet-evaluation-results"
-      - name: "DataCamp — Claude 4 review"
-        url: "https://www.datacamp.com/blog/claude-4"
+      - name: Anthropic — Claude 4 announcement
+        url: 'https://www.anthropic.com/news/claude-4'
+      - name: 16x Engineer — Claude 4 evaluation results
+        url: 'https://eval.16x.engineer/blog/claude-4-opus-sonnet-evaluation-results'
+      - name: DataCamp — Claude 4 review
+        url: 'https://www.datacamp.com/blog/claude-4'
 public_view:
   plain_english: |
     Anthropic's first model family explicitly designed for sustained

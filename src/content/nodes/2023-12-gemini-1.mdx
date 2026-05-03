@@ -35,46 +35,6 @@ model_spec:
     - vision
     - audio
     - video
-  benchmarks:
-    - name: MMLU (Ultra)
-      score: 83.7% (or 90.0% with CoT@32 ensemble)
-      vs_baseline: 'GPT-4 86.4% standard, 87.3% CoT'
-    - name: GSM8K (Ultra)
-      score: 94.4%
-      vs_baseline: GPT-4 92.0%
-    - name: HumanEval (Ultra)
-      score: 74.4%
-      vs_baseline: GPT-4 67.0%
-    - name: Intelligence · AA Intelligence Index
-      score: '16.00'
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-      vs_baseline: 'Rank #292 of 496'
-    - name: Coding · AA Coding Index
-      score: '23.60'
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-      vs_baseline: 'Rank #159 of 496'
-    - name: Coding · SciCode
-      score: 29.5% (27.4–29.5%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-      vs_baseline: 'Rank #246 of 496'
-    - name: MMLU-Pro
-      score: 75.0% (65.7–75.0%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-      vs_baseline: 'Rank #180 of 496'
-    - name: GPQA
-      score: 58.9% (37.1–58.9%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-      vs_baseline: 'Rank #277 of 496'
-    - name: HLE
-      score: 4.9% (3.9–4.9%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-      vs_baseline: 'Rank #308 of 496'
-    - name: Speed · Output tok/s
-      score: '0'
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
-    - name: Price ($/M tokens)
-      score: $0.00 in / $0.00 out
-      source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
   homepage: 'https://deepmind.google/technologies/gemini/'
   availability:
     - api
@@ -96,24 +56,35 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Original Gemini 1 — historical; superseded by 1.5+."
-      - "First model where 1M-token context was a real product feature, not a benchmark headline"
-      - "99% needle-in-haystack accuracy at 1M tokens; 99.2% even at 10M in research configurations"
-      - "Multi-needle recall drops to ~60% — single fact retrieval is solid, multi-fact is harder"
+      - Original Gemini 1 — historical; superseded by 1.5+.
+      - >-
+        First model where 1M-token context was a real product feature, not a
+        benchmark headline
+      - >-
+        99% needle-in-haystack accuracy at 1M tokens; 99.2% even at 10M in
+        research configurations
+      - >-
+        Multi-needle recall drops to ~60% — single fact retrieval is solid,
+        multi-fact is harder
     best_for:
-      - "Whole-codebase analysis (30K+ lines) without tedious chunking pipelines"
-      - "Document QA over 1,500-page PDFs / batches of 100 emails"
-      - "Hour-long video summarisation and audio transcription QA"
+      - Whole-codebase analysis (30K+ lines) without tedious chunking pipelines
+      - 'Document QA over 1,500-page PDFs / batches of 100 emails'
+      - Hour-long video summarisation and audio transcription QA
     not_ideal_for:
-      - "Tasks requiring multi-fact retrieval across long contexts (recall drops sharply)"
-      - "Pure short-context chat — Flash variants are cheaper and faster"
+      - >-
+        Tasks requiring multi-fact retrieval across long contexts (recall drops
+        sharply)
+      - Pure short-context chat — Flash variants are cheaper and faster
     sources:
-      - name: "Google — Introducing Gemini 1.5"
-        url: "https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/"
-      - name: "Google — Gemini 1.5 Pro May 2024 update"
-        url: "https://blog.google/products-and-platforms/products/gemini/google-gemini-update-may-2024/"
-      - name: "Google Cloud — Needle in Haystack test"
-        url: "https://cloud.google.com/blog/products/ai-machine-learning/the-needle-in-the-haystack-test-and-how-gemini-pro-solves-it"
+      - name: Google — Introducing Gemini 1.5
+        url: >-
+          https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/
+      - name: Google — Gemini 1.5 Pro May 2024 update
+        url: >-
+          https://blog.google/products-and-platforms/products/gemini/google-gemini-update-may-2024/
+      - name: Google Cloud — Needle in Haystack test
+        url: >-
+          https://cloud.google.com/blog/products/ai-machine-learning/the-needle-in-the-haystack-test-and-how-gemini-pro-solves-it
 public_view:
   plain_english: |
     Google's first model family launched under the Gemini brand,

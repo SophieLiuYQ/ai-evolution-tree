@@ -29,50 +29,22 @@ model_spec:
   modalities:
     - text
   benchmarks:
-    - name: Coding · LiveCodeBench
+    - name: LiveCodeBench
       score: 87.8%
-      vs_baseline: 'Rank #2 of 47 · Top 5% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/models'
-    - name: Intelligence · AIME 2025
+      vs_baseline: 'Rank #3 of 57 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: AIME 2025
       score: 93.4%
-      vs_baseline: 'Rank #3 of 45 · Top 10% · Artificial Analysis'
+      vs_baseline: 'Rank #4 of 43 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/aime'
-    - name: Intelligence · AA Intelligence Index
-      score: '20.80'
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #223 of 496'
-    - name: Coding · AA Coding Index
-      score: '14.40'
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #243 of 496'
-    - name: Coding · SciCode
-      score: 34.0%
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #197 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 4.5%
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #269 of 496'
-    - name: MMLU-Pro
-      score: 71.8%
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #209 of 496'
-    - name: GPQA
-      score: 61.1%
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #261 of 496'
-    - name: HLE
-      score: 5.1%
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #288 of 496'
-    - name: Speed · Output tok/s
-      score: '284'
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #11 of 496'
-    - name: Price ($/M tokens)
-      score: $0.07 in / $0.23 out
-      source_url: 'https://artificialanalysis.ai/models/gpt-oss-20b-low'
-      vs_baseline: 'Rank #199 of 496'
+    - name: AA Math Index
+      score: '93.44'
+      vs_baseline: 'Rank #4 of 43 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: AA Intelligence Index
+      score: '33.27'
+      vs_baseline: 'Rank #32 of 93 · Top 35%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   homepage: 'https://openai.com/index/introducing-gpt-oss/'
   github: 'https://github.com/openai/gpt-oss'
   availability:
@@ -113,14 +85,18 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from OpenAI — see the linked sources below for benchmark and review coverage"
-      - "Tool-use and agent loops are the typical fit per the published model card"
+      - >-
+        Language model from OpenAI — see the linked sources below for benchmark
+        and review coverage
+      - >-
+        Tool-use and agent loops are the typical fit per the published model
+        card
     best_for:
-      - "Agent / tool-use workflows that match the model's published benchmarks"
-      - "See the model spec and sources block for benchmarked use cases"
+      - Agent / tool-use workflows that match the model's published benchmarks
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
 public_view:
   plain_english: |
     OpenAI's first open-weight language models since GPT-2 in 2019 —

@@ -37,38 +37,19 @@ model_spec:
     - product
     - enterprise
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '51.70'
-      vs_baseline: 'Rank #4 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-    - name: Coding · SciCode
-      score: 46.8%
-      vs_baseline: 'Rank #8 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-    - name: Agentic · Terminal-Bench Hard
-      score: 53.0%
-      vs_baseline: 'Rank #2 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-    - name: Coding · AA Coding Index
-      score: '50.90'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #3 of 96 · Reasoning'
-    - name: GPQA
-      score: 87.5%
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #12 of 96 · Reasoning'
-    - name: HLE
-      score: 30.0%
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #10 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '68'
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #40 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $3.00 in / $15.00 out
-      source_url: 'https://artificialanalysis.ai/models/claude-sonnet-4-6-adaptive'
-      vs_baseline: 'Rank #92 of 96 · Reasoning'
+    - name: MMLU-Pro
+      score: 88.0%
+      vs_baseline: 'Rank #2 of 57 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: AA-LCR (long-context reason)
+      score: 66.3%
+      vs_baseline: 'Rank #10 of 78 · Top 20%'
+      source_url: >-
+        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: AA Intelligence Index
+      score: '42.00'
+      vs_baseline: 'Rank #17 of 93 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   family: Anthropic claude-sonnet
   variants:
     - id: claude-sonnet-4-6-adaptive
@@ -102,28 +83,43 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Topped SWE-bench Verified at release — Cognition reported 18% planning gain and 12% end-to-end eval gain for Devin"
-      - "Edit accuracy is the headline change — internal code-editing error rate dropped from 9% on Sonnet 4 to 0%"
-      - "Sustains 30+ hour autonomous coding focus without losing the thread"
-      - "Reasoning quality improvements are real but incremental over 4.5 — pick this for cost/speed, not for raw IQ"
-      - "Same price point as predecessor — easy upgrade if you're already on Sonnet"
-      - "Some testers find Opus 4.5 worth the premium for the hardest multi-system bugs"
+      - >-
+        Topped SWE-bench Verified at release — Cognition reported 18% planning
+        gain and 12% end-to-end eval gain for Devin
+      - >-
+        Edit accuracy is the headline change — internal code-editing error rate
+        dropped from 9% on Sonnet 4 to 0%
+      - Sustains 30+ hour autonomous coding focus without losing the thread
+      - >-
+        Reasoning quality improvements are real but incremental over 4.5 — pick
+        this for cost/speed, not for raw IQ
+      - >-
+        Same price point as predecessor — easy upgrade if you're already on
+        Sonnet
+      - >-
+        Some testers find Opus 4.5 worth the premium for the hardest
+        multi-system bugs
     best_for:
-      - "Production agentic coding (Devin, Cursor, Cline) where reliability matters"
-      - "AI SRE / on-call automation with long task horizons"
-      - "Day-to-day software engineering at scale on real GitHub issues"
-      - "Cost-sensitive teams that need frontier-tier coding without Opus pricing"
+      - >-
+        Production agentic coding (Devin, Cursor, Cline) where reliability
+        matters
+      - AI SRE / on-call automation with long task horizons
+      - Day-to-day software engineering at scale on real GitHub issues
+      - Cost-sensitive teams that need frontier-tier coding without Opus pricing
     not_ideal_for:
-      - "The very hardest reasoning tasks — Opus 4.5 still leads by ~7 points on AA Intelligence Index"
-      - "Simple chat or casual Q&A — try Haiku 4.5 instead"
-      - "Workloads where 1M-token context is required (Sonnet 4.6 ships 200K)"
+      - >-
+        The very hardest reasoning tasks — Opus 4.5 still leads by ~7 points on
+        AA Intelligence Index
+      - Simple chat or casual Q&A — try Haiku 4.5 instead
+      - Workloads where 1M-token context is required (Sonnet 4.6 ships 200K)
     sources:
-      - name: "Anthropic — Claude Sonnet 4.5 announcement"
-        url: "https://www.anthropic.com/news/claude-sonnet-4-5"
-      - name: "InfoQ — Sonnet 4.5 tops SWE-bench"
-        url: "https://www.infoq.com/news/2025/10/claude-sonnet-4-5/"
-      - name: "Caylent — Sonnet 4.5 highest-scoring Claude on SWE-bench"
-        url: "https://caylent.com/blog/claude-sonnet-4-5-highest-scoring-claude-model-yet-on-swe-bench"
+      - name: Anthropic — Claude Sonnet 4.5 announcement
+        url: 'https://www.anthropic.com/news/claude-sonnet-4-5'
+      - name: InfoQ — Sonnet 4.5 tops SWE-bench
+        url: 'https://www.infoq.com/news/2025/10/claude-sonnet-4-5/'
+      - name: Caylent — Sonnet 4.5 highest-scoring Claude on SWE-bench
+        url: >-
+          https://caylent.com/blog/claude-sonnet-4-5-highest-scoring-claude-model-yet-on-swe-bench
 public_view:
   plain_english: |
     Anthropic's mid-cycle November 2025 Sonnet refresh — a

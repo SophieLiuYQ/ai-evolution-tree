@@ -38,42 +38,10 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '18.60'
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #254 of 496'
-    - name: Coding · AA Coding Index
-      score: '16.60'
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #217 of 496'
-    - name: Coding · SciCode
-      score: 36.6% (22.9–36.6%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #156 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 8.3%
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #212 of 496'
-    - name: MMLU-Pro
-      score: 80.3% (64.8–80.3%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #112 of 496'
-    - name: GPQA
-      score: 65.5% (42.6–65.5%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #237 of 496'
-    - name: HLE
-      score: 5.0% (2.8–5.0%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #297 of 496'
-    - name: Speed · Output tok/s
-      score: '97'
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #137 of 496'
-    - name: Price ($/M tokens)
-      score: $2.50 in / $10.00 out
-      source_url: 'https://artificialanalysis.ai/models/gpt-4o-2024-08-06'
-      vs_baseline: 'Rank #446 of 496'
+    - name: AA Intelligence Index
+      score: '18.64'
+      vs_baseline: 'Rank #55 of 93 · Top 60%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   family: OpenAI GPT
   variants:
     - id: gpt-4o-2024
@@ -101,28 +69,40 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First end-to-end omni model — text, vision, audio share one neural net (not stitched pipelines)"
-      - "2x faster, half the price, and 5x higher rate limits than GPT-4 Turbo"
-      - "Native voice-to-voice latency around 320ms — close to human conversational rhythm (210ms)"
-      - "Realtime API (Oct 2024) opened up always-on voice assistants for developers"
-      - "Reasoning is solid but not o1-class — by 2025 it's the 'speed/cost tier', not the 'IQ tier'"
-      - "GPT-4o mini (Jul 2024) became the GPT-3.5 Turbo replacement at much better quality"
+      - >-
+        First end-to-end omni model — text, vision, audio share one neural net
+        (not stitched pipelines)
+      - '2x faster, half the price, and 5x higher rate limits than GPT-4 Turbo'
+      - >-
+        Native voice-to-voice latency around 320ms — close to human
+        conversational rhythm (210ms)
+      - >-
+        Realtime API (Oct 2024) opened up always-on voice assistants for
+        developers
+      - >-
+        Reasoning is solid but not o1-class — by 2025 it's the 'speed/cost
+        tier', not the 'IQ tier'
+      - >-
+        GPT-4o mini (Jul 2024) became the GPT-3.5 Turbo replacement at much
+        better quality
     best_for:
-      - "Voice-first applications and real-time multimodal interfaces"
-      - "Cost-sensitive bulk inference where GPT-4-class quality is enough"
-      - "Image understanding workflows — strong vision pipeline at API price"
-      - "Replacing GPT-3.5/Turbo deployments with 4-tier quality at similar cost"
+      - Voice-first applications and real-time multimodal interfaces
+      - Cost-sensitive bulk inference where GPT-4-class quality is enough
+      - Image understanding workflows — strong vision pipeline at API price
+      - Replacing GPT-3.5/Turbo deployments with 4-tier quality at similar cost
     not_ideal_for:
-      - "Hard reasoning, math, or research — o1/o3/GPT-5 are the right tier"
-      - "Frontier-leaderboard coding (Claude 3.5 Sonnet+ outscored GPT-4o on SWE-bench by mid-2024)"
-      - "Self-hosted / open-weights workflows"
+      - 'Hard reasoning, math, or research — o1/o3/GPT-5 are the right tier'
+      - >-
+        Frontier-leaderboard coding (Claude 3.5 Sonnet+ outscored GPT-4o on
+        SWE-bench by mid-2024)
+      - Self-hosted / open-weights workflows
     sources:
-      - name: "OpenAI — Hello GPT-4o"
-        url: "https://openai.com/index/hello-gpt-4o/"
-      - name: "TechCrunch — OpenAI debuts GPT-4o omni model"
-        url: "https://techcrunch.com/2024/05/13/openais-newest-model-is-gpt-4o/"
-      - name: "Wikipedia — GPT-4o"
-        url: "https://en.wikipedia.org/wiki/GPT-4o"
+      - name: OpenAI — Hello GPT-4o
+        url: 'https://openai.com/index/hello-gpt-4o/'
+      - name: TechCrunch — OpenAI debuts GPT-4o omni model
+        url: 'https://techcrunch.com/2024/05/13/openais-newest-model-is-gpt-4o/'
+      - name: Wikipedia — GPT-4o
+        url: 'https://en.wikipedia.org/wiki/GPT-4o'
 public_view:
   plain_english: |
     OpenAI's successor to GPT-4, with a single unified model handling

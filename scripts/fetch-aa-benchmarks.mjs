@@ -244,6 +244,13 @@ function computeRankings(byFamily) {
   return ranks;
 }
 
+// Always include AA Intelligence Index when AA has a score for the model,
+// even if it's outside the Top 25% strength filter. The detail page's
+// "Position" card and the relationship-analysis script both key off this
+// benchmark — dropping it would silently break those features for any
+// model that doesn't happen to be Top 25% on Intel.
+const ALWAYS_KEEP = new Set(["intelligence_index"]);
+
 function pickTop3(famSlug, ranks) {
   // For each bench where this family has a rank, collect (key, rank, score, total)
   const all = [];
@@ -261,7 +268,17 @@ function pickTop3(famSlug, ranks) {
   // out ranks-from-smaller-pools because they're proportionally better.
   // Tiebreak: lower raw rank wins.
   qualifying.sort((a, b) => a.percentile - b.percentile || a.rank - b.rank);
-  return qualifying.slice(0, 3);
+  const top = qualifying.slice(0, 3);
+
+  // Ensure the always-keep benches are present even if they weren't in the
+  // top-3 strength picks. They're appended after the strength picks so the
+  // top-of-page bullets still lead with the model's actual standout metrics.
+  for (const k of ALWAYS_KEEP) {
+    if (top.some((t) => t.k === k)) continue;
+    const extra = all.find((a) => a.k === k);
+    if (extra) top.push(extra);
+  }
+  return top;
 }
 
 function formatScore(value, unit) {

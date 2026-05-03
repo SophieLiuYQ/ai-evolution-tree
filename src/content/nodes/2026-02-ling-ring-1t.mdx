@@ -26,37 +26,6 @@ model_spec:
   release_type: open_weights
   modalities:
     - text
-  benchmarks:
-    - name: IMO 2025 (Ring)
-      score: Gold-equivalent
-    - name: Intelligence · AA Intelligence Index
-      score: '19.00'
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #240 of 496'
-    - name: Coding · AA Coding Index
-      score: '18.80'
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #196 of 496'
-    - name: Coding · SciCode
-      score: 35.2%
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #183 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 10.6%
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #199 of 496'
-    - name: MMLU-Pro
-      score: 82.2%
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #75 of 496'
-    - name: GPQA
-      score: 71.9%
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #180 of 496'
-    - name: HLE
-      score: 7.2%
-      source_url: 'https://artificialanalysis.ai/models/ling-1t'
-      vs_baseline: 'Rank #199 of 496'
   homepage: 'https://www.antgroup.com/ai'
   github: 'https://github.com/inclusionAI/Ring'
   availability:
@@ -91,14 +60,18 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Ant Group — see the linked sources below for benchmark and review coverage"
-      - "Tool-use and agent loops are the typical fit per the published model card"
+      - >-
+        Language model from Ant Group — see the linked sources below for
+        benchmark and review coverage
+      - >-
+        Tool-use and agent loops are the typical fit per the published model
+        card
     best_for:
-      - "Agent / tool-use workflows that match the model's published benchmarks"
-      - "See the model spec and sources block for benchmarked use cases"
+      - Agent / tool-use workflows that match the model's published benchmarks
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
 public_view:
   plain_english: |
     Ant Group's first major frontier release — two siblings at 1

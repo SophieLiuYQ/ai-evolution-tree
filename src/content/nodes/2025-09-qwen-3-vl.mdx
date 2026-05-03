@@ -37,43 +37,6 @@ model_spec:
   github: 'https://github.com/QwenLM/Qwen3-VL'
   availability:
     - open_weights
-  benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '27.60'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #48 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '20.90'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #51 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 39.9%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #35 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 11.4%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #56 of 96 · Reasoning'
-    - name: MMLU-Pro
-      score: 83.6%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #21 of 96 · Reasoning'
-    - name: GPQA
-      score: 77.2%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #47 of 96 · Reasoning'
-    - name: HLE
-      score: 10.1%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #53 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '46'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #55 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $0.70 in / $8.40 out
-      source_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
-      vs_baseline: 'Rank #78 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/qwen3-vl-235b-a22b-reasoning'
   modalities_in:
     - text
@@ -111,24 +74,39 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Vision-language variant of Qwen 3."
-      - "Best open-source reasoning model at its release — 235B-A22B (Thinking) beats DeepSeek-R1 on 17/23 benchmarks"
-      - "Toggle-able thinking mode: same weights serve both reasoning and fast-chat modes"
-      - "Strong 119-language coverage; the most genuinely multilingual frontier-tier model"
+      - Vision-language variant of Qwen 3.
+      - >-
+        Best open-source reasoning model at its release — 235B-A22B (Thinking)
+        beats DeepSeek-R1 on 17/23 benchmarks
+      - >-
+        Toggle-able thinking mode: same weights serve both reasoning and
+        fast-chat modes
+      - >-
+        Strong 119-language coverage; the most genuinely multilingual
+        frontier-tier model
     best_for:
-      - "Multilingual production deployments (119 languages) where most models stay English-centric"
-      - "Self-hosted reasoning workflows that need both 'fast mode' and 'thinking mode' from one weight set"
-      - "Open-weights agentic coding (Qwen3-Coder) with very large context windows"
+      - >-
+        Multilingual production deployments (119 languages) where most models
+        stay English-centric
+      - >-
+        Self-hosted reasoning workflows that need both 'fast mode' and 'thinking
+        mode' from one weight set
+      - >-
+        Open-weights agentic coding (Qwen3-Coder) with very large context
+        windows
     not_ideal_for:
-      - "Multimodal tasks (Qwen3 base is text — vision lives in Qwen3-VL, audio in Qwen3-Audio)"
-      - "Edge / single-consumer-GPU deployments at the 235B scale"
+      - >-
+        Multimodal tasks (Qwen3 base is text — vision lives in Qwen3-VL, audio
+        in Qwen3-Audio)
+      - Edge / single-consumer-GPU deployments at the 235B scale
     sources:
-      - name: "Qwen team — Qwen3 launch blog"
-        url: "https://qwenlm.github.io/blog/qwen3/"
-      - name: "Qwen3 Technical Report (arXiv)"
-        url: "https://arxiv.org/pdf/2505.09388"
-      - name: "MarkTechPost — Qwen3.6-27B coding benchmarks"
-        url: "https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/"
+      - name: Qwen team — Qwen3 launch blog
+        url: 'https://qwenlm.github.io/blog/qwen3/'
+      - name: Qwen3 Technical Report (arXiv)
+        url: 'https://arxiv.org/pdf/2505.09388'
+      - name: MarkTechPost — Qwen3.6-27B coding benchmarks
+        url: >-
+          https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/
 public_view:
   plain_english: |
     Alibaba's vision-enabled Qwen 3 family — sizes from 2B (mobile)

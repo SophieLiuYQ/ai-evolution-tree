@@ -35,50 +35,22 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: Intelligence · GPQA Diamond
-      score: 91.1%
-      vs_baseline: 'Rank #3 of 85 · Top 5% · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
-    - name: Coding · SciCode
-      score: 45.7% (29.6–45.7%)
-      vs_baseline: 'Rank #10 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-    - name: Vision · MMMU-Pro
-      score: 74.6%
-      vs_baseline: 'Rank #7 of 26 · Top #7 of 26 · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
-    - name: Intelligence · AA Intelligence Index
-      score: '49.30'
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #10 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '40.50'
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #13 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 40.9% (12.1–40.9%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #11 of 96 · Reasoning'
-    - name: MMLU-Pro
-      score: 86.6% (73.0–86.6%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #6 of 96 · Reasoning'
-    - name: GPQA
-      score: 91.1% (60.6–91.1%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #3 of 96 · Reasoning'
-    - name: HLE
-      score: 32.2% (5.0–32.2%)
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #7 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '96'
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #30 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $2.00 in / $6.00 out
-      source_url: 'https://artificialanalysis.ai/models/grok-4-20'
-      vs_baseline: 'Rank #83 of 96 · Reasoning'
+    - name: "\U0001D70F²-Bench Telecom (agentic)"
+      score: 97.7%
+      vs_baseline: 'Rank #1 of 78 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/tau2-bench'
+    - name: IFBench (instruction follow)
+      score: 81.3%
+      vs_baseline: 'Rank #1 of 78 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/ifbench'
+    - name: AA-Omniscience
+      score: '18.32'
+      vs_baseline: 'Rank #3 of 76 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/omniscience'
+    - name: AA Intelligence Index
+      score: '53.20'
+      vs_baseline: 'Rank #5 of 93 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   homepage: 'https://x.ai/news/grok-4'
   availability:
     - api
@@ -119,28 +91,50 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "AA Intelligence Index of 73 at release — leading frontier slot, ahead of o3 (70), Gemini 2.5 Pro (70), Claude 4 Opus (64)"
-      - "GPQA Diamond all-time high of 88%; Humanity's Last Exam 24%; AIME 2024 94%; MMLU-Pro 87%"
-      - "Leads Coding Index (LiveCodeBench + SciCode) and Math Index (AIME24 + MATH-500)"
-      - "256K-token context in API (128K in app); 75 tok/s — slower than o3 but faster than Claude 4 Opus Thinking"
-      - "Tool-integrated reasoning trained via large-scale RL with verifiable rewards"
-      - "Launched under controversy — Elon-favoritism concerns and prior Grok-3 benchmark trust issues still weigh on reception"
+      - >-
+        AA Intelligence Index of 73 at release — leading frontier slot, ahead of
+        o3 (70), Gemini 2.5 Pro (70), Claude 4 Opus (64)
+      - >-
+        GPQA Diamond all-time high of 88%; Humanity's Last Exam 24%; AIME 2024
+        94%; MMLU-Pro 87%
+      - >-
+        Leads Coding Index (LiveCodeBench + SciCode) and Math Index (AIME24 +
+        MATH-500)
+      - >-
+        256K-token context in API (128K in app); 75 tok/s — slower than o3 but
+        faster than Claude 4 Opus Thinking
+      - >-
+        Tool-integrated reasoning trained via large-scale RL with verifiable
+        rewards
+      - >-
+        Launched under controversy — Elon-favoritism concerns and prior Grok-3
+        benchmark trust issues still weigh on reception
     best_for:
-      - "Math, science, and reasoning research where Grok 4 leads on raw benchmark numbers"
-      - "Real-time information lookup inside the X (Twitter) product with full timeline access"
-      - "Tool-using agents that benefit from extended reasoning + verifiable-rewards training"
-      - "Less-restricted prompting than ChatGPT/Claude defaults"
+      - >-
+        Math, science, and reasoning research where Grok 4 leads on raw
+        benchmark numbers
+      - >-
+        Real-time information lookup inside the X (Twitter) product with full
+        timeline access
+      - >-
+        Tool-using agents that benefit from extended reasoning +
+        verifiable-rewards training
+      - Less-restricted prompting than ChatGPT/Claude defaults
     not_ideal_for:
-      - "Customer-facing products where political-bias risk is a brand concern"
-      - "Workflows requiring system-prompt-free behaviour — RL tuning shows different defaults depending on scaffold"
-      - "Self-hosted or air-gapped deployments — closed weights, hosted only via X / API"
+      - Customer-facing products where political-bias risk is a brand concern
+      - >-
+        Workflows requiring system-prompt-free behaviour — RL tuning shows
+        different defaults depending on scaffold
+      - >-
+        Self-hosted or air-gapped deployments — closed weights, hosted only via
+        X / API
     sources:
-      - name: "xAI — Grok 4 model card (PDF)"
-        url: "https://data.x.ai/2025-08-20-grok-4-model-card.pdf"
-      - name: "Artificial Analysis — Grok 4"
-        url: "https://artificialanalysis.ai/models/grok-4"
-      - name: "Interconnects — Grok 4 an o3 look-alike in search"
-        url: "https://www.interconnects.ai/p/grok-4-an-o3-look-alike-in-search"
+      - name: xAI — Grok 4 model card (PDF)
+        url: 'https://data.x.ai/2025-08-20-grok-4-model-card.pdf'
+      - name: Artificial Analysis — Grok 4
+        url: 'https://artificialanalysis.ai/models/grok-4'
+      - name: Interconnects — Grok 4 an o3 look-alike in search
+        url: 'https://www.interconnects.ai/p/grok-4-an-o3-look-alike-in-search'
 public_view:
   plain_english: |
     xAI's August 2025 reasoning flagship — Grok 4 and Grok 4 Heavy.

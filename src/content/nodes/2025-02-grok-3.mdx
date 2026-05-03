@@ -36,50 +36,22 @@ model_spec:
     - text
     - vision
   benchmarks:
-    - name: Coding · HumanEval
+    - name: MATH-500
+      score: 99.2%
+      vs_baseline: 'Rank #1 of 37 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: HumanEval
       score: 97.8%
-      vs_baseline: 'Rank #2 of 15 · Top #2 of 15 · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/models'
-    - name: Intelligence · MMLU-Pro
-      score: 82.8%
-      vs_baseline: 'Rank #10 of 47 · Top #10 of 47 · Artificial Analysis'
-      source_url: 'https://artificialanalysis.ai/models'
-    - name: Intelligence · AA Intelligence Index
-      score: '32.10'
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #41 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '25.20'
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #44 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 40.6% (36.8–40.6%)
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #29 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 17.4% (11.4–17.4%)
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #46 of 96 · Reasoning'
-    - name: MMLU-Pro
-      score: 82.8% (79.9–82.8%)
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #27 of 96 · Reasoning'
-    - name: GPQA
-      score: 79.1% (69.3–79.1%)
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #38 of 96 · Reasoning'
-    - name: HLE
-      score: 11.1% (5.1–11.1%)
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #47 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '215'
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #3 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $0.30 in / $0.50 out
-      source_url: 'https://artificialanalysis.ai/models/grok-3-mini-reasoning'
-      vs_baseline: 'Rank #43 of 96 · Reasoning'
+      vs_baseline: 'Rank #2 of 36 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: AIME 2024
+      score: 93.3%
+      vs_baseline: 'Rank #2 of 34 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
+    - name: AA Intelligence Index
+      score: '32.08'
+      vs_baseline: 'Rank #35 of 93 · Top 38%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   homepage: 'https://x.ai/news/grok-3'
   availability:
     - api
@@ -117,28 +89,49 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First xAI model trained on the Colossus supercluster — 10x compute of Grok-2"
-      - "AIME 2025 93.3% and GPQA 84.6% — credibly frontier-tier on math and graduate science"
-      - "Chatbot Arena Elo 1402 at release — not a benchmark stunt, real human-preference signal"
-      - "TechCrunch flagged that the released graphs omitted o3-mini-high's cons@64 score, sparking benchmark trust debate"
-      - "Trained with reinforcement learning at unprecedented scale to refine chain-of-thought"
-      - "Most useful inside the X (Twitter) product — outside that surface the alternatives feel more polished"
+      - >-
+        First xAI model trained on the Colossus supercluster — 10x compute of
+        Grok-2
+      - >-
+        AIME 2025 93.3% and GPQA 84.6% — credibly frontier-tier on math and
+        graduate science
+      - >-
+        Chatbot Arena Elo 1402 at release — not a benchmark stunt, real
+        human-preference signal
+      - >-
+        TechCrunch flagged that the released graphs omitted o3-mini-high's
+        cons@64 score, sparking benchmark trust debate
+      - >-
+        Trained with reinforcement learning at unprecedented scale to refine
+        chain-of-thought
+      - >-
+        Most useful inside the X (Twitter) product — outside that surface the
+        alternatives feel more polished
     best_for:
-      - "Research and scientific Q&A where chain-of-thought matters"
-      - "Real-time information retrieval inside the X platform with full timeline access"
-      - "Math and competition-style coding (LiveCodeBench 79.4%)"
-      - "Users who want a less-restricted model than ChatGPT/Claude defaults"
+      - Research and scientific Q&A where chain-of-thought matters
+      - >-
+        Real-time information retrieval inside the X platform with full timeline
+        access
+      - Math and competition-style coding (LiveCodeBench 79.4%)
+      - Users who want a less-restricted model than ChatGPT/Claude defaults
     not_ideal_for:
-      - "Coding-agent leaderboards — Claude Opus 4.5 and DeepSeek V4 score higher on SWE-bench"
-      - "Workflows where benchmark transparency matters — release controversy is a real concern"
-      - "Multimodal-first applications — Grok 3 lags on image tasks vs Gemini 2.5 Pro / GPT-5"
+      - >-
+        Coding-agent leaderboards — Claude Opus 4.5 and DeepSeek V4 score higher
+        on SWE-bench
+      - >-
+        Workflows where benchmark transparency matters — release controversy is
+        a real concern
+      - >-
+        Multimodal-first applications — Grok 3 lags on image tasks vs Gemini 2.5
+        Pro / GPT-5
     sources:
-      - name: "xAI — Grok 3 announcement"
-        url: "https://x.ai/news/grok-3"
-      - name: "TechCrunch — Did xAI lie about Grok 3 benchmarks?"
-        url: "https://techcrunch.com/2025/02/22/did-xai-lie-about-grok-3s-benchmarks/"
-      - name: "Artificial Analysis — Grok 3 analysis"
-        url: "https://artificialanalysis.ai/models/grok-3"
+      - name: xAI — Grok 3 announcement
+        url: 'https://x.ai/news/grok-3'
+      - name: TechCrunch — Did xAI lie about Grok 3 benchmarks?
+        url: >-
+          https://techcrunch.com/2025/02/22/did-xai-lie-about-grok-3s-benchmarks/
+      - name: Artificial Analysis — Grok 3 analysis
+        url: 'https://artificialanalysis.ai/models/grok-3'
 public_view:
   plain_english: |
     xAI's third-generation flagship model, released February 2025

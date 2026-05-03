@@ -39,42 +39,22 @@ model_spec:
     - product
     - enterprise
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '34.60'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #103 of 496'
-    - name: Coding · AA Coding Index
-      score: '31.90'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #96 of 496'
-    - name: Coding · SciCode
-      score: 42.8% (39.5–42.8%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #58 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 26.5%
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #105 of 496'
+    - name: MATH-500
+      score: 98.1%
+      vs_baseline: 'Rank #5 of 37 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: MMLU-Pro
-      score: 86.2% (83.7–86.2%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #20 of 496'
-    - name: GPQA
-      score: 84.4% (82.2–84.4%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #58 of 496'
-    - name: HLE
-      score: 21.1% (15.4–21.1%)
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #62 of 496'
-    - name: Speed · Output tok/s
-      score: '129'
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #101 of 496'
-    - name: Price ($/M tokens)
-      score: $1.25 in / $10.00 out
-      source_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
-      vs_baseline: 'Rank #417 of 496'
+      score: 83.2%
+      vs_baseline: 'Rank #9 of 57 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: AIME 2024
+      score: 82.3%
+      vs_baseline: 'Rank #6 of 34 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
+    - name: AA Intelligence Index
+      score: '27.04'
+      vs_baseline: 'Rank #43 of 93 · Top 47%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   aa_url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
   modalities_in:
     - text
@@ -102,28 +82,43 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Long context is the headline — 91.5% on 128k and 83.1% on 1M long-context retrieval, ahead of every other frontier model"
-      - "Independent testers confirm reliable retrieval up to ~800K tokens; the last 200K degrades"
-      - "Genuine 'put a whole codebase or book in the prompt' workflow — not theatre"
-      - "AIME 2024 92.0% and GPQA Diamond 84.0% put it in the top tier on reasoning"
-      - "Built-in thinking mode is a default, not a switch — you don't have to pick a 'reasoning model'"
-      - "Pricing tiers up past 200K tokens (2x surcharge) — long-context isn't free"
+      - >-
+        Long context is the headline — 91.5% on 128k and 83.1% on 1M
+        long-context retrieval, ahead of every other frontier model
+      - >-
+        Independent testers confirm reliable retrieval up to ~800K tokens; the
+        last 200K degrades
+      - >-
+        Genuine 'put a whole codebase or book in the prompt' workflow — not
+        theatre
+      - >-
+        AIME 2024 92.0% and GPQA Diamond 84.0% put it in the top tier on
+        reasoning
+      - >-
+        Built-in thinking mode is a default, not a switch — you don't have to
+        pick a 'reasoning model'
+      - >-
+        Pricing tiers up past 200K tokens (2x surcharge) — long-context isn't
+        free
     best_for:
-      - "Whole-codebase analysis, refactors across many files at once"
-      - "Long-form document QA (books, contracts, research papers)"
-      - "Multi-doc RAG replacement when context budget is generous"
-      - "Mixed reasoning + multimodal tasks (still strong on MMMU, MMLU-Pro)"
+      - 'Whole-codebase analysis, refactors across many files at once'
+      - 'Long-form document QA (books, contracts, research papers)'
+      - Multi-doc RAG replacement when context budget is generous
+      - 'Mixed reasoning + multimodal tasks (still strong on MMMU, MMLU-Pro)'
     not_ideal_for:
-      - "Pure agentic-coding leaderboards — Claude Opus 4.5 and DeepSeek V4 lead SWE-bench"
-      - "Cost-bound bulk inference past 200K tokens (price doubles)"
-      - "Self-hosted / open-weights deployments"
+      - >-
+        Pure agentic-coding leaderboards — Claude Opus 4.5 and DeepSeek V4 lead
+        SWE-bench
+      - Cost-bound bulk inference past 200K tokens (price doubles)
+      - Self-hosted / open-weights deployments
     sources:
-      - name: "Artificial Analysis — Gemini 2.5 Pro analysis"
-        url: "https://artificialanalysis.ai/models/gemini-2-5-pro"
-      - name: "Google DeepMind — Gemini 2.5 technical report"
-        url: "https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf"
-      - name: "DataCamp — Gemini 2.5 Pro review"
-        url: "https://www.datacamp.com/blog/gemini-2-5-pro"
+      - name: Artificial Analysis — Gemini 2.5 Pro analysis
+        url: 'https://artificialanalysis.ai/models/gemini-2-5-pro'
+      - name: Google DeepMind — Gemini 2.5 technical report
+        url: >-
+          https://storage.googleapis.com/deepmind-media/gemini/gemini_v2_5_report.pdf
+      - name: DataCamp — Gemini 2.5 Pro review
+        url: 'https://www.datacamp.com/blog/gemini-2-5-pro'
 public_view:
   plain_english: |
     Google DeepMind's first model to integrate reasoning natively into

@@ -21,43 +21,6 @@ model_spec:
   modalities:
     - text
   homepage: 'https://openai.com/'
-  benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '26.30'
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #169 of 496'
-    - name: Coding · AA Coding Index
-      score: '21.80'
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #175 of 496'
-    - name: Coding · SciCode
-      score: 40.4% (22.9–40.4%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #88 of 496'
-    - name: MMLU-Pro
-      score: 80.6% (64.8–80.6%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #107 of 496'
-    - name: HLE
-      score: 5.0% (2.8–5.0%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #297 of 496'
-    - name: Speed · Output tok/s
-      score: '110'
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #122 of 496'
-    - name: Price ($/M tokens)
-      score: $2.00 in / $8.00 out
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #423 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 13.6% (3.8–13.6%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #177 of 496'
-    - name: GPQA
-      score: 66.6% (42.6–66.6%)
-      source_url: 'https://artificialanalysis.ai/models/gpt-4-1'
-      vs_baseline: 'Rank #226 of 496'
   aa_url: 'https://artificialanalysis.ai/models/gpt-4-1'
   context_window: 128000
   modalities_in:
@@ -78,23 +41,33 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Step-change in reasoning vs GPT-3.5 — top 10% on simulated bar exam vs 3.5's bottom 10%"
-      - "MMLU 86.4% in English; surpassed prior models in 24 of 26 other languages"
-      - "First widely-deployed model with image input (text output only) — multimodal era starts here"
+      - >-
+        Step-change in reasoning vs GPT-3.5 — top 10% on simulated bar exam vs
+        3.5's bottom 10%
+      - >-
+        MMLU 86.4% in English; surpassed prior models in 24 of 26 other
+        languages
+      - >-
+        First widely-deployed model with image input (text output only) —
+        multimodal era starts here
     best_for:
-      - "Professional knowledge work needing top-of-class reasoning at the time"
-      - "Code generation with chain-of-thought prompting"
-      - "Multilingual tasks across 26+ languages"
+      - Professional knowledge work needing top-of-class reasoning at the time
+      - Code generation with chain-of-thought prompting
+      - Multilingual tasks across 26+ languages
     not_ideal_for:
-      - "Frontier work after Claude 3.5+ / GPT-4o / Llama 3 — quickly surpassed in 2024"
-      - "Cost-sensitive bulk inference — pricing dominant before GPT-4o cut it in half"
+      - >-
+        Frontier work after Claude 3.5+ / GPT-4o / Llama 3 — quickly surpassed
+        in 2024
+      - >-
+        Cost-sensitive bulk inference — pricing dominant before GPT-4o cut it in
+        half
     sources:
-      - name: "OpenAI — GPT-4 research page"
-        url: "https://openai.com/index/gpt-4-research/"
-      - name: "GPT-4 Technical Report (arXiv)"
-        url: "https://arxiv.org/abs/2303.08774"
-      - name: "MIT Press — How is ChatGPT's behavior changing"
-        url: "https://hdsr.mitpress.mit.edu/pub/y95zitmz"
+      - name: OpenAI — GPT-4 research page
+        url: 'https://openai.com/index/gpt-4-research/'
+      - name: GPT-4 Technical Report (arXiv)
+        url: 'https://arxiv.org/abs/2303.08774'
+      - name: MIT Press — How is ChatGPT's behavior changing
+        url: 'https://hdsr.mitpress.mit.edu/pub/y95zitmz'
   availability:
     - api
     - product

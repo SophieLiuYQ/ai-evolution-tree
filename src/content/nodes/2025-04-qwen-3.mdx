@@ -34,49 +34,6 @@ model_spec:
   release_type: open_weights
   modalities:
     - text
-  benchmarks:
-    - name: AIME (Qwen3-235B-A22B-Thinking)
-      score: 85.7%
-      vs_baseline: DeepSeek-R1 79.8%
-    - name: LiveCodeBench v5 (235B-A22B)
-      score: 70.7%
-      vs_baseline: DeepSeek-R1 65.9%
-    - name: Intelligence · AA Intelligence Index
-      score: '20.10'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #228 of 496'
-    - name: Coding · AA Coding Index
-      score: '15.30'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #232 of 496'
-    - name: Coding · SciCode
-      score: 30.7%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #231 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 7.6%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #220 of 496'
-    - name: GPQA
-      score: 73.8%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #163 of 496'
-    - name: HLE
-      score: 7.3%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #196 of 496'
-    - name: Speed · Output tok/s
-      score: '169'
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #50 of 496'
-    - name: Price ($/M tokens)
-      score: $0.50 in / $2.00 out
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #328 of 496'
-    - name: MMLU-Pro
-      score: 81.9%
-      source_url: 'https://artificialanalysis.ai/models/qwen3-next-80b-a3b-instruct'
-      vs_baseline: 'Rank #81 of 496'
   homepage: 'https://qwenlm.github.io/blog/qwen3/'
   github: 'https://github.com/QwenLM/Qwen3'
   availability:
@@ -252,28 +209,51 @@ model_spec:
     - text
   reviews:
     feels_like:
-      - "Best open-source reasoning model at its release — 235B-A22B (Thinking) beats DeepSeek-R1 on 17/23 benchmarks"
-      - "Toggle-able thinking mode: same weights serve both reasoning and fast-chat modes"
-      - "Strong 119-language coverage; the most genuinely multilingual frontier-tier model"
-      - "Coder variant reaches 77.2% on SWE-bench Verified — competitive with Claude 4.5 Opus's 80.9%"
-      - "GPQA Diamond 87.8% and AIME26 94.1% — frontier reasoning at open-weights pricing"
-      - "Apache-2.0 license + 1M-context coder variant make it production-ready, not a research toy"
+      - >-
+        Best open-source reasoning model at its release — 235B-A22B (Thinking)
+        beats DeepSeek-R1 on 17/23 benchmarks
+      - >-
+        Toggle-able thinking mode: same weights serve both reasoning and
+        fast-chat modes
+      - >-
+        Strong 119-language coverage; the most genuinely multilingual
+        frontier-tier model
+      - >-
+        Coder variant reaches 77.2% on SWE-bench Verified — competitive with
+        Claude 4.5 Opus's 80.9%
+      - >-
+        GPQA Diamond 87.8% and AIME26 94.1% — frontier reasoning at open-weights
+        pricing
+      - >-
+        Apache-2.0 license + 1M-context coder variant make it production-ready,
+        not a research toy
     best_for:
-      - "Multilingual production deployments (119 languages) where most models stay English-centric"
-      - "Self-hosted reasoning workflows that need both 'fast mode' and 'thinking mode' from one weight set"
-      - "Open-weights agentic coding (Qwen3-Coder) with very large context windows"
-      - "Cost-sensitive bulk reasoning that would be prohibitive on closed APIs"
+      - >-
+        Multilingual production deployments (119 languages) where most models
+        stay English-centric
+      - >-
+        Self-hosted reasoning workflows that need both 'fast mode' and 'thinking
+        mode' from one weight set
+      - >-
+        Open-weights agentic coding (Qwen3-Coder) with very large context
+        windows
+      - Cost-sensitive bulk reasoning that would be prohibitive on closed APIs
     not_ideal_for:
-      - "Multimodal tasks (Qwen3 base is text — vision lives in Qwen3-VL, audio in Qwen3-Audio)"
-      - "Edge / single-consumer-GPU deployments at the 235B scale"
-      - "Workflows where Western-platform compatibility is a contractual requirement"
+      - >-
+        Multimodal tasks (Qwen3 base is text — vision lives in Qwen3-VL, audio
+        in Qwen3-Audio)
+      - Edge / single-consumer-GPU deployments at the 235B scale
+      - >-
+        Workflows where Western-platform compatibility is a contractual
+        requirement
     sources:
-      - name: "Qwen team — Qwen3 launch blog"
-        url: "https://qwenlm.github.io/blog/qwen3/"
-      - name: "Qwen3 Technical Report (arXiv)"
-        url: "https://arxiv.org/pdf/2505.09388"
-      - name: "MarkTechPost — Qwen3.6-27B coding benchmarks"
-        url: "https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/"
+      - name: Qwen team — Qwen3 launch blog
+        url: 'https://qwenlm.github.io/blog/qwen3/'
+      - name: Qwen3 Technical Report (arXiv)
+        url: 'https://arxiv.org/pdf/2505.09388'
+      - name: MarkTechPost — Qwen3.6-27B coding benchmarks
+        url: >-
+          https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/
 title_zh: Qwen 3 — 可切换思考模式，119 语种
 public_view_zh:
   plain_english: |

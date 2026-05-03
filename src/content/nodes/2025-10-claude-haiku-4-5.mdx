@@ -33,42 +33,19 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '37.10'
-      vs_baseline: 'Rank #32 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-    - name: Coding · SciCode
-      score: 43.3% (34.4–43.3%)
-      vs_baseline: 'Rank #21 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 27.3%
-      vs_baseline: 'Rank #33 of 96 · Reasoning'
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-    - name: Coding · AA Coding Index
-      score: '32.60'
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-      vs_baseline: 'Rank #31 of 96 · Reasoning'
     - name: MMLU-Pro
-      score: 80.0% (76.0–80.0%)
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-      vs_baseline: 'Rank #38 of 96 · Reasoning'
-    - name: GPQA
-      score: 67.2% (64.6–67.2%)
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-      vs_baseline: 'Rank #69 of 96 · Reasoning'
-    - name: HLE
-      score: 9.7% (4.3–9.7%)
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-      vs_baseline: 'Rank #55 of 96 · Reasoning'
-    - name: Speed · Output tok/s
-      score: '140'
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-      vs_baseline: 'Rank #16 of 96 · Reasoning'
-    - name: Price ($/M tokens)
-      score: $1.00 in / $5.00 out
-      source_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
-      vs_baseline: 'Rank #80 of 96 · Reasoning'
+      score: 88.0%
+      vs_baseline: 'Rank #2 of 57 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: AA-LCR (long-context reason)
+      score: 66.3%
+      vs_baseline: 'Rank #10 of 78 · Top 20%'
+      source_url: >-
+        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: AA Intelligence Index
+      score: '42.00'
+      vs_baseline: 'Rank #17 of 93 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   aa_url: 'https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning'
   modalities_in:
     - text
@@ -94,28 +71,46 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "73.3% on SWE-bench Verified — almost matches Sonnet 4 (state-of-the-art six months earlier) at 1/3 the price"
-      - "Responses that took 3-5s on Sonnet come back in <2s on Haiku — dramatically faster real-world feel"
-      - "$1/M input, $5/M output — 3x cheaper than Sonnet 4.5; sub-cent answers for typical chat turns"
-      - "First Haiku with extended thinking, computer use, and context awareness baked in"
-      - "Caylent: 'covers 70-90% of daily workloads at far better speed and cost' — replacement, not just supplement"
-      - "200K context + 64K output — generous limits for the price tier"
+      - >-
+        73.3% on SWE-bench Verified — almost matches Sonnet 4 (state-of-the-art
+        six months earlier) at 1/3 the price
+      - >-
+        Responses that took 3-5s on Sonnet come back in <2s on Haiku —
+        dramatically faster real-world feel
+      - >-
+        $1/M input, $5/M output — 3x cheaper than Sonnet 4.5; sub-cent answers
+        for typical chat turns
+      - >-
+        First Haiku with extended thinking, computer use, and context awareness
+        baked in
+      - >-
+        Caylent: 'covers 70-90% of daily workloads at far better speed and cost'
+        — replacement, not just supplement
+      - 200K context + 64K output — generous limits for the price tier
     best_for:
-      - "High-volume customer-facing chatbots and support tooling"
-      - "Multi-agent swarms where many parallel small tasks beat one big call"
-      - "Background coding tasks (linting, fixups, docstring writing) that don't need Sonnet/Opus"
-      - "Mobile / edge-adjacent inference where every token cost compounds"
+      - High-volume customer-facing chatbots and support tooling
+      - Multi-agent swarms where many parallel small tasks beat one big call
+      - >-
+        Background coding tasks (linting, fixups, docstring writing) that don't
+        need Sonnet/Opus
+      - Mobile / edge-adjacent inference where every token cost compounds
     not_ideal_for:
-      - "The hardest reasoning, multi-system bug fixes, or long agent loops (use Sonnet 4.5+ or Opus)"
-      - "Frontier benchmark leaderboards — Haiku is intentionally one tier down"
-      - "Workloads needing tools/extended thinking on every call (cost flips vs Sonnet)"
+      - >-
+        The hardest reasoning, multi-system bug fixes, or long agent loops (use
+        Sonnet 4.5+ or Opus)
+      - Frontier benchmark leaderboards — Haiku is intentionally one tier down
+      - >-
+        Workloads needing tools/extended thinking on every call (cost flips vs
+        Sonnet)
     sources:
-      - name: "Anthropic — Haiku 4.5 (via Caylent deep dive)"
-        url: "https://caylent.com/blog/claude-haiku-4-5-deep-dive-cost-capabilities-and-the-multi-agent-opportunity"
-      - name: "Every — Vibe Check: Anthropic cooked on Haiku 4.5"
-        url: "https://every.to/vibe-check/vibe-check-claude-haiku-4-5-anthropic-cooked"
-      - name: "Artificial Analysis — Claude 4.5 Haiku"
-        url: "https://artificialanalysis.ai/models/claude-4-5-haiku"
+      - name: Anthropic — Haiku 4.5 (via Caylent deep dive)
+        url: >-
+          https://caylent.com/blog/claude-haiku-4-5-deep-dive-cost-capabilities-and-the-multi-agent-opportunity
+      - name: 'Every — Vibe Check: Anthropic cooked on Haiku 4.5'
+        url: >-
+          https://every.to/vibe-check/vibe-check-claude-haiku-4-5-anthropic-cooked
+      - name: Artificial Analysis — Claude 4.5 Haiku
+        url: 'https://artificialanalysis.ai/models/claude-4-5-haiku'
 public_view:
   plain_english: |
     Anthropic's October 2025 small/fast tier release. The notable

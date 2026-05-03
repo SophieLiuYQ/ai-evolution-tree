@@ -30,42 +30,10 @@ model_spec:
     - api
     - product
   benchmarks:
-    - name: Intelligence · AA Intelligence Index
-      score: '15.10'
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #308 of 496'
-    - name: Coding · AA Coding Index
-      score: '13.80'
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #260 of 496'
-    - name: Coding · SciCode
-      score: 29.2% (27.1–29.2%)
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #251 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 6.1%
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #248 of 496'
-    - name: MMLU-Pro
-      score: 69.7% (68.3–69.7%)
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #224 of 496'
-    - name: GPQA
-      score: 48.6% (47.2–48.6%)
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #340 of 496'
-    - name: HLE
-      score: 4.0% (3.2–4.0%)
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #406 of 496'
-    - name: Speed · Output tok/s
-      score: '42'
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #257 of 496'
-    - name: Price ($/M tokens)
-      score: $2.00 in / $6.00 out
-      source_url: 'https://artificialanalysis.ai/models/mistral-large-2'
-      vs_baseline: 'Rank #414 of 496'
+    - name: AA Intelligence Index
+      score: '22.80'
+      vs_baseline: 'Rank #49 of 93 · Top 53%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
   aa_url: 'https://artificialanalysis.ai/models/mistral-large-2'
   modalities_in:
     - text
@@ -97,28 +65,50 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Mistral's most capable model at release — on par with GPT-4o, Claude 3 Opus, Llama 3 405B at 1/3 the parameter count"
-      - "84.0% MMLU on the pretrained variant — set a new performance/cost Pareto point for open weights"
-      - "Single-node inference: 123B dense fits on one GPU server — no MoE-routing complexity"
-      - "Strong at function calling and parallel/sequential tool use — built for business app integration"
-      - "Particularly good at following precise instructions and multi-turn dialogue"
-      - "Open weights under Mistral Research License (commercial use needs paid agreement)"
+      - >-
+        Mistral's most capable model at release — on par with GPT-4o, Claude 3
+        Opus, Llama 3 405B at 1/3 the parameter count
+      - >-
+        84.0% MMLU on the pretrained variant — set a new performance/cost Pareto
+        point for open weights
+      - >-
+        Single-node inference: 123B dense fits on one GPU server — no
+        MoE-routing complexity
+      - >-
+        Strong at function calling and parallel/sequential tool use — built for
+        business app integration
+      - >-
+        Particularly good at following precise instructions and multi-turn
+        dialogue
+      - >-
+        Open weights under Mistral Research License (commercial use needs paid
+        agreement)
     best_for:
-      - "Multilingual production apps — French/German/Spanish/Italian/Arabic/Chinese/Japanese first-class"
-      - "Function-calling agents and business integrations needing parallel tool calls"
-      - "80+ programming languages including Python/Java/C++/JavaScript/Bash"
-      - "Self-hosted deployments where Llama 3.1 405B is too large but smaller models lose quality"
+      - >-
+        Multilingual production apps —
+        French/German/Spanish/Italian/Arabic/Chinese/Japanese first-class
+      - >-
+        Function-calling agents and business integrations needing parallel tool
+        calls
+      - 80+ programming languages including Python/Java/C++/JavaScript/Bash
+      - >-
+        Self-hosted deployments where Llama 3.1 405B is too large but smaller
+        models lose quality
     not_ideal_for:
-      - "Frontier reasoning leaderboards — newer Opus / GPT-5 / DeepSeek R1 lead by significant margins"
-      - "Free-to-use commercial deployments (research license requires payment for production)"
-      - "Vision / multimodal tasks — text only at this generation"
+      - >-
+        Frontier reasoning leaderboards — newer Opus / GPT-5 / DeepSeek R1 lead
+        by significant margins
+      - >-
+        Free-to-use commercial deployments (research license requires payment
+        for production)
+      - Vision / multimodal tasks — text only at this generation
     sources:
-      - name: "Mistral AI — Large Enough announcement"
-        url: "https://mistral.ai/news/mistral-large-2407"
-      - name: "Artificial Analysis — Mistral Large 2 analysis"
-        url: "https://artificialanalysis.ai/models/mistral-large-2"
-      - name: "LLM Stats — Mistral Large 2 benchmarks"
-        url: "https://llm-stats.com/models/mistral-large-2-2407"
+      - name: Mistral AI — Large Enough announcement
+        url: 'https://mistral.ai/news/mistral-large-2407'
+      - name: Artificial Analysis — Mistral Large 2 analysis
+        url: 'https://artificialanalysis.ai/models/mistral-large-2'
+      - name: LLM Stats — Mistral Large 2 benchmarks
+        url: 'https://llm-stats.com/models/mistral-large-2-2407'
 public_view:
   plain_english: |
     Mistral's July 2024 flagship — a 123-billion-parameter dense model
