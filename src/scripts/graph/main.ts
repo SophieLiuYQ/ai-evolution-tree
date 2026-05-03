@@ -43,7 +43,9 @@ function initAll() {
   safe("attachStickyHeaders", attachStickyHeaders);
   safe("attachSearchHandlers", attachSearchHandlers);
   safe("attachInspectorHandlers", attachInspectorHandlers);
-  safe("attachCompactHandler", attachCompactHandler);
+  // Disabled (2026-05-03): compact-view button is commented out in
+  // LegendPanel.astro. Re-enable when restoring the toggle.
+  // safe("attachCompactHandler", attachCompactHandler);
   safe("scrollToMostRecent (RAF)", () =>
     requestAnimationFrame(scrollToMostRecent),
   );

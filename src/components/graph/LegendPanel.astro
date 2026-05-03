@@ -69,9 +69,9 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     <button type="button" data-orient="h" class="orient-btn rounded px-2 py-2 text-xs font-medium leading-none text-slate-600" aria-selected="false" title="Horizontal layout" data-i18n="tree.orient.horizontal">▶ Horizontal</button>
   </div>
 
-  {/* Compact-view toggle — repack visible cards into a tight grid that
-      drops the empty space created by filtered-out cards. Same filter
-      chain applies; compact mode just changes the render surface. */}
+  {/* Compact-view toggle disabled (2026-05-03) for the public Vercel
+      deployment. Restore by removing the `false &&` wrapper. */}
+  {false && (
   <button
     id="compact-toggle"
     type="button"
@@ -87,6 +87,7 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     </svg>
     <span class="compact-toggle-label" data-i18n="tree.compact.on">Compact view</span>
   </button>
+  )}
 
   {/* Filter sections — reordered 2026-04-21 per user request: Node
       types → Company → License → Edge types (reading order matches
