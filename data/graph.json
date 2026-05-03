@@ -1,7 +1,7 @@
 {
   "version": "0.2.0",
   "schema_url": "https://github.com/aievolutiontree/aievolutiontree",
-  "generated_at": "2026-05-03T22:06:40.466Z",
+  "generated_at": "2026-05-03T23:44:48.220Z",
   "stats": {
     "node_count": 178,
     "edge_count": 248,
@@ -56,11 +56,11 @@
       "Stepfun",
       "Suno",
       "Tencent",
-      "Tsinghua / Zhipu",
       "UC San Diego / CMU",
       "University of Toronto",
       "Université de Montréal",
       "Xiaomi",
+      "Zhipu",
       "xAI"
     ],
     "eras": [
@@ -3273,7 +3273,7 @@
       "authors": [
         "Tsinghua KEG Team"
       ],
-      "org": "Tsinghua / Zhipu",
+      "org": "Zhipu",
       "breakthrough_score": 7,
       "status": "superseded",
       "model_spec": {
@@ -3320,10 +3320,10 @@
         "last_verified_at": "2026-04-29",
         "reviews": {
           "feels_like": [
-            "Language model from Tsinghua / Zhipu — see the linked sources below for benchmark and review coverage"
+            "Language model from Zhipu — see the linked sources below for benchmark and review coverage"
           ],
           "best_for": [
-            "General-purpose tasks within Tsinghua / Zhipu's deployment footprint",
+            "General-purpose tasks within Zhipu's deployment footprint",
             "See the model spec and sources block for benchmarked use cases"
           ],
           "not_ideal_for": [
@@ -3338,7 +3338,7 @@
         "applications": [
           {
             "product": "ChatGLM-6B / ChatGLM2-6B / ChatGLM3-6B (community)",
-            "company": "Tsinghua / Zhipu",
+            "company": "Zhipu",
             "year_deployed": 2023
           },
           {
@@ -4435,7 +4435,7 @@
           "url": "https://yiyan.baidu.com/"
         }
       ],
-      "body_md": "## How Ernie compares to peers (late 2023)\n\n| Model | Date | Org | Open? | Chinese strength |\n|---|---|---|---|---|\n| GPT-4 | 2023-03 | OpenAI | API | strong |\n| Claude 2 | 2023-07 | Anthropic | API | weaker |\n| ChatGLM3 | 2023-10 | Tsinghua / Zhipu | open | very strong |\n| Qwen-72B | 2023-11 | Alibaba | open | very strong |\n| **Ernie 4.0** | **2023-10** | **Baidu** | **API** | **strong (claimed)** |\n| Yi-34B | 2023-11 | 01.AI | open | strong |\n\nErnie's closed positioning is the differentiator — among China's flagship LLMs in 2023, Ernie was the most aggressively closed/proprietary, while Qwen, ChatGLM, Yi went open-weight.\n\n## Lineage\n\n- Ernie 1.0 (2019) — pretrained masked LM, predates BERT's wide adoption in some respects\n- Ernie 2.0 / 3.0 (2020-21) — knowledge graph integration emphasis\n- Ernie 3.5 (2023-06) — Baidu's first chat-tuned consumer release\n- **Ernie 4.0 (2023-10)** — flagship multimodal release, this node\n- Ernie 4.5 (2024-04) — incremental update\n- Ernie X1 (2025) — reasoning variant joining the o1/R1 wave",
+      "body_md": "## How Ernie compares to peers (late 2023)\n\n| Model | Date | Org | Open? | Chinese strength |\n|---|---|---|---|---|\n| GPT-4 | 2023-03 | OpenAI | API | strong |\n| Claude 2 | 2023-07 | Anthropic | API | weaker |\n| ChatGLM3 | 2023-10 | Zhipu | open | very strong |\n| Qwen-72B | 2023-11 | Alibaba | open | very strong |\n| **Ernie 4.0** | **2023-10** | **Baidu** | **API** | **strong (claimed)** |\n| Yi-34B | 2023-11 | 01.AI | open | strong |\n\nErnie's closed positioning is the differentiator — among China's flagship LLMs in 2023, Ernie was the most aggressively closed/proprietary, while Qwen, ChatGLM, Yi went open-weight.\n\n## Lineage\n\n- Ernie 1.0 (2019) — pretrained masked LM, predates BERT's wide adoption in some respects\n- Ernie 2.0 / 3.0 (2020-21) — knowledge graph integration emphasis\n- Ernie 3.5 (2023-06) — Baidu's first chat-tuned consumer release\n- **Ernie 4.0 (2023-10)** — flagship multimodal release, this node\n- Ernie 4.5 (2024-04) — incremental update\n- Ernie X1 (2025) — reasoning variant joining the o1/R1 wave",
       "_source_file": "2023-10-baidu-ernie-4.mdx"
     },
     {
@@ -14018,7 +14018,7 @@
       "authors": [
         "Zhipu AI Team"
       ],
-      "org": "Tsinghua / Zhipu",
+      "org": "Zhipu",
       "breakthrough_score": 7,
       "status": "active",
       "model_spec": {
@@ -14137,7 +14137,7 @@
         "last_verified_at": "2026-04-29",
         "reviews": {
           "feels_like": [
-            "Vision-language model from Tsinghua / Zhipu — see the linked sources below for benchmark and review coverage",
+            "Vision-language model from Zhipu — see the linked sources below for benchmark and review coverage",
             "Tool-use and agent loops are the typical fit per the published model card",
             "Vision and multimodal tasks are the typical fit per the published model card"
           ],

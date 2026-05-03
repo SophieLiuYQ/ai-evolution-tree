@@ -53,7 +53,7 @@ const ORGS = [
   "xAI",
   "Alibaba",
   "DeepSeek",
-  "Tsinghua / Zhipu",
+  "Zhipu",
   "01.AI",
   "Baidu",
   "Tencent",
