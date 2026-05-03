@@ -597,17 +597,20 @@ const attrCards: AttrCard[] = (() => {
   // — that's "AA has no price data" rather than "the model is free", and
   // claiming Free would be misleading. Prefer the rank-derived tier when
   // AA has one; fall back to local thresholds keyed off the output price.
+  // COST — three paths:
+  //   1. AA has real pricing → bucket label (Low/Moderate/High) +
+  //      "$X in / $Y out" desc.
+  //   2. No AA pricing but model is open-weights → show "Free" with a
+  //      "Open weights — self-host" desc. The model is genuinely free
+  //      to run, you just need GPUs.
+  //   3. Otherwise (closed model with no AA pricing) → hide the card.
+  const isOpenWeights = spec?.release_type === "open_weights";
   if (priceStr) {
     const m = String(priceStr).match(/\$([0-9]+(?:\.[0-9]+)?)\s*in\s*\/\s*\$([0-9]+(?:\.[0-9]+)?)\s*out/i);
     const inP = m ? parseFloat(m[1]) : null;
     const outP = m ? parseFloat(m[2]) : null;
     const noPrice = inP === 0 && outP === 0;
     if (!noPrice) {
-      // Always use the fixed-dollar thresholds shown in the legend so
-      // the card label matches what users read in the bucket chart.
-      // We deliberately ignore priceRank here — pre-existing rank data
-      // would give a different (percentile-based) split that wouldn't
-      // line up with the "$1 / $5" legend lines.
       const tier =
         outP === null ? null
         : outP < 1   ? "Low"
@@ -620,7 +623,23 @@ const attrCards: AttrCard[] = (() => {
         v: tier ?? priceStr,
         desc: tier ? priceStr : "Per million tokens",
       });
+    } else if (isOpenWeights) {
+      out.push({
+        icon: "dollar",
+        color: "rose",
+        k: "Cost",
+        v: "Free",
+        desc: "Open weights — self-host",
+      });
     }
+  } else if (isOpenWeights) {
+    out.push({
+      icon: "dollar",
+      color: "rose",
+      k: "Cost",
+      v: "Free",
+      desc: "Open weights — self-host",
+    });
   }
 
   // CONTEXT — for LLMs, a big number ("200K" / "1M") + tokens hint
@@ -1563,6 +1582,7 @@ const familySubtitle = (() => {
                   <div>
                     <div class="intel-legend-h">Cost</div>
                     <ul class="intel-legend-list">
+                      <li><span class="intel-bucket">Free</span><span class="intel-pct">open weights · self-host</span></li>
                       <li><span class="intel-bucket">Low</span><span class="intel-pct">&lt; $1 / M out</span></li>
                       <li><span class="intel-bucket">Moderate</span><span class="intel-pct">$1–5 / M out</span></li>
                       <li><span class="intel-bucket">High</span><span class="intel-pct">≥ $5 / M out</span></li>
