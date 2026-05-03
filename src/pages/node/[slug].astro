@@ -579,7 +579,7 @@ const attrCards: AttrCard[] = (() => {
         : pct <= 0.10 ? "Top 10%"
         : pct <= 0.25 ? "Good"
         : pct <= 0.50 ? "Medium"
-        :               "Below avg";
+        :               "Slow";
     } else {
       v = `${Math.round(speedTok)} tok/s`;
     }
@@ -1531,17 +1531,34 @@ const familySubtitle = (() => {
                   Bucket = percentile rank on Artificial Analysis.
                   Intelligence pool ranks the AA Intelligence Index
                   (composite of MMLU-Pro, GPQA Diamond, HLE, AIME,
-                  SciCode, LiveCodeBench, τ²-Bench). Speed pool ranks
-                  median output throughput in tokens/sec.
+                  SciCode, LiveCodeBench, τ²-Bench, ~135 ranked).
+                  Speed pool ranks median output throughput in tokens/sec
+                  (~308 ranked).
                 </div>
-                <ul class="intel-legend-list">
-                  <li><span class="intel-bucket">Top 1%</span><span class="intel-pct">≤ 1%</span></li>
-                  <li><span class="intel-bucket">Top 5%</span><span class="intel-pct">≤ 5%</span></li>
-                  <li><span class="intel-bucket">Top 10%</span><span class="intel-pct">≤ 10%</span></li>
-                  <li><span class="intel-bucket">Good</span><span class="intel-pct">≤ 25%</span></li>
-                  <li><span class="intel-bucket">Medium</span><span class="intel-pct">≤ 50%</span></li>
-                  <li><span class="intel-bucket">Below avg</span><span class="intel-pct">&gt; 50%</span></li>
-                </ul>
+                <div class="intel-legend-cols">
+                  <div>
+                    <div class="intel-legend-h">Intelligence</div>
+                    <ul class="intel-legend-list">
+                      <li><span class="intel-bucket">Top 1%</span><span class="intel-pct">≤ 1%</span></li>
+                      <li><span class="intel-bucket">Top 5%</span><span class="intel-pct">≤ 5%</span></li>
+                      <li><span class="intel-bucket">Top 10%</span><span class="intel-pct">≤ 10%</span></li>
+                      <li><span class="intel-bucket">Good</span><span class="intel-pct">≤ 25%</span></li>
+                      <li><span class="intel-bucket">Medium</span><span class="intel-pct">≤ 50%</span></li>
+                      <li><span class="intel-bucket">Below avg</span><span class="intel-pct">&gt; 50%</span></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="intel-legend-h">Speed</div>
+                    <ul class="intel-legend-list">
+                      <li><span class="intel-bucket">Top 1%</span><span class="intel-pct">≥ 345 tok/s</span></li>
+                      <li><span class="intel-bucket">Top 5%</span><span class="intel-pct">≥ 237 tok/s</span></li>
+                      <li><span class="intel-bucket">Top 10%</span><span class="intel-pct">≥ 196 tok/s</span></li>
+                      <li><span class="intel-bucket">Good</span><span class="intel-pct">≥ 146 tok/s</span></li>
+                      <li><span class="intel-bucket">Medium</span><span class="intel-pct">≥ 90 tok/s</span></li>
+                      <li><span class="intel-bucket">Slow</span><span class="intel-pct">&lt; 90 tok/s</span></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </details>
           )}
@@ -2495,13 +2512,26 @@ const familySubtitle = (() => {
     line-height: 1.5;
     margin-bottom: 8px;
   }
+  .intel-legend-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 24px;
+  }
+  .intel-legend-h {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    color: var(--fg-muted);
+  }
   .intel-legend-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 4px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
     font-size: 12px;
   }
   .intel-legend-list li {
