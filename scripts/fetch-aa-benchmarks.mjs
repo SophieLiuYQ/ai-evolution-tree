@@ -216,6 +216,16 @@ const VARIANT_MAP = {
   "qwen3-vl-32b-instruct":           "Qwen3 VL 32B Instruct",
   "qwen3-vl-30b-a3b-reasoning":      "Qwen3 VL 30B A3B (Reasoning)",
   "qwen3-vl-30b-a3b-instruct":       "Qwen3 VL 30B A3B Instruct",
+
+  // Xiaomi MiMo — AA family `mimo` aggregates V2 / V2.5 / Pro / Flash.
+  "mimo-v2-5-pro":            "MiMo-V2.5-Pro",
+  "mimo-v2-pro":              "MiMo-V2-Pro",
+  "mimo-v2":                  "MiMo-V2-Pro",
+  "mimo-v2-0206":             "MiMo-V2-Pro",
+  "mimo-v2-flash-reasoning":  "MiMo-V2-Flash (Reasoning)",
+  "mimo-v2-flash":            "MiMo-V2-Flash (Non-reasoning)",
+  "mimo-v2-omni":             "MiMo-V2-Omni",
+  "mimo-v2-omni-0327":        "MiMo-V2-Omni-0327",
 };
 
 // ============== AA scrape + parse ==============
@@ -446,20 +456,59 @@ async function main() {
     log(`  ${fm.slug} → ${aaSlug} (${top.length} qualifying): ${newRows.map((r) => `${r.name} ${r.score} [${r.vs_baseline}]`).join(" · ")}`);
 
     if (!DRY) {
-      // Merge instead of replace: keep existing benchmarks that are NOT
-      // AA-derived strength picks. Specifically preserve Speed and Price
-      // rows (the Speed and Cost attribute cards on the detail page key
-      // off these exact names), plus any hand-curated rows the writer
-      // added under bench-name patterns we don't manage from AA.
-      const existingByName = new Map();
-      for (const b of existing) existingByName.set(String(b.name).toLowerCase(), b);
+      // Refresh Speed and Price rows directly from the AA family record
+      // (`output_tokens`, `price_1m_input_tokens`, `price_1m_output_tokens`).
+      // AA returns these per-model, not via the rank table, so they live
+      // outside the top-3 strength picks.  When AA reports 0 (or no
+      // numeric value), drop the row entirely — it's "no data", not
+      // "free". The Speed and Cost attribute cards then hide cleanly.
+      const aaRecord = byFamily.get(aaSlug);
+      const aaModelUrl = aaRecord?.model_url
+        ? `https://artificialanalysis.ai${aaRecord.model_url}`
+        : "https://artificialanalysis.ai/leaderboards/models";
+      // Real output speed lives in performanceByPromptLength as
+      // `median_output_speed`. Average across prompt-length rows
+      // ("short" / "medium" / "long") so we get a single representative
+      // number — AA's own UI shows a single blended figure too.
+      // `output_tokens` is the max output limit, NOT speed.
+      const perfRows = Array.isArray(aaRecord?.performanceByPromptLength) ? aaRecord.performanceByPromptLength : [];
+      const speeds = perfRows.map((r) => r?.median_output_speed).filter((v) => typeof v === "number" && v > 0);
+      const speedAA = speeds.length ? speeds.reduce((a, b) => a + b, 0) / speeds.length : null;
+      const inAA = aaRecord?.price_1m_input_tokens;
+      const outAA = aaRecord?.price_1m_output_tokens;
+      const aaSpeedRow = (typeof speedAA === "number" && speedAA > 0)
+        ? {
+            name: "Speed · Output tok/s",
+            score: String(Math.round(speedAA)),
+            source_url: aaModelUrl,
+          }
+        : null;
+      const aaPriceRow = (typeof inAA === "number" && typeof outAA === "number" && (inAA > 0 || outAA > 0))
+        ? {
+            name: "Price ($/M tokens)",
+            score: `$${inAA.toFixed(2)} in / $${outAA.toFixed(2)} out`,
+            source_url: aaModelUrl,
+          }
+        : null;
+
+      // Merge: AA-derived strength picks (newRows) + AA Speed/Price
+      // (when AA has them) + any hand-curated rows that we don't manage.
+      // Drop existing Speed/Price entries first since we're overwriting
+      // from fresh AA data (or removing if AA reports 0/0).
       const newNames = new Set(newRows.map((r) => String(r.name).toLowerCase()));
-      const KEEP_RE = /^(speed|price|preference|vision · mmmu-pro|hand-curated)/i;
+      const HAND_KEEP_RE = /^(preference|vision · mmmu-pro|hand-curated)/i;
+      const SCRIPT_MANAGED_RE = /^(speed · output tok\/s|price \(\$\/m tokens\))/i;
       const preserved = existing.filter((b) =>
         !newNames.has(String(b.name).toLowerCase()) &&
-        (KEEP_RE.test(String(b.name)) || !/Rank #\d+ of \d+/.test(b.vs_baseline ?? "")),
+        !SCRIPT_MANAGED_RE.test(String(b.name)) &&
+        (HAND_KEEP_RE.test(String(b.name)) || !/Rank #\d+ of \d+/.test(b.vs_baseline ?? "")),
       );
-      const merged = [...newRows, ...preserved];
+      const merged = [
+        ...newRows,
+        ...(aaSpeedRow ? [aaSpeedRow] : []),
+        ...(aaPriceRow ? [aaPriceRow] : []),
+        ...preserved,
+      ];
       const newFm = {
         ...fm,
         model_spec: { ...(fm.model_spec ?? {}), benchmarks: merged },

@@ -104,21 +104,27 @@ model_spec:
   benchmarks:
     - name: Knowledge · MMLU-Pro
       score: 85.4%
-      vs_baseline: 'Rank #9 of 82 · Top 20%'
-      source_url: 'https://artificialanalysis.ai/leaderboards/models'
-    - name: Coding · LiveCodeBench
-      score: 82.2%
-      vs_baseline: 'Rank #10 of 82 · Top 20%'
+      vs_baseline: 'Rank #9 of 84 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Long-context · AA-LCR
       score: 68.0%
-      vs_baseline: 'Rank #14 of 112 · Top 20%'
+      vs_baseline: 'Rank #15 of 120 · Top 20%'
       source_url: >-
         https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: Coding · LiveCodeBench
+      score: 82.2%
+      vs_baseline: 'Rank #11 of 84 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Intelligence · AA Intelligence Index
       score: '38.61'
-      vs_baseline: 'Rank #36 of 127 · Top 29%'
+      vs_baseline: 'Rank #43 of 135 · Top 32%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '127'
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.20 in / $0.50 out
+      source_url: 'https://artificialanalysis.ai/models/grok-4-1-fast-reasoning'
 public_view:
   plain_english: |
     xAI's November 2025 update to Grok 4 — most notably, it cut the

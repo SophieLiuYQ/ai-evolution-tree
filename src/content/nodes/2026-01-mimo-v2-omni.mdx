@@ -21,36 +21,26 @@ model_spec:
   modalities:
     - text
   benchmarks:
+    - name: Long-context · AA-LCR
+      score: 66.7%
+      vs_baseline: 'Rank #17 of 120 · Top 20%'
+      source_url: >-
+        https://artificialanalysis.ai/evaluations/artificial-analysis-long-context-reasoning
+    - name: Agentic · AA Agentic Index
+      score: '58.56'
+      vs_baseline: 'Rank #24 of 115 · Top 21%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Agentic · GDPval-AA (real-world tasks)
+      score: '1321.05'
+      vs_baseline: 'Rank #23 of 107 · Top 22%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gdpval-aa'
     - name: Intelligence · AA Intelligence Index
-      score: '44.90'
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-      vs_baseline: 'Rank #41 of 496'
-    - name: Coding · AA Coding Index
-      score: '36.90'
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-      vs_baseline: 'Rank #60 of 496'
-    - name: Coding · SciCode
-      score: 39.5%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-      vs_baseline: 'Rank #105 of 496'
-    - name: Agentic · Terminal-Bench Hard
-      score: 35.6%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-      vs_baseline: 'Rank #55 of 496'
-    - name: GPQA
-      score: 85.5%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-      vs_baseline: 'Rank #48 of 496'
-    - name: HLE
-      score: 20.4%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-      vs_baseline: 'Rank #63 of 496'
+      score: '43.40'
+      vs_baseline: 'Rank #29 of 135 · Top 22%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
-      score: '0'
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
-    - name: Price ($/M tokens)
-      score: $0.00 in / $0.00 out
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
+      score: '144'
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-omni'
   aa_url: 'https://artificialanalysis.ai/models/mimo-v2-omni-0327'
   context_window: 256000
   modalities_in:
@@ -73,13 +63,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Xiaomi — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Xiaomi — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Xiaomi's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Xiaomi's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

@@ -21,42 +21,28 @@ model_spec:
   modalities:
     - text
   benchmarks:
+    - name: Reasoning · AIME 2025
+      score: 96.3%
+      vs_baseline: 'Rank #2 of 70 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/evaluations/aime'
+    - name: Math · AA Math Index
+      score: '96.33'
+      vs_baseline: 'Rank #2 of 70 · Top 5%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Coding · LiveCodeBench
+      score: 86.8%
+      vs_baseline: 'Rank #5 of 84 · Top 10%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Intelligence · AA Intelligence Index
-      score: '39.20'
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #27 of 96 · Reasoning'
-    - name: Coding · AA Coding Index
-      score: '31.80'
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #32 of 96 · Reasoning'
-    - name: Coding · SciCode
-      score: 39.4%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #40 of 96 · Reasoning'
-    - name: Agentic · Terminal-Bench Hard
-      score: 28.0%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #32 of 96 · Reasoning'
-    - name: MMLU-Pro
-      score: 84.3%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #16 of 96 · Reasoning'
-    - name: GPQA
-      score: 84.6%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #22 of 96 · Reasoning'
-    - name: HLE
-      score: 21.1%
-      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #23 of 96 · Reasoning'
+      score: '39.24'
+      vs_baseline: 'Rank #38 of 135 · Top 29%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Speed · Output tok/s
-      score: '121'
+      score: '144'
       source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #23 of 96 · Reasoning'
     - name: Price ($/M tokens)
       score: $0.10 in / $0.30 out
       source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
-      vs_baseline: 'Rank #32 of 96 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
   parameters: 15B active · 309B total
   context_window: 256000
@@ -78,13 +64,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Xiaomi — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Xiaomi — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Xiaomi's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Xiaomi's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

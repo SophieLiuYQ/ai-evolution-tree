@@ -39,32 +39,30 @@ model_spec:
   benchmarks:
     - name: Coding · LiveCodeBench
       score: 90.8%
-      vs_baseline: 'Rank #1 of 82 · Top 5%'
+      vs_baseline: 'Rank #1 of 84 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Reasoning · AIME 2025
       score: 97.0%
-      vs_baseline: 'Rank #1 of 68 · Top 5%'
+      vs_baseline: 'Rank #1 of 70 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/aime'
     - name: Math · AA Math Index
       score: '97.00'
-      vs_baseline: 'Rank #1 of 68 · Top 5%'
+      vs_baseline: 'Rank #1 of 70 · Top 5%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
     - name: Intelligence · AA Intelligence Index
       score: '46.43'
-      vs_baseline: 'Rank #19 of 127 · Top 20%'
+      vs_baseline: 'Rank #23 of 135 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '188'
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+    - name: Price ($/M tokens)
+      score: $0.50 in / $3.00 out
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
     - name: Vision · MMMU-Pro
       score: 79.9% (75.5–79.9%)
       vs_baseline: 'Rank #3 of 35 · Top 10% · Artificial Analysis'
       source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
-    - name: Speed · Output tok/s
-      score: '130'
-      source_url: 'https://artificialanalysis.ai/models/gemini-3-pro'
-      vs_baseline: 'Rank #100 of 496'
-    - name: Price ($/M tokens)
-      score: $2.00 in / $12.00 out
-      source_url: 'https://artificialanalysis.ai/models/gemini-3-pro'
-      vs_baseline: 'Rank #449 of 496'
   homepage: 'https://deepmind.google/models/gemini/pro/'
   availability:
     - api

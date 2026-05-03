@@ -21,8 +21,8 @@ status: active
 model_spec:
   parameters: 295B total / 21B active (MoE)
   architecture: >-
-    Sparse-MoE transformer with reasoning post-training; preview release of
-    the Hy3 (Hunyuan 3) line.
+    Sparse-MoE transformer with reasoning post-training; preview release of the
+    Hy3 (Hunyuan 3) line.
   context_window: 256000
   release_type: open_weights
   modalities:
@@ -32,9 +32,20 @@ model_spec:
   modalities_out:
     - text
   benchmarks:
+    - name: Reasoning · CritPt (graduate physics)
+      score: 4.6%
+      vs_baseline: 'Rank #13 of 118 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/critpt'
+    - name: Reasoning · GPQA Diamond
+      score: 86.7%
+      vs_baseline: 'Rank #23 of 132 · Top 20%'
+      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
     - name: Intelligence · AA Intelligence Index
       score: '41.85'
-      vs_baseline: 'Rank #18 of 127'
+      vs_baseline: 'Rank #32 of 135 · Top 24%'
+      source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '81'
       source_url: 'https://artificialanalysis.ai/models/hy3'
     - name: Coding · AA Coding Index
       score: '36.46'
@@ -45,9 +56,6 @@ model_spec:
     - name: Agentic · Terminal-Bench Hard
       score: 34.1%
       source_url: 'https://artificialanalysis.ai/evaluations/terminal-bench-hard'
-    - name: Reasoning · GPQA Diamond
-      score: 86.7%
-      source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
     - name: Reasoning · Humanity's Last Exam
       score: 25.5%
       source_url: 'https://artificialanalysis.ai/evaluations/humanitys-last-exam'
@@ -59,16 +67,24 @@ model_spec:
   family: Tencent Hunyuan
   reviews:
     feels_like:
-      - "Reasoning-style answers — explicit step-by-step traces rather than terse outputs, in the DeepSeek V3 / R1 lineage"
-      - "Frontier-class on benchmarks (AA Intelligence Index ~42), gap to GPT-5 / Opus 4.7 still meaningful but small among open-weights"
+      - >-
+        Reasoning-style answers — explicit step-by-step traces rather than terse
+        outputs, in the DeepSeek V3 / R1 lineage
+      - >-
+        Frontier-class on benchmarks (AA Intelligence Index ~42), gap to GPT-5 /
+        Opus 4.7 still meaningful but small among open-weights
     best_for:
-      - "Self-host scenarios where you want a reasoning model with frontier benchmarks but no API dependency"
-      - "Math, coding, and graduate-physics-style problems (GPQA 86.7%, SciCode 41.2%)"
-      - "Long documents — 256K context window matches DeepSeek V3.2 and Kimi K2"
+      - >-
+        Self-host scenarios where you want a reasoning model with frontier
+        benchmarks but no API dependency
+      - >-
+        Math, coding, and graduate-physics-style problems (GPQA 86.7%, SciCode
+        41.2%)
+      - Long documents — 256K context window matches DeepSeek V3.2 and Kimi K2
     not_ideal_for:
-      - "Multimodal / vision tasks — text-only release"
-      - "Cost-sensitive serving without GPU capacity for a 295B/21B-active MoE"
-      - "Use cases that need a stable production SLA — this is a preview release"
+      - Multimodal / vision tasks — text-only release
+      - Cost-sensitive serving without GPU capacity for a 295B/21B-active MoE
+      - Use cases that need a stable production SLA — this is a preview release
     sources:
       - name: Artificial Analysis
         url: 'https://artificialanalysis.ai/models/hy3'
@@ -95,7 +111,7 @@ public_view:
     - product: Tencent Hunyuan platform
       company: Tencent
       year_deployed: 2026
-    - product: 'Self-hosted reasoning agents'
+    - product: Self-hosted reasoning agents
       company: Multiple
       year_deployed: 2026
   investment_angle: |
@@ -109,16 +125,15 @@ public_view:
     reasoning-tuned 200B+ MoE under open weights tightens the gap between
     open and frontier closed models. Preview tag means scores will likely
     move on a stable release.
-
 citations:
   - type: release
     key: hy3_preview
-    title: 'Hy3-preview release on Hugging Face'
+    title: Hy3-preview release on Hugging Face
     url: 'https://huggingface.co/tencent/Hy3-preview'
     year: 2026
   - type: blog
     key: aa_hy3
-    title: 'Hy3-preview — Artificial Analysis catalog entry'
+    title: Hy3-preview — Artificial Analysis catalog entry
     url: 'https://artificialanalysis.ai/models/hy3'
     year: 2026
 ---

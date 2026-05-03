@@ -33,32 +33,30 @@ model_spec:
   benchmarks:
     - name: "Agentic · \U0001D70F²-Bench Telecom"
       score: 95.9%
-      vs_baseline: 'Rank #7 of 112 · Top 10%'
+      vs_baseline: 'Rank #7 of 120 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/tau2-bench'
     - name: Coding · SciCode
       score: 49.0%
-      vs_baseline: 'Rank #11 of 123 · Top 10%'
+      vs_baseline: 'Rank #12 of 131 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/scicode'
     - name: Reasoning · GPQA Diamond
       score: 87.9%
-      vs_baseline: 'Rank #15 of 124 · Top 20%'
+      vs_baseline: 'Rank #15 of 132 · Top 20%'
       source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
     - name: Intelligence · AA Intelligence Index
       score: '46.81'
-      vs_baseline: 'Rank #17 of 127 · Top 20%'
+      vs_baseline: 'Rank #21 of 135 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '41'
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-5'
+    - name: Price ($/M tokens)
+      score: $0.50 in / $2.85 out
+      source_url: 'https://artificialanalysis.ai/models/kimi-k2-5'
     - name: Vision · MMMU-Pro
       score: 73.1%
       vs_baseline: 'Rank #9 of 26 · Top #9 of 26 · Artificial Analysis'
       source_url: 'https://artificialanalysis.ai/evaluations/mmmu-pro'
-    - name: Speed · Output tok/s
-      score: '101'
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #132 of 496'
-    - name: Price ($/M tokens)
-      score: $0.60 in / $2.50 out
-      source_url: 'https://artificialanalysis.ai/models/kimi-k2-thinking'
-      vs_baseline: 'Rank #357 of 496'
   github: 'https://github.com/MoonshotAI/Kimi-K2'
   availability:
     - open_weights

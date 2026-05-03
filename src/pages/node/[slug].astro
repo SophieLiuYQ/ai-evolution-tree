@@ -585,24 +585,31 @@ const attrCards: AttrCard[] = (() => {
     });
   }
 
-  // COST — tier ("Low" / "Moderate" / "High") from price rank, with $/M in desc
-  const costTier = tierLabel(priceRank, "Low", "Moderate", "High");
-  if (costTier && priceStr) {
-    out.push({
-      icon: "dollar",
-      color: "rose",
-      k: "Cost",
-      v: costTier,
-      desc: priceStr,
-    });
-  } else if (priceStr) {
-    out.push({
-      icon: "dollar",
-      color: "rose",
-      k: "Cost",
-      v: priceStr,
-      desc: "Per million tokens",
-    });
+  // COST — bucket label on top ("Low" / "Moderate" / "High"), raw price
+  // string below. Hide the card entirely when both $/M numbers are zero
+  // — that's "AA has no price data" rather than "the model is free", and
+  // claiming Free would be misleading. Prefer the rank-derived tier when
+  // AA has one; fall back to local thresholds keyed off the output price.
+  if (priceStr) {
+    const m = String(priceStr).match(/\$([0-9]+(?:\.[0-9]+)?)\s*in\s*\/\s*\$([0-9]+(?:\.[0-9]+)?)\s*out/i);
+    const inP = m ? parseFloat(m[1]) : null;
+    const outP = m ? parseFloat(m[2]) : null;
+    const noPrice = inP === 0 && outP === 0;
+    if (!noPrice) {
+      const localTier =
+        outP === null ? null
+        : outP < 1   ? "Low"
+        : outP < 5   ? "Moderate"
+        :              "High";
+      const tier = tierLabel(priceRank, "Low", "Moderate", "High") ?? localTier;
+      out.push({
+        icon: "dollar",
+        color: "rose",
+        k: "Cost",
+        v: tier ?? priceStr,
+        desc: tier ? priceStr : "Per million tokens",
+      });
+    }
   }
 
   // CONTEXT — for LLMs, a big number ("200K" / "1M") + tokens hint

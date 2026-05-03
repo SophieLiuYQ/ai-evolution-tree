@@ -25,24 +25,26 @@ model_spec:
   benchmarks:
     - name: Instruction · IFBench
       score: 79.2%
-      vs_baseline: 'Rank #5 of 112 · Top 5%'
+      vs_baseline: 'Rank #6 of 120 · Top 5%'
       source_url: 'https://artificialanalysis.ai/evaluations/ifbench'
     - name: Reasoning · GPQA Diamond
       score: 89.4%
-      vs_baseline: 'Rank #10 of 124 · Top 10%'
+      vs_baseline: 'Rank #10 of 132 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/gpqa-diamond'
     - name: Reasoning · CritPt (graduate physics)
       score: 7.1%
-      vs_baseline: 'Rank #10 of 110 · Top 10%'
+      vs_baseline: 'Rank #10 of 118 · Top 10%'
       source_url: 'https://artificialanalysis.ai/evaluations/critpt'
     - name: Intelligence · AA Intelligence Index
       score: '46.52'
-      vs_baseline: 'Rank #18 of 127 · Top 20%'
+      vs_baseline: 'Rank #22 of 135 · Top 20%'
       source_url: 'https://artificialanalysis.ai/leaderboards/models'
+    - name: Speed · Output tok/s
+      score: '82'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash'
     - name: Price ($/M tokens)
       score: $0.14 in / $0.28 out
-      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
-      vs_baseline: 'Rank #31 of 96 · Reasoning'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash'
   aa_url: 'https://artificialanalysis.ai/models/deepseek-v4-flash-high'
   hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro'
   context_window: 1000000
