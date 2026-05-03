@@ -1,70 +1,93 @@
-# 🌳 AI Evolution Tree
+# AI Evolution Tree
 
-**A community-curated graph of AI's load-bearing breakthroughs — explained twice: once for builders, once for everyone else.**
+AI Evolution Tree is an open source project that maps how important AI models, papers, and breakthroughs connect over time.
 
-🔗 [aievolutiontree.com](https://www.aievolutiontree.com) · 550+ nodes · 1957 → today · **open to collaboration**
+It is designed to make AI history easier to explore through:
 
----
+- a visual graph of lineage and influence
+- node pages with citations and context
+- model and company pages
+- timeline and tree-based views
 
-## What it is
+The project is open to collaboration. If you want to add missing nodes, improve the data, fix mistakes, or help shape the product, contributions are welcome.
 
-A version-controlled, citation-backed DAG of ML / DL / LLM advancements. Each node lists the prior work it builds on, so reading top-to-bottom is reading the field's intellectual lineage.
+## Project status
 
-Every node ships two views from the same record:
+The project is active and already usable as a reference site.
 
-- 🛠 **Tech View** — architecture, code, limitations, citations.
-- 💼 **Public View** — plain English, products, market angle, why it matters.
+- `178` nodes are currently exported in `data/graph.json`
+- the site includes graph, timeline, and tree views
+- node, model, and company pages are live
+- search is built with Pagefind
+- the content schema and contribution workflow are in place
 
-So a hedge fund analyst and an ML engineer can stand on the same facts.
+The repo is still evolving. Graph layout, model coverage, and data quality are continuing to improve.
 
-## What it is not
+## Who it is for
 
-A paper aggregator, a leaderboard, or hype tracking. We curate **load-bearing** work — the stuff the rest of the field grew out of.
+AI Evolution Tree is meant to be legible to more than one audience:
 
-## Views
+- builders who want technical context
+- researchers and students who want lineage and citations
+- general readers who want a clear overview of what happened and why it matters
 
-- **Graph** (`/`) — primary UX. Force-directed DAG, era columns, hover-to-trace lineage. See [`docs/graph-design.md`](./docs/graph-design.md).
-- **Timeline** / **Tree** — alternate linear and hierarchical views.
-- **Node detail** — full Tech + Public view, minimap, parent/child links, citations.
-- **Model pages** — benchmarks, capabilities, lineage for foundation models.
-- **Company pages** — labs and orgs that ship the work.
-- **Search** — full-text via Pagefind.
+## Tech stack
 
-## Quick start
+- Astro
+- MDX content collections
+- Tailwind CSS
+- Pagefind
+- Vitest
+
+## Run locally
 
 ```bash
 git clone https://github.com/aievolutiontree/aievolutiontree
 cd aievolutiontree
 npm install
-npm run dev          # http://localhost:4321
-npm run build        # static site → ./dist (+ Pagefind index)
-npm test             # vitest
+npm run dev
 ```
 
-## Contribute a node
+Local development server: `http://localhost:4321`
 
-1. Copy `src/content/nodes/_template.mdx` → `src/content/nodes/{year}-{slug}.mdx`.
-2. Fill the frontmatter (Zod-validated at build).
-3. Write the Tech View in MDX; fill `public_view` fields.
-4. List `parents:` — what does this build on?
-5. `npm run graph:export && npm run build`. Green build → PR.
+## Useful commands
 
-Full guide: [CONTRIBUTING.md](./CONTRIBUTING.md). Schema: [docs/node-schema.md](./docs/node-schema.md).
+```bash
+npm run dev
+npm run build
+npm run check
+npm test
+npm run graph:export
+```
 
-## Status
+## Contributing
 
-Active development. **Open to collaboration** — issues, PRs, and node additions all welcome. Schema is stable for everyday contributions; graph layout, model pages, and benchmark ingestion are still iterating. See [`docs/roadmap.md`](./docs/roadmap.md).
+This project is open source and community-driven.
 
-## Docs
+You can contribute by:
 
-- [docs/architecture.md](./docs/architecture.md) — stack rationale, data model, rendering
-- [docs/graph-design.md](./docs/graph-design.md) — graph drawing principles (18 sprints of iteration)
-- [docs/node-schema.md](./docs/node-schema.md) — authoritative schema
-- [docs/model-page-system.md](./docs/model-page-system.md) — model detail pages
-- [docs/devlog.md](./docs/devlog.md) — build journal
-- [docs/roadmap.md](./docs/roadmap.md) — what's next
-- [AGENTS.md](./AGENTS.md) — guidance for AI assistants
+- adding a node
+- improving citations or explanations
+- fixing site bugs
+- improving graph behavior or page design
+- reviewing data quality and lineage links
+
+Start with:
+
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [docs/node-schema.md](./docs/node-schema.md)
+- [docs/graph-design.md](./docs/graph-design.md)
+
+If you change graph rendering code, you must also update [docs/graph-design.md](./docs/graph-design.md) in the same change.
+
+## Documentation
+
+- [docs/architecture.md](./docs/architecture.md)
+- [docs/roadmap.md](./docs/roadmap.md)
+- [docs/model-page-system.md](./docs/model-page-system.md)
+- [docs/devlog.md](./docs/devlog.md)
 
 ## License
 
-Code: [MIT](./LICENSE). Content (every `.mdx` in `src/content/`): [CC-BY-SA 4.0](./LICENSE-CONTENT). Author attribution lives in each node's `citations` field.
+Code: [MIT](./LICENSE)  
+Content in `src/content/`: [CC-BY-SA 4.0](./LICENSE-CONTENT)
