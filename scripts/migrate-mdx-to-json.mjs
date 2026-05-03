@@ -117,7 +117,7 @@ async function main() {
   const years = nodes.map((n) => parseInt(n.date.slice(0, 4)));
   const out = {
     version: "0.2.0",
-    schema_url: "https://github.com/SophieLiuYQ/ai-evolution-tree",
+    schema_url: "https://github.com/aievolutiontree/aievolutiontree",
     generated_at: new Date().toISOString(),
     stats: {
       node_count: nodes.length,

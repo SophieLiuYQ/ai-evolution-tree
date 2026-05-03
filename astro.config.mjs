@@ -4,10 +4,15 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.aievolutiontree.com",
+  // Hybrid: pages are static by default; routes opt into SSR via
+  // `export const prerender = false` (currently only /api/feedback).
+  output: "static",
+  adapter: vercel(),
   // Hide the dev toolbar (audit runs clean; we don't need the floating UI).
   devToolbar: { enabled: false },
   integrations: [

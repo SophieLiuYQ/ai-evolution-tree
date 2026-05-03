@@ -16,7 +16,7 @@ file. Currently auto-generated from the v0.1 MDX content collection
 ```jsonc
 {
   "version": "0.2.0",
-  "schema_url": "https://github.com/SophieLiuYQ/ai-evolution-tree",
+  "schema_url": "https://github.com/aievolutiontree/aievolutiontree",
   "generated_at": "2026-04-17T00:34:10.232Z",
   "stats": {
     "node_count": 73,
