@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { DICT } from "../lib/i18n";
 import FeedbackWidget from "../components/FeedbackWidget.astro";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
   title: string;
@@ -220,6 +221,7 @@ const LOGO_VERSION = "2026-05-03";
     </main>
 
     <FeedbackWidget />
+    <Analytics />
 
     <style is:global>
       /* Language toggle — shared styling for the nav-corner toggle
