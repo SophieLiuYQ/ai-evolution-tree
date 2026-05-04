@@ -2660,18 +2660,39 @@ const familySubtitle = (() => {
     align-items: start;
     margin-bottom: 18px;
   }
-  @media (max-width: 640px) {
-    .hero-title-row { grid-template-columns: 72px 1fr; gap: 14px; margin-bottom: 14px; }
-  }
-  /* Width/height/colours live inside OrgLogo. We just shrink it on mobile. */
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
+    /* Stack the hero header vertically on mobile: avatar on top, then
+       meta + title beneath. The 2-column grid with a 72px avatar leaves
+       too little room for the wrapping meta pills (kind / date / org /
+       last-updated) and the title-row grid items end up vertically
+       overlapping the avatar. Stack-on-mobile sidesteps the whole
+       collision.
+       Also shrink avatar (was 120px desktop / 72px tablet) and shrink
+       the inner SVG so it actually fits the wrapper. */
+    .hero-title-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
     .hero-avatar,
-    .hero-avatar svg {
-      width: 72px !important;
-      height: 72px !important;
-      border-radius: 18px !important;
+    .hero-avatar svg,
+    .hero-avatar img {
+      width: 56px !important;
+      height: 56px !important;
+      border-radius: 14px !important;
     }
   }
+
+  /* Mobile: prevent horizontal overflow from any wide content (long
+     code blocks, benchmark bars, comparison tables) — without this,
+     the page can scroll sideways and the viewport zooms out, which
+     causes the avatar and meta row to crash into each other. */
+  :global(body:has(.model-page)) {
+    overflow-x: hidden;
+  }
+  :global(.model-page) { max-width: 100%; }
 
   /* Page-scoped theme override — match the tree's "paper" palette so
      detail pages feel like part of the same editorial system. */
@@ -2789,6 +2810,18 @@ const familySubtitle = (() => {
     border: 1px solid rgba(34, 197, 94, 0.30);
     vertical-align: middle;
     transform: translateY(-6px);
+  }
+  /* Mobile: the title wraps to multiple lines and the NEW pill
+     flex-wraps onto its own line. The desktop translateY(-6px) lift
+     then becomes a stranded float above its own baseline. Reset the
+     transform and tighten margins so the pill sits flat on its line. */
+  @media (max-width: 720px) {
+    .hero-new-pill {
+      transform: none;
+      margin-left: 0;
+      margin-top: 4px;
+      align-self: flex-start;
+    }
   }
   .hero-title {
     font-size: clamp(2rem, 4vw, 2.6rem);
@@ -3323,13 +3356,43 @@ const familySubtitle = (() => {
   .cap-row-head .cap-cell-typical,
   .cap-row-head .cap-cell-rank { text-align: center; }
   @media (max-width: 880px) {
+    /* Compact mobile layout — three logical rows per capability:
+         Row 1:  capability name (left)    score (right, indigo)
+         Row 2:  full-width bar with the three dots
+         Row 3:  P20 value (left, red)     P80 value (right, green)
+       grid-template-areas reorders the cells (HTML order is
+       name, min, bar, max, typical) without needing markup changes. */
     .cap-row {
-      grid-template-columns: 1fr;
-      gap: 6px;
-      padding: 14px 0;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "name typ"
+        "bar  bar"
+        "mn   mx";
+      gap: 4px 12px;
+      padding: 14px 0 16px;
     }
     .cap-row-head { display: none; }
-    .cap-cell-min, .cap-cell-max { display: inline-block; min-width: 50px; }
+    .cap-name        { grid-area: name; }
+    .cap-cell-typical{ grid-area: typ;  text-align: right; align-self: start; }
+    .cap-cell-bar    { grid-area: bar; margin: 4px 0 6px; }
+    .cap-cell-min    { grid-area: mn;   text-align: left;  font-size: 14px; }
+    .cap-cell-max    { grid-area: mx;   text-align: right; font-size: 14px; }
+    /* Prefix the bare numbers with a clearly-readable label so they
+       carry meaning without the desktop column header above. */
+    .cap-cell-min::before,
+    .cap-cell-max::before {
+      color: var(--fg-muted);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-right: 4px;
+    }
+    .cap-cell-min::before { content: "P20 ·"; }
+    .cap-cell-max::before { content: "P80 ·"; }
+    /* Bump the score so it actually anchors the row visually. */
+    .cap-typical-num { font-size: 22px; }
+    /* Bigger bar + bigger dots so the position is readable at arm's
+       length on a phone. */
+    .cap-bar { height: 18px; }
   }
   .cap-name {
     min-width: 0;

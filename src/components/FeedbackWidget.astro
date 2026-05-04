@@ -88,6 +88,19 @@
     transition: transform 0.15s ease;
   }
   .feedback-fab:hover { transform: translateY(-1px); }
+  /* Mobile: shrink to icon-only and respect the iOS bottom safe area
+     so the FAB doesn't sit on top of in-page CTAs (the model detail
+     page stacks "Try / Compare / API Docs" buttons vertically and the
+     full-width pill was eating the rightmost button). */
+  @media (max-width: 720px) {
+    .feedback-fab {
+      padding: 0.55rem;
+      gap: 0;
+      bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+      right: 0.75rem;
+    }
+    .feedback-fab span { display: none; }
+  }
 
   .feedback-panel {
     position: fixed;

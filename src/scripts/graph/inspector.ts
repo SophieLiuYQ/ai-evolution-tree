@@ -387,38 +387,51 @@ export function attachInspectorHandlers() {
     resetPanel();
   });
 
-  document.querySelectorAll<HTMLElement>(".node-link[data-slug]").forEach((link) => {
-    let downX = 0;
-    let downY = 0;
+  // Click hijack — desktop only. On mouse-capable viewports, clicking
+  // a card opens the side InspectorPanel instead of navigating; that's
+  // the original "study lineage in place" UX and the InspectorPanel is
+  // visible there. On touch / mobile (where the panel is hidden via
+  // CSS), we fall through to the <a>'s default navigation so a single
+  // tap takes the user straight to the model page. Cmd/Ctrl/Shift/Alt
+  // and middle-click always navigate, regardless of device.
+  const isHoverCapable =
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (min-width: 721px)").matches;
 
-    link.addEventListener("click", (e) => {
-      const slug = link.getAttribute("data-slug");
-      if (!slug) return;
-      const me = e as MouseEvent;
-      const allowNav =
-        me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0;
-      if (allowNav) return;
-      e.preventDefault();
-      handleSelect(slug);
-    });
+  if (isHoverCapable) {
+    document.querySelectorAll<HTMLElement>(".node-link[data-slug]").forEach((link) => {
+      let downX = 0;
+      let downY = 0;
 
-    link.addEventListener("pointerdown", (e) => {
-      downX = e.clientX;
-      downY = e.clientY;
-    });
+      link.addEventListener("click", (e) => {
+        const slug = link.getAttribute("data-slug");
+        if (!slug) return;
+        const me = e as MouseEvent;
+        const allowNav =
+          me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0;
+        if (allowNav) return;
+        e.preventDefault();
+        handleSelect(slug);
+      });
 
-    link.addEventListener("pointerup", (e) => {
-      const slug = link.getAttribute("data-slug");
-      if (!slug) return;
-      const allowNav = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
-      if (allowNav) return;
-      const dx = Math.abs(e.clientX - downX);
-      const dy = Math.abs(e.clientY - downY);
-      if (dx > 4 || dy > 4) return;
-      e.preventDefault();
-      handleSelect(slug);
+      link.addEventListener("pointerdown", (e) => {
+        downX = e.clientX;
+        downY = e.clientY;
+      });
+
+      link.addEventListener("pointerup", (e) => {
+        const slug = link.getAttribute("data-slug");
+        if (!slug) return;
+        const allowNav = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
+        if (allowNav) return;
+        const dx = Math.abs(e.clientX - downX);
+        const dy = Math.abs(e.clientY - downY);
+        if (dx > 4 || dy > 4) return;
+        e.preventDefault();
+        handleSelect(slug);
+      });
     });
-  });
+  }
 
   document.addEventListener(SELECT_EVT, (e) => {
     const slug = (e as CustomEvent).detail?.slug as string | undefined;

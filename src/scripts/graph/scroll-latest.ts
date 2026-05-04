@@ -72,10 +72,26 @@ function applyScroll() {
   }
   if (!target) target = cards[cards.length - 1];
 
+  // On mobile (<=720px) the canvas is wider than the viewport, so an
+  // `inline: "nearest"` scroll leaves the user mid-canvas with no x-axis
+  // anchor. Pin to the LEFT edge instead (year column on v-orient,
+  // earliest-year on h-orient) so the user lands at a recognizable
+  // extrema: latest-year row + leftmost column.
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
   target.scrollIntoView({
     block: orient === "v" ? "end" : "nearest",
-    inline: orient === "h" ? "end" : "nearest",
+    inline: orient === "h" ? "end" : isMobile ? "start" : "nearest",
   });
+  if (isMobile) {
+    // Force-scroll the pane's horizontal extreme: in v-orient the time
+    // axis is vertical, so horizontal scroll position has no semantic
+    // meaning — pin scrollLeft = 0 so the leftmost column is visible.
+    if (orient === "v") {
+      pane.scrollLeft = 0;
+      const wrap = pane.parentElement; // .panes-wrap / .canvas-area
+      if (wrap) wrap.scrollLeft = 0;
+    }
+  }
 }
 
 /** Scroll the active view to the most-recent-date end. Called on

@@ -309,20 +309,29 @@ export function attachInteractions() {
     document.querySelectorAll<HTMLAnchorElement>(".node-link"),
   );
 
-  allNodeLinks.forEach((n) => {
-    const slug = n.getAttribute("data-slug")!;
-    n.addEventListener("mouseenter", () => {
-      // While a path is pinned, hover on OTHER cards is locked out — the
-      // user is studying the pinned lineage and doesn't want it disturbed.
-      // Re-enabled when they click "highlight this path" again to unpin.
-      if (getPinned()) return;
-      renderHover(slug);
+  // Hover-to-highlight is a desktop-only interaction. On touch devices,
+  // synthesized mouseenter from the first tap renders the lineage and
+  // iOS Safari then treats that tap as "show hover state" rather than
+  // triggering the <a>'s navigation — so the user has to tap twice to
+  // open a node page. Detecting `(hover: hover)` skips the listeners on
+  // touch so a single tap navigates immediately.
+  const isHoverCapable = window.matchMedia("(hover: hover)").matches;
+  if (isHoverCapable) {
+    allNodeLinks.forEach((n) => {
+      const slug = n.getAttribute("data-slug")!;
+      n.addEventListener("mouseenter", () => {
+        // While a path is pinned, hover on OTHER cards is locked out — the
+        // user is studying the pinned lineage and doesn't want it disturbed.
+        // Re-enabled when they click "highlight this path" again to unpin.
+        if (getPinned()) return;
+        renderHover(slug);
+      });
+      n.addEventListener("mouseleave", () => {
+        if (getPinned()) return;
+        clearHover();
+      });
     });
-    n.addEventListener("mouseleave", () => {
-      if (getPinned()) return;
-      clearHover();
-    });
-  });
+  }
 
   // Pin button: lock highlight to this slug. Click again to unpin.
   document.querySelectorAll<SVGGElement>(".pin-btn").forEach((btn) => {
