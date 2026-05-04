@@ -169,8 +169,9 @@ const fmtUpdatedLong = spec?.last_verified_at
 
 const fmtCtx = (n?: number) => {
   if (!n) return null;
-  if (n >= 1_000_000) return `${n / 1_000_000}M tokens`;
-  if (n >= 1_000) return `${n / 1_000}k tokens`;
+  // Round to integer so 131_072 → "131k", not "131.072k".
+  if (n >= 1_000_000) return `${Math.round(n / 1_000_000)}M tokens`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}k tokens`;
   return `${n} tokens`;
 };
 const ctxHint = (n?: number): string | null => {
