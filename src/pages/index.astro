@@ -28,10 +28,9 @@ const FLOATING_LABELS: FloatingLabel[] = [
 ];
 
 const FEATURES = [
-  { icon: "tree", key: "landing.feat.tree", text: "Tree view of model lineage and descendants" },
-  { icon: "chart", key: "landing.feat.compare", text: "Compare models across benchmarks and capabilities" },
-  { icon: "clock", key: "landing.feat.timeline", text: "Timeline of key releases and breakthroughs" },
-  { icon: "search", key: "landing.feat.profiles", text: "Detailed model profiles and technical specs" },
+  { icon: "tree", key: "landing.feat.understand", text: "Understand model capabilities and relationships" },
+  { icon: "chart", key: "landing.feat.select", text: "Ease model selection and deployment" },
+  { icon: "book", key: "landing.feat.educate", text: "Foster AI education" },
 ];
 ---
 
@@ -78,12 +77,6 @@ const FEATURES = [
           <span class="hero-accent" data-i18n="landing.headline.accent">intelligence</span>
         </h1>
 
-        <p class="hero-lede" data-i18n="landing.lede">
-          AI Evolution Tree visualizes the ancestry, branching, and
-          relationships of AI models — so you can understand how we got
-          here, and where it's going.
-        </p>
-
         {/* Feature checklist — 4 icon rows */}
         <ul class="feat-list" role="list">
           {FEATURES.map((f) => (
@@ -95,11 +88,8 @@ const FEATURES = [
                 {f.icon === "chart" && (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5 M4 19h16 M8 15v-4 M12 15V8 M16 15v-6"/></svg>
                 )}
-                {f.icon === "clock" && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                )}
-                {f.icon === "search" && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+                {f.icon === "book" && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7z"/></svg>
                 )}
               </span>
               <span data-i18n={f.key}>{f.text}</span>
@@ -115,7 +105,7 @@ const FEATURES = [
         </a>
 
         <p class="footnote" data-i18n="landing.footnote">
-          Free &amp; open · Data sources linked · Community driven
+          Open Source &amp; Open for Collaboration
         </p>
       </div>
     </section>
