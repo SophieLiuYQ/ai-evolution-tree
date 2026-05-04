@@ -411,16 +411,6 @@
           "confidence": 0.554
         },
         {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.807,
-          "confidence": 0.528
-        },
-        {
           "slug": "glm-4",
           "title": "GLM-4.7",
           "org": "Zhipu",
@@ -508,15 +498,6 @@
           "overlap": 0.723,
           "confidence": 0.631,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.744,
-          "confidence": 0.621,
-          "release_gap_mo": 2
         }
       ],
       "same_capability": []
@@ -610,16 +591,6 @@
           "confidence": 0.554
         },
         {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.807,
-          "confidence": 0.528
-        },
-        {
           "slug": "glm-4",
           "title": "GLM-4.7",
           "org": "Zhipu",
@@ -657,16 +628,6 @@
             "reasoning"
           ],
           "overlap": 0.745,
-          "confidence": 0.497
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.744,
           "confidence": 0.497
         },
         {
@@ -709,15 +670,6 @@
           "overlap": 0.863,
           "confidence": 0.817,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "apertus-70b-instruct",
-          "title": "Apertus 70B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.888,
-          "confidence": 0.784,
-          "release_gap_mo": 4
         },
         {
           "slug": "jamba-1",
@@ -886,15 +838,6 @@
           "overlap": 0.702,
           "confidence": 0.603,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.748,
-          "confidence": 0.349,
-          "release_gap_mo": 1
         }
       ],
       "same_capability": []
@@ -1408,15 +1351,6 @@
           "overlap": 0.991,
           "confidence": 0.988,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.973,
-          "release_gap_mo": 2
         },
         {
           "slug": "sonar-pro",
@@ -1961,292 +1895,6 @@
       ],
       "same_capability": []
     },
-    "ministral-8": {
-      "competes_with": [
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 1,
-          "confidence": 1,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.997,
-          "confidence": 0.997,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "domain": "image",
-          "overlap": 0.767,
-          "confidence": 0.311,
-          "release_gap_mo": 5
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 1,
-          "confidence": 0.75
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.997,
-          "confidence": 0.749
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.985,
-          "confidence": 0.742
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "flux-2",
-          "title": "FLUX.2",
-          "org": "Black Forest Labs",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.767,
-          "confidence": 0.634
-        }
-      ]
-    },
-    "ministral": {
-      "competes_with": [
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 1,
-          "confidence": 1,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.996,
-          "confidence": 0.994,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "domain": "image",
-          "overlap": 0.77,
-          "confidence": 0.314,
-          "release_gap_mo": 5
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 1,
-          "confidence": 0.75
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.748
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.988,
-          "confidence": 0.744
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "flux-2",
-          "title": "FLUX.2",
-          "org": "Black Forest Labs",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.77,
-          "confidence": 0.635
-        }
-      ]
-    },
     "command-a": {
       "competes_with": [
         {
@@ -2426,16 +2074,6 @@
           "confidence": 0.618
         },
         {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.959,
-          "confidence": 0.605
-        },
-        {
           "slug": "mimo-v2",
           "title": "Mimo v2",
           "org": "Xiaomi",
@@ -2535,16 +2173,6 @@
           ],
           "overlap": 0.987,
           "confidence": 0.618
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.602
         }
       ]
     },
@@ -2556,15 +2184,6 @@
           "org": "Stepfun",
           "domain": "reasoning",
           "overlap": 0.999,
-          "confidence": 0.999,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 1,
           "confidence": 0.999,
           "release_gap_mo": 0
         },
@@ -2630,16 +2249,6 @@
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
           "shared": [
             "reasoning"
           ],
@@ -2867,65 +2476,6 @@
       ],
       "same_capability": []
     },
-    "ling": {
-      "competes_with": [
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.999,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "hy3",
-          "title": "Hy3-preview",
-          "org": "Tencent",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.998,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "qwen-3-6",
-          "title": "Qwen 3.6",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 0.987,
-          "confidence": 0.981,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "deepseek-v3-1",
-          "title": "DeepSeek V3.1 (Non-reasoning)",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.938,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "o4-mini",
-          "title": "o4-mini (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.963,
-          "confidence": 0.889,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7",
-          "org": "Zhipu",
-          "domain": "reasoning",
-          "overlap": 0.89,
-          "confidence": 0.786,
-          "release_gap_mo": 4
-        }
-      ],
-      "same_capability": []
-    },
     "claude-4-1": {
       "competes_with": [
         {
@@ -3069,15 +2619,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.998,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "qwen-3-5",
           "title": "Qwen 3.5",
           "org": "Alibaba",
@@ -3110,16 +2651,6 @@
           "slug": "claude-4-1",
           "title": "Claude 4.1",
           "org": "Anthropic",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 1,
-          "confidence": 0.625
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
           "shared": [
             "reasoning"
           ],
@@ -3498,15 +3029,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.979,
-          "release_gap_mo": 1
-        },
-        {
           "slug": "gpt-oss-20b",
           "title": "gpt-oss-20B (high)",
           "org": "OpenAI",
@@ -3514,15 +3036,6 @@
           "overlap": 0.978,
           "confidence": 0.97,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.982,
-          "confidence": 0.961,
-          "release_gap_mo": 1
         },
         {
           "slug": "mistral-small-4",
@@ -3557,15 +3070,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.986,
-          "release_gap_mo": 1
-        },
-        {
           "slug": "gpt-oss-20b",
           "title": "gpt-oss-20B (high)",
           "org": "OpenAI",
@@ -3573,15 +3077,6 @@
           "overlap": 0.984,
           "confidence": 0.979,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.971,
-          "release_gap_mo": 1
         },
         {
           "slug": "seed-oss-36b-instruct",
@@ -3750,24 +3245,6 @@
           "overlap": 0.968,
           "confidence": 0.958,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.957,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.938,
-          "release_gap_mo": 4
         }
       ],
       "same_capability": []
@@ -3864,16 +3341,6 @@
           "slug": "claude-sonnet-4-5",
           "title": "Claude Sonnet 4.5",
           "org": "Anthropic",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
           "shared": [
             "reasoning"
           ],
@@ -4026,50 +3493,6 @@
           "confidence": 0.75
         },
         {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
           "slug": "gemini-1-5",
           "title": "Gemini 1.5",
           "org": "Google",
@@ -4079,17 +3502,6 @@
           ],
           "overlap": 0.923,
           "confidence": 0.712
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
         }
       ]
     },
@@ -4196,50 +3608,6 @@
           "confidence": 0.75
         },
         {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
           "slug": "gemini-1-5",
           "title": "Gemini 1.5",
           "org": "Google",
@@ -4249,149 +3617,6 @@
           ],
           "overlap": 0.923,
           "confidence": 0.712
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        }
-      ]
-    },
-    "ministral-3": {
-      "competes_with": [
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.997,
-          "confidence": 0.997,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.996,
-          "confidence": 0.994,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "domain": "image",
-          "overlap": 0.76,
-          "confidence": 0.301,
-          "release_gap_mo": 5
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.997,
-          "confidence": 0.749
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.996,
-          "confidence": 0.748
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "flux-2",
-          "title": "FLUX.2",
-          "org": "Black Forest Labs",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.76,
-          "confidence": 0.63
         }
       ]
     },
@@ -4414,24 +3639,6 @@
           "overlap": 0.983,
           "confidence": 0.978,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.992,
-          "confidence": 0.975,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.989,
-          "confidence": 0.972,
-          "release_gap_mo": 1
         },
         {
           "slug": "deepseek-r1-distill-qwen",
@@ -4464,15 +3671,6 @@
           "overlap": 0.997,
           "confidence": 0.997,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.976,
-          "release_gap_mo": 1
         },
         {
           "slug": "qwen-2",
@@ -4523,24 +3721,6 @@
           "overlap": 0.997,
           "confidence": 0.995,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.984,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.98,
-          "release_gap_mo": 1
         },
         {
           "slug": "nemotron-cascade-2-30b-a3b",
@@ -4600,24 +3780,6 @@
           "overlap": 0.985,
           "confidence": 0.98,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.972,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.984,
-          "confidence": 0.969,
-          "release_gap_mo": 1
         },
         {
           "slug": "deepseek-r1-distill-qwen",
@@ -4832,16 +3994,6 @@
           "confidence": 0.623
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.622
-        },
-        {
           "slug": "qwen-3-6",
           "title": "Qwen 3.6",
           "org": "Alibaba",
@@ -4974,16 +4126,6 @@
           "confidence": 0.622
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.622
-        },
-        {
           "slug": "nvidia-nemotron-3",
           "title": "Nvidia nemotron.3",
           "org": "Nvidia",
@@ -5002,16 +4144,6 @@
           ],
           "overlap": 0.974,
           "confidence": 0.612
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.921,
-          "confidence": 0.586
         }
       ]
     },
@@ -5061,15 +4193,6 @@
           "overlap": 0.986,
           "confidence": 0.982,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.968,
-          "release_gap_mo": 2
         }
       ],
       "same_capability": []
@@ -5111,15 +4234,6 @@
           "overlap": 0.986,
           "confidence": 0.982,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.965,
-          "release_gap_mo": 2
         },
         {
           "slug": "granite-3-3-8b-instruct",
@@ -5358,50 +4472,6 @@
           "confidence": 0.75
         },
         {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
           "slug": "gemini-1-5",
           "title": "Gemini 1.5",
           "org": "Google",
@@ -5411,17 +4481,6 @@
           ],
           "overlap": 0.923,
           "confidence": 0.712
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
         }
       ]
     },
@@ -5528,50 +4587,6 @@
           "confidence": 0.75
         },
         {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
           "slug": "gemini-1-5",
           "title": "Gemini 1.5",
           "org": "Google",
@@ -5581,17 +4596,6 @@
           ],
           "overlap": 0.923,
           "confidence": 0.712
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
         }
       ]
     },
@@ -6111,15 +5115,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.987,
-          "confidence": 0.981,
-          "release_gap_mo": 0
-        },
-        {
           "slug": "kat-coder-pro-v2",
           "title": "KAT Coder Pro V2",
           "org": "Academic / Independent",
@@ -6159,16 +5154,6 @@
           "confidence": 0.622
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.993,
-          "confidence": 0.622
-        },
-        {
           "slug": "claude-4-5",
           "title": "Claude 4.5",
           "org": "Anthropic",
@@ -6196,16 +5181,6 @@
             "reasoning"
           ],
           "overlap": 0.987,
-          "confidence": 0.618
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.985,
           "confidence": 0.618
         },
         {
@@ -6650,15 +5625,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.951,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "lfm2",
           "title": "Lfm2",
           "org": "Liquid AI",
@@ -6999,15 +5965,6 @@
           "overlap": 0.981,
           "confidence": 0.874,
           "release_gap_mo": 6
-        },
-        {
-          "slug": "kimi-k2-6",
-          "title": "Kimi K2.6",
-          "org": "Moonshot AI",
-          "domain": "video",
-          "overlap": 0.761,
-          "confidence": 0.279,
-          "release_gap_mo": 6
         }
       ],
       "same_capability": [
@@ -7065,17 +6022,6 @@
           ],
           "overlap": 0.981,
           "confidence": 0.74
-        },
-        {
-          "slug": "kimi-k2-6",
-          "title": "Kimi K2.6",
-          "org": "Moonshot AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.761,
-          "confidence": 0.63
         },
         {
           "slug": "gemini-1",
@@ -7226,65 +6172,6 @@
           "confidence": 0.541
         }
       ]
-    },
-    "nemotron-nano-v2": {
-      "competes_with": [
-        {
-          "slug": "nemotron-cascade-2-30b-a3b",
-          "title": "Nemotron Cascade 2 30B A3B",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.986,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "gpt-oss-20b",
-          "title": "gpt-oss-20B (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.984,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.983,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "ernie-5-0-thinking-preview",
-          "title": "ERNIE 5.0 Thinking Preview",
-          "org": "Baidu",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.979,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.974,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "seed-oss-36b-instruct",
-          "title": "Seed-OSS-36B-Instruct",
-          "org": "ByteDance",
-          "domain": "reasoning",
-          "overlap": 0.984,
-          "confidence": 0.969,
-          "release_gap_mo": 1
-        }
-      ],
-      "same_capability": []
     },
     "nova-pro": {
       "competes_with": [
@@ -7711,15 +6598,6 @@
           "overlap": 0.981,
           "confidence": 0.843,
           "release_gap_mo": 8
-        },
-        {
-          "slug": "kimi-k2-6",
-          "title": "Kimi K2.6",
-          "org": "Moonshot AI",
-          "domain": "video",
-          "overlap": 0.761,
-          "confidence": 0.309,
-          "release_gap_mo": 4
         }
       ],
       "same_capability": [
@@ -7779,17 +6657,6 @@
           "confidence": 0.74
         },
         {
-          "slug": "kimi-k2-6",
-          "title": "Kimi K2.6",
-          "org": "Moonshot AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.761,
-          "confidence": 0.63
-        },
-        {
           "slug": "sora",
           "title": "Sora",
           "org": "OpenAI",
@@ -7800,65 +6667,6 @@
           "confidence": 0.541
         }
       ]
-    },
-    "devstral": {
-      "competes_with": [
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.983,
-          "release_gap_mo": 0
-        },
-        {
-          "slug": "gpt-4-1",
-          "title": "GPT-4.1",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.989,
-          "confidence": 0.972,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nova-pro",
-          "title": "Nova Pro",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.984,
-          "confidence": 0.966,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nova-premier",
-          "title": "Nova Premier",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.976,
-          "confidence": 0.955,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.981,
-          "confidence": 0.948,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "seed-oss-36b-instruct",
-          "title": "Seed-OSS-36B-Instruct",
-          "org": "ByteDance",
-          "domain": "reasoning",
-          "overlap": 0.966,
-          "confidence": 0.942,
-          "release_gap_mo": 1
-        }
-      ],
-      "same_capability": []
     },
     "gemma-3n": {
       "competes_with": [
@@ -7890,15 +6698,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.949,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "llama-nemotron-super-49b",
           "title": "Llama nemotron.super.49b",
           "org": "Nvidia",
@@ -7919,76 +6718,8 @@
       ],
       "same_capability": []
     },
-    "longcat": {
-      "competes_with": [
-        {
-          "slug": "gpt-oss-20b",
-          "title": "gpt-oss-20B (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.98,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nova-premier",
-          "title": "Nova Premier",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.976,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "gpt-4-1",
-          "title": "GPT-4.1",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.992,
-          "confidence": 0.975,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.974,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "seed-oss-36b-instruct",
-          "title": "Seed-OSS-36B-Instruct",
-          "org": "ByteDance",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.972,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nemotron-cascade-2-30b-a3b",
-          "title": "Nemotron Cascade 2 30B A3B",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.971,
-          "release_gap_mo": 1
-        }
-      ],
-      "same_capability": []
-    },
     "nova-2-0": {
       "competes_with": [
-        {
-          "slug": "trinity-large-thinking",
-          "title": "Trinity Large Thinking",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.98,
-          "release_gap_mo": 1
-        },
         {
           "slug": "nemotron-cascade-2-30b-a3b",
           "title": "Nemotron Cascade 2 30B A3B",
@@ -8008,15 +6739,6 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.898,
-          "release_gap_mo": 5
-        },
-        {
           "slug": "sonar",
           "title": "Sonar",
           "org": "Perplexity",
@@ -8033,65 +6755,6 @@
           "overlap": 0.999,
           "confidence": 0.698,
           "release_gap_mo": 0
-        }
-      ],
-      "same_capability": []
-    },
-    "trinity-large-thinking": {
-      "competes_with": [
-        {
-          "slug": "nova-2-0",
-          "title": "Nova 2.0",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.98,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.952,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.927,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "seed-oss-36b-instruct",
-          "title": "Seed-OSS-36B-Instruct",
-          "org": "ByteDance",
-          "domain": "reasoning",
-          "overlap": 0.964,
-          "confidence": 0.903,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.973,
-          "confidence": 0.886,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "minimax-m1",
-          "title": "Minimax m1",
-          "org": "MiniMax",
-          "domain": "reasoning",
-          "overlap": 0.941,
-          "confidence": 0.872,
-          "release_gap_mo": 3
         }
       ],
       "same_capability": []
@@ -8433,15 +7096,6 @@
           "release_gap_mo": 1
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.986,
-          "confidence": 0.972,
-          "release_gap_mo": 1
-        },
-        {
           "slug": "gemma-4",
           "title": "Gemma 4",
           "org": "Google",
@@ -8560,16 +7214,6 @@
           "confidence": 0.618
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.986,
-          "confidence": 0.618
-        },
-        {
           "slug": "nvidia-nemotron-3",
           "title": "Nvidia nemotron.3",
           "org": "Nvidia",
@@ -8626,15 +7270,6 @@
           "domain": "reasoning",
           "overlap": 0.964,
           "confidence": 0.891,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.963,
-          "confidence": 0.889,
           "release_gap_mo": 4
         }
       ],
@@ -8755,225 +7390,6 @@
           "confidence": 0.541
         }
       ]
-    },
-    "nemotron-super-v3": {
-      "competes_with": [
-        {
-          "slug": "hy3",
-          "title": "Hy3-preview",
-          "org": "Tencent",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.976,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.973,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "kat-coder-pro-v2",
-          "title": "KAT Coder Pro V2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.986,
-          "confidence": 0.972,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "deepseek-v3-1",
-          "title": "DeepSeek V3.1 (Non-reasoning)",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.957,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7",
-          "org": "Zhipu",
-          "domain": "reasoning",
-          "overlap": 0.908,
-          "confidence": 0.835,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "deepseek-v3-2",
-          "title": "DeepSeek V3.2",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.838,
-          "confidence": 0.695,
-          "release_gap_mo": 5
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "hy3",
-          "title": "Hy3-preview",
-          "org": "Tencent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 1,
-          "confidence": 0.625
-        },
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
-          "slug": "qwen-3-5",
-          "title": "Qwen 3.5",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.998,
-          "confidence": 0.624
-        },
-        {
-          "slug": "minimax-m2",
-          "title": "MiniMax M2",
-          "org": "MiniMax",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.995,
-          "confidence": 0.622
-        },
-        {
-          "slug": "kimi-k2",
-          "title": "Kimi K2",
-          "org": "Moonshot AI",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.622
-        },
-        {
-          "slug": "kimi-k2-thinking",
-          "title": "Kimi K2 Thinking",
-          "org": "Moonshot AI",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.622
-        },
-        {
-          "slug": "qwen-3-6",
-          "title": "Qwen 3.6",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.993,
-          "confidence": 0.622
-        },
-        {
-          "slug": "kat-coder-pro-v2",
-          "title": "KAT Coder Pro V2",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.986,
-          "confidence": 0.618
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.959,
-          "confidence": 0.605
-        },
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7",
-          "org": "Zhipu",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.908,
-          "confidence": 0.579
-        }
-      ]
-    },
-    "aya": {
-      "competes_with": [
-        {
-          "slug": "palm-2",
-          "title": "PALM-2",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.974,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "tiny-aya-global",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.974,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "lfm-40b",
-          "title": "LFM 40B",
-          "org": "Liquid AI",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.974,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "command-r-03-2024",
-          "title": "Command-R (Mar '24)",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.973,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "jamba-reasoning-3b",
-          "title": "Jamba Reasoning 3B",
-          "org": "AI21 Labs",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.968,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "nova-micro",
-          "title": "Nova Micro",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.993,
-          "confidence": 0.965,
-          "release_gap_mo": 2
-        }
-      ],
-      "same_capability": []
     },
     "minimax-text-01": {
       "competes_with": [
@@ -9715,15 +8131,6 @@
     "mistral-small-4": {
       "competes_with": [
         {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.968,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "nemotron-cascade-2-30b-a3b",
           "title": "Nemotron Cascade 2 30B A3B",
           "org": "Nvidia",
@@ -9749,15 +8156,6 @@
           "overlap": 0.993,
           "confidence": 0.95,
           "release_gap_mo": 2
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.948,
-          "release_gap_mo": 3
         },
         {
           "slug": "seed-oss-36b-instruct",
@@ -10034,24 +8432,6 @@
           "overlap": 0.958,
           "confidence": 0.944,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.966,
-          "confidence": 0.94,
-          "release_gap_mo": 1
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.95,
-          "confidence": 0.924,
-          "release_gap_mo": 1
         }
       ],
       "same_capability": []
@@ -10066,15 +8446,6 @@
           "overlap": 0.973,
           "confidence": 0.964,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.95,
-          "release_gap_mo": 2
         },
         {
           "slug": "granite-4-0",
@@ -10558,15 +8929,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.908,
-          "confidence": 0.835,
-          "release_gap_mo": 3
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -10574,28 +8936,9 @@
           "overlap": 0.904,
           "confidence": 0.806,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "ling",
-          "title": "Ling-2.6-1T",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.89,
-          "confidence": 0.786,
-          "release_gap_mo": 4
         }
       ],
       "same_capability": [
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.989,
-          "confidence": 0.62
-        },
         {
           "slug": "qwen-3-6",
           "title": "Qwen 3.6",
@@ -10605,16 +8948,6 @@
           ],
           "overlap": 0.95,
           "confidence": 0.6
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.908,
-          "confidence": 0.579
         },
         {
           "slug": "hy3",
@@ -10691,15 +9024,6 @@
     "gemini-2-5": {
       "competes_with": [
         {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.948,
-          "release_gap_mo": 3
-        },
-        {
           "slug": "gpt-4-1",
           "title": "GPT-4.1",
           "org": "OpenAI",
@@ -10724,15 +9048,6 @@
           "domain": "reasoning",
           "overlap": 0.991,
           "confidence": 0.926,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.994,
-          "confidence": 0.917,
           "release_gap_mo": 4
         },
         {
@@ -10850,50 +9165,6 @@
           "confidence": 0.75
         },
         {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
           "slug": "gemini-1-5",
           "title": "Gemini 1.5",
           "org": "Google",
@@ -10903,17 +9174,6 @@
           ],
           "overlap": 0.923,
           "confidence": 0.712
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
         }
       ]
     },
@@ -11590,65 +9850,6 @@
         }
       ]
     },
-    "ring": {
-      "competes_with": [
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.988,
-          "confidence": 0.94,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.927,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "command-r-plus-04-2024",
-          "title": "Command-R+ (Apr '24)",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.957,
-          "confidence": 0.885,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "command-r-03-2024",
-          "title": "Command-R (Mar '24)",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.947,
-          "confidence": 0.872,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "gpt-35-turbo",
-          "title": "GPT-3.5 Turbo",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.946,
-          "confidence": 0.871,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "deepseek-r1-distill-llama",
-          "title": "DeepSeek r1 distill llama",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.943,
-          "confidence": 0.867,
-          "release_gap_mo": 3
-        }
-      ],
-      "same_capability": []
-    },
     "kimi-k2": {
       "competes_with": [
         {
@@ -11770,16 +9971,6 @@
           "confidence": 0.622
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.622
-        },
-        {
           "slug": "nvidia-nemotron-3",
           "title": "Nvidia nemotron.3",
           "org": "Nvidia",
@@ -11798,16 +9989,6 @@
           ],
           "overlap": 0.974,
           "confidence": 0.612
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.921,
-          "confidence": 0.586
         }
       ]
     },
@@ -11847,24 +10028,6 @@
           "domain": "reasoning",
           "overlap": 0.995,
           "confidence": 0.932,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.934,
-          "confidence": 0.864,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "nemotron-nano-v2",
-          "title": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.927,
-          "confidence": 0.831,
           "release_gap_mo": 4
         }
       ],
@@ -11938,124 +10101,6 @@
           "confidence": 0.774
         }
       ]
-    },
-    "hermes-4": {
-      "competes_with": [
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.995,
-          "confidence": 0.936,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "gpt-4-1",
-          "title": "GPT-4.1",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.926,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "nova-pro",
-          "title": "Nova Pro",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.994,
-          "confidence": 0.923,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.91,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "claude-3-5-haiku",
-          "title": "Claude 3.5 Haiku",
-          "org": "Anthropic",
-          "domain": "reasoning",
-          "overlap": 0.97,
-          "confidence": 0.891,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "minimax-m1",
-          "title": "Minimax m1",
-          "org": "MiniMax",
-          "domain": "reasoning",
-          "overlap": 0.969,
-          "confidence": 0.889,
-          "release_gap_mo": 4
-        }
-      ],
-      "same_capability": []
-    },
-    "apertus-70b-instruct": {
-      "competes_with": [
-        {
-          "slug": "palm-2",
-          "title": "PALM-2",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.934,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "tiny-aya-global",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.934,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "lfm-40b",
-          "title": "LFM 40B",
-          "org": "Liquid AI",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.933,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "command-r-03-2024",
-          "title": "Command-R (Mar '24)",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.932,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "jamba-reasoning-3b",
-          "title": "Jamba Reasoning 3B",
-          "org": "AI21 Labs",
-          "domain": "reasoning",
-          "overlap": 0.996,
-          "confidence": 0.928,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.908,
-          "release_gap_mo": 6
-        }
-      ],
-      "same_capability": []
     },
     "genie-3": {
       "competes_with": [
@@ -12236,65 +10281,6 @@
           "confidence": 0.828
         }
       ]
-    },
-    "apertus-8b-instruct": {
-      "competes_with": [
-        {
-          "slug": "palm-2",
-          "title": "PALM-2",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.933,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "tiny-aya-global",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.933,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "lfm-40b",
-          "title": "LFM 40B",
-          "org": "Liquid AI",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.931,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "jamba-reasoning-3b",
-          "title": "Jamba Reasoning 3B",
-          "org": "AI21 Labs",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.93,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "nova-micro",
-          "title": "Nova Micro",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.92,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "aya",
-          "title": "Tiny Aya Global",
-          "org": "Cohere",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.907,
-          "release_gap_mo": 6
-        }
-      ],
-      "same_capability": []
     },
     "claude-sonnet-4-6": {
       "competes_with": [
@@ -12829,166 +10815,6 @@
         }
       ]
     },
-    "kat-code": {
-      "competes_with": [
-        {
-          "slug": "nemotron-cascade-2-30b-a3b",
-          "title": "Nemotron Cascade 2 30B A3B",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.969,
-          "confidence": 0.931,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "ernie-5-0-thinking-preview",
-          "title": "ERNIE 5.0 Thinking Preview",
-          "org": "Baidu",
-          "domain": "reasoning",
-          "overlap": 0.956,
-          "confidence": 0.913,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "mistral-small-4",
-          "title": "Mistral Small 4 (v26.03)",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.977,
-          "confidence": 0.901,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "nova-2-0",
-          "title": "Nova 2.0",
-          "org": "Amazon",
-          "domain": "reasoning",
-          "overlap": 0.991,
-          "confidence": 0.898,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "trinity-large-thinking",
-          "title": "Trinity Large Thinking",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.973,
-          "confidence": 0.886,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7",
-          "org": "Zhipu",
-          "domain": "reasoning",
-          "overlap": 0.989,
-          "confidence": 0.664,
-          "release_gap_mo": 1
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "glm-4",
-          "title": "GLM-4.7",
-          "org": "Zhipu",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.989,
-          "confidence": 0.62
-        },
-        {
-          "slug": "glm-5-1",
-          "title": "GLM-5.1 Non-reasoning",
-          "org": "Zhipu",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.985,
-          "confidence": 0.618
-        },
-        {
-          "slug": "qwen-3-6",
-          "title": "Qwen 3.6",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.985,
-          "confidence": 0.618
-        },
-        {
-          "slug": "nvidia-nemotron-3",
-          "title": "Nvidia nemotron.3",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.959,
-          "confidence": 0.605
-        },
-        {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.959,
-          "confidence": 0.605
-        },
-        {
-          "slug": "hy3",
-          "title": "Hy3-preview",
-          "org": "Tencent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.956,
-          "confidence": 0.603
-        },
-        {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.602
-        },
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.945,
-          "confidence": 0.597
-        },
-        {
-          "slug": "qwen-3-5",
-          "title": "Qwen 3.5",
-          "org": "Alibaba",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.94,
-          "confidence": 0.595
-        },
-        {
-          "slug": "minimax-m2",
-          "title": "MiniMax M2",
-          "org": "MiniMax",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.925,
-          "confidence": 0.588
-        }
-      ]
-    },
     "claude-sonnet-4-5": {
       "competes_with": [
         {
@@ -13297,76 +11123,8 @@
       ],
       "same_capability": []
     },
-    "hermes-3": {
-      "competes_with": [
-        {
-          "slug": "phi-4",
-          "title": "Phi-4",
-          "org": "Microsoft",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.922,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "dbrx",
-          "title": "DBRX",
-          "org": "Databricks",
-          "domain": "reasoning",
-          "overlap": 0.979,
-          "confidence": 0.895,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "phi-3",
-          "title": "Phi-3",
-          "org": "Microsoft",
-          "domain": "reasoning",
-          "overlap": 0.909,
-          "confidence": 0.816,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "olmo-2",
-          "title": "OLMo 2",
-          "org": "Allen AI",
-          "domain": "reasoning",
-          "overlap": 0.876,
-          "confidence": 0.779,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "llama-2",
-          "title": "Llama 2",
-          "org": "Meta AI",
-          "domain": "reasoning",
-          "overlap": 0.978,
-          "confidence": 0.755,
-          "release_gap_mo": 13
-        },
-        {
-          "slug": "deepseek-r1-distill-qwen",
-          "title": "DeepSeek r1 distill qwen",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.724,
-          "release_gap_mo": 17
-        }
-      ],
-      "same_capability": []
-    },
     "phi-4": {
       "competes_with": [
-        {
-          "slug": "hermes-3",
-          "title": "Hermes 3",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.922,
-          "release_gap_mo": 4
-        },
         {
           "slug": "reka-flash-3",
           "title": "Reka Flash 3",
@@ -13473,16 +11231,6 @@
         }
       ],
       "same_capability": [
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.985,
-          "confidence": 0.618
-        },
         {
           "slug": "qwen-3-6",
           "title": "Qwen 3.6",
@@ -14744,15 +12492,6 @@
     "qwen-1": {
       "competes_with": [
         {
-          "slug": "solar",
-          "title": "Solar Mini",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.904,
-          "release_gap_mo": 6
-        },
-        {
           "slug": "mixtral-8x7b",
           "title": "Mixtral 8x7B",
           "org": "Mistral AI",
@@ -14787,47 +12526,6 @@
           "overlap": 0.884,
           "confidence": 0.582,
           "release_gap_mo": 16
-        }
-      ],
-      "same_capability": []
-    },
-    "solar": {
-      "competes_with": [
-        {
-          "slug": "qwen-1",
-          "title": "Qwen-7B / Qwen-14B",
-          "org": "Alibaba",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.904,
-          "release_gap_mo": 6
-        },
-        {
-          "slug": "phi-3",
-          "title": "Phi-3",
-          "org": "Microsoft",
-          "domain": "reasoning",
-          "overlap": 0.848,
-          "confidence": 0.749,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "olmo-2",
-          "title": "OLMo 2",
-          "org": "Allen AI",
-          "domain": "reasoning",
-          "overlap": 0.884,
-          "confidence": 0.678,
-          "release_gap_mo": 10
-        },
-        {
-          "slug": "llama-2",
-          "title": "Llama 2",
-          "org": "Meta AI",
-          "domain": "reasoning",
-          "overlap": 0.713,
-          "confidence": 0.513,
-          "release_gap_mo": 6
         }
       ],
       "same_capability": []
@@ -15495,15 +13193,6 @@
     "dbrx": {
       "competes_with": [
         {
-          "slug": "hermes-3",
-          "title": "Hermes 3",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.979,
-          "confidence": 0.895,
-          "release_gap_mo": 5
-        },
-        {
           "slug": "mixtral-8x7b",
           "title": "Mixtral 8x7B",
           "org": "Mistral AI",
@@ -15511,24 +13200,6 @@
           "overlap": 0.861,
           "confidence": 0.756,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "apertus-70b-instruct",
-          "title": "Apertus 70B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.954,
-          "confidence": 0.652,
-          "release_gap_mo": 17
-        },
-        {
-          "slug": "ring",
-          "title": "Ring-flash-2.0",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.957,
-          "confidence": 0.646,
-          "release_gap_mo": 18
         },
         {
           "slug": "deepseek-v2",
@@ -15588,15 +13259,6 @@
           "overlap": 0.951,
           "confidence": 0.872,
           "release_gap_mo": 4
-        },
-        {
-          "slug": "apertus-70b-instruct",
-          "title": "Apertus 70B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.98,
-          "confidence": 0.845,
-          "release_gap_mo": 8
         }
       ],
       "same_capability": []
@@ -16400,17 +14062,6 @@
           "confidence": 0.74
         },
         {
-          "slug": "kimi-k2-6",
-          "title": "Kimi K2.6",
-          "org": "Moonshot AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.776,
-          "confidence": 0.638
-        },
-        {
           "slug": "gemini-1",
           "title": "Gemini 1",
           "org": "Google DeepMind",
@@ -16511,24 +14162,6 @@
           "overlap": 0.709,
           "confidence": 0.59,
           "release_gap_mo": 1
-        },
-        {
-          "slug": "apertus-70b-instruct",
-          "title": "Apertus 70B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.888,
-          "confidence": 0.586,
-          "release_gap_mo": 16
-        },
-        {
-          "slug": "ring",
-          "title": "Ring-flash-2.0",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.736,
-          "confidence": 0.373,
-          "release_gap_mo": 16
         }
       ],
       "same_capability": []
@@ -16554,15 +14187,6 @@
           "release_gap_mo": 4
         },
         {
-          "slug": "hermes-3",
-          "title": "Hermes 3",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.909,
-          "confidence": 0.816,
-          "release_gap_mo": 4
-        },
-        {
           "slug": "llama-2",
           "title": "Llama 2",
           "org": "Meta AI",
@@ -16570,24 +14194,6 @@
           "overlap": 0.976,
           "confidence": 0.815,
           "release_gap_mo": 9
-        },
-        {
-          "slug": "solar",
-          "title": "Solar Mini",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.848,
-          "confidence": 0.749,
-          "release_gap_mo": 3
-        },
-        {
-          "slug": "apertus-70b-instruct",
-          "title": "Apertus 70B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.724,
-          "release_gap_mo": 16
         }
       ],
       "same_capability": []
@@ -16602,24 +14208,6 @@
           "overlap": 0.997,
           "confidence": 0.878,
           "release_gap_mo": 7
-        },
-        {
-          "slug": "apertus-70b-instruct",
-          "title": "Apertus 70B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.847,
-          "release_gap_mo": 9
-        },
-        {
-          "slug": "apertus-8b-instruct",
-          "title": "Apertus 8B Instruct",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.846,
-          "release_gap_mo": 9
         },
         {
           "slug": "palm-2",
@@ -18789,39 +16377,6 @@
       ],
       "same_capability": [
         {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.967,
-          "confidence": 0.733
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.954,
-          "confidence": 0.727
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.949,
-          "confidence": 0.724
-        },
-        {
           "slug": "claude-35",
           "title": "Claude 35",
           "org": "Anthropic",
@@ -18831,17 +16386,6 @@
           ],
           "overlap": 0.929,
           "confidence": 0.715
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
         },
         {
           "slug": "gpt-image-1",
@@ -18910,15 +16454,6 @@
           "overlap": 0.976,
           "confidence": 0.815,
           "release_gap_mo": 9
-        },
-        {
-          "slug": "hermes-3",
-          "title": "Hermes 3",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.978,
-          "confidence": 0.755,
-          "release_gap_mo": 13
         },
         {
           "slug": "mixtral-8x7b",
@@ -19320,15 +16855,6 @@
           "release_gap_mo": 6
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.838,
-          "confidence": 0.695,
-          "release_gap_mo": 5
-        },
-        {
           "slug": "hy3",
           "title": "Hy3-preview",
           "org": "Tencent",
@@ -19354,15 +16880,6 @@
           "overlap": 0.876,
           "confidence": 0.52,
           "release_gap_mo": 1
-        },
-        {
-          "slug": "trinity-large-thinking",
-          "title": "Trinity Large Thinking",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.793,
-          "confidence": 0.323,
-          "release_gap_mo": 6
         }
       ],
       "same_capability": [
@@ -19398,16 +16915,6 @@
           "confidence": 0.547
         },
         {
-          "slug": "nemotron-super-v3",
-          "title": "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
-          "org": "Nvidia",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.838,
-          "confidence": 0.544
-        },
-        {
           "slug": "gemma-4",
           "title": "Gemma 4",
           "org": "Google",
@@ -19416,16 +16923,6 @@
           ],
           "overlap": 0.832,
           "confidence": 0.541
-        },
-        {
-          "slug": "kat-code",
-          "title": "KAT-Coder-Pro V1",
-          "org": "Academic / Independent",
-          "shared": [
-            "reasoning"
-          ],
-          "overlap": 0.71,
-          "confidence": 0.48
         },
         {
           "slug": "hunyuan-large",
@@ -19833,26 +17330,7 @@
       ]
     },
     "o1": {
-      "competes_with": [
-        {
-          "slug": "longcat",
-          "title": "LongCat Flash Lite",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.724,
-          "release_gap_mo": 17
-        },
-        {
-          "slug": "devstral",
-          "title": "Devstral 2",
-          "org": "Mistral AI",
-          "domain": "reasoning",
-          "overlap": 0.979,
-          "confidence": 0.723,
-          "release_gap_mo": 15
-        }
-      ],
+      "competes_with": [],
       "same_capability": []
     },
     "mimo-v2-5-pro": {
@@ -20150,15 +17628,6 @@
     },
     "llama-1": {
       "competes_with": [
-        {
-          "slug": "hermes-3",
-          "title": "Hermes 3",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.99,
-          "confidence": 0.692,
-          "release_gap_mo": 18
-        },
         {
           "slug": "phi-3",
           "title": "Phi-3",
@@ -20488,15 +17957,6 @@
           "release_gap_mo": 2
         },
         {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.926,
-          "confidence": 0.485,
-          "release_gap_mo": 7
-        },
-        {
           "slug": "seedream-4",
           "title": "Seedream 4.0",
           "org": "ByteDance",
@@ -20525,17 +17985,6 @@
         }
       ],
       "same_capability": [
-        {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.926,
-          "confidence": 0.713
-        },
         {
           "slug": "gpt-image-1",
           "title": "GPT Image 1 / 1.5",
@@ -20615,129 +18064,6 @@
         }
       ]
     },
-    "magistral-medium": {
-      "competes_with": [
-        {
-          "slug": "grok-3",
-          "title": "Grok 3",
-          "org": "xAI",
-          "domain": "image",
-          "overlap": 0.926,
-          "confidence": 0.485,
-          "release_gap_mo": 7
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "domain": "image",
-          "overlap": 0.771,
-          "confidence": 0.275,
-          "release_gap_mo": 7
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.747
-        },
-        {
-          "slug": "claude-35",
-          "title": "Claude 35",
-          "org": "Anthropic",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.975,
-          "confidence": 0.738
-        },
-        {
-          "slug": "grok-3",
-          "title": "Grok 3",
-          "org": "xAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.926,
-          "confidence": 0.713
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.896,
-          "confidence": 0.698
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.896,
-          "confidence": 0.698
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.896,
-          "confidence": 0.698
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.896,
-          "confidence": 0.698
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.896,
-          "confidence": 0.698
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.771,
-          "confidence": 0.635
-        }
-      ]
-    },
     "claude-35": {
       "competes_with": [
         {
@@ -20760,17 +18086,6 @@
         }
       ],
       "same_capability": [
-        {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.975,
-          "confidence": 0.738
-        },
         {
           "slug": "gemini-1-5",
           "title": "Gemini 1.5",
@@ -20860,51 +18175,6 @@
           "overlap": 0.788,
           "confidence": 0.417,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.77,
-          "confidence": 0.314,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.767,
-          "confidence": 0.311,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.76,
-          "confidence": 0.301,
-          "release_gap_mo": 5
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.774,
-          "confidence": 0.279,
-          "release_gap_mo": 7
-        },
-        {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "domain": "image",
-          "overlap": 0.771,
-          "confidence": 0.275,
-          "release_gap_mo": 7
         }
       ],
       "same_capability": [
@@ -20918,72 +18188,6 @@
           ],
           "overlap": 0.788,
           "confidence": 0.644
-        },
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.774,
-          "confidence": 0.637
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.771,
-          "confidence": 0.636
-        },
-        {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.771,
-          "confidence": 0.635
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.77,
-          "confidence": 0.635
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.767,
-          "confidence": 0.634
-        },
-        {
-          "slug": "ministral-3",
-          "title": "Ministral 3 3B",
-          "org": "Mistral AI",
-          "shared": [
-            "vision",
-            "multimodal"
-          ],
-          "overlap": 0.76,
-          "confidence": 0.63
         },
         {
           "slug": "grok-3",
@@ -21180,186 +18384,6 @@
         }
       ]
     },
-    "kimi-k2-6": {
-      "competes_with": [
-        {
-          "slug": "runway-gen-4",
-          "title": "Runway Gen-4.5",
-          "org": "Runway",
-          "domain": "video",
-          "overlap": 0.761,
-          "confidence": 0.309,
-          "release_gap_mo": 4
-        },
-        {
-          "slug": "hailuo-2",
-          "title": "MiniMax Hailuo 02",
-          "org": "MiniMax",
-          "domain": "video",
-          "overlap": 0.761,
-          "confidence": 0.279,
-          "release_gap_mo": 6
-        },
-        {
-          "slug": "kling-2",
-          "title": "Kling 2.0",
-          "org": "Kuaishou",
-          "domain": "video",
-          "overlap": 0.776,
-          "confidence": 0.198,
-          "release_gap_mo": 12
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "kling-2",
-          "title": "Kling 2.0",
-          "org": "Kuaishou",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.776,
-          "confidence": 0.638
-        },
-        {
-          "slug": "hailuo-2",
-          "title": "MiniMax Hailuo 02",
-          "org": "MiniMax",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.761,
-          "confidence": 0.63
-        },
-        {
-          "slug": "runway-gen-4",
-          "title": "Runway Gen-4.5",
-          "org": "Runway",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.761,
-          "confidence": 0.63
-        }
-      ]
-    },
-    "magistral": {
-      "competes_with": [
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "domain": "image",
-          "overlap": 0.774,
-          "confidence": 0.279,
-          "release_gap_mo": 7
-        }
-      ],
-      "same_capability": [
-        {
-          "slug": "magistral-medium",
-          "title": "Magistral Medium 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.747
-        },
-        {
-          "slug": "apriel",
-          "title": "Apriel-v1.5-15B-Thinker",
-          "org": "Academic / Independent",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.747
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
-          "slug": "flux-2",
-          "title": "FLUX.2",
-          "org": "Black Forest Labs",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.927,
-          "confidence": 0.713
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.774,
-          "confidence": 0.637
-        }
-      ]
-    },
     "gemini-1": {
       "competes_with": [
         {
@@ -21473,121 +18497,6 @@
           ],
           "overlap": 1,
           "confidence": 0.75
-        }
-      ]
-    },
-    "apriel": {
-      "competes_with": [],
-      "same_capability": [
-        {
-          "slug": "magistral",
-          "title": "Magistral Small 1.2",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.994,
-          "confidence": 0.747
-        },
-        {
-          "slug": "ministral",
-          "title": "Ministral 3 14B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.988,
-          "confidence": 0.744
-        },
-        {
-          "slug": "ministral-8",
-          "title": "Ministral 3 8B",
-          "org": "Mistral AI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.985,
-          "confidence": 0.742
-        },
-        {
-          "slug": "gpt-image-1",
-          "title": "GPT Image 1 / 1.5",
-          "org": "OpenAI",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        },
-        {
-          "slug": "midjourney-v7",
-          "title": "Midjourney V7",
-          "org": "Midjourney",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        },
-        {
-          "slug": "seedream-4",
-          "title": "Seedream 4.0",
-          "org": "ByteDance",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        },
-        {
-          "slug": "flux-2",
-          "title": "FLUX.2",
-          "org": "Black Forest Labs",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        },
-        {
-          "slug": "nano-banana-pro",
-          "title": "Nano Banana Pro / Gemini 3 Pro Image",
-          "org": "Google DeepMind",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        },
-        {
-          "slug": "gemini-1-5",
-          "title": "Gemini 1.5",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.902,
-          "confidence": 0.701
-        },
-        {
-          "slug": "gemini-2-0",
-          "title": "Gemini 2.0",
-          "org": "Google",
-          "shared": [
-            "multimodal",
-            "vision"
-          ],
-          "overlap": 0.771,
-          "confidence": 0.636
         }
       ]
     },
