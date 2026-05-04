@@ -31,7 +31,7 @@
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/vercel": "^8.2.11",
     "@dagrejs/dagre": "^1.1.4",
-    "@tailwindcss/vite": "^4.1.7",
+    "@tailwindcss/vite": "^4.2.4",
     "@vercel/analytics": "^2.0.1",
     "astro": "^5.7.10",
     "gray-matter": "^4.0.3",
