@@ -815,8 +815,32 @@ on-demand. Discoverability preserved via the **left-side legend
 panel** (360px fixed-width `<aside>` with one row per edge type,
 swatch + arrow head + label). The panel intentionally carries **no
 local brand header** (branding lives in the sticky top nav) so the
-controls and filters stay above-the-fold. Under 720px viewport, the
-layout stacks vertically so the panel sits above the canvas.
+controls and filters stay above-the-fold.
+
+**Collapse handle (2026-05-03):** the panel ships with an edge-mounted
+chevron button that toggles between full (~360px) and a 32px rail.
+State persists in `localStorage` under `ai-tree:legend-collapsed`. The
+button is vertically centered on the right border so it reads as a
+pull-tab, not a corner control. To keep it anchored while content
+scrolls, the aside itself is `overflow: visible` and an inner
+`.legend-content` div is the scroll container.
+
+**Mobile behavior (≤720px, 2026-05-03):**
+- The panel becomes an **absolute-positioned drawer** (320px wide,
+  `max-width: 85vw`, slides in from the left edge of `.graph-body`).
+  Default state is collapsed — graph canvas is the primary surface.
+- The collapse handle is enlarged (28×56) and filled with the accent
+  color so it reads as a clear "open filters" affordance.
+- The right-side `InspectorPanel` is hidden entirely (`display: none`):
+  the full node detail page replaces it, and a single tap on any card
+  navigates there.
+- `.hover-bay` (the invisible 150px-wide hit-extender that lets a
+  desktop mouse travel from card to inspector pin button without
+  leaving `.node-link`) is `pointer-events: none` on touch — otherwise
+  it steals taps from neighbor cards.
+- Single-tap on a card navigates to `/node/{slug}/`. Double-tap is
+  intentionally **not** wired to navigation: it must remain the
+  browser's pinch-zoom gesture, which the graph needs on mobile.
 
 **Filter rows below the legend (2026-04-20):** the panel now hosts four
 parallel filter sections — **Edge types** (long-standing), **Capabilities**

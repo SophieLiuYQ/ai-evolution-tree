@@ -449,7 +449,17 @@ const clientPayload = {
     position: relative;
   }
   @media (max-width: 720px) {
-    .ai-tree-graph .graph-body { flex-direction: column; }
+    /* Mobile: graph-body becomes the positioning context for the
+       LegendPanel (which slides in as an overlay drawer instead of
+       stealing layout space). Canvas takes the full viewport so the
+       graph is the primary tap surface. */
+    .ai-tree-graph .graph-body {
+      flex-direction: row;
+      position: relative;
+    }
+    .ai-tree-graph .canvas-area {
+      width: 100%;
+    }
   }
 
   /* ===== Compact view — model-family board with a sticky year header,

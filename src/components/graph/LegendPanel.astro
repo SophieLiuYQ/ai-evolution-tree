@@ -400,9 +400,16 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
       btn.setAttribute("title", collapsed ? "Show panel" : "Hide panel");
     }
 
-    var saved = false;
-    try { saved = localStorage.getItem(KEY) === "1"; } catch (e) {}
-    apply(saved);
+    // Default state:
+    //   - desktop (>720px): expanded unless user previously collapsed
+    //   - mobile  (≤720px): collapsed unless user previously expanded
+    // The graph canvas is the primary surface on mobile — surfacing the
+    // filter pane by default would steal the viewport.
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (e) {}
+    var isMobile = window.matchMedia("(max-width: 720px)").matches;
+    var initial = stored === null ? isMobile : stored === "1";
+    apply(initial);
 
     btn.addEventListener("click", function () {
       var next = !aside.classList.contains("is-collapsed");
@@ -718,12 +725,42 @@ const NODE_TYPES: { id: string; label: string; color: string }[] = [
     color: var(--fg);
   }
   @media (max-width: 720px) {
+    /* On mobile, the graph canvas is the primary surface. The filter
+       panel becomes an overlay drawer that slides in from the left when
+       the user taps the chevron handle. Default state is collapsed
+       (handled in the JS init above). */
     .edge-legend {
-      width: 100% !important;
-      flex: 1 0 auto;
-      max-height: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 320px !important;
+      flex: none;
+      max-width: 85vw;
+      border-right: 1px solid var(--border);
+      box-shadow: 6px 0 18px rgba(15, 23, 42, 0.12);
+      z-index: 4;
+    }
+    .edge-legend.is-collapsed {
+      width: 0 !important;
+      box-shadow: none;
       border-right: none;
-      border-bottom: 1px solid var(--border);
+    }
+    /* Bigger, higher-contrast handle on mobile so the open button reads
+       as a clear affordance. Sticks out further past the panel edge. */
+    .legend-collapse-btn {
+      width: 28px;
+      height: 56px;
+      right: -16px;
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+    }
+    .legend-collapse-btn:hover {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
     }
   }
 </style>

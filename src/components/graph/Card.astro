@@ -100,6 +100,14 @@ const license = releaseType === "open_weights" ? "open" : "closed";
   .node-link.card-filtered * {
     pointer-events: none !important;
   }
+  /* Mobile: the hover-bay's extended hit area exists so the desktop
+     mouse can travel from the card into the right-side pin button
+     without leaving .node-link. On touch there's no travel — the bay
+     just steals taps from neighbor cards. Shrink it back to the card's
+     own bounds so single-tap reliably navigates to the tapped node. */
+  @media (hover: none), (max-width: 720px) {
+    .node-link .hover-bay { pointer-events: none; }
+  }
   /* Smooth motion when sort mode swaps card positions */
   .node {
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);

@@ -81,6 +81,12 @@
   .tree-inspector[data-open="false"] {
     display: none;
   }
+  /* Mobile: the inspector is redundant with the full node detail page
+     (which a tap on any card already navigates to). Hide it entirely
+     to give the canvas the full viewport. */
+  @media (max-width: 720px) {
+    .tree-inspector { display: none !important; }
+  }
   .inspector-shell {
     padding: 14px;
     overflow: auto;
