@@ -838,15 +838,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.707,
-          "confidence": 0.582,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "sonar",
           "title": "Sonar",
           "org": "Perplexity",
@@ -895,15 +886,6 @@
           "overlap": 0.702,
           "confidence": 0.603,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.707,
-          "confidence": 0.582,
-          "release_gap_mo": 2
         },
         {
           "slug": "longcat",
@@ -2354,15 +2336,6 @@
           "release_gap_mo": 1
         },
         {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.961,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "deepseek-v3-1",
           "title": "DeepSeek V3.1 (Non-reasoning)",
           "org": "DeepSeek",
@@ -2493,15 +2466,6 @@
           "overlap": 0.999,
           "confidence": 0.999,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.962,
-          "release_gap_mo": 2
         },
         {
           "slug": "doubao-seed-code",
@@ -2774,15 +2738,6 @@
           "release_gap_mo": 0
         },
         {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.972,
-          "release_gap_mo": 2
-        },
-        {
           "slug": "step-3-5",
           "title": "Step 3.5",
           "org": "Stepfun",
@@ -2822,15 +2777,6 @@
           "overlap": 0.995,
           "confidence": 0.993,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.971,
-          "release_gap_mo": 2
         },
         {
           "slug": "step-3-5",
@@ -3795,15 +3741,6 @@
           "overlap": 0.995,
           "confidence": 0.993,
           "release_gap_mo": 0
-        },
-        {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.971,
-          "release_gap_mo": 2
         },
         {
           "slug": "o4-mini",
@@ -6764,7 +6701,7 @@
         },
         {
           "slug": "pi-zero",
-          "title": "π₀",
+          "title": "\u03c0\u2080",
           "org": "Physical Intelligence",
           "domain": "robotics",
           "overlap": 1,
@@ -6784,7 +6721,7 @@
       "same_capability": [
         {
           "slug": "pi-zero",
-          "title": "π₀",
+          "title": "\u03c0\u2080",
           "org": "Physical Intelligence",
           "shared": [
             "multimodal",
@@ -6833,7 +6770,7 @@
         },
         {
           "slug": "pi-zero",
-          "title": "π₀",
+          "title": "\u03c0\u2080",
           "org": "Physical Intelligence",
           "domain": "robotics",
           "overlap": 1,
@@ -6853,7 +6790,7 @@
       "same_capability": [
         {
           "slug": "pi-zero",
-          "title": "π₀",
+          "title": "\u03c0\u2080",
           "org": "Physical Intelligence",
           "shared": [
             "multimodal",
@@ -9033,65 +8970,6 @@
           "domain": "reasoning",
           "overlap": 0.993,
           "confidence": 0.965,
-          "release_gap_mo": 2
-        }
-      ],
-      "same_capability": []
-    },
-    "mercury": {
-      "competes_with": [
-        {
-          "slug": "doubao-seed-code",
-          "title": "Doubao Seed Code",
-          "org": "ByteDance",
-          "domain": "reasoning",
-          "overlap": 1,
-          "confidence": 0.972,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "gpt-oss-120b",
-          "title": "gpt-oss-120B (high)",
-          "org": "OpenAI",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.971,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "deepseek-v3-1",
-          "title": "DeepSeek V3.1 (Non-reasoning)",
-          "org": "DeepSeek",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.971,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "step-3-5",
-          "title": "Step 3.5",
-          "org": "Stepfun",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.962,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "gemma-4",
-          "title": "Gemma 4",
-          "org": "Google",
-          "domain": "reasoning",
-          "overlap": 0.998,
-          "confidence": 0.962,
-          "release_gap_mo": 2
-        },
-        {
-          "slug": "nvidia-nemotron-3",
-          "title": "Nvidia nemotron.3",
-          "org": "Nvidia",
-          "domain": "reasoning",
-          "overlap": 0.997,
-          "confidence": 0.961,
           "release_gap_mo": 2
         }
       ],
@@ -19856,15 +19734,6 @@
           "release_gap_mo": 15
         },
         {
-          "slug": "mercury",
-          "title": "Mercury 2",
-          "org": "Academic / Independent",
-          "domain": "reasoning",
-          "overlap": 0.999,
-          "confidence": 0.715,
-          "release_gap_mo": 17
-        },
-        {
           "slug": "gpt-oss",
           "title": "gpt-oss",
           "org": "OpenAI",
@@ -19916,7 +19785,7 @@
         },
         {
           "slug": "pi-zero",
-          "title": "π₀",
+          "title": "\u03c0\u2080",
           "org": "Physical Intelligence",
           "domain": "robotics",
           "overlap": 0.798,
@@ -19927,7 +19796,7 @@
       "same_capability": [
         {
           "slug": "pi-zero",
-          "title": "π₀",
+          "title": "\u03c0\u2080",
           "org": "Physical Intelligence",
           "shared": [
             "multimodal",
