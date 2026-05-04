@@ -1507,7 +1507,43 @@ recent year) at native size; let user scroll backward to history.
 
 ---
 
-## XI. The iteration that mattered
+## XI. Mobile rendering
+
+The SVG tree (and compact board) are unusable below ~720px CSS width:
+labels collide, hover is impossible on touch, and horizontal scroll
+fights the page. On mobile we render a vertical card list
+(`MobileCardList.astro`) instead — same `data-license` / `data-cats` /
+`data-org` attributes as SVG cards so the LegendPanel filter chain
+applies without forks.
+
+**Single source of truth.** The mobile cascade is owned by exactly two
+files:
+
+- `Graph.astro` global `<style is:global>` block — the toggle. Hides
+  `.panes-wrap` / `.compact-list` / `.orient-pane` (display:none +
+  visibility:hidden + width:0 + height:0 + `contain: strict`), shows
+  `.mobile-card-list`, and sizes `.canvas-area` / `.graph-body` to
+  `height: 100%` so the card list's `calc(100vh - 120px)` resolves
+  against a real flex parent.
+- `MobileCardList.astro` `<style is:global>` block — card visuals
+  (`.mobile-card`, `.mc-head`, `.mc-row`, `.mc-pill-*`, etc.).
+
+**Do NOT** duplicate mobile rules in page-level files (`tree.astro`).
+The blank-stripes regression (May 2026) was caused by three files all
+declaring the same mobile rules with `!important`; the cascade order
+flipped between dev and an unrelated edit and the SVG year-bands
+leaked through while the card list collapsed to zero height.
+
+**Anti-patterns specific to mobile**:
+- Setting only `display: none` on the SVG wrapper. `display: contents`
+  elsewhere can defeat it; pair with `visibility: hidden`,
+  `width/height: 0`, and `contain: strict`.
+- Letting the card list size itself with viewport units while ancestor
+  flex containers have no resolved height — the calc evaluates but the
+  flex parent collapses to 0. Mobile rule must size every ancestor up
+  to the figure shell.
+
+## XII. The iteration that mattered
 
 This project shipped 18 sprints to reach the current state. The visual
 rules above weren't designed up front — most emerged from user feedback

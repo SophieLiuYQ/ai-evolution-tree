@@ -1,0 +1,438 @@
+---
+// Mobile-only card list view of the tree. The desktop SVG tree is
+// unusable on a phone screen — too many overlapping cards, layout
+// invariants assume horizontal scroll. On mobile (≤720px) we hide
+// the SVG entirely and render this vertical card list instead.
+//
+// Each card carries the same data-license / data-cats / data-org
+// attributes as the SVG `<Card>` so the existing LegendPanel filter
+// chain (node-types.ts) and the legend search (search.ts) work
+// identically — no fork in filter logic.
+//
+// Layout follows the user-supplied mobile mockup: header row with
+// model code + status badge + edit / detail action; key/value rows
+// for the most-relevant fields (Org, Released, Intelligence, Cost,
+// Speed, Context); a "View more →" footer link to the detail page.
+
+import type { CollectionEntry } from "astro:content";
+import OrgLogo from "../OrgLogo.astro";
+import { normalizeOrg } from "../../lib/org-display";
+import { normalizeCategories } from "../../lib/categories";
+
+interface Props {
+  nodes: CollectionEntry<"nodes">[];
+}
+const { nodes } = Astro.props;
+
+// Newest first — most useful default for a quick scan on mobile.
+const sorted = [...nodes].sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+// ---- field extractors (mirror detail page logic, kept inline so
+//      this component is self-contained) ----
+
+type AnyBench = { name?: string; score?: string; vs_baseline?: string };
+const benchByName = (n: CollectionEntry<"nodes">) => {
+  const map = new Map<string, AnyBench>();
+  for (const b of (n.data.model_spec?.benchmarks ?? []) as AnyBench[]) {
+    if (b?.name) map.set(String(b.name).toLowerCase(), b);
+  }
+  return map;
+};
+
+const intelBucket = (n: CollectionEntry<"nodes">) => {
+  const m = benchByName(n);
+  const intel = m.get("intelligence · aa intelligence index");
+  const vs = intel?.vs_baseline;
+  if (!vs) return null;
+  const r = String(vs).match(/Rank #(\d+)\s+of\s+(\d+)/i);
+  if (!r) return null;
+  const pct = parseInt(r[1], 10) / parseInt(r[2], 10);
+  // Only show when there's a real AA model page to back it up; mirror
+  // detail page's `hasRealAaPage` guard.
+  const aaUrl = n.data.model_spec?.aa_url;
+  if (!aaUrl || !aaUrl.includes("/models/") || aaUrl.endsWith("/leaderboards/models")) return null;
+  return pct <= 0.01 ? "Top 1%"
+       : pct <= 0.05 ? "Top 5%"
+       : pct <= 0.10 ? "Top 10%"
+       : pct <= 0.25 ? "Good"
+       : pct <= 0.50 ? "Medium"
+       :               "Below avg";
+};
+
+const speedBucket = (n: CollectionEntry<"nodes">) => {
+  const m = benchByName(n);
+  const sp = m.get("speed · output tok/s");
+  const vs = sp?.vs_baseline;
+  if (!vs) return null;
+  const r = String(vs).match(/Rank #(\d+)\s+of\s+(\d+)/i);
+  if (!r) return null;
+  const pct = parseInt(r[1], 10) / parseInt(r[2], 10);
+  return pct <= 0.01 ? "Top 1%"
+       : pct <= 0.05 ? "Top 5%"
+       : pct <= 0.10 ? "Top 10%"
+       : pct <= 0.25 ? "Good"
+       : pct <= 0.50 ? "Medium"
+       :               "Slow";
+};
+
+const costBucket = (n: CollectionEntry<"nodes">) => {
+  const m = benchByName(n);
+  const pr = m.get("price ($/m tokens)");
+  const score = pr?.score;
+  if (!score) {
+    return n.data.model_spec?.release_type === "open_weights" ? "Free" : null;
+  }
+  const mp = String(score).match(/\$([0-9]+(?:\.[0-9]+)?)\s*in\s*\/\s*\$([0-9]+(?:\.[0-9]+)?)\s*out/i);
+  const inP = mp ? parseFloat(mp[1]) : null;
+  const outP = mp ? parseFloat(mp[2]) : null;
+  if (inP === 0 && outP === 0) {
+    return n.data.model_spec?.release_type === "open_weights" ? "Free" : null;
+  }
+  if (outP === null) return null;
+  return outP < 1 ? "Low" : outP < 5 ? "Moderate" : "High";
+};
+
+const fmtCtx = (n?: number) => {
+  if (!n) return null;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(0)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
+  return String(n);
+};
+
+const fmtMonth = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
+const license = (n: CollectionEntry<"nodes">) =>
+  n.data.model_spec?.release_type === "open_weights" ? "open" : "closed";
+
+const stripTitleSuffix = (title: string) => {
+  // "Kimi K2 — Moonshot's Open MoE Reasoning" → "Kimi K2"
+  const m = title.match(/^(.+?)\s+[—–-]\s+/);
+  return m ? m[1] : title;
+};
+
+// Build the per-card data once so the JSX stays clean below
+const cards = sorted.map((n) => {
+  const d = n.data;
+  const lic = license(n);
+  const orgNorm = normalizeOrg(d.org);
+  return {
+    n,
+    d,
+    lic,
+    orgNorm,
+    cats: normalizeCategories(d.category),
+    title: stripTitleSuffix(d.title),
+    intel: intelBucket(n),
+    cost: costBucket(n),
+    speed: speedBucket(n),
+    ctx: fmtCtx(d.model_spec?.context_window),
+    released: fmtMonth(d.date),
+  };
+});
+---
+
+<div class="mobile-card-list" role="list">
+  {cards.map((c) => (
+    <a
+      class="node-link mobile-card"
+      href={`/node/${c.d.slug}/`}
+      data-slug={c.d.slug}
+      data-license={c.lic}
+      data-cats={c.cats.join(" ")}
+      data-org={c.orgNorm}
+      role="listitem"
+    >
+      <div class="mc-head">
+        <div class="mc-id">
+          <OrgLogo org={c.orgNorm} size={28} radius={7} class="mc-logo" />
+          <span class="mc-title">{c.title}</span>
+        </div>
+        <span class={`mc-badge mc-badge-${c.lic}`}>
+          {c.lic === "open" ? "Open weights" : "Closed"}
+        </span>
+      </div>
+
+      <div class="mc-body">
+        <div class="mc-row">
+          <span class="mc-k">Lab</span>
+          <span class="mc-v">{c.orgNorm}</span>
+        </div>
+        <div class="mc-row">
+          <span class="mc-k">Released</span>
+          <span class="mc-v">{c.released}</span>
+        </div>
+        {c.intel && (
+          <div class="mc-row">
+            <span class="mc-k">Intelligence</span>
+            <span class={`mc-v mc-pill mc-pill-${c.intel.toLowerCase().replace(/[^a-z0-9]/g, "")}`}>
+              {c.intel}
+            </span>
+          </div>
+        )}
+        {c.cost && (
+          <div class="mc-row">
+            <span class="mc-k">Cost</span>
+            <span class={`mc-v mc-pill mc-pill-cost-${c.cost.toLowerCase()}`}>
+              {c.cost}
+            </span>
+          </div>
+        )}
+        {c.speed && (
+          <div class="mc-row">
+            <span class="mc-k">Speed</span>
+            <span class={`mc-v mc-pill mc-pill-${c.speed.toLowerCase().replace(/[^a-z0-9]/g, "")}`}>
+              {c.speed}
+            </span>
+          </div>
+        )}
+        {c.ctx && (
+          <div class="mc-row">
+            <span class="mc-k">Context</span>
+            <span class="mc-v mc-mono">{c.ctx}</span>
+          </div>
+        )}
+      </div>
+
+      <div class="mc-foot">
+        <span class="mc-more">View more →</span>
+      </div>
+    </a>
+  ))}
+</div>
+
+<style is:global>
+  .mobile-card-list {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 12px 80px 12px;
+    overflow-y: auto;
+    /* Fill the parent canvas-area (sized by Graph.astro's mobile rule).
+       Previously used calc(100vh - 120px) which was shorter than
+       canvas-area, leaving a ~67px empty strip at the bottom of the
+       page below the list. */
+    height: 100%;
+    min-height: 0;
+    /* Inherit the page's cream/paper bg (set by tree.astro's
+       --bg variable). The previous cool-grey #f8fafc made a visible
+       grey rectangle on the page and the FAB read as floating on a
+       grey panel instead of on the cream canvas. */
+    background: transparent;
+    -webkit-overflow-scrolling: touch;
+    /* Defensive: kill the global node-link inline opacity hover.ts may
+       set (it queries every .node-link on the page). */
+    color: #0f172a;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+  }
+
+  .mobile-card {
+    display: block;
+    /* Critical: as a flex column child, default flex-shrink:1 lets the
+       browser squish all cards to fit the parent's height — content
+       collapses to ~0px and you see only the row borders. overflow:auto
+       on the parent doesn't prevent this. Pin shrink to 0 so each card
+       sizes to its content and the list scrolls. */
+    flex-shrink: 0;
+    text-decoration: none !important;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    color: #0f172a;
+    overflow: hidden;
+    /* Defend against opacity/filter inline styles set by hover.ts —
+       the desktop interactions don't apply to the card list. */
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* When a card is filtered out by the LegendPanel chain, the
+     existing card-filtered class fades + disables it. Mirror that
+     for mobile-card so filter chains behave consistently. */
+  .mobile-card.card-filtered {
+    opacity: 0.25 !important;
+    pointer-events: none;
+  }
+
+  /* ===== Head ===== */
+  .mc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .mc-id {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    flex: 1;
+  }
+  .mc-logo {
+    flex-shrink: 0;
+  }
+  .mc-title {
+    font-weight: 700;
+    font-size: 14.5px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mc-badge {
+    flex-shrink: 0;
+    font-size: 10.5px;
+    font-weight: 650;
+    padding: 3px 8px;
+    border-radius: 999px;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .mc-badge-open {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #a7f3d0;
+  }
+  .mc-badge-closed {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+  }
+
+  /* ===== Body — flex key/value rows (simpler than grid for nested
+     scoped CSS — avoids edge cases where a phantom column collapses
+     content to zero width). ===== */
+  .mc-body {
+    display: block;
+  }
+  .mc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13.5px;
+    line-height: 1.4;
+    min-height: 40px;
+  }
+  .mc-row:last-child {
+    border-bottom: none;
+  }
+  .mc-k {
+    color: #64748b;
+    font-weight: 500;
+    flex: 0 0 auto;
+    min-width: 92px;
+  }
+  .mc-v {
+    color: #0f172a;
+    font-weight: 600;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mc-mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+  }
+
+  /* Coloured pill chips inside the value column. Mirror the badge
+     palette used in mockup: green=positive, blue=accent, red=warning. */
+  .mc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: max-content;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .mc-pill::before {
+    content: "•";
+    line-height: 0;
+    font-size: 18px;
+  }
+
+  /* Intelligence + Speed buckets share colour ramp */
+  .mc-pill-top1,
+  .mc-pill-top5,
+  .mc-pill-top10 {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #a7f3d0;
+  }
+  .mc-pill-good {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+  }
+  .mc-pill-medium {
+    background: #fffbeb;
+    color: #b45309;
+    border-color: #fde68a;
+  }
+  .mc-pill-belowavg,
+  .mc-pill-slow {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+  }
+
+  /* Cost ramp — Free=blue (accent), Low=green, Moderate=amber, High=red */
+  .mc-pill-cost-free {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+  }
+  .mc-pill-cost-low {
+    background: #ecfdf5;
+    color: #047857;
+    border-color: #a7f3d0;
+  }
+  .mc-pill-cost-moderate {
+    background: #fffbeb;
+    color: #b45309;
+    border-color: #fde68a;
+  }
+  .mc-pill-cost-high {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+  }
+
+  /* ===== Foot ===== */
+  .mc-foot {
+    text-align: center;
+    padding: 10px 14px 12px 14px;
+    background: #f8fafc;
+  }
+  .mc-more {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .mobile-card:active .mc-more {
+    color: #1d4ed8;
+  }
+
+  /* The list is desktop-hidden, mobile-shown. Graph.astro toggles
+     `.panes-wrap` off via the same media query (see Graph.astro
+     mobile rule below). */
+  @media (max-width: 720px) {
+    .mobile-card-list {
+      display: flex;
+    }
+  }
+</style>

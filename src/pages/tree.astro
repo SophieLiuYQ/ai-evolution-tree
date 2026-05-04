@@ -63,4 +63,9 @@ const nodes = allNodes.filter((n) => {
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     backdrop-filter: blur(8px);
   }
+
+  /* Mobile rendering for the tree page lives in Graph.astro and
+     MobileCardList.astro (single source of truth). Don't duplicate
+     here — !important wars between three files caused the
+     blank-stripes regression. See docs/graph-design.md §XI. */
 </style>

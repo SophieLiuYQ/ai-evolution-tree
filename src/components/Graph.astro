@@ -13,6 +13,7 @@ import { fmtCtx, normalizeTitleCasing, simplifyParams } from "../lib/graph/text"
 import type { Layout, Rel, SortMode } from "../lib/graph/types";
 import { SORT_MODES } from "../lib/graph/types";
 import LegendPanel from "./graph/LegendPanel.astro";
+import MobileCardList from "./graph/MobileCardList.astro";
 import OrientPane from "./graph/OrientPane.astro";
 import InspectorPanel from "./graph/InspectorPanel.astro";
 
@@ -318,6 +319,12 @@ const clientPayload = {
     <LegendPanel orgs={orgs} nodeTypeCounts={nodeTypeCounts} licenseCounts={licenseCounts} />
 
     <div class="canvas-area min-w-0 flex-1">
+      {/* Mobile-only card list — replaces the SVG tree on viewports
+          ≤720px. Carries the same data-license/data-cats/data-org as
+          the SVG cards so the existing LegendPanel filter chain
+          (node-types.ts) and search (search.ts) work without forks. */}
+      <MobileCardList nodes={graphNodes} />
+
       {/* 6 panes: 2 orients × 3 sort modes. Only one is visible at a time;
           orient.ts + sort.ts toggle display via data-orient + data-sort. */}
       <div class="panes-wrap">
@@ -426,6 +433,49 @@ const clientPayload = {
   import "../scripts/graph/main.ts";
 </script>
 
+<style is:global>
+  /* GLOBAL mobile rules — un-scoped on purpose so they override every
+     descendant component's own scoped CSS without hash-matching. The
+     SVG tree and compact-list sub-trees live inside Graph.astro's
+     descendants (OrientPane, etc.), each with their own scope hashes.
+     A scoped media query can't always reach them under Astro's dev-mode
+     CSS injection, hence `is:global` here. */
+  @media (max-width: 720px) {
+    /* Hide the entire SVG tree subtree and compact view on mobile.
+       MobileCardList sibling renders the same nodes as a card list. */
+    .ai-tree-graph .panes-wrap,
+    .ai-tree-graph .compact-list,
+    .ai-tree-graph .compact-board,
+    .ai-tree-graph .orient-pane,
+    .ai-tree-graph .panes-wrap > *,
+    .ai-tree-graph .canvas-area > .panes-wrap,
+    .ai-tree-graph .canvas-area > .compact-list {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
+      max-height: 0 !important;
+      overflow: hidden !important;
+      contain: strict;
+    }
+    /* Force the mobile-card-list to be the only thing rendering, and
+       give it a sized flex parent so its calc() height resolves. */
+    .ai-tree-graph .mobile-card-list {
+      display: flex !important;
+    }
+    .ai-tree-graph .canvas-area {
+      height: 100% !important;
+      min-height: 0 !important;
+      width: 100% !important;
+      overflow: hidden !important;
+    }
+    .ai-tree-graph .graph-body {
+      height: 100% !important;
+      min-height: 0 !important;
+    }
+  }
+</style>
+
 <style>
   /* Figure shell — each child component owns its own CSS to keep Astro's
      scoping intact. (A parent component's <style> doesn't reach descendant
@@ -452,7 +502,7 @@ const clientPayload = {
     /* Mobile: graph-body becomes the positioning context for the
        LegendPanel (which slides in as an overlay drawer instead of
        stealing layout space). Canvas takes the full viewport so the
-       graph is the primary tap surface. */
+       card list is the primary tap surface. */
     .ai-tree-graph .graph-body {
       flex-direction: row;
       position: relative;
@@ -461,6 +511,7 @@ const clientPayload = {
       width: 100%;
     }
   }
+
 
   /* ===== Compact view — model-family board with a sticky year header,
      family rows, and explicit within-family connectors. Compact mode is
