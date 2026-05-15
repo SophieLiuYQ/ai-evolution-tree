@@ -1,0 +1,47 @@
+---
+slug: moe
+title: Mixture-of-Experts (MoE)
+title_zh: 混合专家模型
+category: architecture
+one_liner: A Transformer variant that routes each token to a small subset of expert sub-networks. Decouples total parameters from per-token compute.
+related:
+  - transformer
+references:
+  - title: "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer"
+    url: "https://arxiv.org/abs/1701.06538"
+    authors: "Shazeer et al."
+    year: 2017
+    kind: paper
+  - title: "Switch Transformer"
+    url: "https://arxiv.org/abs/2101.03961"
+    authors: "Fedus et al."
+    year: 2021
+    kind: paper
+  - title: "DeepSeek-V2"
+    url: "https://arxiv.org/abs/2405.04434"
+    authors: "DeepSeek-AI"
+    year: 2024
+    kind: paper
+---
+
+## What it does
+
+A Mixture-of-Experts layer replaces a Transformer's feed-forward block with N expert blocks plus a router. For each token, the router picks the top-*k* experts (typically k = 1 or 2 out of 8–256). The token is processed only by those experts; the others are idle for that token.
+
+Total parameters = N × expert size. Active parameters per token ≈ k × expert size. A 600B-parameter model can run with 30B active parameters per token by selecting 2 of 32 same-size experts.
+
+## Engineering details
+
+- **Routing.** Auxiliary losses (load balancing, expert utilization) prevent the router from collapsing onto a few experts. DeepSeek's 2024 work removed the auxiliary loss in favor of a bias-adjusted routing rule.
+- **Expert parallelism.** Experts are sharded across GPUs. The all-to-all communication of routed tokens is the dominant cost; it scales worse than dense attention as model size grows.
+- **Capacity factors.** A cap on how many tokens any one expert receives per batch. Tokens beyond the cap are dropped or rerouted.
+
+## Tradeoffs
+
+- Memory footprint is the *total* parameter count even though only a subset is active. MoE is awkward for on-device serving.
+- Per-token latency varies because tokens take different paths.
+- Fine-tuning under-used experts is unstable; many practical pipelines freeze the router during fine-tuning.
+
+## Where it sits today
+
+DeepSeek-V2 (May 2024) was the first MoE to publicly match dense frontier quality at significantly lower per-token cost. Most 2025–2026 frontier open models — DeepSeek-V3, Qwen 3, Kimi K2, GLM-4.5, Mixtral — are MoE. Western flagships (GPT-4, Claude, Gemini) are widely believed to be MoE but do not disclose architecture.

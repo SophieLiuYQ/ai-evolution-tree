@@ -52,28 +52,99 @@ model_spec:
   last_verified_at: '2026-04-30'
   reviews:
     feels_like:
-      - "First open-weight Vision-Language-Action (VLA) model that genuinely competes with closed Google RT / Tesla / Figure stacks"
-      - "Flow-matching action head (instead of autoregressive tokens) — generates continuous robot trajectories with physical smoothness"
-      - "Folds laundry, busses dishes, packs groceries — the demo videos that convinced the field VLAs were real"
-      - "3B parameters — small enough to run on edge robot compute, not in a datacenter"
-      - "openpi GitHub repo lets any lab fine-tune for their gripper / arm / workspace"
-      - "Successors (π₀.₅ open-world; π*0.6 experience-based RL) keep extending the open VLA frontier"
+      - >-
+        First open-weight Vision-Language-Action (VLA) model that genuinely
+        competes with closed Google RT / Tesla / Figure stacks
+      - >-
+        Flow-matching action head (instead of autoregressive tokens) — generates
+        continuous robot trajectories with physical smoothness
+      - >-
+        Folds laundry, busses dishes, packs groceries — the demo videos that
+        convinced the field VLAs were real
+      - >-
+        3B parameters — small enough to run on edge robot compute, not in a
+        datacenter
+      - >-
+        openpi GitHub repo lets any lab fine-tune for their gripper / arm /
+        workspace
+      - >-
+        Successors (π₀.₅ open-world; π*0.6 experience-based RL) keep extending
+        the open VLA frontier
     best_for:
-      - "Robotics research and academic VLA work"
-      - "Startups building physical-AI products who need a foundation to fine-tune from"
-      - "Long-horizon manipulation tasks (multi-step household / warehouse routines)"
-      - "Distillation into smaller task-specific robot policies"
+      - Robotics research and academic VLA work
+      - >-
+        Startups building physical-AI products who need a foundation to
+        fine-tune from
+      - >-
+        Long-horizon manipulation tasks (multi-step household / warehouse
+        routines)
+      - Distillation into smaller task-specific robot policies
     not_ideal_for:
-      - "Pure language reasoning, coding, or chat — π₀ is a robot policy, not an LLM"
-      - "Tasks requiring out-of-distribution objects or scenes far from training data (improved in π₀.₅)"
-      - "Real-time loops below ~10 Hz on commodity robot CPUs (π₀-FAST helps but still constrained)"
+      - >-
+        Pure language reasoning, coding, or chat — π₀ is a robot policy, not an
+        LLM
+      - >-
+        Tasks requiring out-of-distribution objects or scenes far from training
+        data (improved in π₀.₅)
+      - >-
+        Real-time loops below ~10 Hz on commodity robot CPUs (π₀-FAST helps but
+        still constrained)
     sources:
-      - name: "Physical Intelligence — π₀ blog"
-        url: "https://www.physicalintelligence.company/blog/pi0"
-      - name: "π₀ paper (arXiv)"
-        url: "https://arxiv.org/abs/2410.24164"
-      - name: "GitHub — Physical-Intelligence/openpi"
-        url: "https://github.com/Physical-Intelligence/openpi"
+      - name: Physical Intelligence — π₀ blog
+        url: 'https://www.physicalintelligence.company/blog/pi0'
+      - name: π₀ paper (arXiv)
+        url: 'https://arxiv.org/abs/2410.24164'
+      - name: GitHub — Physical-Intelligence/openpi
+        url: 'https://github.com/Physical-Intelligence/openpi'
+  benchmarks:
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: Price ($/M tokens)
+      score: $30.00 in / $150.00 out
+      source_url: 'https://openrouter.ai/anthropic/claude-opus-4.7-fast'
+    - name: IFEval
+      score: 33.0%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: BBH
+      score: 10.1%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MATH Lvl 5
+      score: 1.4%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: GPQA
+      score: 1.2%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MUSR
+      score: 5.9%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MMLU-Pro
+      score: 1.8%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: Intelligence · AA Intelligence Index
+      score: '60.20'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 516'
+    - name: Coding · AA Coding Index
+      score: '59.10'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 516'
+    - name: Coding · SciCode
+      score: 58.9% (0.0–58.9%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 516'
+    - name: Agentic · Terminal-Bench Hard
+      score: 60.6% (0.0–60.6%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 516'
+    - name: HLE
+      score: 44.7% (1.2–44.7%)
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #2 of 516'
+    - name: Speed · Output tok/s
+      score: '66'
+      source_url: 'https://artificialanalysis.ai/models/gpt-5-5'
+      vs_baseline: 'Rank #196 of 516'
 public_view:
   plain_english: |
     Physical Intelligence's flagship vision-language-action model —

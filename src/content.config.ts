@@ -106,6 +106,7 @@ const ORGS = [
   "Unitree",
   "Voyage AI",
   "Wayve",
+  "World Labs",
   "Writer",
   "Hedra",
   "Hume AI",
@@ -426,4 +427,52 @@ const companies = defineCollection({
     .strict(),
 });
 
-export const collections = { nodes, companies };
+// ============== Techniques ==============
+// Glossary-style explainers for architectures, training paradigms,
+// inference techniques, and cross-cutting capabilities. Lives parallel
+// to /node/ at /technique/<slug>/. Frontmatter is metadata only — the
+// MDX body carries the prose, written intuition-first (concrete →
+// mechanism → significance), formal but readable.
+const TECHNIQUE_CATEGORIES = [
+  "architecture",
+  "training",
+  "inference",
+  "capability",
+  "scaling",
+] as const;
+
+const techniqueReference = z.object({
+  title: z.string().min(1),
+  url: z.string().url(),
+  authors: z.string().optional(),
+  year: z.number().int().optional(),
+  kind: z.enum(["paper", "blog", "book", "talk", "dataset", "code"]).optional(),
+});
+
+const techniques = defineCollection({
+  loader: glob({
+    pattern: ["**/*.mdx", "!**/_*.mdx"],
+    base: "./src/content/techniques",
+  }),
+  schema: z
+    .object({
+      slug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+      title: z.string().min(1),
+      title_zh: z.string().optional(),
+      category: z.enum(TECHNIQUE_CATEGORIES),
+      // One-line punch — used in cards / hovers / OG. ≤30 words.
+      one_liner: z.string().min(1).refine((s) => wordCount(s) <= 30, {
+        message: "one_liner should be ≤ 30 words",
+      }),
+      // Optional pointer to the seminal paper node in /content/nodes/
+      // so the technique page can cross-link the paper that introduced it.
+      introduced_by_slug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/).optional(),
+      // Sibling / parent / child techniques. Slugs into the techniques
+      // collection itself.
+      related: z.array(z.string().regex(/^[a-z0-9][a-z0-9-]*$/)).optional(),
+      references: z.array(techniqueReference).optional(),
+    })
+    .strict(),
+});
+
+export const collections = { nodes, companies, techniques };

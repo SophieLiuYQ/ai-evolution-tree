@@ -32,6 +32,30 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.10 in / $0.30 out
       source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash'
+    - name: Coding · AA Coding Index
+      score: '31.80'
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
+      vs_baseline: 'Rank #33 of 98 · Reasoning'
+    - name: Coding · SciCode
+      score: 39.4%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
+      vs_baseline: 'Rank #41 of 98 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 28.0%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
+      vs_baseline: 'Rank #33 of 98 · Reasoning'
+    - name: MMLU-Pro
+      score: 84.3%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
+      vs_baseline: 'Rank #16 of 98 · Reasoning'
+    - name: GPQA
+      score: 84.6%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
+      vs_baseline: 'Rank #23 of 98 · Reasoning'
+    - name: HLE
+      score: 21.1%
+      source_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
+      vs_baseline: 'Rank #24 of 98 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/mimo-v2-flash-reasoning'
   parameters: 15B active · 309B total
   context_window: 256000

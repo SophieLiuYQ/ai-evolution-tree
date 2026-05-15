@@ -1,0 +1,48 @@
+---
+slug: rlhf
+title: RLHF (Reinforcement Learning from Human Feedback)
+title_zh: 基于人类反馈的强化学习
+category: training
+one_liner: Post-training method that adjusts a model's behavior using human preference data. The technique that converted GPT-3 into ChatGPT.
+introduced_by_slug: rlhf-preferences
+references:
+  - title: "Deep Reinforcement Learning from Human Preferences"
+    url: "https://arxiv.org/abs/1706.03741"
+    authors: "Christiano et al."
+    year: 2017
+    kind: paper
+  - title: "Training Language Models to Follow Instructions with Human Feedback (InstructGPT)"
+    url: "https://arxiv.org/abs/2203.02155"
+    authors: "Ouyang et al."
+    year: 2022
+    kind: paper
+  - title: "Direct Preference Optimization"
+    url: "https://arxiv.org/abs/2305.18290"
+    authors: "Rafailov et al."
+    year: 2023
+    kind: paper
+---
+
+## What it does
+
+RLHF runs after pre-training and supervised fine-tuning. It changes the model's output distribution using human preference data instead of next-token loss.
+
+Three stages:
+
+1. **SFT.** Fine-tune the base model on labeller-written ideal responses to a few thousand prompts.
+2. **Reward model.** Labellers see two model outputs for the same prompt and pick one. Train a separate model (typically the SFT model with a scalar head) to predict which response a human would prefer.
+3. **RL.** Fine-tune the SFT model with PPO against the reward model. A KL penalty against the SFT model prevents drift into reward-hacking outputs.
+
+## What changes
+
+The base model already contains the knowledge. RLHF shifts which behaviors it produces by default — helpful over plausible, on-task over rambling, refusing certain categories of request. There is typically a small drop on raw benchmarks ("alignment tax") in exchange for usability.
+
+## Successors
+
+- **DPO.** Skips the reward model. Trains directly on preference pairs with a closed-form objective. Comparable quality, much simpler to implement. Most open-weight RLHF since 2024 uses DPO or its variants (IPO, KTO).
+- **RLAIF.** Replaces human labellers with an LLM rater. Cheaper, especially when the rater is itself RLHF-trained.
+- **Constitutional AI.** RLAIF with explicit written rules that the rater applies. Used by Anthropic.
+
+## Where it sits today
+
+InstructGPT (2022) and ChatGPT (Nov 2022) demonstrated RLHF at scale. Every chat product since has used RLHF or a direct successor. In open work, PPO-based RLHF has largely been replaced by DPO on cost grounds; closed labs disclose less.

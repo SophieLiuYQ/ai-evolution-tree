@@ -149,6 +149,11 @@ const LOGO_VERSION = "2026-05-03";
           >
           )}
           <a
+            href="/technique/"
+            class={`rounded-md px-3 py-1.5 ${isActive("/technique") ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
+            data-i18n="nav.techniques">Techniques</a
+          >
+          <a
             href="/company/"
             class={`rounded-md px-3 py-1.5 ${isActive("/company") ? "bg-[var(--accent-soft)] text-[var(--accent)] font-semibold" : "text-[var(--fg-muted)] hover:bg-slate-100"}`}
             data-i18n="nav.companies">Companies</a

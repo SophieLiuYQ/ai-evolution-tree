@@ -1,0 +1,141 @@
+---
+slug: mistral-medium-3-5
+title: Mistral Medium 3.5 — Unified Open-Weights Coding Agent
+date: 2026-04-29T00:00:00.000Z
+era: frontier
+category:
+  - nlp
+  - coding
+  - agents
+relationships:
+  - to: mistral-medium-3-1
+    type: builds_on
+    note: Direct successor in the Medium series
+authors:
+  - Mistral AI Team
+org: Mistral AI
+breakthrough_score: 6
+status: active
+model_spec:
+  architecture: Dense decoder-only Transformer
+  family: Mistral Medium
+  release_type: open_weights
+  parameters: 128B
+  context_window: 262144
+  modalities:
+    - text
+  modalities_in:
+    - text
+  modalities_out:
+    - text
+  homepage: 'https://mistral.ai/news/mistral-medium-3-5'
+  hf_url: 'https://huggingface.co/mistralai/Mistral-Medium-3.5-128B'
+  license_name: Apache 2.0
+  license_url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  availability:
+    - api
+    - open_weights
+  benchmarks:
+    - name: Coding · SWE-Bench Verified
+      score: 77.6%
+      vs_baseline: Within 2pp of Claude Sonnet 4.6 at fraction of cost
+      source_url: 'https://www.swebench.com/'
+    - name: Agentic · τ³-Telecom
+      score: 91.4%
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: Price ($/M tokens)
+      score: $1.50 in / $7.50 out
+      source_url: 'https://openrouter.ai/mistralai/mistral-medium-3-5'
+    - name: Intelligence · AA Intelligence Index
+      score: '39.20'
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #82 of 516'
+    - name: Coding · AA Coding Index
+      score: '35.40'
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #79 of 516'
+    - name: Coding · SciCode
+      score: 39.6%
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #108 of 516'
+    - name: Agentic · Terminal-Bench Hard
+      score: 33.3%
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #78 of 516'
+    - name: GPQA
+      score: 74.8%
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #165 of 516'
+    - name: HLE
+      score: 12.8%
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #116 of 516'
+    - name: Speed · Output tok/s
+      score: '154'
+      source_url: 'https://artificialanalysis.ai/models/mistral-medium-3-5'
+      vs_baseline: 'Rank #49 of 516'
+  sources:
+    - name: Official announcement
+      type: official
+      url: 'https://mistral.ai/news/mistral-medium-3-5'
+      last_verified_at: 2026-05-13T00:00:00.000Z
+      confidence: high
+    - name: Hugging Face
+      type: community
+      url: 'https://huggingface.co/mistralai/Mistral-Medium-3.5-128B'
+      last_verified_at: 2026-05-13T00:00:00.000Z
+      confidence: high
+  last_verified_at: 2026-05-13T00:00:00.000Z
+public_view:
+  plain_english: |
+    Mistral's flagship dense (non-MoE) 128B model, released under Apache 2.0
+    with a 256K context window. It folds three previously-separate Mistral
+    specialists — Medium 3.1 (instruction-following), Magistral (reasoning),
+    and Devstral 2 (coding) — into one weight set with a mode toggle. Ships
+    with Vibe, Mistral's remote-agent CLI for autonomous coding tasks.
+  analogy: |
+    A Swiss-Army-knife replacement for three single-purpose tools — same
+    edge on each blade, less weight in your pocket.
+  applications:
+    - product: Mistral API (Vibe coding agent)
+      company: Mistral AI
+      year_deployed: 2026
+    - product: Self-hosted enterprise deployments
+      company: Mistral AI
+      year_deployed: 2026
+  investment_angle: |
+    The Apache-2.0 license plus a working coding agent makes Medium 3.5
+    the highest-capability model an enterprise can run on-prem without
+    licensing friction. Mistral's bet: agent-grade open weights become
+    the default for regulated industries (finance, defence, healthcare)
+    where API egress isn't allowed.
+  why_it_matters: |
+    Closes the gap to Claude Sonnet 4.6 on SWE-Bench Verified (77.6% vs ~80%)
+    with weights you can download. The first time a permissively-licensed
+    model has been a credible drop-in for closed coding agents in regulated
+    deployments. Also notable for being dense at 128B at a moment when
+    almost every other frontier release is MoE — a deliberate bet that
+    dense models are easier to fine-tune and serve in mixed workloads.
+citations:
+  - type: release
+    key: mistral_medium_3_5_release
+    title: Mistral Medium 3.5
+    year: 2026
+    url: 'https://mistral.ai/news/mistral-medium-3-5'
+---
+
+## What it is
+
+Mistral Medium 3.5 is a 128-billion-parameter dense Transformer, released April 29, 2026 under Apache 2.0 with a 256K context window. It unifies what were three separate Mistral models — Medium 3.1 for general use, Magistral for reasoning, Devstral 2 for coding — into one weight set with a mode toggle.
+
+## Why this one is notable
+
+- **77.6% SWE-Bench Verified.** Within ~2 points of Claude Sonnet 4.6 (the closed-source coding leader), at meaningfully lower per-token cost.
+- **Dense, not MoE.** Almost every other 2026 frontier release is sparse Mixture-of-Experts. Mistral's bet is that dense models fine-tune cleanly and serve more predictably for mixed enterprise workloads.
+- **Apache 2.0 with an agent.** Shipped alongside Vibe, Mistral's remote-agent CLI that opens PRs against your repos. Open weights *with* an agent harness is rare.
+
+## Where it fits
+
+This is the model an enterprise picks when API egress isn't allowed but coding-agent capability is needed. Closed models are still ahead on raw benchmarks; Medium 3.5 is ahead on what's actually deployable in regulated environments.

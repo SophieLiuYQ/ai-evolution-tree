@@ -119,6 +119,43 @@ const hideAuthors =
 const summary = d.public_view.plain_english.trim().replace(/\s+/g, " ");
 const summaryZh = d.public_view_zh?.plain_english?.trim().replace(/\s+/g, " ");
 
+// "Why it matters" — significance prose authored per node. The schema
+// requires this field, so 392 of 528 nodes default to a generic
+// boilerplate ("Turning releases into nodes makes model evolution
+// legible …"). That copy describes the *project*, not the *model* —
+// rendering it on every page makes the section feel hollow. Skip
+// rendering when the prose matches a known boilerplate fingerprint;
+// only nodes with hand-written significance copy get the section.
+//
+// Long-term fix: rewrite those 392 nodes with real insight (or downgrade
+// the field from required to optional). Until then, this guard.
+const WHY_BOILERPLATE_FINGERPRINTS = [
+  "turning releases into nodes",
+  "makes model evolution legible",
+  "compare generations, link lineage",
+];
+function isWhyBoilerplate(text: string | undefined): boolean {
+  if (!text) return true;
+  const t = text.toLowerCase();
+  return WHY_BOILERPLATE_FINGERPRINTS.some((fp) => t.includes(fp));
+}
+const whyMattersRaw = d.public_view.why_it_matters;
+const whyMatters = !isWhyBoilerplate(whyMattersRaw)
+  ? whyMattersRaw!
+      .trim()
+      .split(/\n\s*\n/)
+      .map((p) => p.replace(/\s+/g, " ").trim())
+      .filter(Boolean)
+  : [];
+const whyMattersZhRaw = d.public_view_zh?.why_it_matters;
+const whyMattersZh = whyMatters.length > 0 && whyMattersZhRaw
+  ? whyMattersZhRaw
+      .trim()
+      .split(/\n\s*\n/)
+      .map((p) => p.replace(/\s+/g, " ").trim())
+      .filter(Boolean)
+  : [];
+
 const orgStroke = orgStrokeColor(d.org);
 const orgFill = orgFillColor(d.org);
 
@@ -905,6 +942,83 @@ const derived = modelRelationships.models[d.slug] ?? { competes_with: [], same_c
 const derivedCompetes = derived.competes_with;
 const derivedSameCap = derived.same_capability;
 
+// ===== Directional deltas for "Closest alternatives" =====
+// Build a slug → {intelPct, speedPct, pricePct, ctx, license} map once
+// from allNodes' benchmarks, then for each derived competitor compute
+// a couple of short directional phrases ("faster · cheaper",
+// "stronger reasoning · more expensive"). Threshold: pct delta ≥ 0.10
+// to register as meaningful — anything tighter is noise on a leaderboard
+// of 100+ models.
+type NodeRanks = {
+  intelPct: number | null; // 0..1, lower = smarter (rank 1 of N → 1/N)
+  speedPct: number | null; // 0..1, lower = faster
+  pricePct: number | null; // 0..1, lower = cheaper
+  ctx: number | null;
+  license: "open" | "closed" | null;
+};
+const nodeRanks = new Map<string, NodeRanks>();
+for (const n of allNodes) {
+  const benches = (n.data.model_spec?.benchmarks ?? []) as Bench[];
+  const map = new Map<string, Bench>();
+  for (const b of benches) if (b?.name) map.set(b.name.toLowerCase(), b);
+  const toPct = (vs?: string) => {
+    const r = parseRank(vs);
+    return r ? r.rank / r.total : null;
+  };
+  nodeRanks.set(n.data.slug, {
+    intelPct: toPct(map.get("intelligence · aa intelligence index")?.vs_baseline),
+    speedPct: toPct(map.get("speed · output tok/s")?.vs_baseline),
+    pricePct: toPct(map.get("price ($/m tokens)")?.vs_baseline),
+    ctx: n.data.model_spec?.context_window ?? null,
+    license: n.data.model_spec?.release_type === "open_weights" ? "open" : "closed",
+  });
+}
+
+const selfRanks = nodeRanks.get(d.slug) ?? null;
+
+// Compute up to 2 directional phrases comparing `other` to `self`.
+// Phrasing reads from the OTHER model's perspective ("→ stronger reasoning")
+// because the user is on this model's page deciding whether to look
+// elsewhere.
+function deltaPhrases(other: NodeRanks | null): string[] {
+  if (!other || !selfRanks) return [];
+  const phrases: string[] = [];
+  const THRESHOLD = 0.10;
+
+  if (selfRanks.intelPct != null && other.intelPct != null) {
+    const d = other.intelPct - selfRanks.intelPct;
+    if (d <= -THRESHOLD) phrases.push("stronger reasoning");
+    else if (d >= THRESHOLD) phrases.push("weaker reasoning");
+  }
+
+  if (selfRanks.speedPct != null && other.speedPct != null) {
+    const d = other.speedPct - selfRanks.speedPct;
+    if (d <= -THRESHOLD) phrases.push("faster");
+    else if (d >= THRESHOLD) phrases.push("slower");
+  }
+
+  if (selfRanks.pricePct != null && other.pricePct != null) {
+    const d = other.pricePct - selfRanks.pricePct;
+    if (d <= -THRESHOLD) phrases.push("cheaper");
+    else if (d >= THRESHOLD) phrases.push("more expensive");
+  }
+
+  // Fall back to license / context when no benchmark deltas registered —
+  // these dimensions still differentiate alternatives on the decision page.
+  if (phrases.length === 0) {
+    if (selfRanks.license && other.license && selfRanks.license !== other.license) {
+      phrases.push(other.license === "open" ? "open weights" : "closed/API");
+    }
+    if (selfRanks.ctx && other.ctx) {
+      const ratio = other.ctx / selfRanks.ctx;
+      if (ratio >= 2) phrases.push("longer context");
+      else if (ratio <= 0.5) phrases.push("shorter context");
+    }
+  }
+
+  return phrases.slice(0, 2);
+}
+
 
 type HighlightRow = { k: string; v: string; score: number };
 const perfHighlights: HighlightRow[] = (() => {
@@ -1619,6 +1733,34 @@ const familySubtitle = (() => {
       </div>
     </section>
 
+    {/* ============== Why it matters — significance narrative ==============
+         Schema-required prose (`public_view.why_it_matters`) that explains
+         what changed because of this model. Sits between hero (what it is)
+         and capabilities (what it does) so readers learn significance
+         before specs. */}
+    {whyMatters.length > 0 && (
+      <section class="panel why-panel">
+        <h2 class="why-heading">
+          <span class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="4"/></svg>
+          </span>
+          Why it matters
+        </h2>
+        <div class={whyMattersZh.length ? "why-prose lang-en has-zh" : "why-prose lang-en"}>
+          {whyMatters.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+        {whyMattersZh.length > 0 && (
+          <div class="why-prose lang-zh">
+            {whyMattersZh.map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
+        )}
+      </section>
+    )}
+
     {/* ============== Media block — Audio / Image / Video samples ============== */}
     {mediaKind && mediaSamples.length > 0 && (
       <section class="panel media-panel">
@@ -2205,10 +2347,10 @@ const familySubtitle = (() => {
 
           {derivedCompetes.length > 0 && (
             <section class="aside-card">
-              <h3 class="aside-title">Competes with</h3>
+              <h3 class="aside-title">Closest alternatives</h3>
               <div class="aside-derived-note">
                 Models in the same domain, tier, and release window —
-                computed from capability vectors.
+                with directional deltas vs this one.
               </div>
               <div class="aside-list">
                 {derivedCompetes.map((r) => {
@@ -2216,12 +2358,16 @@ const familySubtitle = (() => {
                   const targetOrg = target?.data.org ?? r.org;
                   const titleSplit = r.title.match(/^(.+?)\s+[—–-]\s+(.+)$/);
                   const shortTitle = titleSplit ? titleSplit[1] : r.title;
+                  const deltas = deltaPhrases(nodeRanks.get(r.slug) ?? null);
                   return (
                     <a class="aside-item" href={`/node/${r.slug}/`} title={`Overlap ${r.overlap.toFixed(2)} · ${r.release_gap_mo} mo apart`}>
                       <OrgLogo org={targetOrg} size={32} radius={9} class="aside-logo" />
                       <div class="aside-item-text">
                         <div class="aside-item-title">{shortTitle}</div>
                         <div class="aside-item-sub">{normalizeOrg(r.org)}</div>
+                        {deltas.length > 0 && (
+                          <div class="aside-item-delta">→ {deltas.join(" · ")}</div>
+                        )}
                       </div>
                       <span class="aside-conf" aria-label={`Confidence ${Math.round(r.confidence * 100)}%`}>{Math.round(r.confidence * 100)}</span>
                     </a>
@@ -2428,6 +2574,17 @@ const familySubtitle = (() => {
   .aside-item-text { min-width: 0; flex: 1; }
   .aside-item-title { font-weight: 850; font-size: 13px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .aside-item-sub { margin-top: 2px; font-size: 11.5px; color: var(--fg-muted); font-weight: 650; }
+  .aside-item-delta {
+    margin-top: 3px;
+    font-size: 11.5px;
+    line-height: 1.3;
+    color: var(--accent, #1e293b);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.85;
+  }
   .aside-logo { box-shadow: none; }
   .aside-derived-note {
     font-size: 11.5px;
@@ -3581,6 +3738,55 @@ const familySubtitle = (() => {
     color: var(--fg);
   }
 
+
+  /* ============== Why it matters — significance narrative ============== */
+  .why-panel {
+    /* Lift this panel visually so it reads as the answer to "so what?"
+       rather than another spec block. Soft accent tint on the left edge
+       borrowed from the org color, generous type for prose. */
+    position: relative;
+    padding-left: 26px;
+  }
+  .why-panel::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 18px;
+    bottom: 18px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--accent, #1e293b);
+    opacity: 0.55;
+  }
+  .why-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px 0;
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .why-icon {
+    display: inline-flex;
+    color: var(--accent, #1e293b);
+    opacity: 0.85;
+  }
+  .why-prose {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+  .why-prose p {
+    margin: 0 0 10px 0;
+  }
+  .why-prose p:last-child {
+    margin-bottom: 0;
+  }
+  /* The :lang() switch styles live elsewhere — just make sure the lang-zh
+     variant inherits the same prose treatment when active. */
 
   /* ============== Reviews: feels-like + use-cases (2-up) ============== */
   /* `align-items: start` so the two panels keep their natural heights;

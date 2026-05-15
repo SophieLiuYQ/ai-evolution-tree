@@ -87,6 +87,21 @@ model_spec:
       source_url: >-
         https://artificialanalysis.ai/models/llama-nemotron-super-49b-v1-5-reasoning
       vs_baseline: 'Rank #34 of 96 · Reasoning'
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: IFEval
+      score: 22.1%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: BBH
+      score: 8.6%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MATH Lvl 5
+      score: 26.6%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MUSR
+      score: 0.8%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
   homepage: 'https://ai.meta.com/blog/large-language-model-llama-meta-ai/'
   github: 'https://github.com/meta-llama/llama'
   availability:
@@ -127,24 +142,40 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Original Llama — historical; superseded by Llama 2+."
-      - "Major leap over Llama 2 — 70B operates in the same 'weight class' as GPT-4 and Claude 3 Sonnet at release"
-      - "Climbed to 5th place on the LMSYS leaderboard within weeks — first open-weights model to genuinely compete with GPT-4"
-      - "128K-token vocabulary tokenizer noticeably improved encoding efficiency vs Llama 2"
+      - Original Llama — historical; superseded by Llama 2+.
+      - >-
+        Major leap over Llama 2 — 70B operates in the same 'weight class' as
+        GPT-4 and Claude 3 Sonnet at release
+      - >-
+        Climbed to 5th place on the LMSYS leaderboard within weeks — first
+        open-weights model to genuinely compete with GPT-4
+      - >-
+        128K-token vocabulary tokenizer noticeably improved encoding efficiency
+        vs Llama 2
     best_for:
-      - "Open-weights production deployments where Llama 2 was the previous baseline"
-      - "Self-hosted RAG, code-completion, and chat applications under Llama 3 license"
-      - "Fine-tuning on private corpora (the open license makes vertical specialisation safe)"
+      - >-
+        Open-weights production deployments where Llama 2 was the previous
+        baseline
+      - >-
+        Self-hosted RAG, code-completion, and chat applications under Llama 3
+        license
+      - >-
+        Fine-tuning on private corpora (the open license makes vertical
+        specialisation safe)
     not_ideal_for:
-      - "Frontier reasoning leaderboards by late 2025 — superseded by Llama 3.1/3.3/4 and competitors"
-      - "Multimodal tasks — text-only at this generation (Llama 3.2 Vision came later)"
+      - >-
+        Frontier reasoning leaderboards by late 2025 — superseded by Llama
+        3.1/3.3/4 and competitors
+      - >-
+        Multimodal tasks — text-only at this generation (Llama 3.2 Vision came
+        later)
     sources:
-      - name: "Meta AI — Introducing Meta Llama 3"
-        url: "https://ai.meta.com/blog/meta-llama-3/"
-      - name: "Helicone — Llama 3.3 vs GPT-4 / Claude 3.5"
-        url: "https://www.helicone.ai/blog/meta-llama-3-3-70-b-instruct"
-      - name: "Artificial Analysis — Llama 3.3 Instruct 70B"
-        url: "https://artificialanalysis.ai/models/llama-3-3-instruct-70b"
+      - name: Meta AI — Introducing Meta Llama 3
+        url: 'https://ai.meta.com/blog/meta-llama-3/'
+      - name: Helicone — Llama 3.3 vs GPT-4 / Claude 3.5
+        url: 'https://www.helicone.ai/blog/meta-llama-3-3-70-b-instruct'
+      - name: Artificial Analysis — Llama 3.3 Instruct 70B
+        url: 'https://artificialanalysis.ai/models/llama-3-3-instruct-70b'
 public_view:
   plain_english: |
     Meta's first publicly-released foundation language model family.

@@ -37,6 +37,12 @@ model_spec:
     - name: Latency
       score: <1s to first token incl. web search
       vs_baseline: category-leading for grounded responses
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: Price ($/M tokens)
+      score: $1.00 in / $1.00 out
+      source_url: 'https://openrouter.ai/perplexity/sonar'
   homepage: 'https://sonar.perplexity.ai/'
   availability:
     - api
@@ -49,14 +55,18 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Perplexity — see the linked sources below for benchmark and review coverage"
-      - "Tool-use and agent loops are the typical fit per the published model card"
+      - >-
+        Language model from Perplexity — see the linked sources below for
+        benchmark and review coverage
+      - >-
+        Tool-use and agent loops are the typical fit per the published model
+        card
     best_for:
-      - "Agent / tool-use workflows that match the model's published benchmarks"
-      - "See the model spec and sources block for benchmarked use cases"
+      - Agent / tool-use workflows that match the model's published benchmarks
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
 public_view:
   plain_english: |
     Perplexity AI's family of LLM variants explicitly tuned for

@@ -1,0 +1,52 @@
+---
+slug: diffusion
+title: Diffusion Models
+title_zh: 扩散模型
+category: architecture
+one_liner: A generative method that learns to reverse a noising process. Dominant for image, video, and audio generation since 2022.
+related:
+  - transformer
+references:
+  - title: "Denoising Diffusion Probabilistic Models"
+    url: "https://arxiv.org/abs/2006.11239"
+    authors: "Ho, Jain, Abbeel"
+    year: 2020
+    kind: paper
+  - title: "High-Resolution Image Synthesis with Latent Diffusion Models"
+    url: "https://arxiv.org/abs/2112.10752"
+    authors: "Rombach et al."
+    year: 2022
+    kind: paper
+  - title: "Scalable Diffusion Models with Transformers (DiT)"
+    url: "https://arxiv.org/abs/2212.09748"
+    authors: "Peebles & Xie"
+    year: 2022
+    kind: paper
+---
+
+## What it does
+
+A diffusion model learns to reverse a noising process.
+
+**Forward (fixed, no learning).** Take a clean image. Add Gaussian noise in T small steps until the image is indistinguishable from random noise.
+
+**Reverse (the model).** Train a network to predict, given a noisy image and a step number, the noise component that was added at that step. Generate by starting from random noise and running the reverse process for T steps.
+
+The denoising network is typically a U-Net (older) or a Transformer (DiT, modern). The training objective is a regression loss on the predicted noise.
+
+## Latent diffusion
+
+Running diffusion directly on pixels is expensive — every step touches every pixel. Latent Diffusion (Rombach 2022, the basis of Stable Diffusion) compresses the image to a latent with an autoencoder, runs the diffusion process in the latent space, and decodes back to pixels. ~10× faster, similar quality. Most modern image and video models use this design.
+
+## Tradeoffs vs autoregressive
+
+- **Inference cost.** Multiple forward passes per generation: 25–50 for image, hundreds for video. Distillation methods (LCM, SDXL Turbo, consistency models) reduce this to 1–4 steps with some quality loss.
+- **Conditioning granularity.** Coarse conditioning (text prompts, layout boxes) works well. Fine-grained instructions during generation are harder than for autoregressive models.
+
+## Why it replaced GANs
+
+GANs dominated image generation 2014–2022. They were faster at inference but unstable to train (mode collapse, generator-discriminator imbalance). Diffusion training is a regression problem with a well-behaved loss; the 2022 wave (DALL-E 2, Imagen, Stable Diffusion) showed it scaled better. By 2024 almost all serious image and video work had migrated.
+
+## Where it sits today
+
+Diffusion (and its close relatives: flow matching, rectified flow) is the dominant generative method for image, video, audio, and 3D. Frontier video models (Sora, Veo, Kling, Runway Gen-3) use Transformer-based diffusion in latent space. Text remains autoregressive; everything continuous-valued is diffusion.

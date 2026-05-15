@@ -1,0 +1,46 @@
+---
+slug: transformer
+title: Transformer
+title_zh: Transformer 架构
+category: architecture
+one_liner: A neural network architecture built on self-attention. Replaced recurrent and convolutional sequence models for almost every task by 2020.
+introduced_by_slug: transformer
+related:
+  - moe
+references:
+  - title: "Attention Is All You Need"
+    url: "https://arxiv.org/abs/1706.03762"
+    authors: "Vaswani et al."
+    year: 2017
+    kind: paper
+  - title: "The Illustrated Transformer"
+    url: "https://jalammar.github.io/illustrated-transformer/"
+    authors: "Jay Alammar"
+    kind: blog
+---
+
+## Background
+
+Pre-2017 sequence models (RNNs, LSTMs, GRUs) processed tokens one at a time. Each step waited on the previous hidden state, which made training hard to parallelize and caused information to fade over long sequences. Convolutional sequence models (WaveNet, ByteNet) parallelized training but still needed many layers to relate distant positions.
+
+## What it does
+
+A Transformer block has two parts: self-attention and a feed-forward network, each with a residual connection and layer normalization. Self-attention computes, for each token, a weighted sum over every other token. The weights come from a learned similarity (query-key dot product, softmaxed). There is no recurrence — every position's representation is computed in parallel and already incorporates context from anywhere in the sequence.
+
+A model is a stack of these blocks plus a token embedding at the input.
+
+## Properties that mattered
+
+- **Parallel training.** All positions in a batch compute simultaneously on GPU. Per-token training cost dropped by roughly an order of magnitude vs RNNs.
+- **Smooth scaling.** Loss decreases predictably as parameters and data grow. The empirical scaling laws (Kaplan 2020, Chinchilla 2022) describe this regularity.
+- **Modality-general.** The same block, with different input embeddings, works for vision (ViT), audio (Whisper), proteins (AlphaFold 2), and code.
+
+## Variants worth knowing
+
+- **Encoder-only** (BERT). Used for classification and embedding.
+- **Decoder-only** (GPT, Llama). Used for autoregressive generation. The dominant variant today.
+- **Encoder-decoder** (T5, original Transformer). Used for translation and structured input→output tasks.
+
+## Where it sits today
+
+Almost every model since 2018 is a Transformer variant, including all current frontier LLMs. The architecture itself has barely changed; differences are in pre-training data, fine-tuning, scale, and what is wrapped around the core (mixture-of-experts, retrieval, long-context attention).

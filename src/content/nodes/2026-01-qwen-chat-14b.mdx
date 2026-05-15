@@ -29,6 +29,30 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/qwen-chat-14b'
+    - name: Coding · AA Coding Index
+      score: '13.10'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning'
+      vs_baseline: 'Rank #70 of 98 · Reasoning'
+    - name: Coding · SciCode
+      score: 31.6% (26.5–31.6%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning'
+      vs_baseline: 'Rank #61 of 98 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 5.3% (3.8–5.3%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning'
+      vs_baseline: 'Rank #66 of 98 · Reasoning'
+    - name: MMLU-Pro
+      score: 77.4% (67.5–77.4%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning'
+      vs_baseline: 'Rank #47 of 98 · Reasoning'
+    - name: GPQA
+      score: 60.4% (47.0–60.4%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning'
+      vs_baseline: 'Rank #78 of 98 · Reasoning'
+    - name: HLE
+      score: 4.3% (4.2–4.3%)
+      source_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct-reasoning'
+      vs_baseline: 'Rank #90 of 98 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/qwen3-14b-instruct'
   parameters: 14B
   context_window: 8192
@@ -61,13 +85,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Alibaba — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Alibaba's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Alibaba's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

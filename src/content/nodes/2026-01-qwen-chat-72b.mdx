@@ -32,6 +32,30 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/qwen-chat-72b'
+    - name: Coding · AA Coding Index
+      score: '11.90'
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      vs_baseline: 'Rank #298 of 516'
+    - name: Coding · SciCode
+      score: 26.7%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      vs_baseline: 'Rank #305 of 516'
+    - name: Agentic · Terminal-Bench Hard
+      score: 4.5%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      vs_baseline: 'Rank #283 of 516'
+    - name: MMLU-Pro
+      score: 72.0%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      vs_baseline: 'Rank #207 of 516'
+    - name: GPQA
+      score: 49.1%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      vs_baseline: 'Rank #351 of 516'
+    - name: HLE
+      score: 4.2%
+      source_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
+      vs_baseline: 'Rank #403 of 516'
   aa_url: 'https://artificialanalysis.ai/models/qwen2-5-72b-instruct'
   context_window: 33792
   modalities_in:
@@ -62,13 +86,15 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Language model from Alibaba — see the linked sources below for benchmark and review coverage"
+      - >-
+        Language model from Alibaba — see the linked sources below for benchmark
+        and review coverage
     best_for:
-      - "General-purpose tasks within Alibaba's deployment footprint"
-      - "See the model spec and sources block for benchmarked use cases"
+      - General-purpose tasks within Alibaba's deployment footprint
+      - See the model spec and sources block for benchmarked use cases
     not_ideal_for:
-      - "Tasks far outside the modalities listed in this model's spec"
-      - "Workflows where a more recent successor in the same family scores higher"
+      - Tasks far outside the modalities listed in this model's spec
+      - Workflows where a more recent successor in the same family scores higher
   availability:
     - api
 public_view:

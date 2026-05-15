@@ -52,6 +52,10 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/gemini-1-5-pro'
+    - name: Agentic · Terminal-Bench Hard
+      score: 43.2% (35.6–43.2%)
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
+      vs_baseline: 'Rank #8 of 98 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/glm-5-1'
   context_window: 2000000
   modalities_in:
@@ -77,28 +81,49 @@ model_spec:
     - api
   reviews:
     feels_like:
-      - "First model where 1M-token context was a real product feature, not a benchmark headline"
-      - "99% needle-in-haystack accuracy at 1M tokens; 99.2% even at 10M in research configurations"
-      - "Multi-needle recall drops to ~60% — single fact retrieval is solid, multi-fact is harder"
-      - "Made 'put the whole codebase / movie / hour-of-audio in the prompt' workflows actually work"
-      - "Translation and coding noticeably improved between Feb 2024 preview and May 2024 GA"
-      - "Genuinely native multimodal: text, image, audio, video all fit in the same long context"
+      - >-
+        First model where 1M-token context was a real product feature, not a
+        benchmark headline
+      - >-
+        99% needle-in-haystack accuracy at 1M tokens; 99.2% even at 10M in
+        research configurations
+      - >-
+        Multi-needle recall drops to ~60% — single fact retrieval is solid,
+        multi-fact is harder
+      - >-
+        Made 'put the whole codebase / movie / hour-of-audio in the prompt'
+        workflows actually work
+      - >-
+        Translation and coding noticeably improved between Feb 2024 preview and
+        May 2024 GA
+      - >-
+        Genuinely native multimodal: text, image, audio, video all fit in the
+        same long context
     best_for:
-      - "Whole-codebase analysis (30K+ lines) without tedious chunking pipelines"
-      - "Document QA over 1,500-page PDFs / batches of 100 emails"
-      - "Hour-long video summarisation and audio transcription QA"
-      - "Multimodal RAG replacement when you'd rather feed everything to one model"
+      - Whole-codebase analysis (30K+ lines) without tedious chunking pipelines
+      - 'Document QA over 1,500-page PDFs / batches of 100 emails'
+      - Hour-long video summarisation and audio transcription QA
+      - >-
+        Multimodal RAG replacement when you'd rather feed everything to one
+        model
     not_ideal_for:
-      - "Tasks requiring multi-fact retrieval across long contexts (recall drops sharply)"
-      - "Pure short-context chat — Flash variants are cheaper and faster"
-      - "Frontier reasoning by 2025 — Gemini 2.5 Pro and competitors moved past it"
+      - >-
+        Tasks requiring multi-fact retrieval across long contexts (recall drops
+        sharply)
+      - Pure short-context chat — Flash variants are cheaper and faster
+      - >-
+        Frontier reasoning by 2025 — Gemini 2.5 Pro and competitors moved past
+        it
     sources:
-      - name: "Google — Introducing Gemini 1.5"
-        url: "https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/"
-      - name: "Google — Gemini 1.5 Pro May 2024 update"
-        url: "https://blog.google/products-and-platforms/products/gemini/google-gemini-update-may-2024/"
-      - name: "Google Cloud — Needle in Haystack test"
-        url: "https://cloud.google.com/blog/products/ai-machine-learning/the-needle-in-the-haystack-test-and-how-gemini-pro-solves-it"
+      - name: Google — Introducing Gemini 1.5
+        url: >-
+          https://blog.google/innovation-and-ai/products/google-gemini-next-generation-model-february-2024/
+      - name: Google — Gemini 1.5 Pro May 2024 update
+        url: >-
+          https://blog.google/products-and-platforms/products/gemini/google-gemini-update-may-2024/
+      - name: Google Cloud — Needle in Haystack test
+        url: >-
+          https://cloud.google.com/blog/products/ai-machine-learning/the-needle-in-the-haystack-test-and-how-gemini-pro-solves-it
 public_view:
   plain_english: >-
     Gemini 1.5 Pro (Sep '24) is an API model from Google. It’s positioned for

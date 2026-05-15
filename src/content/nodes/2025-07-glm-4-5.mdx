@@ -69,6 +69,29 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.60 in / $2.20 out
       source_url: 'https://artificialanalysis.ai/models/glm-4.5'
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: Coding · AA Coding Index
+      score: '39.00'
+      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
+      vs_baseline: 'Rank #9 of 88 · Non-reasoning'
+    - name: Coding · SciCode
+      score: 38.3%
+      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
+      vs_baseline: 'Rank #23 of 88 · Non-reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 39.4%
+      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
+      vs_baseline: 'Rank #8 of 88 · Non-reasoning'
+    - name: GPQA
+      score: 66.6%
+      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
+      vs_baseline: 'Rank #40 of 88 · Non-reasoning'
+    - name: HLE
+      score: 7.2%
+      source_url: 'https://artificialanalysis.ai/models/glm-5-non-reasoning'
+      vs_baseline: 'Rank #33 of 88 · Non-reasoning'
   homepage: 'https://z.ai/blog/glm-4.5'
   github: 'https://github.com/zai-org/GLM-4.5'
   availability:
@@ -109,8 +132,8 @@ model_spec:
   reviews:
     feels_like:
       - >-
-        Vision-language model from Zhipu — see the linked sources
-        below for benchmark and review coverage
+        Vision-language model from Zhipu — see the linked sources below for
+        benchmark and review coverage
       - >-
         Tool-use and agent loops are the typical fit per the published model
         card

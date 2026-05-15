@@ -1,0 +1,351 @@
+---
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const techs = await getCollection("techniques");
+  return techs.map((t) => ({
+    params: { slug: t.data.slug },
+    props: { entry: t },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const t = entry.data;
+
+const allTechs = await getCollection("techniques");
+const allNodes = await getCollection("nodes");
+
+// Resolve the "introduced by" paper into a real node entry, when present.
+const introNode = t.introduced_by_slug
+  ? allNodes.find((n) => n.data.slug === t.introduced_by_slug)
+  : null;
+
+// Resolve related techniques. Skip slugs that don't have a page yet —
+// the MDX may reference siblings that aren't written. A missing entry
+// simply doesn't render rather than crashing the build.
+const relatedEntries = (t.related ?? [])
+  .map((slug) => allTechs.find((x) => x.data.slug === slug))
+  .filter((x): x is NonNullable<typeof x> => Boolean(x));
+
+// Models that explicitly reference this technique via a `relationships:`
+// edge of type `applies_technique` would appear here once the schema is
+// extended. For now this is empty; left in place so the section renders
+// gracefully when the data lands.
+const modelsThatUse: typeof allNodes = [];
+
+const CATEGORY_LABEL: Record<string, string> = {
+  architecture: "Architecture",
+  training: "Training",
+  inference: "Inference",
+  capability: "Capability",
+  scaling: "Scaling",
+};
+
+const CATEGORY_HUE: Record<string, string> = {
+  architecture: "#1f5f3f",
+  training: "#7c3aed",
+  inference: "#0369a1",
+  capability: "#b45309",
+  scaling: "#be185d",
+};
+const accent = CATEGORY_HUE[t.category] ?? "#1f5f3f";
+---
+
+<Base title={`${t.title} · AI Evolution Tree`} description={t.one_liner}>
+  <article class="tech-article">
+    <header class="tech-hero" style={`--accent:${accent};`}>
+      <div class="tech-meta">
+        <a href="/technique/" class="tech-crumb">Techniques</a>
+        <span class="tech-crumb-sep" aria-hidden="true">/</span>
+        <span class="tech-cat-pill">{CATEGORY_LABEL[t.category]}</span>
+      </div>
+      <h1 class="tech-title">{t.title}</h1>
+      {t.title_zh && <div class="tech-title-zh">{t.title_zh}</div>}
+      <p class="tech-one-liner">{t.one_liner}</p>
+      {introNode && (
+        <div class="tech-intro-paper">
+          Introduced by{" "}
+          <a href={`/node/${introNode.data.slug}/`}>{introNode.data.title}</a>
+        </div>
+      )}
+    </header>
+
+    <div class="tech-prose">
+      <Content />
+    </div>
+
+    <aside class="tech-aside">
+      {relatedEntries.length > 0 && (
+        <section class="tech-aside-card">
+          <h3 class="tech-aside-title">Related techniques</h3>
+          <ul class="tech-related-list">
+            {relatedEntries.map((r) => (
+              <li>
+                <a href={`/technique/${r.data.slug}/`}>
+                  <span class="tech-related-name">{r.data.title}</span>
+                  <span class="tech-related-cat">{CATEGORY_LABEL[r.data.category]}</span>
+                </a>
+                <p class="tech-related-line">{r.data.one_liner}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {t.references && t.references.length > 0 && (
+        <section class="tech-aside-card">
+          <h3 class="tech-aside-title">References</h3>
+          <ul class="tech-ref-list">
+            {t.references.map((r) => (
+              <li>
+                <a href={r.url} target="_blank" rel="noopener">
+                  {r.title}
+                </a>
+                <div class="tech-ref-meta">
+                  {r.authors && <span>{r.authors}</span>}
+                  {r.year && <span>· {r.year}</span>}
+                  {r.kind && <span class="tech-ref-kind">· {r.kind}</span>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {modelsThatUse.length > 0 && (
+        <section class="tech-aside-card">
+          <h3 class="tech-aside-title">Models that use this</h3>
+          {/* Reserved for future: auto-derived from model relationships. */}
+        </section>
+      )}
+    </aside>
+  </article>
+</Base>
+
+<style>
+  .tech-article {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 32px;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 8px 0 80px 0;
+  }
+  .tech-hero {
+    grid-column: 1 / -1;
+    padding: 28px 0 22px 0;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    margin-bottom: 16px;
+  }
+  .tech-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--fg-muted, #64748b);
+    margin-bottom: 14px;
+  }
+  .tech-crumb {
+    color: var(--fg-muted, #64748b);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .tech-crumb:hover { color: var(--fg, #0f172a); }
+  .tech-crumb-sep { color: var(--fg-muted, #94a3b8); }
+  .tech-cat-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+  .tech-title {
+    margin: 0;
+    font-size: 38px;
+    line-height: 1.15;
+    font-weight: 800;
+    color: var(--fg, #0f172a);
+    letter-spacing: -0.02em;
+  }
+  .tech-title-zh {
+    margin-top: 6px;
+    font-size: 16px;
+    color: var(--fg-muted, #64748b);
+    font-weight: 600;
+  }
+  .tech-one-liner {
+    margin: 14px 0 0 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--fg, #0f172a);
+    font-weight: 450;
+    max-width: 60ch;
+  }
+  .tech-intro-paper {
+    margin-top: 14px;
+    font-size: 13.5px;
+    color: var(--fg-muted, #64748b);
+  }
+  .tech-intro-paper a {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+
+  .tech-prose {
+    grid-column: 1;
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: var(--fg, #0f172a);
+    max-width: 64ch;
+  }
+  .tech-prose :global(h2) {
+    margin: 32px 0 12px 0;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .tech-prose :global(h2:first-child) { margin-top: 8px; }
+  .tech-prose :global(h3) {
+    margin: 24px 0 8px 0;
+    font-size: 17px;
+    font-weight: 750;
+  }
+  .tech-prose :global(p) { margin: 0 0 14px 0; }
+  .tech-prose :global(p strong) { font-weight: 700; }
+  .tech-prose :global(ul), .tech-prose :global(ol) {
+    margin: 0 0 14px 0;
+    padding-left: 24px;
+  }
+  .tech-prose :global(li) { margin-bottom: 6px; }
+  .tech-prose :global(code) {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.9em;
+    background: color-mix(in srgb, var(--fg, #0f172a) 6%, transparent);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .tech-prose :global(blockquote) {
+    margin: 0 0 14px 0;
+    padding: 8px 16px;
+    border-left: 3px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+    color: var(--fg, #0f172a);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .tech-aside {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: start;
+    position: sticky;
+    top: 80px;
+  }
+  .tech-aside-card {
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    padding: 14px 14px 12px 14px;
+    background: var(--bg-soft, #fff);
+  }
+  .tech-aside-title {
+    margin: 0 0 10px 0;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg-muted, #64748b);
+  }
+  .tech-related-list, .tech-ref-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tech-related-list > li {
+    padding: 10px 0;
+    border-top: 1px solid var(--border, #f1f5f9);
+  }
+  .tech-related-list > li:first-child { border-top: none; padding-top: 0; }
+  .tech-related-list > li:last-child { padding-bottom: 0; }
+  .tech-related-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--fg, #0f172a);
+  }
+  .tech-related-name { font-weight: 700; font-size: 14px; }
+  .tech-related-cat {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted, #64748b);
+    font-weight: 700;
+  }
+  .tech-related-line {
+    margin: 4px 0 0 0;
+    font-size: 12.5px;
+    color: var(--fg-muted, #64748b);
+    line-height: 1.4;
+  }
+
+  .tech-ref-list > li {
+    padding: 10px 0;
+    border-top: 1px solid var(--border, #f1f5f9);
+  }
+  .tech-ref-list > li:first-child { border-top: none; padding-top: 0; }
+  .tech-ref-list > li:last-child { padding-bottom: 0; }
+  .tech-ref-list a {
+    color: var(--fg, #0f172a);
+    text-decoration: none;
+    font-weight: 650;
+    font-size: 13.5px;
+    line-height: 1.35;
+    border-bottom: 1px dashed var(--border, #cbd5e1);
+  }
+  .tech-ref-list a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tech-ref-meta {
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: var(--fg-muted, #64748b);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .tech-ref-kind {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
+
+  @media (max-width: 880px) {
+    .tech-article {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .tech-aside {
+      grid-column: 1;
+      grid-row: auto;
+      position: static;
+      margin-top: 24px;
+    }
+    .tech-prose { max-width: none; }
+    .tech-title { font-size: 30px; }
+    .tech-one-liner { font-size: 16px; }
+  }
+</style>

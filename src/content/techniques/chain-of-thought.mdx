@@ -1,0 +1,47 @@
+---
+slug: chain-of-thought
+title: Chain-of-Thought (CoT)
+title_zh: 思维链
+category: inference
+one_liner: Generating intermediate reasoning steps as text before the final answer. Improves accuracy on multi-step problems; foundation of modern reasoning models.
+related:
+  - rlhf
+references:
+  - title: "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
+    url: "https://arxiv.org/abs/2201.11903"
+    authors: "Wei et al."
+    year: 2022
+    kind: paper
+  - title: "Large Language Models are Zero-Shot Reasoners"
+    url: "https://arxiv.org/abs/2205.11916"
+    authors: "Kojima et al."
+    year: 2022
+    kind: paper
+  - title: "Self-Consistency Improves Chain of Thought Reasoning in Language Models"
+    url: "https://arxiv.org/abs/2203.11171"
+    authors: "Wang et al."
+    year: 2022
+    kind: paper
+---
+
+## What it does
+
+The model generates intermediate reasoning steps as text before producing a final answer. Can be elicited at inference time (few-shot worked examples; zero-shot "Let's think step by step") or trained for via RL (o1, DeepSeek-R1).
+
+## Why intermediate text helps
+
+A Transformer has fixed compute per forward pass. Multi-step problems can require more reasoning than that. Generating intermediate tokens lets the model use its KV cache as scratch space — each step's prediction is conditioned on the previous steps. The answer is computed across many forward passes instead of one.
+
+## Empirical patterns
+
+- CoT helps only above a certain scale. Wei (2022) showed that below ~60B parameters CoT often hurts accuracy because the chain is incoherent.
+- CoT can produce plausible-but-wrong reasoning ending in a confidently wrong answer. Self-consistency (sample many chains, majority-vote the answer) and verifier models partially mitigate.
+- The reasoning shown to the user does not have to match the model's actual computation. Faithfulness of CoT is an open research problem.
+
+## Trained reasoning
+
+OpenAI's o1 (Sep 2024) was the first deployed model trained via reinforcement learning to produce long internal reasoning before answering. The user typically sees only a summary; the model produces thousands of "thinking" tokens. DeepSeek-R1 (Jan 2025) replicated this with open weights and a published recipe (GRPO, with rule-based rewards on math/coding correctness).
+
+## Test-time compute
+
+Pre-2024, more capability required more pre-training compute. With trained CoT, more capability can also come from more *inference* compute on a fixed-size model. Frontier reasoning models (o3, Gemini Deep Think, Claude with extended thinking, DeepSeek-R1) cost meaningfully more per query than non-reasoning equivalents because they spend that compute at serving time.

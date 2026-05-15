@@ -1,0 +1,117 @@
+---
+slug: world-labs-marble
+title: World Labs Marble — Spatially-Intelligent 3D World Generator
+date: 2025-11-15
+era: frontier
+category:
+  - generative
+  - cv
+  - multimodal
+relationships:
+  - to: cosmos-predict-2-5
+    type: competes_with
+    note: Both target spatial / world-model use cases; Cosmos targets robotics, Marble targets creative tools
+  - to: genie-3
+    type: competes_with
+    note: Both generate interactive 3D environments; Genie targets real-time policy use, Marble targets editable assets
+authors:
+  - Li, Fei-Fei
+  - Johnson, Justin
+  - Lassner, Christoph
+  - Mildenhall, Ben
+org: World Labs
+breakthrough_score: 7
+status: active
+model_spec:
+  architecture: "Large World Model — generates editable 3D scene representations from text or image input"
+  family: World Labs Marble
+  release_type: api
+  modalities:
+    - text
+    - image
+  modalities_in:
+    - text
+    - image
+  modalities_out:
+    - video
+    - image
+  homepage: "https://www.worldlabs.ai/"
+  availability:
+    - api
+    - product
+  sources:
+    - name: World Labs
+      type: official
+      url: "https://www.worldlabs.ai/"
+      last_verified_at: 2026-05-13
+      confidence: high
+    - name: Bringing Marble to Life
+      type: official
+      url: "https://www.worldlabs.ai/case-studies/bringing-marble-to-life"
+      last_verified_at: 2026-05-13
+      confidence: high
+  last_verified_at: 2026-05-13
+public_view:
+  plain_english: |
+    A generative model that produces editable 3D worlds — geometry,
+    materials, lighting — from a text prompt or a reference image. The
+    output drops into existing game engines and VFX pipelines as actual
+    3D assets, not video frames.
+  analogy: |
+    A text-to-image model for whole environments. Where Midjourney
+    returns a picture, Marble returns the room.
+  applications:
+    - product: Game development asset generation
+      company: World Labs
+      year_deployed: 2025
+    - product: Visual-effects pre-visualization
+      company: World Labs
+      year_deployed: 2026
+  investment_angle: |
+    Spatial intelligence sits between language models and embodied AI.
+    The capital story: $1B Series B in February 2026 led by AMD,
+    Autodesk, NVIDIA, and Fidelity — the unusual coalition of
+    silicon, creative-tools, and finance signals the market sees this
+    as foundational rather than a single-product company.
+  why_it_matters: |
+    The first commercial release in Fei-Fei Li's "spatial intelligence"
+    framing — the claim that AI's next plateau is 3D-grounded perception
+    and generation, not larger language models. Marble's output is
+    editable 3D, not video, which is the structural distinction from the
+    Sora / Veo line. If the framing holds, this is the seed of an entire
+    parallel branch of generative AI.
+citations:
+  - type: release
+    key: marble_release
+    title: "World Labs Marble"
+    year: 2025
+    url: "https://www.worldlabs.ai/"
+  - type: blog
+    key: li_2026_spatial
+    title: "From Words to Worlds: Spatial Intelligence is AI's Next Frontier"
+    authors:
+      - "Li, Fei-Fei"
+    year: 2026
+    url: "https://drfeifei.substack.com/p/from-words-to-worlds-spatial-intelligence"
+---
+
+## What it is
+
+Marble is the first generally-available model from World Labs (Fei-Fei Li, Justin Johnson, Christoph Lassner, Ben Mildenhall). It generates editable 3D environments from text or image inputs, producing assets that drop into game engines and VFX pipelines.
+
+## Why this isn't another video model
+
+The output is 3D scene representation — geometry, materials, lighting — not video frames. That makes it structurally different from Sora/Veo/Kling. A 3D scene can be relit, re-cameraed, re-edited downstream; a video can't. This is the bet underlying World Labs' "spatial intelligence" framing: that the next AI plateau requires models that understand and produce 3D space natively.
+
+## Market signal
+
+The $1B Series B in February 2026, with AMD, Autodesk, NVIDIA, and Fidelity participating, is a notable coalition: chip vendors, creative-tools vendors, and finance simultaneously betting on spatial intelligence as foundational rather than a niche.
+
+## Where it sits
+
+Three world-model branches crystallized in 2025–2026:
+- **Embodied / robotics** (NVIDIA Cosmos, Genie 3) — physical AI policy training
+- **Creative 3D** (Marble) — editable scene assets for media
+- **Entertainment video** (Sora, Veo, Kling, Runway) — finished video output
+
+Marble is the leading example of the second branch.

@@ -41,6 +41,24 @@ model_spec:
       vs_baseline: 'Qwen-14B 63.5%, Llama 2 70B 50.1%'
     - name: GSM8K (34B)
       score: 67.9%
+    - name: IFEval
+      score: 30.5%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: BBH
+      score: 35.5%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MATH Lvl 5
+      score: 5.1%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: GPQA
+      score: 15.5%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MUSR
+      score: 9.6%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MMLU-Pro
+      score: 37.9%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
   homepage: 'https://www.01.ai/'
   github: 'https://github.com/01-ai/Yi'
   availability:
@@ -65,28 +83,44 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First Chinese open-weights model to top Hugging Face Open LLM Leaderboard for pre-trained models"
-      - "Bilingual (English / Chinese) — trained on 3T tokens up to June 2023"
-      - "Beat Falcon-180B and Llama 2 70B on multiple benchmarks while being smaller and bilingual"
-      - "Ranked first on C-Eval Chinese benchmark; competitive with Claude on AlpacaEval"
-      - "Earned 01.AI unicorn status within months of release — established the China open-weights playbook"
-      - "Yi-34B-200K variant pushed to 200K context, ahead of most open peers in late 2023"
+      - >-
+        First Chinese open-weights model to top Hugging Face Open LLM
+        Leaderboard for pre-trained models
+      - Bilingual (English / Chinese) — trained on 3T tokens up to June 2023
+      - >-
+        Beat Falcon-180B and Llama 2 70B on multiple benchmarks while being
+        smaller and bilingual
+      - >-
+        Ranked first on C-Eval Chinese benchmark; competitive with Claude on
+        AlpacaEval
+      - >-
+        Earned 01.AI unicorn status within months of release — established the
+        China open-weights playbook
+      - >-
+        Yi-34B-200K variant pushed to 200K context, ahead of most open peers in
+        late 2023
     best_for:
-      - "Bilingual production deployments where Chinese performance matters"
-      - "Self-hosted RAG and chat systems prioritising open-weights cost over closed-API quality"
-      - "Distillation source for smaller bilingual models"
-      - "Research on long-context tuning (Yi-34B-200K was an early demonstration)"
+      - Bilingual production deployments where Chinese performance matters
+      - >-
+        Self-hosted RAG and chat systems prioritising open-weights cost over
+        closed-API quality
+      - Distillation source for smaller bilingual models
+      - Research on long-context tuning (Yi-34B-200K was an early demonstration)
     not_ideal_for:
-      - "Frontier reasoning by 2024 — quickly surpassed by Qwen 2.5, DeepSeek V2/V3, Llama 3.x"
-      - "Multimodal tasks (text-only at this generation)"
-      - "Edge / single-GPU deployments at full 34B precision"
+      - >-
+        Frontier reasoning by 2024 — quickly surpassed by Qwen 2.5, DeepSeek
+        V2/V3, Llama 3.x
+      - Multimodal tasks (text-only at this generation)
+      - Edge / single-GPU deployments at full 34B precision
     sources:
-      - name: "Yi technical report (arXiv)"
-        url: "https://arxiv.org/html/2403.04652v1"
-      - name: "Maginative — 01.AI reaches unicorn with Yi-34B"
-        url: "https://www.maginative.com/article/chinese-ai-startup-01-ai-reaches-unicorn-status-with-open-source-model-yi-34b/"
-      - name: "The Decoder — Yi beats Meta's Llama 2"
-        url: "https://the-decoder.com/ai-startup-01-ai-releases-open-source-llm-that-beats-metas-llama-2/"
+      - name: Yi technical report (arXiv)
+        url: 'https://arxiv.org/html/2403.04652v1'
+      - name: Maginative — 01.AI reaches unicorn with Yi-34B
+        url: >-
+          https://www.maginative.com/article/chinese-ai-startup-01-ai-reaches-unicorn-status-with-open-source-model-yi-34b/
+      - name: The Decoder — Yi beats Meta's Llama 2
+        url: >-
+          https://the-decoder.com/ai-startup-01-ai-releases-open-source-llm-that-beats-metas-llama-2/
 public_view:
   plain_english: |
     01.AI's first major open-weight model, released November 2023.

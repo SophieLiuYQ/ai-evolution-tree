@@ -29,6 +29,33 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/deepseek-v2-5'
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: Coding · AA Coding Index
+      score: '36.70'
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      vs_baseline: 'Rank #19 of 98 · Reasoning'
+    - name: Coding · SciCode
+      score: 44.0% (37.7–44.0%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      vs_baseline: 'Rank #17 of 98 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 35.6% (25.0–35.6%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      vs_baseline: 'Rank #18 of 98 · Reasoning'
+    - name: MMLU-Pro
+      score: 86.3% (83.6–86.3%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      vs_baseline: 'Rank #6 of 98 · Reasoning'
+    - name: GPQA
+      score: 87.1% (73.8–87.1%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      vs_baseline: 'Rank #12 of 98 · Reasoning'
+    - name: HLE
+      score: 26.1% (8.6–26.1%)
+      source_url: 'https://artificialanalysis.ai/models/deepseek-v3-2-reasoning'
+      vs_baseline: 'Rank #16 of 98 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/deepseek-v3-2'
   hf_url: 'https://huggingface.co/deepseek-ai/DeepSeek-V2.5-1210'
   context_window: 128000
@@ -52,23 +79,32 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First DeepSeek model that the wider OSS community took seriously — 236B MoE with only 21B active per token"
-      - "Saved 42.5% training cost vs DeepSeek 67B, reduced KV cache 93.3%, boosted max throughput 5.76x"
-      - "DeepSeekMoE architecture (fine-grained experts + shared expert isolation) became the template"
+      - >-
+        First DeepSeek model that the wider OSS community took seriously — 236B
+        MoE with only 21B active per token
+      - >-
+        Saved 42.5% training cost vs DeepSeek 67B, reduced KV cache 93.3%,
+        boosted max throughput 5.76x
+      - >-
+        DeepSeekMoE architecture (fine-grained experts + shared expert
+        isolation) became the template
     best_for:
-      - "Self-hosted Chinese / multilingual deployments where API access was politically risky"
-      - "Cost-sensitive bulk inference via budget providers"
-      - "MoE-architecture research and KV-cache optimisation experiments"
+      - >-
+        Self-hosted Chinese / multilingual deployments where API access was
+        politically risky
+      - Cost-sensitive bulk inference via budget providers
+      - MoE-architecture research and KV-cache optimisation experiments
     not_ideal_for:
-      - "Frontier reasoning by 2025 — superseded by V3 / V3.1 / V4 generations"
-      - "Edge / single-GPU deployments (236B MoE still demands multi-GPU serving)"
+      - Frontier reasoning by 2025 — superseded by V3 / V3.1 / V4 generations
+      - Edge / single-GPU deployments (236B MoE still demands multi-GPU serving)
     sources:
-      - name: "DeepSeek-V2 paper (arXiv)"
-        url: "https://arxiv.org/pdf/2405.04434"
-      - name: "BentoML — Complete guide to DeepSeek models"
-        url: "https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond"
-      - name: "Hugging Face — DeepSeek-V2-Chat"
-        url: "https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat"
+      - name: DeepSeek-V2 paper (arXiv)
+        url: 'https://arxiv.org/pdf/2405.04434'
+      - name: BentoML — Complete guide to DeepSeek models
+        url: >-
+          https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond
+      - name: Hugging Face — DeepSeek-V2-Chat
+        url: 'https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat'
   availability:
     - api
 public_view:

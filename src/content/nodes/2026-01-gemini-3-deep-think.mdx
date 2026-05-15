@@ -25,6 +25,34 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/gemini-3-deep-think'
+    - name: Intelligence · AA Intelligence Index
+      score: '46.40'
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #14 of 98 · Reasoning'
+    - name: Coding · AA Coding Index
+      score: '42.60'
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #10 of 98 · Reasoning'
+    - name: Coding · SciCode
+      score: 50.6% (49.9–50.6%)
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #4 of 98 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 38.6% (31.8–38.6%)
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #13 of 98 · Reasoning'
+    - name: MMLU-Pro
+      score: 89.0% (88.2–89.0%)
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #3 of 98 · Reasoning'
+    - name: GPQA
+      score: 89.8% (81.2–89.8%)
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #5 of 98 · Reasoning'
+    - name: HLE
+      score: 34.7% (14.1–34.7%)
+      source_url: 'https://artificialanalysis.ai/models/gemini-3-flash-reasoning'
+      vs_baseline: 'Rank #5 of 98 · Reasoning'
   aa_url: 'https://artificialanalysis.ai/models/gemini-3-flash'
   context_window: 128000
   modalities_in:
@@ -50,23 +78,29 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "Tops LMArena at 1501 Elo at release — first model past 1500 on the human-preference leaderboard"
-      - "37.5% on Humanity's Last Exam without tools, 91.9% on GPQA Diamond — PhD-level reasoning headline"
-      - "MathArena Apex 23.4% — new state-of-the-art on contest-grade math"
+      - >-
+        Tops LMArena at 1501 Elo at release — first model past 1500 on the
+        human-preference leaderboard
+      - >-
+        37.5% on Humanity's Last Exam without tools, 91.9% on GPQA Diamond —
+        PhD-level reasoning headline
+      - MathArena Apex 23.4% — new state-of-the-art on contest-grade math
     best_for:
-      - "Multimodal reasoning over images, video, and long documents"
-      - "Hardest math and science research tasks (esp. with Deep Think enabled)"
-      - "Whole-codebase or long-context analysis at frontier quality"
+      - 'Multimodal reasoning over images, video, and long documents'
+      - Hardest math and science research tasks (esp. with Deep Think enabled)
+      - Whole-codebase or long-context analysis at frontier quality
     not_ideal_for:
-      - "Self-hosted / open-weights deployments"
-      - "Workflows where the early-launch instability is unacceptable (some users report regressions)"
+      - Self-hosted / open-weights deployments
+      - >-
+        Workflows where the early-launch instability is unacceptable (some users
+        report regressions)
     sources:
-      - name: "Google — Introducing Gemini 3"
-        url: "https://blog.google/products/gemini/gemini-3/"
-      - name: "Google DeepMind — Gemini 3.1 Pro model page"
-        url: "https://deepmind.google/models/gemini/pro/"
-      - name: "Vellum — Gemini 3 benchmarks explained"
-        url: "https://www.vellum.ai/blog/google-gemini-3-benchmarks"
+      - name: Google — Introducing Gemini 3
+        url: 'https://blog.google/products/gemini/gemini-3/'
+      - name: Google DeepMind — Gemini 3.1 Pro model page
+        url: 'https://deepmind.google/models/gemini/pro/'
+      - name: Vellum — Gemini 3 benchmarks explained
+        url: 'https://www.vellum.ai/blog/google-gemini-3-benchmarks'
   availability:
     - api
 public_view:

@@ -72,6 +72,35 @@ model_spec:
     not_ideal_for:
       - Tasks far outside the modalities listed in this model's spec
       - Workflows where a more recent successor in the same family scores higher
+  benchmarks:
+    - name: Intelligence · AA Intelligence Index
+      score: '33.60'
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #119 of 516'
+    - name: Coding · AA Coding Index
+      score: '33.10'
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #100 of 516'
+    - name: Coding · SciCode
+      score: 37.0%
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #155 of 516'
+    - name: Agentic · Terminal-Bench Hard
+      score: 31.1%
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #96 of 516'
+    - name: GPQA
+      score: 75.2%
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #158 of 516'
+    - name: HLE
+      score: 8.2%
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #188 of 516'
+    - name: Price ($/M tokens)
+      score: $0.30 in / $2.50 out
+      source_url: 'https://artificialanalysis.ai/models/ling-2-6-1t'
+      vs_baseline: 'Rank #336 of 516'
 public_view:
   plain_english: |
     Ant Group's first major frontier release — two siblings at 1

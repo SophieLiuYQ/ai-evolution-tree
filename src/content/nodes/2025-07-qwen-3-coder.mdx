@@ -109,6 +109,41 @@ model_spec:
       - name: MarkTechPost — Qwen3.6-27B coding benchmarks
         url: >-
           https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/
+  benchmarks:
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: Price ($/M tokens)
+      score: $0.11 in / $0.80 out
+      source_url: 'https://openrouter.ai/qwen/qwen3-coder-next'
+    - name: Intelligence · AA Intelligence Index
+      score: '28.30'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #164 of 516'
+    - name: Coding · AA Coding Index
+      score: '22.90'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #177 of 516'
+    - name: Coding · SciCode
+      score: 32.3%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #229 of 516'
+    - name: Agentic · Terminal-Bench Hard
+      score: 18.2%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #160 of 516'
+    - name: GPQA
+      score: 73.7%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #173 of 516'
+    - name: HLE
+      score: 9.3%
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #170 of 516'
+    - name: Speed · Output tok/s
+      score: '147'
+      source_url: 'https://artificialanalysis.ai/models/qwen3-coder-next'
+      vs_baseline: 'Rank #65 of 516'
 public_view:
   plain_english: |
     Qwen3-Coder is Alibaba's specialized coding-agent variant of Qwen 3,

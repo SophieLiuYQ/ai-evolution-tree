@@ -1,0 +1,116 @@
+---
+slug: cosmos-predict-2-5
+title: NVIDIA Cosmos-Predict 2.5 — World Foundation Model for Physical AI
+date: 2026-02-09
+era: frontier
+category:
+  - generative
+  - multimodal
+  - cv
+  - agents
+  - science
+relationships:
+  - to: genie-3
+    type: competes_with
+    note: Both are interactive world models for embodied / simulation use
+authors:
+  - NVIDIA Cosmos Team
+org: Nvidia
+breakthrough_score: 7
+status: active
+model_spec:
+  architecture: "Flow-based video diffusion Transformer; vision-language conditioning via Cosmos-Reason1"
+  family: NVIDIA Cosmos
+  release_type: open_weights
+  parameters: "2B and 14B variants"
+  modalities:
+    - text
+    - image
+    - video
+  modalities_in:
+    - text
+    - image
+    - video
+  modalities_out:
+    - video
+  homepage: "https://www.nvidia.com/en-us/ai/cosmos/"
+  github: "https://github.com/nvidia-cosmos/cosmos-predict2.5"
+  license_name: NVIDIA Open Model License
+  license_url: "https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/LICENSE"
+  availability:
+    - open_weights
+  sources:
+    - name: NVIDIA Cosmos
+      type: official
+      url: "https://www.nvidia.com/en-us/ai/cosmos/"
+      last_verified_at: 2026-05-13
+      confidence: high
+    - name: GitHub
+      type: official
+      url: "https://github.com/nvidia-cosmos/cosmos-predict2.5"
+      last_verified_at: 2026-05-13
+      confidence: high
+  last_verified_at: 2026-05-13
+public_view:
+  plain_english: |
+    A video diffusion model trained on 200M curated clips, designed not
+    for entertainment but for physical AI: robots, autonomous vehicles,
+    and simulators. Given a text prompt, image, or seed video, it
+    predicts how a scene evolves under physically-plausible dynamics.
+    The 2.5 release unifies Text2World, Image2World, and Video2World in
+    one model, with action-conditioned variants for robotics policies.
+  analogy: |
+    A flight simulator built from video instead of physics equations —
+    you give it a scene and it shows you what happens next.
+  applications:
+    - product: Robot policy training (RoboCasa, Libero benchmarks)
+      company: NVIDIA
+      year_deployed: 2026
+    - product: Autonomous driving simulation
+      company: NVIDIA
+      year_deployed: 2026
+  investment_angle: |
+    Robotics and autonomous vehicles need orders of magnitude more
+    interaction data than exists in the real world. World models that
+    generate physically-plausible video are the synthetic-data layer
+    for that gap. NVIDIA's bet: own the simulator the way they own
+    the training GPU.
+  why_it_matters: |
+    Marks the point where world models stopped being a research curiosity
+    and became deployable infrastructure for robotics. 2M+ downloads of
+    the Cosmos family by January 2026, and partnerships with most major
+    robotics labs. The split between "video models for entertainment"
+    (Sora, Veo) and "video models for embodied AI" (Cosmos, Genie)
+    crystallized around this release.
+citations:
+  - type: paper
+    key: cosmos_2025
+    title: "Cosmos World Foundation Model Platform for Physical AI"
+    authors:
+      - NVIDIA Research
+    year: 2025
+    venue: arXiv
+    arxiv: "2501.03575"
+    url: "https://arxiv.org/abs/2501.03575"
+  - type: release
+    key: cosmos_predict_2_5
+    title: "Cosmos-Predict 2.5"
+    year: 2026
+    url: "https://github.com/nvidia-cosmos/cosmos-predict2.5"
+---
+
+## What it is
+
+Cosmos-Predict 2.5 is NVIDIA's world foundation model for physical AI — a video-generation system targeted at robotics, autonomous driving, and simulator pipelines rather than consumer content. The 2.5 release unifies Text2World, Image2World, and Video2World generation in a single flow-based diffusion model, with vision-language grounding from Cosmos-Reason1.
+
+Trained on 200 million curated video clips, refined with RL post-training. Released open-weights at 2B and 14B scales.
+
+## Why it's a foundation-class model
+
+- **Action-conditioned variants** (Feb 2026) let it serve as a learned world model inside reinforcement-learning loops for robot policies — concrete benchmarks on RoboCasa and Libero.
+- **Cosmos-Transfer 2.5** (Dec 2025) handles Sim2Real and Real2Real translation; **Cosmos-Reason 2** (Feb 2026) provides the language interface. Together the three form a stack rather than a single model.
+- **Open weights with a permissive license**, downloaded 2M+ times by early 2026.
+
+## Where it sits
+
+The "world model" category split into two branches in 2025–2026: entertainment-grade video (Sora, Veo, Kling) and physical-AI grade simulation (Cosmos, Genie 3, World Labs Marble). Cosmos is the open option in the second branch.

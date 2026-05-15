@@ -33,6 +33,40 @@ model_spec:
     - name: Price ($/M tokens)
       score: $0.00 in / $0.00 out
       source_url: 'https://artificialanalysis.ai/models/qwen1.5-110b-chat'
+    - name: OpenRouter Traffic
+      score: see leaderboard
+      source_url: 'https://openrouter.ai/rankings'
+    - name: IFEval
+      score: 28.4%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: BBH
+      score: 42.7%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MATH Lvl 5
+      score: 15.3%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MUSR
+      score: 11.2%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: MMLU-Pro
+      score: 40.7%
+      source_url: 'https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard'
+    - name: Coding · AA Coding Index
+      score: '43.40'
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
+      vs_baseline: 'Rank #8 of 98 · Reasoning'
+    - name: Coding · SciCode
+      score: 43.8% (36.1–43.8%)
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
+      vs_baseline: 'Rank #18 of 98 · Reasoning'
+    - name: Agentic · Terminal-Bench Hard
+      score: 43.2% (35.6–43.2%)
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
+      vs_baseline: 'Rank #8 of 98 · Reasoning'
+    - name: HLE
+      score: 28.0% (25.6–28.0%)
+      source_url: 'https://artificialanalysis.ai/models/glm-5-1'
+      vs_baseline: 'Rank #13 of 98 · Reasoning'
   variants:
     - id: qwen1-5-110b-chat
       label: Qwen1.5 Chat 110B
@@ -62,24 +96,34 @@ model_spec:
   last_verified_at: '2026-04-29'
   reviews:
     feels_like:
-      - "First-generation Qwen — historical; superseded by 2.5+."
-      - "First open-source model to top OpenCompass leaderboard — beat Llama 3.1 405B with 1/5 the parameters"
-      - "72B-Instruct: 74.2 on coding, 77 on math — outscored Claude 3.5 Sonnet (72.1) and GPT-4o (70.6) at release"
-      - "MMLU 85+, HumanEval 85+, MATH 80+ — frontier-tier across the board for an open-weights model"
+      - First-generation Qwen — historical; superseded by 2.5+.
+      - >-
+        First open-source model to top OpenCompass leaderboard — beat Llama 3.1
+        405B with 1/5 the parameters
+      - >-
+        72B-Instruct: 74.2 on coding, 77 on math — outscored Claude 3.5 Sonnet
+        (72.1) and GPT-4o (70.6) at release
+      - >-
+        MMLU 85+, HumanEval 85+, MATH 80+ — frontier-tier across the board for
+        an open-weights model
     best_for:
-      - "Self-hosted production where Llama 3.1 405B is too big to serve"
-      - "Multilingual deployments (29 languages with strong coverage)"
-      - "Fine-tuning on private code or technical corpora"
+      - Self-hosted production where Llama 3.1 405B is too big to serve
+      - Multilingual deployments (29 languages with strong coverage)
+      - Fine-tuning on private code or technical corpora
     not_ideal_for:
-      - "Frontier reasoning by mid-2025 — Qwen 3 / DeepSeek R1 / Claude 4 series have moved past it"
-      - "Vision tasks (use Qwen 2.5-VL) or audio (use Qwen 2.5-Audio)"
+      - >-
+        Frontier reasoning by mid-2025 — Qwen 3 / DeepSeek R1 / Claude 4 series
+        have moved past it
+      - Vision tasks (use Qwen 2.5-VL) or audio (use Qwen 2.5-Audio)
     sources:
-      - name: "Alibaba Cloud — Qwen 2.5: A Party of Foundation Models"
-        url: "https://www.alibabacloud.com/blog/qwen2-5-a-party-of-foundation-models_601782"
-      - name: "Qwen2.5 Technical Report (arXiv)"
-        url: "https://arxiv.org/abs/2412.15115"
-      - name: "Alibaba Cloud — Qwen 2.5 tops OpenCompass"
-        url: "https://www.alibabacloud.com/blog/alibaba-clouds-qwen-2-5-tops-opencompass-llm-leaderboard-as-the-first-open-source-champion_601701"
+      - name: 'Alibaba Cloud — Qwen 2.5: A Party of Foundation Models'
+        url: >-
+          https://www.alibabacloud.com/blog/qwen2-5-a-party-of-foundation-models_601782
+      - name: Qwen2.5 Technical Report (arXiv)
+        url: 'https://arxiv.org/abs/2412.15115'
+      - name: Alibaba Cloud — Qwen 2.5 tops OpenCompass
+        url: >-
+          https://www.alibabacloud.com/blog/alibaba-clouds-qwen-2-5-tops-opencompass-llm-leaderboard-as-the-first-open-source-champion_601701
   availability:
     - api
 public_view:
