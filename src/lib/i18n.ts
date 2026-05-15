@@ -96,6 +96,9 @@ export const DICT: Record<Lang, Record<string, string>> = {
     "nodeType.video": "Video",
     "nodeType.nlp": "Text / NLP",
     "nodeType.world_model": "World model",
+    "nodeType.robotics": "Robotics",
+    "nodeType.image_gen": "Image gen",
+    "nodeType.embedding": "Embedding",
     "nodeType.paper": "Paper",
     "nodeType.science": "Science",
 
@@ -287,6 +290,9 @@ export const DICT: Record<Lang, Record<string, string>> = {
     "nodeType.video": "视频",
     "nodeType.nlp": "文本 / NLP",
     "nodeType.world_model": "世界模型",
+    "nodeType.robotics": "机器人",
+    "nodeType.image_gen": "图像生成",
+    "nodeType.embedding": "向量",
     "nodeType.paper": "论文",
     "nodeType.science": "科学发现",
 
