@@ -26,7 +26,7 @@
     "audit:model:recent:strict": "node scripts/audit-model-correctness.mjs --min-date=2023-01-01 --strict"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
+    "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^4.2.0",
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/vercel": "^8.2.11",
